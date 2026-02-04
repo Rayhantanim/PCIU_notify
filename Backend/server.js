@@ -128,23 +128,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// --------------------
-app.get("/", (req, res) => {
-  res.send(`
-    <html>
-      <head>
-        <title>Backend Status</title>
-      </head>
-      <body style="display:flex;justify-content:center;align-items:center;height:100vh;">
-        <h1 style="color:green;">✅ Vercel Server is Running!</h1>
-      </body>
-    </html>
-  `);
-});
-
-
-// Server Start
-module.exports = app;
+// Start Server
 app.listen(5000, () => {
   console.log("Server running on port 5000");
 });
