@@ -116,8 +116,14 @@ app.post("/login", async (req, res) => {
       message: "Login Successful",
       user: {
         id: user._id,
-        name: user.firstName + " " + user.lastName,
-        email: user.email
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phone: user.phone,
+        department: user.department,
+        section: user.section,
+        gender: user.gender,
+        dob: user.dob
       }
     });
 
@@ -127,6 +133,7 @@ app.post("/login", async (req, res) => {
     });
   }
 });
+
 
 // Start Server
 app.listen(5000, () => {

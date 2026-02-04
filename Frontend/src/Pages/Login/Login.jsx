@@ -55,15 +55,15 @@ const Login = () => {
 
       toast.success(res.data.message);
 
-      /* Save user (optional) */
+      /* Save user */
       localStorage.setItem(
         "user",
         JSON.stringify(res.data.user)
       );
 
       setTimeout(() => {
-        navigate("/dashboard");
-      }, 1200);
+        navigate("/profile");
+      }, 3000);
 
     } catch (err) {
 
