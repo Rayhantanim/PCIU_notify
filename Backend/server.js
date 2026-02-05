@@ -30,11 +30,12 @@ const UserSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", UserSchema);
 
+// email check
 app.get("/", (req, res) => {
   res.send("✅ Server is Running!");
 });
 
-// Register API
+
 app.post("/register", async (req, res) => {
   try {
     const {
