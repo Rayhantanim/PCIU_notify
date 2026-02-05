@@ -1,4 +1,11 @@
+<<<<<<< Updated upstream
 import * as React from 'react';
+=======
+import * as React from "react";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+>>>>>>> Stashed changes
 import {
   Box,
   TextField,
@@ -9,11 +16,63 @@ import {
   Radio,
   Select,
   MenuItem,
+<<<<<<< Updated upstream
   InputLabel
 } from '@mui/material';
 import TermsCheckbox from './Checkbox';
 
 export default function CreateAccount() {
+=======
+  InputLabel,
+} from "@mui/material";
+import TermsCheckbox from "./Checkbox";
+import { Link, useNavigate } from "react-router-dom";
+const API = import.meta.env.VITE_API_URL;
+
+export default function CreateAccount() {
+  //---------
+  const [emailError, setEmailError] = React.useState("");
+  const [emailStatus, setEmailStatus] = React.useState("");
+
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  const checkEmail = async (email) => {
+    if (!email) {
+      setEmailError("");
+      setEmailStatus("");
+      return;
+    }
+    // Format validation first
+    if (!validateEmail(email)) {
+      setEmailError("Invalid email format (example: Rayhan@gmail.com)");
+      setEmailStatus("");
+      return;
+    }
+    // Valid format
+    setEmailError("");
+    try {
+      // const res = await axios.get(`http://localhost:5000/check-email/${email}`);
+      const res = await axios.get(`${API}/check-email/${email}`);
+
+      if (res.data.exists) {
+        setEmailStatus("exists");
+      } else {
+        setEmailStatus("available");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  //--------
+
+  const navigate = useNavigate();
+
+  /* Form State */
+>>>>>>> Stashed changes
   const [formData, setFormData] = React.useState({
     firstName: '',
     lastName: '',
@@ -29,7 +88,69 @@ export default function CreateAccount() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+<<<<<<< Updated upstream
     setFormData({ ...formData, [name]: value });
+=======
+
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  /* Handle Submit */
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Email format check
+    if (!validateEmail(formData.email)) {
+      toast.error("Please enter a valid email address!");
+      return;
+    }
+
+    if (emailStatus === "exists") {
+      toast.error("This email is already registered!");
+      return;
+    }
+
+    /* Password Match Check */
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match!");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      /* API Call */
+      const res = await axios.post(`${API}/register`,
+        {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          phone: formData.phone,
+          department: formData.department,
+          section: formData.section,
+          gender: formData.gender,
+          dob: formData.dob,
+          password: formData.password,
+        },
+      );
+
+      /* Success Toast */
+      toast.success(res.data.message || "Registration Successful!");
+
+      /* Redirect */
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
+    } catch (err) {
+      /* Error Toast */
+      toast.error(err.response?.data?.message || "Registration Failed!");
+    } finally {
+      setLoading(false);
+    }
+>>>>>>> Stashed changes
   };
 
   return (
@@ -53,6 +174,7 @@ export default function CreateAccount() {
           name="email"
           label="Email"
           type="email"
+<<<<<<< Updated upstream
           onChange={handleChange}
         />
         <TextField
@@ -60,6 +182,24 @@ export default function CreateAccount() {
           label="Phone"
           type="tel"
           onChange={handleChange}
+=======
+          value={formData.email}
+          onChange={(e) => {
+            handleChange(e);
+            checkEmail(e.target.value);
+          }}
+          required
+          error={emailStatus === "exists" || Boolean(emailError)}
+          helperText={
+            emailError
+              ? emailError
+              : emailStatus === "exists"
+                ? "Email already registered"
+                : emailStatus === "available"
+                  ? "Email is available"
+                  : ""
+          }
+>>>>>>> Stashed changes
         />
 
         <FormControl>
