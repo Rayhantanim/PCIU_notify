@@ -63,7 +63,8 @@ export default function CreateAccount() {
       setLoading(true);
 
       /* API Call */
-      const res = await axios.post("http://localhost:5000/register", {
+      // const res = await axios.post("http://localhost:5000/register", {
+      const res = await axios.post("https://pciu-notify-backend.vercel.app//register", {
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
