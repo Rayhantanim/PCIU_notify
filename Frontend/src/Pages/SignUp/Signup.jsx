@@ -4,7 +4,7 @@ import signUpimg from "../../assets/login-bg-removebg-preview.png";
 
 const Signup = () => {
   return (
-    <div className="w-screen min-h-screen  flex justify-center items-center bg-[#E6F0F4] px-4">
+    <div className="w-screen min-h-screen h-auto flex justify-center items-center bg-[#E6F0F4] px-4">
       
       {/* Main Container */}
       <div className="w-full max-w-6xl  my-6 bg-white rounded-3xl shadow-lg
@@ -18,7 +18,7 @@ const Signup = () => {
           <img
             src={signUpimg}
             alt="Signup"
-            className="w-3/4 md:w-2/3 lg:w-full max-w-sm"
+            className="w-full lg:w-full max-w-lg"
           />
         </div>
         {/* Right Side (Form Section) */}

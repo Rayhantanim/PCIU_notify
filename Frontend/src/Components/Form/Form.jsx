@@ -22,6 +22,34 @@ import { Link, useNavigate } from "react-router-dom";
 
 export default function CreateAccount() {
   const navigate = useNavigate();
+const [passwordError, setPasswordError] = React.useState("");
+const [confirmError, setConfirmError] = React.useState("");
+const [email, setEmail] = React.useState("");
+const [emailError, setEmailError] = React.useState("");
+const [checkingEmail, setCheckingEmail] = React.useState(false);
+
+
+
+
+// validation password
+const validatePassword = (password) => {
+  if (password.length < 8) {
+    return "Password must be at least 8 characters";
+  }
+  if (!/[A-Z]/.test(password)) {
+    return "Password must contain at least one uppercase letter";
+  }
+  if (!/[a-z]/.test(password)) {
+    return "Password must contain at least one lowercase letter";
+  }
+  if (!/[0-9]/.test(password)) {
+    return "Password must contain at least one number";
+  }
+  if (!/[!@#$%^&*]/.test(password)) {
+    return "Password must contain at least one special character";
+  }
+  return "";
+};
 
   /* Form State */
   const [formData, setFormData] = React.useState({
@@ -41,13 +69,41 @@ export default function CreateAccount() {
 
   /* Handle Input */
   const handleChange = (e) => {
-    const { name, value } = e.target;
+  const { name, value } = e.target;
 
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  setFormData((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+
+  if (name === "password") {
+    const error = validatePassword(value);
+    setPasswordError(error);
+
+   if (emailError) {
+  toast.error("Email already taken");
+  return;
+}
+
+
+
+    // re-check confirm password
+    if (formData.confirmPassword && value !== formData.confirmPassword) {
+      setConfirmError("Passwords do not match");
+    } else {
+      setConfirmError("");
+    }
+  }
+
+  if (name === "confirmPassword") {
+    if (value !== formData.password) {
+      setConfirmError("Passwords do not match");
+    } else {
+      setConfirmError("");
+    }
+  }
+};
+
 
   /* Handle Submit */
   const handleSubmit = async (e) => {
@@ -58,6 +114,15 @@ export default function CreateAccount() {
       toast.error("Passwords do not match!");
       return;
     }
+    if (passwordError || confirmError) {
+  toast.error("Please fix password errors");
+  return;
+}
+ if (emailError) {
+  toast.error("Email already exists");
+  return;
+}
+
 
     try {
       setLoading(true);
@@ -88,11 +153,15 @@ export default function CreateAccount() {
     } finally {
       setLoading(false);
     }
+   
+
   };
+
+ 
 
   return (
     <div>
-      <h2 className="text-center font-semibold text-5xl my-8">
+      <h2 className="text-center font-semibold text-5xl my-2">
         Create Account
       </h2>
 
@@ -100,7 +169,7 @@ export default function CreateAccount() {
       <Box
         component="form"
         onSubmit={handleSubmit}
-        sx={{ "& > :not(style)": { m: 1, width: "300px" } }}
+        sx={{ "& > :not(style)": { m: 4, width: "400px", height: "32px" } }}
         autoComplete="off"
       >
         {/* First Name */}
@@ -120,13 +189,16 @@ export default function CreateAccount() {
         />
 
         {/* Email */}
-        <TextField
+
+           <TextField
           name="email"
           label="Email"
           type="email"
           onChange={handleChange}
           required
-        />
+        /> 
+     
+
 
         {/* Phone */}
         <TextField name="phone" label="Phone" onChange={handleChange} />
@@ -184,22 +256,28 @@ export default function CreateAccount() {
 
         {/* Password */}
         <TextField
-          name="password"
-          label="Password"
-          type="password"
-          onChange={handleChange}
-          required
-        />
+  name="password"
+  label="Password"
+  type="password"
+  onChange={handleChange}
+  error={Boolean(passwordError)}
+  helperText={passwordError}
+  required
+/>
 
+        
         {/* Confirm Password */}
         <TextField
-          name="confirmPassword"
-          label="Confirm Password"
-          type="password"
-          onChange={handleChange}
-          required
-        />
+  name="confirmPassword"
+  label="Confirm Password"
+  type="password"
+  onChange={handleChange}
+  error={Boolean(confirmError)}
+  helperText={confirmError}
+  required
+/>
 
+      
         {/* Submit Button */}
         <button
           type="submit"
