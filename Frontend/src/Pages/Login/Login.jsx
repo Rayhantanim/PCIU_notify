@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import loginPic from '../../assets/Login.png'
 import axios from "axios";
 
 import { ToastContainer, toast } from "react-toastify";
@@ -81,14 +82,14 @@ const Login = () => {
   return (
     <div className="w-screen min-h-screen flex justify-center items-center bg-[#E6F0F4]">
 
-      <div className="w-3/4 h-auto flex justify-center rounded-4xl gap-20 bg-white">
+      <div className="w-2/3 h-auto flex justify-center rounded-4xl gap-20 bg-white">
 
         {/* Left Image */}
-        <div className="w-full bg-[#E4E3E8] rounded-4xl">
+        <div className="w-full bg-[#E4E3E8] rounded-l-4xl">
 
           <img
             className="w-full"
-            src="https://static.vecteezy.com/system/resources/thumbnails/004/112/232/small/forgot-password-and-account-login-for-web-page-protection-security-key-access-system-in-smartphone-or-computer-flat-illustration-vector.jpg"
+            src={loginPic}
             alt=""
           />
 
