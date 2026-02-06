@@ -143,4 +143,5 @@ app.post("/login", async (req, res) => {
 //   console.log(`Server running on port ${PORT}`);
 // });
 
-module.exports = app;
+// module.exports = app;
+export default app;
