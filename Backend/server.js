@@ -135,6 +135,21 @@ app.post("/login", async (req, res) => {
   }
 });
 
+app.get("/check-email/:email", async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.params.email });
+
+    if (user) {
+      return res.json({ exists: true });
+    }
+
+    res.json({ exists: false });
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 
 // Start Server
 // const PORT = process.env.PORT || 5000;
