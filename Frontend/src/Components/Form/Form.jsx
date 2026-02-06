@@ -1,8 +1,9 @@
-import * as React from 'react';
+import * as React from "react";
 import axios from "axios";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 import {
   Box,
   TextField,
@@ -19,38 +20,23 @@ import {
 import TermsCheckbox from "./Checkbox";
 import { Link, useNavigate } from "react-router-dom";
 
+/* API */
+const API = "https://pciu-notify-backend.vercel.app";
+
 export default function CreateAccount() {
   const navigate = useNavigate();
-const [passwordError, setPasswordError] = React.useState("");
-const [confirmError, setConfirmError] = React.useState("");
-const [email, setEmail] = React.useState("");
-const [emailError, setEmailError] = React.useState("");
-const [checkingEmail, setCheckingEmail] = React.useState(false);
 
+  /* ================= STATES ================= */
 
+  const [passwordError, setPasswordError] = React.useState("");
+  const [confirmError, setConfirmError] = React.useState("");
 
+  const [emailError, setEmailError] = React.useState("");
+  const [emailStatus, setEmailStatus] = React.useState(""); // exists | available
+  const [checkingEmail, setCheckingEmail] = React.useState(false);
 
-// validation password
-const validatePassword = (password) => {
-  if (password.length < 8) {
-    return "Password must be at least 8 characters";
-  }
-  if (!/[A-Z]/.test(password)) {
-    return "Password must contain at least one uppercase letter";
-  }
-  if (!/[a-z]/.test(password)) {
-    return "Password must contain at least one lowercase letter";
-  }
-  if (!/[0-9]/.test(password)) {
-    return "Password must contain at least one number";
-  }
-  if (!/[!@#$%^&*]/.test(password)) {
-    return "Password must contain at least one special character";
-  }
-  return "";
-};
+  const [loading, setLoading] = React.useState(false);
 
-  /* Form State */
   const [formData, setFormData] = React.useState({
     firstName: "",
     lastName: "",
@@ -64,71 +50,100 @@ const validatePassword = (password) => {
     confirmPassword: "",
   });
 
-  const [loading, setLoading] = React.useState(false);
+  /* ================= PASSWORD VALIDATION ================= */
 
-  /* Handle Input */
+  const validatePassword = (password) => {
+    if (password.length < 8) return "Minimum 8 characters";
+    if (!/[A-Z]/.test(password)) return "One uppercase required";
+    if (!/[a-z]/.test(password)) return "One lowercase required";
+    if (!/[0-9]/.test(password)) return "One number required";
+    if (!/[!@#$%^&*]/.test(password)) return "One special character required";
+    return "";
+  };
+
+  /* ================= EMAIL CHECK ================= */
+
+  const checkEmail = async (email) => {
+    if (!email) return;
+
+    try {
+      setCheckingEmail(true);
+
+      const res = await axios.get(`${API}/check-email/${email}`);
+
+      if (res.data.exists) {
+        setEmailStatus("exists");
+        setEmailError("Email already registered");
+      } else {
+        setEmailStatus("available");
+        setEmailError("");
+      }
+    } catch (err) {
+      console.log("Email check error:", err);
+    } finally {
+      setCheckingEmail(false);
+    }
+  };
+
+  /* ================= INPUT ================= */
+
   const handleChange = (e) => {
-  const { name, value } = e.target;
+    const { name, value } = e.target;
 
-  setFormData((prev) => ({
-    ...prev,
-    [name]: value,
-  }));
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
 
-  if (name === "password") {
-    const error = validatePassword(value);
-    setPasswordError(error);
+    /* Password */
+    if (name === "password") {
+      const error = validatePassword(value);
+      setPasswordError(error);
 
-   if (emailError) {
-  toast.error("Email already taken");
-  return;
-}
-
-
-
-    // re-check confirm password
-    if (formData.confirmPassword && value !== formData.confirmPassword) {
-      setConfirmError("Passwords do not match");
-    } else {
-      setConfirmError("");
+      if (
+        formData.confirmPassword &&
+        value !== formData.confirmPassword
+      ) {
+        setConfirmError("Passwords do not match");
+      } else {
+        setConfirmError("");
+      }
     }
-  }
 
-  if (name === "confirmPassword") {
-    if (value !== formData.password) {
-      setConfirmError("Passwords do not match");
-    } else {
-      setConfirmError("");
+    /* Confirm Password */
+    if (name === "confirmPassword") {
+      if (value !== formData.password) {
+        setConfirmError("Passwords do not match");
+      } else {
+        setConfirmError("");
+      }
     }
-  }
-};
 
+    /* Email */
+    if (name === "email") {
+      checkEmail(value);
+    }
+  };
 
-  /* Handle Submit */
+  /* ================= SUBMIT ================= */
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    /* Password Match Check */
-    if (formData.password !== formData.confirmPassword) {
-      toast.error("Passwords do not match!");
+    if (passwordError || confirmError) {
+      toast.error("Fix password errors");
       return;
     }
-    if (passwordError || confirmError) {
-  toast.error("Please fix password errors");
-  return;
-}
- if (emailError) {
-  toast.error("Email already exists");
-  return;
-}
 
+    if (emailStatus === "exists") {
+      toast.error("Email already exists");
+      return;
+    }
 
     try {
       setLoading(true);
 
-      /* API Call */
-      // const res = await axios.post("http://localhost:5000/register", {
-      const res = await axios.post("https://pciu-notify-backend.vercel.app/register", {
+      const res = await axios.post(`${API}/register`, {
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
@@ -140,37 +155,40 @@ const validatePassword = (password) => {
         password: formData.password,
       });
 
-      /* Success Toast */
       toast.success(res.data.message || "Registration Successful!");
 
-      /* Redirect */
       setTimeout(() => {
         navigate("/login");
       }, 1500);
+
     } catch (err) {
-      /* Error Toast */
-      toast.error(err.response?.data?.message || "Registration Failed!");
+      toast.error(
+        err.response?.data?.message || "Registration Failed!"
+      );
     } finally {
       setLoading(false);
     }
   };
 
- 
+  /* ================= UI ================= */
 
   return (
     <div>
-      <h2 className="text-center font-semibold text-5xl my-2">
+      <h2 className="text-center font-semibold text-5xl my-4">
         Create Account
       </h2>
 
-      {/* FORM */}
       <Box
         component="form"
         onSubmit={handleSubmit}
-        sx={{ "& > :not(style)": { m: 4, width: "400px", height: "32px" } }}
+        sx={{
+          "& > :not(style)": {
+            m: 2,
+            width: "400px",
+          },
+        }}
         autoComplete="off"
       >
-        {/* First Name */}
         <TextField
           name="firstName"
           label="First Name"
@@ -178,7 +196,6 @@ const validatePassword = (password) => {
           required
         />
 
-        {/* Last Name */}
         <TextField
           name="lastName"
           label="Last Name"
@@ -187,35 +204,33 @@ const validatePassword = (password) => {
         />
 
         {/* Email */}
-
-           <TextField
+        <TextField
           name="email"
           label="Email"
           type="email"
           value={formData.email}
-          onChange={(e) => {
-            handleChange(e);
-            checkEmail(e.target.value);
-          }}
+          onChange={handleChange}
           required
-          error={emailStatus === "exists" || Boolean(emailError)}
+          error={emailStatus === "exists"}
           helperText={
-            emailError
-              ? emailError
-              : emailStatus === "exists"
-                ? "Email already registered"
-                : emailStatus === "available"
-                  ? "Email is available"
-                  : ""
+            emailStatus === "exists"
+              ? "Email already registered"
+              : emailStatus === "available"
+              ? "Email available"
+              : checkingEmail
+              ? "Checking..."
+              : ""
           }
         />
 
-
-        {/* Phone */}
-        <TextField name="phone" label="Phone" onChange={handleChange} />
+        <TextField
+          name="phone"
+          label="Phone"
+          onChange={handleChange}
+        />
 
         {/* Department */}
-        <FormControl>
+        <FormControl fullWidth>
           <InputLabel>Department</InputLabel>
 
           <Select
@@ -231,8 +246,11 @@ const validatePassword = (password) => {
           </Select>
         </FormControl>
 
-        {/* Section */}
-        <TextField name="section" label="Section" onChange={handleChange} />
+        <TextField
+          name="section"
+          label="Section"
+          onChange={handleChange}
+        />
 
         {/* Gender */}
         <FormControl>
@@ -245,13 +263,7 @@ const validatePassword = (password) => {
             onChange={handleChange}
           >
             <FormControlLabel value="male" control={<Radio />} label="Male" />
-
-            <FormControlLabel
-              value="female"
-              control={<Radio />}
-              label="Female"
-            />
-
+            <FormControlLabel value="female" control={<Radio />} label="Female" />
             <FormControlLabel value="other" control={<Radio />} label="Other" />
           </RadioGroup>
         </FormControl>
@@ -267,42 +279,37 @@ const validatePassword = (password) => {
 
         {/* Password */}
         <TextField
-  name="password"
-  label="Password"
-  type="password"
-  onChange={handleChange}
-  error={Boolean(passwordError)}
-  helperText={passwordError}
-  required
-/>
+          name="password"
+          label="Password"
+          type="password"
+          onChange={handleChange}
+          error={Boolean(passwordError)}
+          helperText={passwordError}
+          required
+        />
 
-        
-        {/* Confirm Password */}
+        {/* Confirm */}
         <TextField
-  name="confirmPassword"
-  label="Confirm Password"
-  type="password"
-  onChange={handleChange}
-  error={Boolean(confirmError)}
-  helperText={confirmError}
-  required
-/>
+          name="confirmPassword"
+          label="Confirm Password"
+          type="password"
+          onChange={handleChange}
+          error={Boolean(confirmError)}
+          helperText={confirmError}
+          required
+        />
 
-      
-        {/* Submit Button */}
         <button
           type="submit"
-          disabled={loading}
-          className="text-white w-[500px] h-14 mx-auto mt-6 bg-[#263640] rounded-2xl"
+          disabled={loading || checkingEmail}
+          className="text-white w-[400px] h-12 mx-auto mt-6 bg-[#263640] rounded-xl"
         >
           {loading ? "Registering..." : "Submit"}
         </button>
       </Box>
 
-      {/* Terms */}
       <TermsCheckbox />
 
-      {/* Login Link */}
       <p className="mb-10 text-center mt-6">
         Already Have an Account?{" "}
         <Link
@@ -313,7 +320,11 @@ const validatePassword = (password) => {
         </Link>
       </p>
 
-      <ToastContainer position="top-center" autoClose={3000} theme="colored" />
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        theme="colored"
+      />
     </div>
   );
 }

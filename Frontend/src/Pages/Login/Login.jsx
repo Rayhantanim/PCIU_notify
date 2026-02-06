@@ -10,7 +10,8 @@ import { Box, TextField } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 
 /* API URL from frontend .env */
-const API = import.meta.env.VITE_API_URL;
+// const API = import.meta.env.VITE_API_URL;
+const API = "https://pciu-notify-backend.vercel.app";
 
 /* Email validation regex */
 const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
