@@ -1,9 +1,8 @@
-import * as React from "react";
+import * as React from 'react';
 import axios from "axios";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import {
   Box,
   TextField,
@@ -154,8 +153,6 @@ const validatePassword = (password) => {
     } finally {
       setLoading(false);
     }
-   
-
   };
 
  
@@ -195,10 +192,23 @@ const validatePassword = (password) => {
           name="email"
           label="Email"
           type="email"
-          onChange={handleChange}
+          value={formData.email}
+          onChange={(e) => {
+            handleChange(e);
+            checkEmail(e.target.value);
+          }}
           required
-        /> 
-     
+          error={emailStatus === "exists" || Boolean(emailError)}
+          helperText={
+            emailError
+              ? emailError
+              : emailStatus === "exists"
+                ? "Email already registered"
+                : emailStatus === "available"
+                  ? "Email is available"
+                  : ""
+          }
+        />
 
 
         {/* Phone */}
