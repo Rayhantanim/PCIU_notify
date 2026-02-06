@@ -135,28 +135,28 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/check-email/:email", async (req, res) => {
-  try {
-    const user = await User.findOne({ email: req.params.email });
+// app.get("/check-email/:email", async (req, res) => {
+//   try {
+//     const user = await User.findOne({ email: req.params.email });
 
-    if (user) {
-      return res.json({ exists: true });
-    }
+//     if (user) {
+//       return res.json({ exists: true });
+//     }
 
-    res.json({ exists: false });
+//     res.json({ exists: false });
 
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// });
 
 
 // Start Server
-// const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
 
-// app.listen(PORT, () => {
-//   console.log(`Server running on port ${PORT}`);
-// });
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
 
 // module.exports = app;
 export default app;
