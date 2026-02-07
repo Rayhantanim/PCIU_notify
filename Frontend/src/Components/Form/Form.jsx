@@ -22,17 +22,16 @@ import { Link, useNavigate } from "react-router-dom";
 
 /* API */
 const API = "https://pciu-notify-backend.vercel.app";
+// const API = "http://localhost:5000";
 
 export default function CreateAccount() {
   const navigate = useNavigate();
-
-  /* ================= STATES ================= */
 
   const [passwordError, setPasswordError] = React.useState("");
   const [confirmError, setConfirmError] = React.useState("");
 
   const [emailError, setEmailError] = React.useState("");
-  const [emailStatus, setEmailStatus] = React.useState(""); // exists | available
+  const [emailStatus, setEmailStatus] = React.useState("");
   const [checkingEmail, setCheckingEmail] = React.useState(false);
 
   const [loading, setLoading] = React.useState(false);
@@ -53,11 +52,11 @@ export default function CreateAccount() {
   /* ================= PASSWORD VALIDATION ================= */
 
   const validatePassword = (password) => {
-    if (password.length < 8) return "Minimum 8 characters";
     if (!/[A-Z]/.test(password)) return "One uppercase required";
     if (!/[a-z]/.test(password)) return "One lowercase required";
     if (!/[0-9]/.test(password)) return "One number required";
     if (!/[!@#$%^&*]/.test(password)) return "One special character required";
+    if (password.length < 8) return "Minimum 8 characters";
     return "";
   };
 
@@ -125,8 +124,6 @@ export default function CreateAccount() {
     }
   };
 
-  /* ================= SUBMIT ================= */
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -169,8 +166,6 @@ export default function CreateAccount() {
       setLoading(false);
     }
   };
-
-  /* ================= UI ================= */
 
   return (
     <div>
