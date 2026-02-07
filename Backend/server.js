@@ -161,12 +161,13 @@ app.get("/check-email/:email", async (req, res) => {
 });
 
 
-// Start Server
-// const PORT = process.env.PORT || 5000;
+// Start Server for local
+const PORT = process.env.PORT || 5000;
 
 // app.listen(PORT, () => {
 //   console.log(`Server running on port ${PORT}`);
 // });
 
+// for vercel
 // module.exports = app;
 export default app;
