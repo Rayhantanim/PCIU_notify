@@ -18,7 +18,7 @@ const Profile = () => {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gray-300 flex justify-center items-center px-4">
+    <div className=" my-10 min-h-screen bg-gray-300 flex justify-center items-center px-4">
 
       {/* Profile Card */}
       <div className=" bg-white w-full max-w-3xl rounded-2xl shadow-md overflow-hidden">

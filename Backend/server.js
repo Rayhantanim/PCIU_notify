@@ -10,12 +10,24 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Connect MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log("DB Error:", err));
 
-// User Schema
+// let isConnected = false;
+// async function connectToMongoDB() {
+//   try{
+//     await mongoose.connect(process.env.MONGO_URI, {
+//       useNewUrlParser: true,
+//       useUnifiedTopology: true
+//     });
+//     isConnected = true;
+//     console.log("MongoDB Connected");
+//   } catch(error) {
+//     console.error("DB Error:", error)
+//   }
+// }
+
 const UserSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
@@ -30,11 +42,9 @@ const UserSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", UserSchema);
 
-// email check
 app.get("/", (req, res) => {
   res.send("✅ Server is Running!");
 });
-
 
 app.post("/register", async (req, res) => {
   try {
@@ -135,20 +145,20 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// app.get("/check-email/:email", async (req, res) => {
-//   try {
-//     const user = await User.findOne({ email: req.params.email });
+app.get("/check-email/:email", async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.params.email });
 
-//     if (user) {
-//       return res.json({ exists: true });
-//     }
+    if (user) {
+      return res.json({ exists: true });
+    }
 
-//     res.json({ exists: false });
+    res.json({ exists: false });
 
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 
 // Start Server
