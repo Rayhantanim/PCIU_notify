@@ -169,5 +169,5 @@ const PORT = process.env.PORT || 5000;
 // });
 
 // for vercel
-// module.exports = app;
-export default app;
+module.exports = app;
+// export default app;
