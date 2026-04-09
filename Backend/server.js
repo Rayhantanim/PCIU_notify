@@ -1,14 +1,15 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const bcrypt = require("bcryptjs");
-
 require("dotenv").config();
+const bcrypt = require("bcryptjs");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+app.use("/api", require("./routes/auth")); 
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
@@ -28,145 +29,144 @@ mongoose.connect(process.env.MONGO_URI)
 //   }
 // }
 
-const UserSchema = new mongoose.Schema({
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  phone: String,
-  department: String,
-  section: String,
-  gender: String,
-  dob: String,
-  password: { type: String, required: true }
-});
+// const UserSchema = new mongoose.Schema({
+//   firstName: { type: String, required: true },
+//   lastName: { type: String, required: true },
+//   email: { type: String, required: true, unique: true },
+//   phone: String,
+//   department: String,
+//   section: String,
+//   gender: String,
+//   dob: String,
+//   password: { type: String, required: true }
+// });
 
-const User = mongoose.model("User", UserSchema);
+// const User = mongoose.model("User", UserSchema);
 
-app.get("/", (req, res) => {
-  res.send("✅ Server is Running!");
-});
+// app.get("/", (req, res) => {
+//   res.send("✅ Server is Running!");
+// });
 
-app.post("/register", async (req, res) => {
-  try {
-    const {
-      firstName,
-      lastName,
-      email,
-      phone,
-      department,
-      section,
-      gender,
-      dob,
-      password
-    } = req.body;
+// app.post("/register", async (req, res) => {
+//   try {
+//     const {
+//       firstName,
+//       lastName,
+//       email,
+//       phone,
+//       department,
+//       section,
+//       gender,
+//       dob,
+//       password
+//     } = req.body;
 
-    if (!firstName || !lastName || !email || !password) {
-      return res.status(400).json({
-        message: "Required fields missing"
-      });
-    }
+//     if (!firstName || !lastName || !email || !password) {
+//       return res.status(400).json({
+//         message: "Required fields missing"
+//       });
+//     }
 
-    const userExist = await User.findOne({ email });
+//     const userExist = await User.findOne({ email });
 
-    if (userExist) {
-      return res.status(400).json({
-        message: "Email already registered"
-      });
-    }
+//     if (userExist) {
+//       return res.status(400).json({
+//         message: "Email already registered"
+//       });
+//     }
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
+//     // Hash password
+//     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = new User({
-      firstName,
-      lastName,
-      email,
-      phone,
-      department,
-      section,
-      gender,
-      dob,
-      password: hashedPassword
-    });
+//     const user = new User({
+//       firstName,
+//       lastName,
+//       email,
+//       phone,
+//       department,
+//       section,
+//       gender,
+//       dob,
+//       password: hashedPassword
+//     });
 
-    await user.save();
+//     await user.save();
 
-    res.status(201).json({
-      message: "User Registered Successfully"
-    });
+//     res.status(201).json({
+//       message: "User Registered Successfully"
+//     });
 
-  } catch (err) {
-    res.status(500).json({
-      error: err.message
-    });
-  }
-});
+//   } catch (err) {
+//     res.status(500).json({
+//       error: err.message
+//     });
+//   }
+// });
 
-// Login API
-app.post("/login", async (req, res) => {
-  try {
-    const { email, password } = req.body;
+// // Login API
+// app.post("/login", async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+//     const user = await User.findOne({ email });
 
-    if (!user) {
-      return res.status(400).json({
-        message: "User not found"
-      });
-    }
+//     if (!user) {
+//       return res.status(400).json({
+//         message: "User not found"
+//       });
+//     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+//     const isMatch = await bcrypt.compare(password, user.password);
 
-    if (!isMatch) {
-      return res.status(400).json({
-        message: "Invalid password"
-      });
-    }
+//     if (!isMatch) {
+//       return res.status(400).json({
+//         message: "Invalid password"
+//       });
+//     }
 
-    res.json({
-      message: "Login Successful",
-      user: {
-        id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        phone: user.phone,
-        department: user.department,
-        section: user.section,
-        gender: user.gender,
-        dob: user.dob
-      }
-    });
+//     res.json({
+//       message: "Login Successful",
+//       user: {
+//         id: user._id,
+//         firstName: user.firstName,
+//         lastName: user.lastName,
+//         email: user.email,
+//         phone: user.phone,
+//         department: user.department,
+//         section: user.section,
+//         gender: user.gender,
+//         dob: user.dob
+//       }
+//     });
 
-  } catch (err) {
-    res.status(500).json({
-      error: err.message
-    });
-  }
-});
+//   } catch (err) {
+//     res.status(500).json({
+//       error: err.message
+//     });
+//   }
+// });
 
-app.get("/check-email/:email", async (req, res) => {
-  try {
-    const user = await User.findOne({ email: req.params.email });
+// app.get("/check-email/:email", async (req, res) => {
+//   try {
+//     const user = await User.findOne({ email: req.params.email });
 
-    if (user) {
-      return res.json({ exists: true });
-    }
+//     if (user) {
+//       return res.json({ exists: true });
+//     }
 
-    res.json({ exists: false });
+//     res.json({ exists: false });
 
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// });
 
 
 // Start Server for local
 const PORT = process.env.PORT || 5000;
-
-// app.listen(PORT, () => {
-//   console.log(`Server running on port ${PORT}`);
-// });
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
 
 // for vercel
 module.exports = app;

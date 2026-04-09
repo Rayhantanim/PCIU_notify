@@ -1,9 +1,9 @@
 import * as React from "react";
 import axios from "axios";
-
+import { IconButton, InputAdornment } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import {
   Box,
   TextField,
@@ -16,26 +16,21 @@ import {
   MenuItem,
   InputLabel,
 } from "@mui/material";
-
 import TermsCheckbox from "./Checkbox";
 import { Link, useNavigate } from "react-router-dom";
-
-/* API */
 const API = "https://pciu-notify-backend.vercel.app";
 // const API = "http://localhost:5000";
 
 export default function CreateAccount() {
   const navigate = useNavigate();
-
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
   const [passwordError, setPasswordError] = React.useState("");
   const [confirmError, setConfirmError] = React.useState("");
-
   const [emailError, setEmailError] = React.useState("");
   const [emailStatus, setEmailStatus] = React.useState("");
   const [checkingEmail, setCheckingEmail] = React.useState(false);
-
   const [loading, setLoading] = React.useState(false);
-
   const [formData, setFormData] = React.useState({
     firstName: "",
     lastName: "",
@@ -49,8 +44,6 @@ export default function CreateAccount() {
     confirmPassword: "",
   });
 
-  /* ================= PASSWORD VALIDATION ================= */
-
   const validatePassword = (password) => {
     if (!/[A-Z]/.test(password)) return "One uppercase required";
     if (!/[a-z]/.test(password)) return "One lowercase required";
@@ -60,16 +53,11 @@ export default function CreateAccount() {
     return "";
   };
 
-  /* ================= EMAIL CHECK ================= */
-
   const checkEmail = async (email) => {
     if (!email) return;
-
     try {
       setCheckingEmail(true);
-
       const res = await axios.get(`${API}/check-email/${email}`);
-
       if (res.data.exists) {
         setEmailStatus("exists");
         setEmailError("Email already registered");
@@ -77,14 +65,14 @@ export default function CreateAccount() {
         setEmailStatus("available");
         setEmailError("");
       }
-    } catch (err) {
+    } 
+    catch (err) {
       console.log("Email check error:", err);
-    } finally {
+    } 
+    finally {
       setCheckingEmail(false);
     }
   };
-
-  /* ================= INPUT ================= */
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -94,22 +82,17 @@ export default function CreateAccount() {
       [name]: value,
     }));
 
-    /* Password */
     if (name === "password") {
       const error = validatePassword(value);
       setPasswordError(error);
 
-      if (
-        formData.confirmPassword &&
-        value !== formData.confirmPassword
-      ) {
+      if (formData.confirmPassword && value !== formData.confirmPassword) {
         setConfirmError("Passwords do not match");
       } else {
         setConfirmError("");
       }
     }
 
-    /* Confirm Password */
     if (name === "confirmPassword") {
       if (value !== formData.password) {
         setConfirmError("Passwords do not match");
@@ -118,12 +101,11 @@ export default function CreateAccount() {
       }
     }
 
-    /* Email */
     if (name === "email") {
       checkEmail(value);
     }
   };
-
+console.log(formData)
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -157,11 +139,8 @@ export default function CreateAccount() {
       setTimeout(() => {
         navigate("/login");
       }, 1500);
-
     } catch (err) {
-      toast.error(
-        err.response?.data?.message || "Registration Failed!"
-      );
+      toast.error(err.response?.data?.message || "Registration Failed!");
     } finally {
       setLoading(false);
     }
@@ -198,7 +177,6 @@ export default function CreateAccount() {
           required
         />
 
-        {/* Email */}
         <TextField
           name="email"
           label="Email"
@@ -211,20 +189,15 @@ export default function CreateAccount() {
             emailStatus === "exists"
               ? "Email already registered"
               : emailStatus === "available"
-              ? "Email available"
-              : checkingEmail
-              ? "Checking..."
-              : ""
+                ? "Email available"
+                : checkingEmail
+                  ? "Checking..."
+                  : ""
           }
         />
 
-        <TextField
-          name="phone"
-          label="Phone"
-          onChange={handleChange}
-        />
+        <TextField name="phone" label="Phone" onChange={handleChange} />
 
-        {/* Department */}
         <FormControl fullWidth>
           <InputLabel>Department</InputLabel>
 
@@ -241,16 +214,10 @@ export default function CreateAccount() {
           </Select>
         </FormControl>
 
-        <TextField
-          name="section"
-          label="Section"
-          onChange={handleChange}
-        />
+        <TextField name="section" label="Section" onChange={handleChange} />
 
-        {/* Gender */}
         <FormControl>
           <FormLabel>Gender</FormLabel>
-
           <RadioGroup
             row
             name="gender"
@@ -258,12 +225,15 @@ export default function CreateAccount() {
             onChange={handleChange}
           >
             <FormControlLabel value="male" control={<Radio />} label="Male" />
-            <FormControlLabel value="female" control={<Radio />} label="Female" />
+            <FormControlLabel
+              value="female"
+              control={<Radio />}
+              label="Female"
+            />
             <FormControlLabel value="other" control={<Radio />} label="Other" />
           </RadioGroup>
         </FormControl>
 
-        {/* DOB */}
         <TextField
           name="dob"
           label="Date of Birth"
@@ -272,26 +242,44 @@ export default function CreateAccount() {
           onChange={handleChange}
         />
 
-        {/* Password */}
         <TextField
           name="password"
           label="Password"
-          type="password"
+          type={showPassword ? "text" : "password"}
           onChange={handleChange}
           error={Boolean(passwordError)}
           helperText={passwordError}
           required
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={() => setShowPassword(!showPassword)}>
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
 
-        {/* Confirm */}
         <TextField
           name="confirmPassword"
           label="Confirm Password"
-          type="password"
+          type={showConfirmPassword ? "text" : "password"}
           onChange={handleChange}
           error={Boolean(confirmError)}
           helperText={confirmError}
           required
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
+                  {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
 
         <button
@@ -315,11 +303,7 @@ export default function CreateAccount() {
         </Link>
       </p>
 
-      <ToastContainer
-        position="top-center"
-        autoClose={3000}
-        theme="colored"
-      />
+      <ToastContainer position="top-center" autoClose={3000} theme="colored" />
     </div>
   );
 }

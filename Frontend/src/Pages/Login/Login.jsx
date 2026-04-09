@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import loginPic from '../../assets/Login.png'
 import axios from "axios";
-
+import { IconButton, InputAdornment } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import { Box, TextField } from "@mui/material";
-
 import { Link, useNavigate } from "react-router-dom";
 
 // const API = import.meta.env.VITE_API_URL;
@@ -36,6 +35,9 @@ const Login = () => {
   const [emailError, setEmailError] = useState("");
   const [emailStatus, setEmailStatus] = useState(""); // "exists", "notfound", ""
   const [passwordStatus, setPasswordStatus] = useState("");
+
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
   /* Check if email exists (debounced) */
   const checkEmail = async (email) => {
