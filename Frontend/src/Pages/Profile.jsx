@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Hero from "../Components/Hero";
+import NoticeTabs from "../Components/NoticeCategory";
+import Notices from "../Components/Notices";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -18,8 +21,18 @@ const Profile = () => {
   if (!user) return null;
 
   return (
-    <div className=" my-10 min-h-screen bg-gray-300 flex justify-center items-center px-4">
+    <div className=" relative min-h-screen bg-transparent flex flex-col justify-center items-center">
+      {/* hero section */}
+      <div className="w-full h-full"><Hero></Hero></div>
 
+      {/* notices */}
+         <div>
+          <Notices></Notices>
+         </div>
+      {/* Notice category */}
+     <div className="flex justify-center items-center my-6">
+       <NoticeTabs></NoticeTabs>
+     </div>
       {/* Profile Card */}
       <div className=" bg-white w-full max-w-3xl rounded-2xl shadow-md overflow-hidden">
 
@@ -87,6 +100,8 @@ const Profile = () => {
 
         </div>
       </div>
+
+      
     </div>
   );
 };
