@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { Bell, Menu, X, User } from "lucide-react";
+import { Link } from "react-router-dom";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="w-full bg-white shadow-md fixed top-0 left-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-        <div className="text-2xl font-bold text-blue-600">PCIU Notify</div>
+    <nav className="w-full bg-transparent text-black shadow-xl fixed top-0 left-0 z-50">
+      <div className="max-w-7xl my-0 mx-auto px-4 py-3 flex items-center justify-between">
+       <img className="w-10 h-10" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Port_City_International_University_Logo.png/250px-Port_City_International_University_Logo.png" alt="" />
 
-        <ul className="hidden md:flex items-center gap-6 text-gray-700 font-medium">
+        <ul className="hidden md:flex items-center gap-6 text-black font-medium">
           <li className="hover:text-blue-600 cursor-pointer">Home</li>
           <li className="hover:text-blue-600 cursor-pointer">Notices</li>
           <li className="hover:text-blue-600 cursor-pointer">Routine</li>
@@ -25,12 +26,12 @@ export default function Navbar() {
             </span>
           </button>
 
-          <button
+          <button 
             variant="outline"
-            className="flex gap-2 items-center w-full border px-4 py-2 rounded-md hover:bg-gray-100"
+            className="flex gap-2 items-center w-full bg-[#1B31A3] border px-4 py-2 rounded-md text-white"
           >
             <User size={18} />
-            Login
+           <Link to='/login'>Login</Link>
           </button>
         </div>
 
