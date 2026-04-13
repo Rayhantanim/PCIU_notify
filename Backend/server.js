@@ -15,6 +15,10 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log("DB Error:", err));
 
+  app.get("/", (req, res) => {
+  res.send("✅ Server is Running!");
+});
+
 // let isConnected = false;
 // async function connectToMongoDB() {
 //   try{
@@ -43,9 +47,6 @@ mongoose.connect(process.env.MONGO_URI)
 
 // const User = mongoose.model("User", UserSchema);
 
-// app.get("/", (req, res) => {
-//   res.send("✅ Server is Running!");
-// });
 
 // app.post("/register", async (req, res) => {
 //   try {
