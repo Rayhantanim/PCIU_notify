@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import pciubg from "../assets/pciubg.png";
 import RoleSignup from "../Components/RoleSignup";
 import RoleSignupForm from "../Components/RoleSignupForm";
+import { useNavigate } from "react-router-dom";
 
 export default function LandingPage() {
+
+  const navigate = useNavigate();
   const [showSignup, setShowSignup] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
-
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
@@ -49,7 +51,10 @@ export default function LandingPage() {
               </p>
 
               <div className="flex justify-center gap-4">
-                <button className="px-6 py-3 text-lg rounded-2xl bg-white/80 text-black font-medium backdrop-blur-md hover:bg-white transition">
+                <button
+                  onClick={() => navigate("/login")}
+                  className="px-6 py-3 text-lg rounded-2xl bg-white/80 text-black font-medium backdrop-blur-md hover:bg-white transition"
+                >
                   Sign In
                 </button>
 

@@ -3,12 +3,15 @@ import studenticon from '../assets/student.png';
 import teachericon from '../assets/teacher.png';
 import stafficon from '../assets/technical-support.png';
 
+import { useNavigate } from "react-router-dom";
+
 export default function RoleSignup({ selectRole }) {
   const roles = [
     { name: "Student", icon: studenticon },
     { name: "Teacher", icon: teachericon },
     { name: "Staff", icon: stafficon },
   ];
+  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col items-center gap-6 bg-transparent">
@@ -30,6 +33,12 @@ export default function RoleSignup({ selectRole }) {
           </div>
         ))}
       </div>
+      <button
+            onClick={() => navigate("/")}
+            className="mt-4 text-gray-300 hover:text-white underline"
+          >
+            Back
+          </button>
     </div>
   );
 }

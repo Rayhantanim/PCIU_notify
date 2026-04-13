@@ -23,7 +23,8 @@ router.post("/signup", async (req, res) => {
         const data = req.body;
 
         // check email
-        const existingUser = await User.findOne({ email: data.email });
+        const cleanEmail = data.email.trim().toLowerCase();
+        const existingUser = await User.findOne({ email: cleanEmail });
         if (existingUser) {
             return res.status(400).json({ message: "Email already exists" });
         }
@@ -33,7 +34,7 @@ router.post("/signup", async (req, res) => {
 
         const newUser = new User({
             ...data,
-            email: data.email.toLowerCase(),
+            email:  cleanEmail,
             password: hashedPassword,
         });
 
@@ -46,6 +47,155 @@ router.post("/signup", async (req, res) => {
 
     } catch (err) {
         res.status(500).json({ error: err.message });
+    }
+});
+
+
+
+// LOGIN
+// router.post("/login", async (req, res) => {
+//     try {
+//         // Login with email
+//         const { email, id, password } = req.body;
+
+//         let user;
+
+//         if (email) {
+//             const cleanEmail = email.trim().toLowerCase();
+
+//             user = await User.findOne({ email: cleanEmail });
+
+//             if (!user) {
+//                 return res.json({ success: false, message: "Email not found" });
+//             }
+//         }
+
+//         // Login with ID (student/teacher/staff)
+//         if (id) {
+//             user = await User.findOne({
+//                 $or: [
+//                     { studentId: id },
+//                     { teacherId: id },
+//                     { staffId: id }
+//                 ]
+//             });
+
+//             if (!user) {
+//                 return res.json({ success: false, message: "ID not found" });
+//             }
+//         }
+
+//         // Check password
+//         const isMatch = await bcrypt.compare(password, user.password);
+
+//         if (!isMatch) {
+//             return res.json({ success: false, message: "Wrong password" });
+//         }
+
+//         res.json({
+//             success: true,
+//             role: user.role
+//         });
+
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({ success: false });
+//     }
+
+// }); old
+
+router.post("/login", async (req, res) => {
+    try {
+        const { email, id, password } = req.body;
+
+        let user = null;
+
+        // EMAIL LOGIN
+        if (email) {
+            const cleanEmail = email.trim().toLowerCase();
+            user = await User.findOne({ email: cleanEmail });
+
+            if (!user) {
+                return res.json({ success: false, message: "Email not found" });
+            }
+        }
+
+        // ID LOGIN
+        else if (id) {
+            user = await User.findOne({
+                $or: [
+                    { studentId: id },
+                    { teacherId: id },
+                    { staffId: id }
+                ]
+            });
+
+            if (!user) {
+                return res.json({ success: false, message: "ID not found" });
+            }
+        }
+
+        // NO USER FOUND
+        if (!user) {
+            return res.json({ success: false, message: "Invalid login" });
+        }
+
+        // PASSWORD CHECK SAFE
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (!isMatch) {
+            return res.json({ success: false, message: "Wrong password" });
+        }
+
+        res.json({
+            success: true,
+            role: user.role,
+            userId: user.studentId || user.teacherId || user.staffId
+        });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+});
+
+// router.post("/check-id", async (req, res) => {
+//     try {
+//         const { id } = req.body;
+
+//         const user = await User.findOne({
+//             $or: [
+//                 { studentId: id },
+//                 { teacherId: id },
+//                 { staffId: id }
+//             ]
+//         });
+
+//         res.json({ available: !!user }); // true মানে exists
+
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({ available: false });
+//     }
+// old });
+
+router.post("/check-id", async (req, res) => {
+    try {
+        const { id } = req.body;
+
+        const user = await User.findOne({
+            $or: [
+                { studentId: id },
+                { teacherId: id },
+                { staffId: id }
+            ]
+        });
+
+        res.json({ exists: !!user });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ exists: false });
     }
 });
 

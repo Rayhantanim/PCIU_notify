@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
 export default function RoleSignupForm({ role = "student", goBack }) {
+  // const API = "https://pciu-notify-backend.vercel.app";
+  const API = "http://localhost:5000";
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -18,8 +20,6 @@ export default function RoleSignupForm({ role = "student", goBack }) {
     confirmPassword: "",
   });
 
-  const API = "https://pciu-notify-backend.vercel.app";
-
   const formatStudentId = (value) => {
     // Remove everything except letters & numbers
     let cleaned = value.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
@@ -35,8 +35,10 @@ export default function RoleSignupForm({ role = "student", goBack }) {
 
     return formatted;
   };
+  
   const [isFocused, setIsFocused] = useState(false);
   const [passwordValid, setPasswordValid] = useState({});
+  const [passwordMismatch, setPasswordMismatch] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const departments = ["CSE", "EEE", "BBA", "ENG", "LLB", "BFT"];
@@ -115,11 +117,42 @@ export default function RoleSignupForm({ role = "student", goBack }) {
         [name]: value,
       });
     }
+
+    // Check password match
+    if (name === "password" || name === "confirmPassword") {
+      const newFormData = {
+        ...formData,
+        [name]: value,
+      };
+      if (newFormData.password && newFormData.confirmPassword) {
+        setPasswordMismatch(newFormData.password !== newFormData.confirmPassword);
+      } else {
+        setPasswordMismatch(false);
+      }
+    }
   };
   
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Check if passwords match
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match ❌");
+      return;
+    }
+
+    // Check if all password requirements are met
+    if (!Object.values(passwordValid).every(Boolean)) {
+      toast.error("Password does not meet requirements ⚠️");
+      return;
+    }
+
+    // Check if email is available
+    if (emailAvailable === false) {
+      toast.error("Email already taken ❌");
+      return;
+    }
 
     try {
       const res = await fetch(`${API}/api/signup`, {
@@ -129,7 +162,7 @@ export default function RoleSignupForm({ role = "student", goBack }) {
         },
         body: JSON.stringify({
           ...formData,
-          role, // 🔥 VERY IMPORTANT
+          role,
         }),
       });
 
@@ -407,7 +440,9 @@ export default function RoleSignupForm({ role = "student", goBack }) {
             value={formData.confirmPassword}
             onChange={handleChange}
             required
-            className="w-full px-4 py-2 rounded-lg bg-white/20 border border-white/30 text-white placeholder-gray-300"
+            className={`w-full px-4 py-2 rounded-lg bg-white/20 border ${
+              passwordMismatch ? "border-red-500" : "border-white/30"
+            } text-white placeholder-gray-300`}
           />
           <button
             type="button"
@@ -417,10 +452,14 @@ export default function RoleSignupForm({ role = "student", goBack }) {
             {showConfirmPassword ? "Hide" : "Show"}
           </button>
         </div>
+        {passwordMismatch && formData.confirmPassword && (
+          <span className="text-red-400 text-sm">Passwords do not match ❌</span>
+        )}
 
         <button
           type="submit"
-          className="mt-4 px-6 py-3 rounded-2xl bg-green-600 hover:bg-green-500 text-white font-medium transition"
+          disabled={passwordMismatch || !Object.values(passwordValid).every(Boolean) || emailAvailable === false}
+          className="mt-4 px-6 py-3 rounded-2xl bg-green-600 hover:bg-green-500 disabled:bg-gray-500 disabled:cursor-not-allowed text-white font-medium transition"
         >
           Sign Up
         </button>

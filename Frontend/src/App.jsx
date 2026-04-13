@@ -8,20 +8,47 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { Route, Routes } from "react-router-dom";
 import LandingPage from "./Pages/LandingPage";
+import LoginPage from "./Pages/LoginPage";
+import HomePage from "./Pages/HomePage";
+// import HomePage from "./Pages/Home";
+import ProtectedRoute from "./auth/ProtectedRoute";
 
 const App = () => {
   return (
     <div>
-      {/* <Navbar/> */}
-
       <Routes>
+        {/* Public Route */}
         <Route path="/" element={<LandingPage />} />
-        {/* <Route path="/" element={<Login/>} /> */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/test" element={<LandingPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        {/* Protected Route */}
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
+
+      {/* <Routes> */}
+      {/* <Route path="/" element={<LandingPage />} /> */}
+      {/* <Route path="/login" element={<LoginPage />} /> */}
+      {/* <Route path="/home" element={<HomePage/>} /> */}
+      {/* <Route path="/" element={<Login/>} /> */}
+      {/* <Route path="/login" element={<Login />} /> */}
+      {/* <Route path="/signup" element={<Signup />} /> */}
+      {/* <Route path="/profile" element={<Profile />} /> */}
+      {/* <Route path="/test" element={<LandingPage />} /> */}
+      {/* </Routes> */}
 
       <ToastContainer
         position="top-center"

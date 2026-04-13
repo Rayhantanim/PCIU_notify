@@ -1,0 +1,1460 @@
+Day,Department,Section,course code,course name,teacher,time,room
+Saturday,DBA,BBA-31-C,ACC 302,Taxation,MPS,8.30am-09.55am,308
+Saturday,DBA,BBA-34-C,ACC201,Cost Accounting,MAA,8.30am-09.55am,214
+Saturday,LLb,LLB 30,ADL 457,Administrative Law,ABT,8.30am-09.55am,110
+Saturday,BFT,BFT-36,ART 123,Fas. Art & Elements of Design,RHS,8.30am-09.55am,D105L
+Saturday,BFT,BFT-29,ART 321,Aesthetic of Art,MJU(GT),8.30am-09.55am,223L
+Saturday,JRN,JRN-33,BPJ 304,Electronic Journalism,TAE,8.30am-09.55am,D305
+Saturday,JRN,JRN-32,BPJ 309,Media Management,MDA,8.30am-09.55am,D304
+Saturday,JRN,JRN-30,BPJ 413,Photo Journalism,MSZ,8.30am-09.55am,204
+Saturday,BTE,BTE-36-D,PHY 111,Physics-l,MAH,8.30am-09.55am,221
+Saturday,DBA,BBA-34-A,BUS 200,Business Communication,MSS2,8.30am-09.55am,208
+Saturday,DBA,BBA-33-C,BUS 300,International Trade,MMR3,8.30am-09.55am,212
+Saturday,BTE,BTE-33,BUS 321,Business Communicative English,MTA,8.30am-09.55am,D104L
+Saturday,CEN,CEN-35,CEN 211,Mechanics of Solids I,DSK (GT),8.30am-09.55am,109L
+Saturday,CEN,CEN-31,CEN 317,Design of Concrete Structures II,DAR (GT),8.30am-09.55am,CL1
+Saturday,CEN,CEN-32,CEN 331,Environmental Engineering I,DAH (GT),8.30am-09.55am,CL2
+Saturday,CSE,CSE 35-D-B,CHEM 111,Chemistry,MJA,8.30am-09.55am,206
+Saturday,CSE,CSE-35-A,CSE 121,Structured Programming Language,NKC,8.30am-09.55am,206
+Saturday,CSE,BTE-35-D,CSE 212,Intro. to Com. & Programming Tech.s,MJK,8.30am-09.55am,219
+Saturday,CSE,CSE 32-D-B1,CSE 232,Operating System Concept Lab,MMR,8.30am-09.55am,B601L
+Saturday,CSE,CSE-29-D-B,CSE 443,Mobile and Telecommunication,MTA4,8.30am-09.55am,111
+Saturday,CSE,CSE-29-D-A,CSE 454,Digital Image Processing Lab,MMB,8.30am-09.55am,D204L
+Saturday,DBA,BBA-33-E,MAT 101,Business Mathematics II,SRA,8.30am-09.55am,110
+Saturday,DBA,BBA-29-B,MGT 302,Entrepreneurship & Small Business,MIA2,8.30am-09.55am,306
+Saturday,EEE,EEE-31,EEE 312,Measurement and Instrument Lab,MHA,8.30am-09.55am,D205L
+Saturday,EEE,EEE-32,EEE 323,Communication Theory,AJI,8.30am-09.55am,D201L
+Saturday,EEE,EEE-31,EEE 339,Semiconductor Physics and Devices,AJI,8.30am-09.55am,D201L
+Saturday,EEE,EEE-30,EEE 447,VLSI-I,QDH,8.30am-09.55am,301L
+Saturday,ENG,ENF-35+36,ELIT 519,Career Planning and Development,MMI,8.30am-09.55am,117
+Saturday,ENG,ENG-36A,ENG 101,Composition,MJA3,8.30am-09.55am,318
+Saturday,ENG,ENG-30B,ENG 201,Technical Writing,MAY,8.30am-09.55am,B205
+Saturday,ENG,ENG-30A,ENG 202,English for Professional Purpose,MIA,8.30am-09.55am,307
+Saturday,ENG,ENG-31B,ENG 402,20th Century Poetry,RKM,8.30am-09.55am,222
+Saturday,ENG,LLB 34-A,ENG103,English for Law,RRS,8.30am-09.55am,D301
+Saturday,ENG,ENG-31A,ENL 306,Literary Theory-1,JBS(GT),8.30am-09.55am,211
+Saturday,ENG,ENG-32A,ENL 307,19th Century Literature – II,MTM,8.30am-09.55am,D304
+Saturday,ENG,ENG-31B,ENL 402,20th Century Poetry,RKM,8.30am-09.55am,118
+Saturday,ENG,ENG-29A,ENL 405,Literary Theory –II,SKT,8.30am-09.55am,308
+Saturday,DBA,BBA-31-C,FIN 301,Law & Practices of Banking,MWA,8.30am-09.55am,303L
+Saturday,BFT,BFT-33,GMT 123,Clothing Materials and Store Management,MFC,8.30am-09.55am,D304
+Saturday,ENG,ENG-33A,HIS 203,General History and Western History Highlights,MFC2,8.30am-09.55am,211
+Saturday,LLM,LLM 36,IEL 427,International Environmental Law,ABT,8.30am-09.55am,219
+Saturday,JRN,JRN-36,BPJ 103,Concept of Communication,MDA,8.30am-09.55am,221
+Saturday,JRN,JRN-29,BPJ 410,Web Journalism,PKS,8.30am-09.55am,MLAB
+Saturday,LLB,LLB-29,LRM 462,Legal Research Methodology,MAP,8.30am-09.55am,221
+Saturday,LLB,LLB 36-B,LSB 153,Legal System of Bangladesh,KSI (GT),8.30am-09.55am,117
+Saturday,DBA,BBA-35-C,MAT 100,Business Mathematics I,FAH,8.30am-09.55am,318
+Saturday,DBA,BBA-33-E,MAT 101,Business Math II,SRA,8.30am-09.55am,206
+Saturday,EEE,EEE-33,Math 215,Linear Algebra,MOG,8.30am-09.55am,301L
+Saturday,BTE,BTE-30-D,MECH 425,Production Planning & Control,MSS,8.30am-09.55am,318
+Saturday,DBA,BBA-31-D,MGT 300,Production and operation Management,MHF,8.30am-09.55am,307
+Saturday,DBA,BBA-35-A,MIS 100,Com. Concept,MAE,8.30am-09.55am,222
+Saturday,LLB,LLB-36A,MIS-100,Com. Concept,MAH3,8.30am-09.55am,307
+Saturday,DBA,BBA-33-B,MKT 300,Marketing Management,MRC,8.30am-09.55am,111
+Saturday,BFT,BFT-31,PAT 324,Advance Pattern: Men's Wear,AIT,8.30am-09.55am,D302L
+Saturday,CSE ,CSE 36-A,PHY 111,Physics-I,MAH,8.30am-09.55am,306
+Saturday,BFT,BFT-34,PHY 112,Physics lab,MMU,8.30am-09.55am,220L
+Saturday,DBA,BBA-32-B,STS 201,Research Methodology,MAIS,8.30am-09.55am,113
+Saturday,TEX,BTE-34,TEX 215,Fabric Manufacturing Engineering-l,NTH,8.30am-09.55am,101L
+Saturday,TEX,BTE-29-WPE,TEX 485,Wet Processing Engineering -IV,MIK,8.30am-09.55am,302L
+Saturday,TEX,BTE-29-AME,TEX 492,Apparel Manufacturing Engineering -III,MTJ,8.30am-09.55am,C602L
+Saturday,DBA,BBA-31-B,ACC 302,Taxation,MSK,10.00am-11.25am,215
+Saturday,LLM,LLM 36,ALT413,Advance Legal Theory,MSA,10.00am-11.25am,208
+Saturday,BFT,BFT-36,ART 101,History of Art and Design,MJU(GT),10.00am-11.25am,D302L
+Saturday,BFT,BFT-36,ART 123,Fas. Art & Elements of Design,RHS,10.00am-11.25am,D105L
+Saturday,BFT,BFT-34,ART 222,Fas. Art & Fas. Illustration Lab II,RHS,10.00am-11.25am,D105L
+Saturday,BFT,BFT-34,PHY 111,Physics,MMU,10.00am-11.25am,215
+Saturday,BFT,BFT-30,QLT 421,ISO & Compliance,MAU,10.00am-11.25am,C510L
+Saturday,JRN,JRN-35,BPJ 203,Interpersonal Organ. and Public Communication,MRA (GT),10.00am-11.25am,D304
+Saturday,JRN,JRN-32,BPJ 210,Ethics of Journalism,DSU (GT),10.00am-11.25am,221
+Saturday,JRN,JRN-33,BPJ 305,Mass Communication,TAE,10.00am-11.25am,D301
+Saturday,JRN,JRN-32,BPJ 310,Environmental Reporting,MDA,10.00am-11.25am,D305
+Saturday,JRN,JRN-30,BPJ 413,Photo Journalism,MSZ,10.00am-11.25am,204
+Saturday,JRN,JRN-35+36,BPJ 603,Media Research & Cultural Analysis,MDA,10.00am-11.25am,LAB
+Saturday,BTE,BTE-35-D,CSE 212,Intro. to Com. & Programming Tech.,MJK,10.00am-11.25am,222
+Saturday,BTE,BTE-29-WPE,TEX 485,Wet Processing Engineering -IV,MIK,10.00am-11.25am,302L
+Saturday,BFT,BFT-35,BUS 121,Principles of Accounting,MSS2,10.00am-11.25am,306
+Saturday,DBA,BBA-33-C,BUS 300,International Trade,MMR3,10.00am-11.25am,112
+Saturday,BTE,BTE-34,BUS 321,Business Communicative English,SKT,10.00am-11.25am,302L
+Saturday,EEE,EEE-36,CEN 130,Engineering Drawing,MPH,10.00am-11.25am,109L
+Saturday,CEN,CEN-35,CEN 211,Mechanics of Solids I,DSK (GT),10.00am-11.25am,109L
+Saturday,CEN,CEN-32,CEN 311,Structural Analysis and Design I,JAB,10.00am-11.25am,D102L
+Saturday,CEN,CEN-31,CEN 317,Design of Concrete Structures II,DAR (GT),10.00am-11.25am,CL1
+Saturday,CEN,CEN-32,CEN 331,Environmental Engineering I,DAH (GT),10.00am-11.25am,CL2
+Saturday,BTE,BTE-36-D,CHEM 111,Chemistry-l,MJA,10.00am-11.25am,204
+Saturday,LLB,LLB 33B,COL 351,Company Law,ABT,10.00am-11.25am,119
+Saturday,LLB,LLB-30,CRI 451,Criminology,MAP,10.00am-11.25am,218
+Saturday,CSE,CSE-35-A,CSE 121,Structured Programming Language,NKC,10.00am-11.25am,206
+Saturday,CSE,CSE 34-D-B,CSE 211,Object-Oriented Programming,ZRC,10.00am-11.25am,116
+Saturday,CSE,CSE-32-D-B,CSE 221,Database Management Systems,MTM2,10.00am-11.25am,306
+Saturday,CSE,CSE 32-D-B2,CSE 222,Database Management Systems Sessional,MAH3,10.00am-11.25am,B601L
+Saturday,CSE,CSE 32-D-B1,CSE 232,Operating System Concept Lab,MMR,10.00am-11.25am,B601L
+Saturday,CSE,CSE-33-D-B2,CSE 232,Operating System Lab,CF-1 (New),10.00am-11.25am,D202L
+Saturday,CSE,CSE-31-D-C,CSE 322,Software Engineering Lab,MAI3,10.00am-11.25am,D204L
+Saturday,CSE,CSE-30-D-B1,CSE 332,Pattern Recognition Lab,MSD,10.00am-11.25am,D202L
+Saturday,CSE,CSE-30-B,CSE 411,Compiler,MMR,10.00am-11.25am,213
+Saturday,CSE,CSE 32-D-B1,CSE 414,Micro. and Assembly Programming Lab,ARS,10.00am-11.25am,A303L
+Saturday,CSE,CSE-29-D-A,CSE 453,Digital Image Processing,MKI(GT),10.00am-11.25am,308
+Saturday,DBA,BBA-29-D,MGT 302,Entrepreneurship & Small Business,MRS2,10.00am-11.25am,308
+Saturday,DBA,BBA-29-E,MGT 303,Operation & Management of NGOs,MAR2,10.00am-11.25am,116
+Saturday,BTE,BTE-33,EEE 221,Elements of Electrical Engg. & Electronics,MNP,10.00am-11.25am,105L
+Saturday,EEE,EEE-31,EEE 312,Measurement and Instrument Lab,MHA,10.00am-11.25am,D205L
+Saturday,EEE,EEE-32,EEE 324,Communication Lab,AJI,10.00am-11.25am,D 201 L
+Saturday,EEE,EEE-33,EEE 325,Digital Signal Processing I,DKC,10.00am-11.25am,117
+Saturday,EEE,EEE-31,EEE 334,Control System Lab,AJI,10.00am-11.25am,D205L
+Saturday,EEE,EEE-32,EEE 337,Electrical Power Transmission and Distribution,MNB,10.00am-11.25am,304L
+Saturday,EEE,EEE-30,EEE 413,Microwave Engineering,MNB,10.00am-11.25am,301L
+Saturday,EEE,EEE-28,EEE 419,Mobile Cellular Communication,DAU,10.00am-11.25am,105L
+Saturday,EEE,EEE-30,EEE 447,VLSI-I,QDH,10.00am-11.25am,301L
+Saturday,EEE,EEE-29,EEE 455,Power Plant Engineering,DTA,10.00am-11.25am,D201L
+Saturday,ENF,ENF-35+36,ELIT 519,Career Planning and Development,MMI,10.00am-11.25am,117
+Saturday,CEN,CEN-36,ENG 101,Composition,MAY,10.00am-11.25am,D102L
+Saturday,ENG,ENG-29A,ENG 201,Technical Writing,RKM,10.00am-11.25am,110
+Saturday,ENG,ENG-30B,ENG 202,English for Professional Purpose,MIA,10.00am-11.25am,B204
+Saturday,ENG,ENG-31A,ENL 306,Literary Theory-1,JBS(GT),10.00am-11.25am,211
+Saturday,ENG,ENG-36A,ENL 105,English Short Stories,MRF,10.00am-11.25am,219
+Saturday,ENG,ENG-31B,ENL 401,19th Century Literature III,MFT,10.00am-11.25am,312
+Saturday,ENG,ENG-31B,ENL 403,Twentieth Century Literature I,MGJ,10.00am-11.25am,307
+Saturday,DBA,BBA-34-C,FIN 200,Principles of Business Finance,MTY,10.00am-11.25am,310
+Saturday,DBA,BBA-34-A,FIN 201,Principles of Insurance,MJN,10.00am-11.25am,310
+Saturday,DBA,BBA-31-C,FIN 301,Law & Practices of Banking,MWA,10.00am-11.25am,110
+Saturday,DBA,BBA-31-D,FIN 301,Law & Practices of Banking,MKI,10.00am-11.25am,113
+Saturday,BFT,BFT-33,GMT 110,Intro. to Fas. and Clothing Related Ind. in Bangla,MFC,10.00am-11.25am,307
+Saturday,LLB,LLB 35-A,HIL-157,Hindu Law,RRS,10.00am-11.25am,310
+Saturday,ENG,ENG-32A,HIS 202,History of Eastern Thoughts and Religion,MBS,10.00am-11.25am,D301
+Saturday,ENG,ENG-32B,HIS 202,History of Eastern Thoughts and Religion,MBS,10.00am-11.25am,B205
+Saturday,ENG,ENG-33B,HIS 203,General History and Western History Highlights,MFC2,10.00am-11.25am,315
+Saturday,JRN,JRN-29,BPJ 410,Web Journalism,PKS,10.00am-11.25am,M.LAB
+Saturday,JRN,JRN-36,HIST 101,Hist. of the Emer. of Ind. Bang.,ASR,10.00am-11.25am,305
+Saturday,LLB,LLB-29,CRP 454,Code of Criminal Procedure II.,MZK,10.00am-11.25am,305
+Saturday,LLB,LLB 35 B,HUM-100,Bangladesh Studies,MSW,10.00am-11.25am,118
+Saturday,LLB,LLB-34A,LOC155,Law of Contract,MSA,10.00am-11.25am,315
+Saturday,LLB,LLB 36-A,LSB 153,Legal System of Bangladesh,MSH4,10.00am-11.25am,312
+Saturday,LLB,LLB-36B,LSB-153,Legal System of Bangladesh,KSI(GT),10.00am-11.25am,116
+Saturday,CSE,CSE 35-D-B,MATH 125,Integral Calculus and Vector Analysis,NKC,10.00am-11.25am,112
+Saturday,CSE,CSE-35-B,MATH 135,Discrete Mathematics,ARB(GT),10.00am-11.25am,211
+Saturday,CSE,CSE 33-D-A,MATH 215,Linear Algebra,MOG,10.00am-11.25am,215
+Saturday,CSE,CSE-33-D-B,MATH 325,Differential Equation and Fourier Analysis,MRA2,10.00am-11.25am,214
+Saturday,CSE,CSE-36-B,Math 115,Differential Calculus & Coordinate Geometry,MOG,10.00am-11.25am,222
+Saturday,EEE,EEE-34,Math 135,Differential Equations,MSR,10.00am-11.25am,105L
+Saturday,BTE,BTE-31,MECH 211,Elements of Theory of Machines & Machine Design,CMA,10.00am-11.25am,101L
+Saturday,BTE,BTE-30-D,MECH 425,Production Planning & Control,MSS,10.00am-11.25am,214
+Saturday,DBA,BBA-36-B,MGT 200,Principles of Management,AZM,10.00am-11.25am,218
+Saturday,DBA,BBA-31-A,MGT 300,Production and operational management,MOF,10.00am-11.25am,119
+Saturday,DBA,BBA-31-B,MGT 300,Production and operational Management,MOF,10.00am-11.25am,113
+Saturday,DBA,BBA-31-E,MGT 300,Production and operation Management,DUG,10.00am-11.25am,213
+Saturday,DBA,BBA-30-D,MGT 303,Operation and management of NGOs,MHF,10.00am-11.25am,118
+Saturday,DBA,BBA-30-D,MGT 303,Operation and management of NGOs,MHF,10.00am-11.25am,212
+Saturday,BFT,BFT-31,PAT 324,Advance Pattern: Men's Wear,AIT,10.00am-11.25am,D302L
+Saturday,CSE,CSE-36-A1,PHY 112,Physics Lab,MAH,10.00am-11.25am,220L
+Saturday,LLM,LLM-35,PRI 429,Private International Law,MAP,10.00am-11.25am,B204
+Saturday,DBA,BBA-32-A,STS 201,Research Methodology,MAIS,10.00am-11.25am,117
+Saturday,BFT,BFT-31,TEX 312,"Special Fabrics, Finish, Textile Testing Lab",NTH,10.00am-11.25am,204
+Saturday,BTE,BTE-29-FME,TEX 472,Fabric Manufacturing Engineering -III,MSS,10.00am-11.25am,D 104 L
+Saturday,BTE,BTE-29-WPE,TEX 484,Special Wet Processing,MIK,10.00am-11.25am,C602L
+Saturday,BTE,BTE-29-AME,TEX 495,Apparel Manufacturing Engineering -IV,PMA,10.00am-11.25am,D104L
+Saturday,DBA,BBA-34-A,ACC 201,Cost Accounting,MAA,11.30am-12.55pm,318
+Saturday,DBA,BBA-34-B,ACC201,Cost Accounting,MAA,11.30am-12.55pm,211
+Saturday,LLM,LLM-36,ALT413,Advance Legal Theory,MSA,11.30am-12.55pm,214
+Saturday,BFT,BFT-30,ART 321,Aesthetic of Art,MJU(GT),11.30am-12.55pm,223L
+Saturday,BFT,BFT-30,ART 321,Aesthetic of Art,MJU(GT),11.30am-12.55pm,223L
+Saturday,BFT,BFT-29,QLT 421,ISO & Compliance,MAU,11.30am-12.55pm,C510L
+Saturday,BFT,BFT-29,QLT 421,ISO & Compliance,MAU,11.30am-12.55pm,C510L
+Saturday,JRN,JRN-35,BPJ 203,Interpersonal Organ. and Public Communication,MRA (GT),11.30am-12.55pm,D304
+Saturday,MJR,MJR-35+36,BPJ 623,Disaster Management,TAE,11.30am-12.55pm,M LAB
+Saturday,BTE,BTE-33,BUS 321,Business Communicative Englis,MTA,11.30am-12.55pm,118
+Saturday,BTE,BTE-29-WPE,TEX 486,Wet Processing Engineering -IV La,MIK,11.30am-12.55pm,302 L
+Saturday,DBA,BBA-36-A,BUS 100,Intro. to Business,MKI,11.30am-12.55pm,318
+Saturday,DBA,BBA-35-B,BUS 200,Business Communication,MSK,11.30am-12.55pm,312
+Saturday,CEN,CEN-33,ACC 100,Financial Accounting,MSK,11.30am-12.55pm,D101L
+Saturday,CEN,CEN-30,CEN 417,Design of Steel Structures,MRA3,11.30am-12.55pm,CL2
+Saturday,CEN,CEN-28,CEN 433,Environmental Engineering IV,MJA2,11.30am-12.55pm,CL1
+Saturday,CSE,CSE-36-B,CSE 113,Electrical Engineering,NFW,11.30am-12.55pm,306
+Saturday,CSE,CSE 34-D-A2,CSE 212,Object-Oriented Programming Lab,ZRC,11.30am-12.55pm,D202L
+Saturday,CSE,CSE 34-D-A1,CSE 214,Digital Logic Design LAB,MAH3,11.30am-12.55pm,304L
+Saturday,CSE,CSE-33-D-C,CSE 227,Algorithm,MMB,11.30am-12.55pm,110
+Saturday,CSE,CSE-31A,CSE 324,Com. Networks Lab,MMH2,11.30am-12.55pm,B601L
+Saturday,CSE,CSE 30-D-A2,CSE 342,Artificial Intelligence LAB,MFJ1,11.30am-12.55pm,303L
+Saturday,CSE,CSE 30-D-A2,CSE 342,Artificial Intelligence LAB,MFJ1,11.30am-12.55pm,303L
+Saturday,CSE,CSE 30-D-B1,CSE 412,Compiler Lab,MTM2,11.30am-12.55pm,D204L
+Saturday,CSE,CSE 30-D-B1,CSE 412,Compiler Lab,MTM2,11.30am-12.55pm,D204L
+Saturday,DBA,BBA-36-A,ENG 101,Composition,MFC2,11.30am-12.55pm,119
+Saturday,EEE,EEE-32,EEE 313,Digital Electronics,DKC,11.30am-12.55pm,307
+Saturday,EEE,EEE-31,EEE 334,Control System Lab,AJI,11.30am-12.55pm,D 205 L
+Saturday,EEE,EEE-28,EEE 419,Mobile Cellular Communication,DAU,11.30am-12.55pm,105L
+Saturday,EEE,EEE-30,EEE 445,Biomedical Electronics,QDH,11.30am-12.55pm,301L
+Saturday,EEE,EEE-29,EEE 455,Power Plant Engineering,DTA,11.30am-12.55pm,D201L
+Saturday,BFT,BFT-36,ENG 101,English Composition,MMR2,11.30am-12.55pm,221
+Saturday,LLB,LLB 35B,ENG 102,Public Speaking,MMI,11.30am-12.55pm,213
+Saturday,CEN,CEN-34,ENG 104,Technical Writing,MMR2,11.30am-12.55pm,109L
+Saturday,DBA,BBA-34-A,ENG 200,Advanced Reading Strategy & Writing,MRF,11.30am-12.55pm,222
+Saturday,ENG,ENG-29B,ENL,408- Intro. to Old and Middle English Literature,MAY,11.30am-12.55pm,218
+Saturday,ENG,ENG-32B,ENL 307,19th Century Literature – II,MTM,11.30am-12.55pm,116
+Saturday,ENG,ENG-31B,ENL 401,19th Century Literature III,MFT,11.30am-12.55pm,305
+Saturday,ENG,ENG-31A,ENL 402,20th Century Poetry,RKM,11.30am-12.55pm,D301
+Saturday,DBA,BBA-34-B,FIN 201,Principles of Insurance,MJN,11.30am-12.55pm,315
+Saturday,DBA,BBA-31-A,FIN 301,Law & Practices of Banking,MWA,11.30am-12.55pm,215
+Saturday,ENG,ENG-36A,HIST-101,Hist. of the Emer. of Ind. Bang.,ASR,11.30am-12.55pm,219
+Saturday,DBA,BBA-33-D,HUM 100,Bangladesh Studies,KCB,11.30am-12.55pm,111
+Saturday,CEN,CEN-35,HUM 113,Economics,AZM,11.30am-12.55pm,D102L
+Saturday,BFT,BFT-34,HUM 311,Bangladesh Studies,KCB,11.30am-12.55pm,118
+Saturday,DBA,BBA-33-A,HUM-100,Bangladesh Studies,FSC,11.30am-12.55pm,315
+Saturday,LLM,LLM-35,IMS-642,Intro. to Research Methodology,DAF (GT),11.30am-12.55pm,B205
+Saturday,JRN,JRN-32,BPJ 210,Ethics of Journalism,DSU (GT),11.30am-12.55pm,221
+Saturday,LLB,LLB 36 A,HIST-101,Hist. of the Emer. of Ind. Bang.,MSW,11.30am-12.55pm,212
+Saturday,BTE,BTE-36-D,MATH 111,Mathematics I -,FAH,11.30am-12.55pm,111
+Saturday,CEN,CEN-36,MATH 111,Mathematics I,SRA,11.30am-12.55pm,D305
+Saturday,BFT,BFT-36,MATH 121,Basic Math & Statistics,MAIS,11.30am-12.55pm,D105L
+Saturday,CSE,CSE-35-B,MATH 135,Discrete Mathematics,ARB,11.30am-12.55pm,113
+Saturday,BTE,BTE-34,MATH 211,Statistics,MSH3,11.30am-12.55pm,101L
+Saturday,CSE,CSE-33-A,MATH 325,Differential Equation and Fourier Analysis,MRA2,11.30am-12.55pm,206
+Saturday,CSE,CSE-33-B,Math 215,Linear Algebra,MOG,11.30am-12.55pm,208
+Saturday,DBA,BBA-33-A,MGT 201,Organ. Behavior,MAR2,11.30am-12.55pm,112
+Saturday,DBA,BBA-33-B,MGT 201,Organ. Behavior (,MAN,11.30am-12.55pm,113
+Saturday,DBA,BBA-31-B,MGT 300,Production and operational management,MOF,11.30am-12.55pm,310
+Saturday,DBA,BBA-33-E,MKT 300,Marketing Management,MRC,11.30am-12.55pm,119
+Saturday,BFT,BFT-32,PAT 326,Advance Pattern: Lingerie Lab,AIT,11.30am-12.55pm,D302L
+Saturday,BFT,BFT-32,PAT 326,Advance Pattern: Lingerie Lab,AIT,11.30am-12.55pm,D302L
+Saturday,CSE,CSE-36-A1,PHY 112,Physics Lab,MAH,11.30am-12.55pm,220L
+Saturday,DBA,BBA-32-B,STS 201,Research Methodology,MAIs,11.30am-12.55pm,110
+Saturday,BTE,BTE-36-D,TEX 111,Textile Raw Materials I-,NTH,11.30am-12.55pm,B205
+Saturday,BTE,BTE-33,TEX 224,Apparel Manufacturing Engineering-l La,MTJ,11.30am-12.55pm,C602L
+Saturday,BFT,BFT-31,TEX 311,"Special Fabrics, Finish, Textile Testing",NTH,11.30am-12.55pm,204
+Saturday,BTE,BTE-31,TEX 323,Apparel Manufacturing Engineering-l,ADB,11.30am-12.55pm,117
+Saturday,BTE,BTE-31,TEX 323,Apparel Manufacturing Engineering-Il,ADB,11.30am-12.55pm,308
+Saturday,BTE,BTE-29-FME,TEX 470,Maint. of Fabric Manufacturing Machinery,MJK2,11.30am-12.55pm,D104 L
+Saturday,BTE,BTE-29-FME,TEX 475,Fabric Manufacturing Engineering -IV,MJK2,11.30am-12.55pm,302L
+Saturday,BTE,BTE-30-FME,TEX 475,Fabric Manufacturing Engineering -IV,ZBS,11.30am-12.55pm,B204
+Saturday,BTE,BTE-30-FME,TEX 475,Fabric Manufacturing Engineering -IV,ZBS,11.30am-12.55pm,D104L
+Saturday,BTE,BTE-29-AME,TEX 494,Special Apparel Production,MSS,11.30am-12.55pm,101 L
+Saturday,DBA,BBA-32-B,ACC 301,Management Accounting,MSK,1.30pm-02.55pm,215
+Saturday,BFT,BFT-32,BUS 411,Apparel Merchandising Management,NT,1.30pm-02.55pm,221
+Saturday,JRN,JRN-32,BPJ 309,Media Management,MDA,1.30pm-02.55pm,D304
+Saturday,JRN,JRN 31-A,BPJ 402,Newspaper Editing and Display,MSZ,1.30pm-02.55pm,214
+Saturday,BTE,BTE-29-FME,TEX 471,Maint. of Fabric Manufacturing Lab,MJK2,1.30pm-02.55pm,101-L
+Saturday,DBA,BBA-34-B,BUS 200,Business Communication,DUG,1.30pm-02.55pm,218
+Saturday,DBA,BBA-35-A,BUS 200,Business Communication,MJN,1.30pm-02.55pm,222
+Saturday,CEN,CEN-34,CEN 203,Engineering Geology & Geomorphology,JAB,1.30pm-02.55pm,109L
+Saturday,CEN,CEN-33,CEN 207,Com. Programming,MTB,1.30pm-02.55pm,B204
+Saturday,CEN,CEN-32,CEN 315,Design of Concrete Structures I,AHT,1.30pm-02.55pm,D101L
+Saturday,CEN,CEN-31,CEN 333,Environmental Engineering-II,MSH2,1.30pm-02.55pm,D102L
+Saturday,CEN,CEN-30,CEN 411,Structural Analysis and Design III,MRA3,1.30pm-02.55pm,CL2
+Saturday,CEN,CEN-29,CEN 431,Environmental Engineering III,MJA2,1.30pm-02.55pm,CL1
+Saturday,CSE,CSE-35-A,CHEM 111,Chemistry,MJA,1.30pm-02.55pm,213
+Saturday,CSE,CSE-35-D-B,CSE 121,Structured Programming Language,MTA2,1.30pm-02.55pm,219
+Saturday,CSE,CSE 34-D-A2,CSE 212,Object-Oriented Programming LAB,ZRC,1.30pm-02.55pm,D202L
+Saturday,CSE,CSE 34-D-A1,CSE 214,Digital Logic Design LAB,MAH3,1.30pm-02.55pm,304L
+Saturday,CSE,CSE-33-D-A,CSE 231,Operating System Concepts,MNJ,1.30pm-02.55pm,222
+Saturday,CSE,CSE-33-D-B,CSE 231,Operating System Concepts,CF-2 (New),1.30pm-02.55pm,218
+Saturday,CSE,CSE 32-D-B,CSE 315,System Analysis and Design,CF-4(NEW),1.30pm-02.55pm,211
+Saturday,DBA,BBA-32-A,STS 201,Research Methodology,MAIs,1.30pm-02.55pm,206
+Saturday,DBA,BBA-33-A,ECO 200,Macro Economics,MPC,1.30pm-02.55pm,308
+Saturday,EEE,EEE-34,EEE 235,Continuous Signal and Linear System,MNB,1.30pm-02.55pm,301L
+Saturday,EEE,EEE-32,EEE 320,Electrical Services Design,MNP,1.30pm-02.55pm,D205L
+Saturday,EEE,EEE-33,EEE 326,Digital Signal Processing Lab,MHA,1.30pm-02.55pm,105L
+Saturday,EEE,EEE-31,EEE 339,Semiconductor Physics and Devices,AJI,1.30pm-02.55pm,305
+Saturday,EEE,EEE-30,EEE 445,Biomedical Electronics,QDH,1.30pm-02.55pm,301L
+Saturday,EEE,EEE-29,EEE 469,Power Electronics,DRT,1.30pm-02.55pm,D201L
+Saturday,ENG,ENG-31A,BAG 201,Intr. to Bengali Literature,SKT,1.30pm-02.55pm,215
+Saturday,LLB,LLB 35B,ENG 102,Public Speaking,MMI,1.30pm-02.55pm,206
+Saturday,LLB,LLB 34-B,ENG103,English for Law,RRS,1.30pm-02.55pm,116
+Saturday,ENG,ENG-33A,ENL 203,Romantic Literature – 1,AHF,1.30pm-02.55pm,208
+Saturday,ENG,ENG-33B,ENL 301,Romantic Literature – 2,RKM,1.30pm-02.55pm,310
+Saturday,DBA,BBA-34-A,FIN 200,Principles of Business Finance,MFA,1.30pm-02.55pm,119
+Saturday,DBA,BBA-31-E,FIN 301,Law & Practices of Banking,MKI,1.30pm-02.55pm,D305
+Saturday,LLM,LLM-35,IMS-642,Intro. to Research Methodology,DAF (GT),1.30pm-02.55pm,204
+Saturday,LLB,LLB-31,PIL-350,Public International Law II.,BAA (GT),1.30pm-02.55pm,306
+Saturday,CSE,CSE-33-C,MATH 215,Linear Algebra,MRA2,1.30pm-02.55pm,212
+Saturday,EEE,EEE-35,Math 125,Complex Variable and Vector Analysis,SRA,1.30pm-02.55pm,307
+Saturday,BTE,BTE-31,MECH 425,Production Planning & Control,MRK,1.30pm-02.55pm,118
+Saturday,DBA,BBA-36-A,MGT 200,Principles of Management,MAN,1.30pm-02.55pm,219
+Saturday,DBA,BBA-35-C,MIS 100,Com. Concept,MAE,1.30pm-02.55pm,318
+Saturday,ENG,ENG-32A,MKT,200- Principles of Marketing,MRC,1.30pm-02.55pm,D305
+Saturday,BTE,BTE-36-D,PHY 111,Physics-l,MAH,1.30pm-02.55pm,307
+Saturday,CEN,CEN-36,PHY 112,Physics I Sessional,MAH,1.30pm-02.55pm,220L
+Saturday,BTE,BTE-35-A1,PHY 122,Physics-ll Lab,MMU,1.30pm-02.55pm,220-L
+Saturday,LLB,LLB-33A,SRA 255,Specific Relief Act & Law of Limitation.,MZK,1.30pm-02.55pm,117
+Saturday,BTE,BTE-34,TEX 211,Textile Raw Materials-lI,KSM,1.30pm-02.55pm,302L
+Saturday,BTE,BTE-30-FME,TEX 477,Application of Com. in FME,ZBS,1.30pm-02.55pm,D104 L
+Saturday,JRN,JRN-31,BPJ 404,Public Relations,AAD (GT),3.00pm-4.25pm,D304
+Saturday,MJR,MJR-35,BPJ 614,Development Journalism,MSZ,3.00pm-4.25pm,M.LAB
+Saturday,BTE,BTE-35-A2,PHY 122,Physics-ll La,MMU,3.00pm-4.25pm,220L
+Saturday,DBA,BBA-35C,BUS 200,Business Communication,MJN,3.00pm-4.25pm,222
+Saturday,DBA,BBA-30A,BUS 201,Business Law,MSS2,3.00pm-4.25pm,214
+Saturday,DBA,BBA-33D,BUS100,International trade,MTY,3.00pm-4.25pm,312
+Saturday,CEN,CEN-36,CEN 101,Engineering Mechanics,MRA3,3.00pm-4.25pm,B204
+Saturday,CEN,CEN-34,CEN 213,Mechanics of Solids II,MST,3.00pm-4.25pm,D102L
+Saturday,CEN,CEN-32,CEN 351,Transportation Engineering I,AHT,3.00pm-4.25pm,D101L
+Saturday,CEN,CEN-29,CEN 362,Open Channel Flow Sessional,MSH2,3.00pm-4.25pm,CL2
+Saturday,CEN,CEN-30,CEN 362,Open Channel Flow Sessional,JAB,3.00pm-4.25pm,CL1
+Saturday,CSE,CSE-35-D-B1,CSE 122,Structured Programming Language Lab,MTA2,3.00pm-4.25pm,D202L
+Saturday,CSE,CSE-34-D-A2,CSE 218,Data Structure LAB,MRB,3.00pm-4.25pm,B601L
+Saturday,CSE,CSE-33-D-C,CSE 231,Operating System Concepts,MNJ,3.00pm-4.25pm,305
+Saturday,CSE,CSE-33B,CSE 233,Com. Organization and Architecture,MTA4,3.00pm-4.25pm,208
+Saturday,CSE,CSE 32-D-A,CSE 315,System Analysis and Design,MEC,3.00pm-4.25pm,214
+Saturday,CSE,CSE-31A,CSE 317,Theory of Computing,DSA(GT),3.00pm-4.25pm,212
+Saturday,CSE,CSE 30-D-B1,CSE 422,Com. Graphics Sessional,MFF,3.00pm-4.25pm,303L
+Saturday,DBA,BBA-35-A,STS 100,Basic Statistics,MSH,3.00pm-4.25pm,219
+Saturday,DBA,BBA-33B,ECO 200,Macro Economics,MPC,3.00pm-4.25pm,315
+Saturday,CSE,CSE-33-A,ECO 213,Digital Logic Design,MNT,3.00pm-4.25pm,112
+Saturday,EEE,EEE-32,EEE 320,Electrical Services Design,MNP,3.00pm-4.25pm,D205L
+Saturday,EEE,EEE-28,EEE 467,Renewable Energy Conversion,DMH,3.00pm-4.25pm,105L
+Saturday,EEE,EEE-29,EEE 469,Power Electronics,DRT,3.00pm-4.25pm,D201L
+Saturday,ENG,ENG-29B,ENG 201,Technical Writing,MFT,3.00pm-4.25pm,213
+Saturday,ENG,ENG-29A,ENL 408,Intro. To Old and Middle English Literature,MBS,3.00pm-4.25pm,212
+Saturday,ENG,ENG-33B,ENL 203,Romantic Literature – 1,AHF,3.00pm-4.25pm,310
+Saturday,ENG,ENG-33A,ENL 204,Eighteenth Century Literature,MRF,3.00pm-4.25pm,315
+Saturday,DBA,BBA-32B,FIN 300,Financial Management,MMM,3.00pm-4.25pm,310
+Saturday,LLB,LLB-34A,FLB-251,Fiscal Law Of Bangladesh,MRI3,3.00pm-4.25pm,111
+Saturday,DBA,BBA-36A,HTS101,Hist. of the Emer. of Ind. Bang.,KCB,3.00pm-4.25pm,218
+Saturday,JRN,JRN-28,BPJ 413,Photo Journalism,PKS,3.00pm-4.25pm,204
+Saturday,LLM,LLM-36,JUR 152,Criminal Justice and Due Process-,RRS,3.00pm-4.25pm,312
+Saturday,LLB,LLB-33A,SRA 255,Specific Relief Act & Law of Limitation.,MZK,3.00pm-4.25pm,113
+Saturday,EEE,EEE-34,MATH-135,Differential Equations,MSR,3.00pm-4.25pm,B205
+Saturday,BTE,BTE-35-A1,MECH 128,Engineering Drawing-l,CMA,3.00pm-4.25pm,101L
+Saturday,DBA,BBA-32A,MGT 301,Human Resource Management,PFA,3.00pm-4.25pm,215
+Saturday,DBA,BBA-35B,MIS 100,Com. Concept,MTB,3.00pm-4.25pm,318
+Saturday,ENG,ENG-32B,MKT 200,Principles of Marketing,AZM,3.00pm-4.25pm,214
+Saturday,BFT,BFT-31,PAT 314,Design Studio Lab,MAI2,3.00pm-4.25pm,D105L
+Saturday,CSE,CSE-36-A,PHY 111,Physics,GT (PHY),3.00pm-4.25pm,306
+Saturday,LLB,LLB-31,PIL-350,Public International Law II.,BAA (GT),3.00pm-4.25pm,110
+Saturday,LLM,LLM-35,POI 641,Principles of Interpretation,MAT2,3.00pm-4.25pm,211
+Saturday,CSE,CSE-34-B,STAT 235,Statistics,MSH,3.00pm-4.25pm,116
+Saturday,BTE,BTE-34,TEX 211,Textile Raw Materials-ll,KSM,3.00pm-4.25pm,L302
+Saturday,BTE,BTE-29-FME,TEX 475,Fabric Manufacturing Engineering -IV,MJK2,3.00pm-4.25pm,C602L
+Saturday,BTE,BTE-30-FME,TEX 477,Application of Com. in FM,ZBS,3.00pm-4.25pm,D104L
+Saturday,ACC,BBA-34-A,ACC 201,Cost Accounting,MAA,4.30pm-5.55pm,218
+Saturday,DBA,BBA-31-B,ACC 302,Taxation,MSK,4.30pm-5.55pm,113
+Saturday,DBA,BBA-31-D,ACC 302,Taxation,MTY,4.30pm-5.55pm,116
+Saturday,BFT,BFT-29,ART 321,Aesthetic of Art,MJU(GT),4.30pm-5.55pm,223L
+Saturday,BFT,BFT-35,CHEM 111,Chemistry,MSA5,4.30pm-5.55pm,C510L
+Saturday,JRN,JRN-31,BPJ 404,Public Relations,AAD (GT),4.30pm-5.55pm,D304
+Saturday,BTE,BTE-35-D,BUS 321,Business Communicative English,MTM,4.30pm-5.55pm,302L
+Saturday,DBA,BBA-36-B,BUS 100,Intro. to Business,MKI,4.30pm-5.55pm,318
+Saturday,DBA,BBA-35-C,BUS 200,Business Communication,MJN,4.30pm-5.55pm,208
+Saturday,BFT,BFT-32,BUS 411,Apparel Merchandising Management,PMA,4.30pm-5.55pm,221
+Saturday,CEN,CEN-29,CEN 362,Open Channel Flow Sessional,MSH2,4.30pm-5.55pm,CL2
+Saturday,CEN,CEN-30,CEN 362,Open Channel Flow Sessional,JAB,4.30pm-5.55pm,CL1
+Saturday,CSE,CSE-36-D-A1,CSE 112,Com. Fund. & Programming Tech. Lab,MFA2,4.30pm-5.55pm,D204L
+Saturday,CSE,CSE-35-D-B1,CSE 122,Structured Programming Language Lab,MTA2,4.30pm-5.55pm,D202L
+Saturday,CSE,CSE 34-D-B,CSE 217,Data Structure,DKI,4.30pm-5.55pm,113
+Saturday,CSE,CSE-34-D-A2,CSE 218,Data Structure LAB,MRB,4.30pm-5.55pm,B601L
+Saturday,CSE,CSE 32-D-B2,CSE 222,Database Management Systems Lab,MAH3,4.30pm-5.55pm,B601L
+Saturday,CSE,CSE-33B,CSE 227,Algorithm,MJK,4.30pm-5.55pm,208
+Saturday,CSE,CSE-33-D-B2,CSE 232,Operating System Lab,CF-1 (New),4.30pm-5.55pm,D202L
+Saturday,CSE,CSE 33-D-A,CSE 233,Com. Organization and Architecture,MTA4,4.30pm-5.55pm,215
+Saturday,CSE,CSE-31A,CSE 317,Theory of Computing,DSA,4.30pm-5.55pm,213
+Saturday,CSE,CSE-31-D-B,CSE 333,Com. Peripherals and Interfacing,CF-4 (New),4.30pm-5.55pm,111
+Saturday,CSE,CSE 32-D-B1,CSE 414,Micro. and Assembly Programming Lab,ARS,4.30pm-5.55pm,A303L
+Saturday,CSE,CSE-29-D-A,CSE 454,Digital Image Processing Lab,MMB,4.30pm-5.55pm,D204L
+Saturday,DBA,BBA-35-A,ECO 100,Micro Economics,AZM,4.30pm-5.55pm,219
+Saturday,EEE,EEE-35,ECO 100,Economics,AZM,4.30pm-5.55pm,D205L
+Saturday,CSE,CSE-33-A,ECO 213,Digital Logic Design,MNT,4.30pm-5.55pm,211
+Saturday,EEE,EEE-34,EEE 211,Electronics I,MNP,4.30pm-5.55pm,D201L
+Saturday,EEE,EEE-30,EEE 413,Microwave Engineering,MNB,4.30pm-5.55pm,B205
+Saturday,EEE,EEE-28,EEE 467,Renewable Energy Conversion,DMH,4.30pm-5.55pm,105L
+Saturday,LLB,LLB 34-A,ENG103,English for Law,RRS,4.30pm-5.55pm,308
+Saturday,ENG,ENG-29A,ENL 405,Literary Theory –II,SKT,4.30pm-5.55pm,110
+Saturday,ENG,ENG-29B,ENL,405- Literary Theory II,MMI,4.30pm-5.55pm,111
+Saturday,ENG,ENG-32B,ENL 201,History of English Literature – 2,MMR2,4.30pm-5.55pm,118
+Saturday,ENG,ENG-33A,ENL 303,American Literature I,MTA,4.30pm-5.55pm,119
+Saturday,LLB,LLB-34-B,FLB-251,Fiscal Law Of Bangladesh,MRI3,4.30pm-5.55pm,112
+Saturday,BTE,BTE-36-D,HIST 101,Hist. of the Emer. of Ind. Bang.,ASR,4.30pm-5.55pm,119
+Saturday,JRN,JRN-28,BPJ 413,Photo Journalism,PKS,4.30pm-5.55pm,204
+Saturday,LLM,LLM-35,POI 641,Principles of Interpretation,MAT2,4.30pm-5.55pm,B204
+Saturday,EEE,EEE-32,MATH 225,Statistics & Probability,MSH3,4.30pm-5.55pm,D301
+Saturday,DBA,BBA-33-E,MGT 201,Organ. Behavior,MAN,4.30pm-5.55pm,214
+Saturday,DBA,BBA-30-C,MGT 303,Operation and management of NGOs,MHF,4.30pm-5.55pm,212
+Saturday,BFT,BFT-31,PAT 314,Design Studio Lab,MAI2,4.30pm-5.55pm,D105L
+Saturday,CSE,CSE-36-B,PHY 111,Physics,GT (PHY),4.30pm-5.55pm,305
+Saturday,LLM,LLM 36,SLH414,South Asian Legal History,MSA,4.30pm-5.55pm,218
+Saturday,BTE,BTE-30-AME,TEX 496,Apparel Manufacturing Engineering -IV Lab,MSS,4.30pm-5.55pm,C-602 L
+Saturday,BTE,BTE-29-AME,TEX 497,Application of Com. in GMT,NTH,4.30pm-5.55pm,D 104 L
+Sunday,DBA,BBA-36-A,ACC 100,Financial Accounting,MTY,11.30am-12.55pm,310
+Sunday,DBA,BBA-32-D,ACC 301,Management Accounting,MPS,11.30am-12.55pm,112
+Sunday,ENG,ENG-33A,ACC-100,Financial Accounting,MPS,11.30am-12.55pm,111
+Sunday,DBA,BBA-34-B,ACC201,Cost Accounting,MAA,11.30am-12.55pm,211
+Sunday,BFT,BFT-30,PAT 321,Sustainable Design (Theory+Lab),SNA,11.30am-12.55pm,C510L
+Sunday,JRN,JRN-32,BPJ 308,Media & Society,TAE,11.30am-12.55pm,305
+Sunday,JRN,JRN-28,BPJ 407,Sports Reporting,MSZ,11.30am-12.55pm,B205
+Sunday,BTE,BTE-35-D,CHEM 123,Chemistry-ll,MSA5,11.30am-12.55pm,318
+Sunday,DBA,BBA-34-C,BUS 200,Business Communication,DUG,11.30am-12.55pm,215
+Sunday,EEE,EEE-34,BUS 227,Financial & Managerial Accounting,MSK,11.30am-12.55pm,D301
+Sunday,EEE,EEE-36,CEN 130,Engineering Drawing,MPH,11.30am-12.55pm,109L
+Sunday,CEN,CEN-33,CEN 261,Fluid Mechanics,SMA,11.30am-12.55pm,CL1
+Sunday,CEN,CEN-32,CEN 361,Open Channel Flow,MRA3,11.30am-12.55pm,CL2
+Sunday,LLB,LLB-30,CRP 454,Code of Criminal Procedure II.,MZK,11.30am-12.55pm,315
+Sunday,CSE,CSE-35-D-B,CSE 121,Structured Programming Language,MTA2,11.30am-12.55pm,219
+Sunday,CSE,CSE 33-D-A,CSE 227,Algorithm,MMB,11.30am-12.55pm,208
+Sunday,CSE,CSE-30-D-A1,CSE 332,Pattern Recognition Sessional,MSD,11.30am-12.55pm,D202L
+Sunday,CSE,CSE-30-D-A2,CSE 332,Pattern Recognition Lab,MRB,11.30am-12.55pm,B601L
+Sunday,CSE,CSE 29-D-A,CSE 341,Artificial Intelligence,MFJ1,11.30am-12.55pm,218
+Sunday,CSE,CSE 29-D-B2,CSE 342,Artificial Intelligence Lab,MTR,11.30am-12.55pm,303L
+Sunday,CSE,CSE 29-D-B1,CSE 454,Digital Image Processing Lab,ZRC,11.30am-12.55pm,D204L
+Sunday,DBA,BBA-29-B,MGT 303,Operation & Management of NGOs,MAR2,11.30am-12.55pm,208
+Sunday,BTE,BTE-32,EEE 221,Elements of Electrical Engg. & Electronics,NFW,11.30am-12.55pm,101 L
+Sunday,BTE,BTE-33,EEE 221,Elements of Electrical Engg. & Electronics,MNP,11.30am-12.55pm,105L
+Sunday,EEE,EEE-33,EEE 221,Electronics II,MRT,11.30am-12.55pm,D205L
+Sunday,EEE,EEE-32,EEE 324,Communication Lab,AJI,11.30am-12.55pm,D 201L
+Sunday,EEE,EEE-31,EEE 333,Control system,MHA,11.30am-12.55pm,304L
+Sunday,EEE,EEE-30,EEE 419,Mobile Cellular Communication,MNB,11.30am-12.55pm,301L
+Sunday,CEN,CEN-36,ENG 101,Composition,MAY,11.30am-12.55pm,B204
+Sunday,ENG,ENG-32A,ENL 307,19th Century Literature – II,MTM,11.30am-12.55pm,D305
+Sunday,ENG,ENG-32B,ENL 304,Classics in Translation I,MTA,11.30am-12.55pm,308
+Sunday,DBA,BBA-32-A,FIN 300,Financial Management,MMM,11.30am-12.55pm,315
+Sunday,DBA,BBA-36-B,HIST-101,Hist. of the Emer. of Ind. Bang.,FSC,11.30am-12.55pm,222
+Sunday,CSE,CSE 34-D-B,HUM 100,Bangladesh Studies,KCB,11.30am-12.55pm,119
+Sunday,BTE,BTE-30-D,HUM 426,Sociology and Industrial Organ. Psychology,CMA,11.30am-12.55pm,113
+Sunday,ENG,ENG-35,HUM-100,Bangladesh Studies,ASR,11.30am-12.55pm,318
+Sunday,JRN,JRN-33,BPJ 303,Feature writing,PKS,11.30am-12.55pm,221
+Sunday,LLB,LLB-34A,LET252L,Law of Equity,MSA,11.30am-12.55pm,213
+Sunday,LLB,LLB-35A,LOT 156,Law of Torts,MAP,11.30am-12.55pm,206
+Sunday,LLB,LLB 33B,LTP 156,Law of Transfer of Property,ABT,11.30am-12.55pm,211
+Sunday,EEE,EEE-35,Math 125,Complex Variable and Vector Analysis,SRA,11.30am-12.55pm,D304
+Sunday,CSE,CSE 34-D-A,STAT 235,Statistics,MSH,11.30am-12.55pm,212
+Sunday,BBA,BBA-35,STS 100,Basic Statistics (,MSH,11.30am-12.55pm,119
+Sunday,BTE,BTE-34,TEX 215,Fabric Manufacturing Engineering-l,NTH,11.30am-12.55pm,302 L
+Sunday,BTE,BTE-31,TEX 317,Fabric Structure & Design,MSM2,11.30am-12.55pm,D305
+Sunday,BTE,BTE-29-FME,TEX 477,Application of Com. in FME,ZBS,11.30am-12.55pm,D 104 L
+Sunday,BTE,BTE-29-WPE,TEX 487,Application of Com. in WPT,KSM,11.30am-12.55pm,C 602 L
+Sunday,CEN,CEN-33,ACC 100,Financial Accounting,MSK,1.30pm-02.55pm,D102L
+Sunday,DBA,BBA-32-B,ACC 300,Auditing,MSS2,1.30pm-02.55pm,111
+Sunday,ENG,ENG-33B,ACC-100,Financial Accounting,MSS2,1.30pm-02.55pm,110
+Sunday,BFT,BFT-35,TEX 211,Fiber-Yarn-Fabric,ADB,1.30pm-02.55pm,109L
+Sunday,JRN,JRN-35,BPJ 202,Editing,PKS,1.30pm-02.55pm,204
+Sunday,JRN,JRN-33,BPJ 306,Development Communication,MDA,1.30pm-02.55pm,D301
+Sunday,BTE,BTE-32,EEE 221,Elements of Electrical Engg. & Electronics,NFW,1.30pm-02.55pm,302L
+Sunday,EEE,EEE-32,BUS 317,Industrial Management,AJI,1.30pm-02.55pm,301L
+Sunday,BFT,BFT-31,BUS 321,Business Communication,MNT,1.30pm-02.55pm,223L
+Sunday,CEN,CEN-32,CEN 341,Geotechnical Engineering I,MPH,1.30pm-02.55pm,CL2
+Sunday,CSE,CSE 35-D-B,CSE 123,Electronics,MAB,1.30pm-02.55pm,312
+Sunday,CSE,CSE-33B,CSE 227,Algorithm,MJK,1.30pm-02.55pm,212
+Sunday,CSE,CSE-30-D-A1,CSE 332,Pattern Recognition Sessional,MSD,1.30pm-02.55pm,D202L
+Sunday,CSE,CSE-30-D-A2,CSE 332,Pattern Recognition Lab,MRB,1.30pm-02.55pm,B601lL
+Sunday,CSE,CSE 31-D-C,CSE 333,Com. Peripherals and Interfacing,CF-1 (New),1.30pm-02.55pm,D304
+Sunday,CSE,CSE 29-D-B2,CSE 342,Artificial Intelligence Lab,MTR,1.30pm-02.55pm,303L
+Sunday,CSE,CSE 29-D-B1,CSE 454,Digital Image Processing Lab,ZRC,1.30pm-02.55pm,D204L
+Sunday,DBA,BBA-29-D,MGT 303,Operation & Management of NGOs,MAR2,1.30pm-02.55pm,118
+Sunday,EEE,EEE-31,EEE 311,Measurement and Instrumentation,MRT,1.30pm-02.55pm,304L
+Sunday,EEE,EEE-33,EEE 316,Machine Design Lab,MNB,1.30pm-02.55pm,D201L
+Sunday,EEE,EEE-30,EEE 363,Power System Protection,MRI2,1.30pm-02.55pm,D205L
+Sunday,ENG,ENG35+36,ELIT,524- 20th Century Modern Fiction,MFT,1.30pm-02.55pm,305
+Sunday,CEN,CEN-36,ENG 101,Engineering Mechanics,MRA3,1.30pm-02.55pm,D101L
+Sunday,CSE,CSE-36-D-A,ENG 101,Composition,MGJ,1.30pm-02.55pm,307
+Sunday,EEE,EEE-35,ENG 125,Technical English,MFC2,1.30pm-02.55pm,B204
+Sunday,ENG,ENG-35,ENL 104,Elizabethan and Seventeenth Century Poetry,MMR2,1.30pm-02.55pm,219
+Sunday,ENG,ENG-34,ENL 305,Intro. to Linguistics,RKM,1.30pm-02.55pm,218
+Sunday,ENG,ENG-31A,ENL 401,19th Century Literature – III,MIA,1.30pm-02.55pm,111
+Sunday,BFT,BFT-35,FASH 221,Fas. History I,MFC,1.30pm-02.55pm,306
+Sunday,DBA,BBA-30-A,FIN 302,Financial Market and Institution,MFR,1.30pm-02.55pm,113
+Sunday,LLB,LLB-32B,GCA 358,General Clauses Act & Interpretation of Statutes,MAT2,1.30pm-02.55pm,118
+Sunday,LLB,LLB 36 A,HIST-101,Hist. of the Emer. of Ind. Bang.,MSW,1.30pm-02.55pm,213
+Sunday,BTE,BTE-30-D,HUM 426,Sociology and Industrial Organ. Psychology,CMA,1.30pm-02.55pm,214
+Sunday,DBA,BBA-33-A,HUM-100,Bangladesh Studies,FSC,1.30pm-02.55pm,112
+Sunday,JRN,JRN-28,BPJ 407,Sports Reporting,MSZ,1.30pm-02.55pm,MLAB
+Sunday,LLB,LLB-30,LOE 455,Law of Evidence.,MZK,1.30pm-02.55pm,117
+Sunday,DBA,BBA-33-C,MAT 101,BUSINESS MATHEMATICS II,MRA2,1.30pm-02.55pm,119
+Sunday,CSE,CSE-32-D-B,Math 415,Numerical Analysis,MSR,1.30pm-02.55pm,308
+Sunday,LLB,LLB 33-B,MEL 352,Mercantile Law -,MSH4,1.30pm-02.55pm,221
+Sunday,DBA,BBA-32-C,MGT 301,Human Resource Management,MPC,1.30pm-02.55pm,110
+Sunday,DBA,BBA-32-A,MGT 302,Entrepreneurship & Small Business,MKM,1.30pm-02.55pm,206
+Sunday,DBA,BBA-36-A,MKT 200,Principles of Marketing,MPS,1.30pm-02.55pm,218
+Sunday,DBA,BBA-36-B,MKT 200,Principles of Marketing,MRC,1.30pm-02.55pm,219
+Sunday,BFT,BFT-34,PAT 122,Pattern Drafting I: Basic Foundation Lab,MAI2,1.30pm-02.55pm,D302L
+Sunday,BFT,BFT-33,PAT 226,Pattern Grading Lab,AIT,1.30pm-02.55pm,D105L
+Sunday,CSE,CSE-32-D-A,STAT 235,Statistics,MAIS,1.30pm-02.55pm,206
+Sunday,BTE,BTE-33,TEX 312,Yarn Manufacturing Engineering-ll Lab,MSM2,1.30pm-02.55pm,D 104 L
+Sunday,BTE,BTE-29-FME,TEX 477,Application of Com. in FME,ZBS,1.30pm-02.55pm,101 L
+Sunday,BTE,BTE-29-WPE,TEX 480,Maint. of Wet Processing Machinery,KSM,1.30pm-02.55pm,C 602 L
+Sunday,DBA,BBA-32-A,ACC 300,Auditing,MSS2,3.00pm-4.25pm,111
+Sunday,JRN,JRN-36,BPJ 101,Origin and Development of Journalism,MPC2,3.00pm-4.25pm,204
+Sunday,BTE,BTE-33,HUM 100,Bangladesh Studies,KCB,3.00pm-4.25pm,302L
+Sunday,EEE,EEE-33,BUS 217,Professional Ethics,AJI,3.00pm-4.25pm,B204
+Sunday,CEN,CEN-36,CEN 103,Surveying,MMS2,3.00pm-4.25pm,D101L
+Sunday,CEN,CEN-35,CEN 200,Details of Construction– Lab,MJA2,3.00pm-4.25pm,CL1
+Sunday,CEN,CEN-32,CEN 315,Design of Concrete Structures I,AHT,3.00pm-4.25pm,CL2
+Sunday,EEE,EEE 35,CHEM-111,Chemistry,MSA5,3.00pm-4.25pm,B205
+Sunday,LLB,LLB 33-B,CLU 253,Constitutional Law of UK and USA,SSC,3.00pm-4.25pm,310
+Sunday,CSE,CSE-34-A,CSE 211,Object-Oriented Programming,MJK,3.00pm-4.25pm,112
+Sunday,CSE,CSE-31-D-C,CSE 324,Com. Networks Lab,MMH2,3.00pm-4.25pm,B601L
+Sunday,CSE,CSE 30-D-A1,CSE 412,Compiler Sessional,MTR,3.00pm-4.25pm,D204L
+Sunday,CSE,CSE 32-D-A,CSE 413,Micro. and Assembly Programming,MTM2,3.00pm-4.25pm,305
+Sunday,CSE,CSE 30-D-A2,CSE 422,Com. Graphics Lab,MFF,3.00pm-4.25pm,303L
+Sunday,CSE,CSE 28-D-A,CSE 424,Simulation & Modeling Lab,MNJ,3.00pm-4.25pm,D202L
+Sunday,CSE,CSE-29-D-B,CSE 453,Digital Image Processing,CF-3 (New),3.00pm-4.25pm,213
+Sunday,DBA,BBA-33-D,MAT 101,BUSINESS MATHEMATICS II,MRA2,3.00pm-4.25pm,215
+Sunday,DBA,BBA-35-B,ECO 100,Micro Economics,MRS2,3.00pm-4.25pm,222
+Sunday,DBA,BBA-33-C,ECO 200,Macro Economics,MPC,3.00pm-4.25pm,312
+Sunday,CSE,CSE-33-B,ECO 213,Economics,MNT,3.00pm-4.25pm,211
+Sunday,EEE,EEE-34,EEE 262,Com. Method and Tech. for Engr. Analysis Lab,MNB,3.00pm-4.25pm,D201L
+Sunday,EEE,EEE-32,EEE 313,Digital Electronics,DKC,3.00pm-4.25pm,304L
+Sunday,EEE,EEE-31,EEE 322,Power System Lab,MNP,3.00pm-4.25pm,105L
+Sunday,EEE,EEE-30,EEE 332,Micro. & Interfacing Lab,MRI2,3.00pm-4.25pm,D205L
+Sunday,ENG,ENG-35+36,ELIT,524- 20th Century Modern Fiction,MFT,3.00pm-4.25pm,116
+Sunday,ENG,ENG-32A,ENL,304- Classics in Translation I,MTA,3.00pm-4.25pm,215
+Sunday,ENG,ENG-33B,ENL 204,Eighteenth Century Literature,MRF,3.00pm-4.25pm,318
+Sunday,ENG,ENG-32B,ENL 302,19th Century Literature – I,MJA3,3.00pm-4.25pm,208
+Sunday,ENG,ENG-31A,ENL 403,Twentieth Century Literature I,MGJ,3.00pm-4.25pm,308
+Sunday,ENG,ENG-31A,ENL 403,Twentieth Century Literature I,MGJ,3.00pm-4.25pm,D301
+Sunday,DBA,BBA-34-B,FIN 200,Principles of Business Finance,MFA,3.00pm-4.25pm,208
+Sunday,CSE,CSE-35-B,HIST 101,Hist. of the Emer. of Ind. Bang.,KCB,3.00pm-4.25pm,113
+Sunday,JRN,JRN-35,HUM 101,Bangladesh Studies,ASR,3.00pm-4.25pm,D304
+Sunday,BTE,BTE 31+32,HUM 421,Accounting and Marketing,MKM,3.00pm-4.25pm,218
+Sunday,LLB,LLB 35 A,HUM-100,Bangladesh Studies,MSW,3.00pm-4.25pm,212
+Sunday,JRN,JRN-34,BPJ 301,Comprehensive Reporting,DAC (GT),3.00pm-4.25pm,D305
+Sunday,LLB,LLB-34B,LET252,Law of Equity,MSA,3.00pm-4.25pm,221
+Sunday,LLB,LLB-34A,CLB-250,Constitutional Law of BD.,MRI3,3.00pm-4.25pm,117
+Sunday,LLB,LLB 36-A,LSB 153,Legal System of Bangladesh,MSH4,3.00pm-4.25pm,307
+Sunday,CSE,CSE-35-A,MATH 125,Integral Calculus and Vector Analysis,NKC,3.00pm-4.25pm,306
+Sunday,BBA,BBA-36-A,MGT 200,Principles of Management,MAN,3.00pm-4.25pm,318
+Sunday,BBA,BBA-30-A,MGT 303,Operation & Management of NGOs,MAR2,3.00pm-4.25pm,110
+Sunday,BBA,BBA-33-A,MKT 300,Marketing Management,AZM,3.00pm-4.25pm,310
+Sunday,BBA,BBA-33-B,MKT 300,Marketing Management,MRC,3.00pm-4.25pm,213
+Sunday,BFT,BFT-34,PAT 122,Pattern Drafting I: Basic Foundation Lab,MAI2,3.00pm-4.25pm,D302L
+Sunday,BFT,BFT-30,PAT 329,Children's Wear Lab,SNA,3.00pm-4.25pm,C510L
+Sunday,BBA,BBA-32-C,STS 201,Research Methodology,MSH3,3.00pm-4.25pm,212
+Sunday,BTE,BTE-29-FME,TEX 476,Fabric Manufacturing Engineering -IV Lab,ZBS,3.00pm-4.25pm,101L
+Sunday,BBA,BBA-31,ACC 402,Advanced Cost Accounting (BBA-,MAA,4.30pm-5.55pm,212
+Sunday,BFT,BFT-31,BUS 411,Apparel Merchandising Management,PMA,4.30pm-5.55pm,204
+Sunday,BFT,BFT-30,PAT 329,Children's Wear Lab,SNA,4.30pm-5.55pm,C510L
+Sunday,JRN,JRN-36,BPJ 101,Origin and Development of Journalism,MPC2,4.30pm-5.55pm,204
+Sunday,BTE,BTE-31,TEX 428,Textile & Quality Management,MIK,4.30pm-5.55pm,117
+Sunday,BFT,BFT-33,BUS 215,Micro Economic,MNT,4.30pm-5.55pm,118
+Sunday,BBA,BBA-33-B,BUS 300,International Trade,MIA2,4.30pm-5.55pm,116
+Sunday,CEN,CEN-35,CEN 200,Details of Construction– Lab,MJA2,4.30pm-5.55pm,CL1
+Sunday,CEN,CEN-34,CEN 201,Engineering Materials,MSH2,4.30pm-5.55pm,109L
+Sunday,CEN,CEN-33,CEN 212,Structural Mechanics and Materials Sessional,MMS2,4.30pm-5.55pm,D102L
+Sunday,CEN,CEN-32,CEN 351,Transportation Engineering I,AHT,4.30pm-5.55pm,D101L
+Sunday,CEN,CEN-30,CEN 461,Irrigation & Flood Control,MAT,4.30pm-5.55pm,CL2
+Sunday,CLB,LLB-34-B,CLB-250,Constitutional Law of BD.,MRI3,4.30pm-5.55pm,D301
+Sunday,CSE,CSE-35-A,CSE 123,Electronics,MAB,4.30pm-5.55pm,308
+Sunday,CSE,CSE-34-A,CSE 217,Data Structure,DKI,4.30pm-5.55pm,206
+Sunday,CSE,CSE 32-D-A,CSE 221,Database Management Systems,CF-3 (New),4.30pm-5.55pm,307
+Sunday,CSE,CSE 31-C,CSE 231,Operating System Concepts,MNJ,4.30pm-5.55pm,307
+Sunday,CSE,CSE-31A,CSE 321,Software Engineering,MFA2,4.30pm-5.55pm,214
+Sunday,CSE,CSE 31-A,CSE 323,Com. Networks,MMH2,4.30pm-5.55pm,110
+Sunday,CSE,CSE-31-D-C,CSE 324,Com. Networks Lab,MMH2,4.30pm-5.55pm,B601L
+Sunday,CSE,CSE 30-D-A1,CSE 412,Compiler Sessional,MTR,4.30pm-5.55pm,D204L
+Sunday,CSE,CSE 30-D-A2,CSE 422,Com. Graphics Lab,MFF,4.30pm-5.55pm,303L
+Sunday,CSE,CSE 28-D-A,CSE 424,Simulation & Modeling Lab,MNJ,4.30pm-5.55pm,D202L
+Sunday,DBA,BBA-34-B,ENG 200,Advanced Reading Strategy & Writing,MGJ,4.30pm-5.55pm,208
+Sunday,EEE,CEN-36,EEE 101,Basic Electrical Technology,MZN,4.30pm-5.55pm,B204
+Sunday,EEE,EEE-35,EEE 121,Electrical Circuit II,DKC,4.30pm-5.55pm,D201L
+Sunday,EEE,EEE 31,EEE 322,Power System Lab,MNP,4.30pm-5.55pm,105L
+Sunday,EEE,EEE-30,EEE 332,Micro. & Interfacing Lab,MRI2,4.30pm-5.55pm,D205L
+Sunday,ENG,BBA-36-B,ENG 101,Composition,MJA3,4.30pm-5.55pm,119
+Sunday,ENG,ENG-35,ENG 103,Listening and Speaking Skills,MJA3,4.30pm-5.55pm,219
+Sunday,ENG,ENG-32A,ENL 201,History of English Literature – 2,MMR2,4.30pm-5.55pm,119
+Sunday,LLB,LLB-32B,GCA 358,General Clauses Act & Interpretation of Statutes,MAT2,4.30pm-5.55pm,117
+Sunday,BFT,BFT-34,GMT 111,Sewing Technology,MFC,4.30pm-5.55pm,D105L
+Sunday,BBA,BBA-36-A,HIST-101,Hist. of the Emer. of Ind. Bang.,KCB,4.30pm-5.55pm,219
+Sunday,JRN,JRN-34,BPJ 301,Comprehensive Reporting,DAC (GT),4.30pm-5.55pm,D305
+Sunday,LLB,LLB 36 A,ENG 101,Composition,AHF,4.30pm-5.55pm,305
+Sunday,EEE,EEE-34,MEC 213,Fund. of Mechanical Engineering,MRT,4.30pm-5.55pm,301L
+Sunday,BBA,BBA-33-A,MGT 201,Organ. Behavior,MAR2,4.30pm-5.55pm,112
+Sunday,BBA,BBA-32-B,MGT 301,Human Resource Management,MAN,4.30pm-5.55pm,113
+Sunday,BFT,BFT-35,TEX 211,Fiber-Yarn-Fabric,ADB,4.30pm-5.55pm,116
+Sunday,BTE,BTE-34,TEX 216,Fabric Manufacturing Engineering-l Lab,ADB,4.30pm-5.55pm,D 104L
+Sunday,BTE,BTE-30-FME,TEX 473,Fabric Manufacturing -III Lab,MJK2,4.30pm-5.55pm,101-L
+Sunday,BTE,BTE-30-WPE,TEX 482,Wet Processing Engineering -III,MSM2,4.30pm-5.55pm,302 L
+Sunday,BTE,BTE-29-AME,TEX 493,Apparel Manufacturing Engineering -III Lab,MSS,4.30pm-5.55pm,C 602 L
+Monday,BBA,BBA-36-A,ACC 100,Financial Accounting,MTY,8.30am-09.55am,219
+Monday,BBA,BBA-31,ACC 403,Strategic Management Accounting (BBA-,MPS,8.30am-09.55am,218
+Monday,BBA,BBA-30,ACC 406,Advanced Financial Accounting II (BBA-,MAA,8.30am-09.55am,318
+Monday,ENG,ENG-31B,BAG 201,Intr. to Bengali Literature,MHT,8.30am-09.55am,213
+Monday,BFT,BFT-32,MKT 200,Principle of Marketing,MRC,8.30am-09.55am,D305
+Monday,JRN,JRN-35,BPJ 202,Editing,PKS,8.30am-09.55am,B205
+Monday,JRN,JRN-30,BPJ 410,Web Journalism,MSZ,8.30am-09.55am,B204
+Monday,BTE,BTE-34,HUM 100,Bangladesh Studies,ASR,8.30am-09.55am,204
+Monday,CEN,CEN-33,CEN 205,Com. Programming,ZRC,8.30am-09.55am,D102L
+Monday,CEN,CEN-31,CEN 342,Geotechnical Engineering Sessional I,SMA,8.30am-09.55am,CL2
+Monday,CEN,CEN-28,CEN 432,Environmental Engineering Sessional II,MRA3,8.30am-09.55am,D101L
+Monday,CSE,CSE 35-A,CHEM 111,Chemistry,MJA,8.30am-09.55am,308
+Monday,CSE,BTE-35-A1,CHEM 124,Chemistry-ll Lab,MJA,8.30am-09.55am,216-L
+Monday,EEE,EEE-36,CSE 131,Com. Programming Language,MTR,8.30am-09.55am,215
+Monday,CSE,CSE 34-B,CSE 213,Digital Logic Design,CF-1 (New),8.30am-09.55am,308
+Monday,DBA,BBA-FIN-C,FIN 401,Fund. of Investment,MFA,8.30am-09.55am,112
+Monday,EEE,EEE-34,EEE 211,Electronics I,MNP,8.30am-09.55am,D205L
+Monday,EEE,EEE-32,EEE 337,Electrical Power Transmission and Distribution,MNB,8.30am-09.55am,D201L
+Monday,ENG,ENG-30B,ENL 407,20th Century Literature II,MFT,8.30am-09.55am,D301
+Monday,ENG,ENG-33A,ENL 203,Romantic Literature – 1,AHF,8.30am-09.55am,211
+Monday,ENG,ENG-32A,HIS 202,History of Eastern Thoughts and Religion,MBS,8.30am-09.55am,214
+Monday,HRM,HRM-31,HRM 402,Industrial Relations (BBA-,MAR2,8.30am-09.55am,219
+Monday,CSE,CSE 34-A,HUM 100,Bangladesh Studies,KCB,8.30am-09.55am,116
+Monday,JRN,JRN-33,BPJ 209,Statistics,MSH,8.30am-09.55am,D304
+Monday,LLB,LLB-35B,LEH 151,Legal History and Roman law,SSC,8.30am-09.55am,221
+Monday,LLB,LLB-29,DAC 458,"Drafting, Conveyancing and Mock Trial",MRI3,8.30am-09.55am,315
+Monday,CEN,CEN-36,MATH 111,Mathematics I,SRA,8.30am-09.55am,109L
+Monday,CSE,CSE 33-C,Math 325,Differential Equation and Fourier Analysis,SRA,8.30am-09.55am,206
+Monday,DBA,BBA-33-C,MGT 201,Organ. Behavior,DUG,8.30am-09.55am,113
+Monday,DBA,BBA-32-D,MGT 301,Human Resource Management,MAN,8.30am-09.55am,214
+Monday,JRN,JRN-34,MIS 100,Com. Concept,MRB,8.30am-09.55am,D305
+Monday,BTE,BTE-31,TEX 325,Technical Textile,MSM2,8.30am-09.55am,117
+Monday,BTE,BTE-30-FME,TEX 472,Fabric Manufacturing Engineering -III,MJK2,8.30am-09.55am,D 104 L
+Monday,BTE,BTE-30-WPE,TEX 484,Special Wet Processing,MIK,8.30am-09.55am,302 L
+Monday,BTE,BTE-29-AME,TEX 497,Application of Com. in GMT,NTH,8.30am-09.55am,C 602 L
+Monday,BTE,BTE-30-AME,TEX 497,Application of Com. in GMT,MSS,8.30am-09.55am,101 L
+Monday,DBA,BBA-31,ACC 405,Intro. to Accounting Theory and practice(BBA-,MSK,10.00am-11.25am,206
+Monday,BFT,BFT-31,PAT 312,Analysis of Creative Fas. Design Lab,MAI2,10.00am-11.25am,D105L
+Monday,JRN,JRN-35,BPJ 211,Mass Media Ethics and Law,MPC2,10.00am-11.25am,B205
+Monday,JRN,JRN-30,BPJ 410,Web Journalism,MSZ,10.00am-11.25am,B204
+Monday,BTE,BTE-35-A2,CHEM 124,Chemistry-ll Lab,MJA,10.00am-11.25am,216-L
+Monday,DBA,BBA-36-B,BUS 100,Intro. to Business,MKI,10.00am-11.25am,318
+Monday,DBA,BBA-34-B,BUS 200,Business Communication,DUG,10.00am-11.25am,312
+Monday,CEN,CEN-36,CEN 100,Civil Engineering Drawing I,MAT,10.00am-11.25am,109L
+Monday,CEN,CEN-33,CEN 205,"Numerical Methods (Mid – Theory, Final – Lab)",ZRC,10.00am-11.25am,D102L
+Monday,CEN,CEN-31,CEN 342,Geotechnical Engineering Sessional I,SMA,10.00am-11.25am,CL2
+Monday,CEN,CEN-29,CEN 416,Structural Analysis and Design Sessional III,MRA3,10.00am-11.25am,D101L
+Monday,BTE,BTE-32,CHEM 221,Color Chemistry,MIK,10.00am-11.25am,204
+Monday,LLB,LLB-33A,CLU 253,Constitutional Law of UK and USA,SSC,10.00am-11.25am,221
+Monday,CSE,CSE 36-B,CSE 111,Com. Fund. & Programming Tech.,CF-2 (New),10.00am-11.25am,307
+Monday,CSE,CSE-31-D-A,CSE 323,Com. Networks,MMH2,10.00am-11.25am,222
+Monday,LLB,LLB-29,DAC 458,"Drafting, Conveyancing and Mock Trial",MRI3,10.00am-11.25am,315
+Monday,DBA,BBA-FIN-A,FIN 405,Working Capital Mgt,MFA,10.00am-11.25am,110
+Monday,EEE,EEE-34,EEE 235,Continuous Signal and Linear System,MNB,10.00am-11.25am,D201L
+Monday,EEE,EEE-33,EEE 243,Electromagnetic Fields and Waves,AJI,10.00am-11.25am,D205L
+Monday,EEE,EEE-32,EEE 314,Digital Electronics Lab,DKC,10.00am-11.25am,301L
+Monday,ENG,ENG-30A,ECO 100,Economics,MKM,10.00am-11.25am,110
+Monday,ENG,ENG-33B,ENL 203,Romantic Literature – 1,AHF,10.00am-11.25am,211
+Monday,ENG,ENG-33A,ENL 301,Romantic Literature – 2,RKM,10.00am-11.25am,208
+Monday,ENG,ENG-32B,ENL 307,19th Century Literature – II,MTM,10.00am-11.25am,111
+Monday,ENG,ENG-31A,FIN 200,Principles of Business Finance,MJN,10.00am-11.25am,305
+Monday,BFT,BFT-33,GMT 110,Intro. to Fas. and Clothing Related Ind. in Bangla,MFC,10.00am-11.25am,315
+Monday,BFT,BFT-34 A,GMT 112,Sewing Technology Lab,SNA,10.00am-11.25am,C510L
+Monday,DBA,BBA-31,HRM 403,International Management (BBA-,MRS2,10.00am-11.25am,212
+Monday,DBA,BBA-30,HRM 404,Training & Development (BBA-,MAR2,10.00am-11.25am,B204
+Monday,CEN,CEN-34,HUM 110,Bangladesh Studies,FSC,10.00am-11.25am,CL1
+Monday,JRN,JRN-33,BPJ 306,Development Communication,MDA,10.00am-11.25am,D304
+Monday,LLB,LLB-35B,MUL 154,Muslim Law,MAP,10.00am-11.25am,118
+Monday,DBA,BBA 35-A,MAT 100,Business Mathematics I,NKC,10.00am-11.25am,218
+Monday,BTE,BTE-31,MECH 425,Production Planning & Control,MRK,10.00am-11.25am,D304
+Monday,DBA,BBA-33-B,MGT 201,Organ. Behavior,MAN,10.00am-11.25am,112
+Monday,MKT,MKT-31,MKT 603,Consumer Behavior (BBA–,AZM,10.00am-11.25am,113
+Monday,BFT,BFT-30,PAT 422,Fas. design IV: Portfolio Presentation Lab,AIT,10.00am-11.25am,223L
+Monday,LLB,LLB-32A,PDR 355,Law of Reg. and Rec. of Pub. Dem. -,MSH4,10.00am-11.25am,D301
+Monday,CSE,CSE 36-A,PHY 111,Physics-I,MAH,10.00am-11.25am,306
+Monday,EEE,EEE-36,PHY 112,PHYSICS-I LAB,MMU,10.00am-11.25am,220L
+Monday,BTE,BTE-30-FME,TEX 472,Fabric Manufacturing Engineering -III,MJK2,10.00am-11.25am,D 104 L
+Monday,BTE,BTE-30-WPE,TEX 482,Wet Processing Engineering -III,MSM2,10.00am-11.25am,302 L
+Monday,BTE,BTE-29-AME,TEX 496,Apparel Manufacturing Engineering -IV Lab,NTH,10.00am-11.25am,C 602 L
+Monday,BTE,BTE-30-AME,TEX 497,Application of Com. in GMT,MSS,10.00am-11.25am,101L
+Monday,BBA,BBA-31,ACC 401,Advanced Financial Accounting-I(BBA-,MSK,11.30am-12.55pm,315
+Monday,BFT,BFT-30,PAT 422,Fas. design IV: Portfolio Presentation Lab,AIT,11.30am-12.55pm,223L
+Monday,JRN,JRN-36,BPJ 102,Concept of Journalism,MDA,11.30am-12.55pm,D305
+Monday,JRN,JRN-35,BPJ 211,Mass Media Ethics and Law,MPC2,11.30am-12.55pm,B205
+Monday,LLB,LLB-32B,BSL 359,Banking and Security Law –,MSH4,11.30am-12.55pm,310
+Monday,BTE,BTE-34,MATH 211,Statistics,MSH3,11.30am-12.55pm,204
+Monday,EEE,EEE-33,BUS 217,Professional Ethics,AJI,11.30am-12.55pm,D205L
+Monday,CEN,CEN-36,CEN 100,Civil Engineering Drawing I,MAT,11.30am-12.55pm,109L
+Monday,CEN,CEN-35,CEN 102,Civil Engineering Drawing II,MSH2,11.30am-12.55pm,D102L
+Monday,CEN,CEN-33,CEN 207,Com. Programming,MTB,11.30am-12.55pm,D101L
+Monday,CEN,CEN-31,CEN 311,Structural Analysis and Design I,MMS2,11.30am-12.55pm,CL1
+Monday,CEN,CEN-30,CEN 417,Design of Steel Structures,MRA3,11.30am-12.55pm,CL2
+Monday,LLB,LLB-33A,COL 360,Company Law,ABT,11.30am-12.55pm,308
+Monday,CSE,CSE 35-B,CSE 123,Electronics,MAB,11.30am-12.55pm,213
+Monday,CSE,CSE 34-B,CSE 211,Object-Oriented Programming,ZRC,11.30am-12.55pm,D301
+Monday,CSE,CSE-31-B,CSE 317,Theory of Computing,CF-4 (New),11.30am-12.55pm,214
+Monday,DBA,BBA-29-E,MGT 302,Entrepreneurship & Small Business,MIA2,11.30am-12.55pm,212
+Monday,EEE,EEE-34,EEE 241,Electrical Machines I,MRT,11.30am-12.55pm,201L
+Monday,EEE,EEE-32,EEE 314,Digital Electronics Lab,DKC,11.30am-12.55pm,301L
+Monday,ENG,ENG-30B,ECO 100,Economics,MKM,11.30am-12.55pm,307
+Monday,ENG,ENG-36A,ENL 102,History of English Literature – I,MBS,11.30am-12.55pm,222
+Monday,ENG,ENG-34,ENL 205,Elizabethan and Restoration Drama,MMI,11.30am-12.55pm,219
+Monday,ENG,ENG-33B,ENL 301,Romantic Literature – 2,RKM,11.30am-12.55pm,211
+Monday,ENG,ENG-31B,FIN 200,Principles of Business Finance,MJN,11.30am-12.55pm,305
+Monday,DBA,BBA-34-C,FIN 201,Principles of Insurance,MJN,11.30am-12.55pm,318
+Monday,BFT,BFT-34 A,GMT 112,Sewing Technology Lab,SNA,11.30am-12.55pm,C510L
+Monday,HRM,HRM-30,HRM 405,Organ. change and development (BBA-,MHF,11.30am-12.55pm,B204
+Monday,DBA,BBA-33-C,HUM-100,Bangladesh Studies,ASR,11.30am-12.55pm,112
+Monday,JRN,JRN-29,BPJ 313,Film Theory,MSZ,11.30am-12.55pm,MLAB
+Monday,LLB,LLB-32A,LAB 354,Land Laws of Bangladesh,SSC,11.30am-12.55pm,118
+Monday,LLB,LLB-35B,LOT 156,Law of Torts,MAP,11.30am-12.55pm,221
+Monday,LLB,LLB-30,LRM462,Legal Research Methodology,MSA,11.30am-12.55pm,306
+Monday,CEN,CEN-34,MATH 231,Differential Equations,FAH,11.30am-12.55pm,215
+Monday,CSE,CSE 36-B,Math 115,Differential Calculus & Coordinate Geometry,MOG,11.30am-12.55pm,119
+Monday,MKT,MKT-31,MKT 402,Marketing Research (BBA-,MMR3,11.30am-12.55pm,215
+Monday,LLB,LLB-35A,MUL 154,Muslim law.,MZK,11.30am-12.55pm,117
+Monday,BFT,BFT-31,PAT 312,Analysis of Creative Fas. Design Lab,MAI2,11.30am-12.55pm,D105L
+Monday,EEE,EEE-36,PHY 112,PHYSICS-I LAB,MMU,11.30am-12.55pm,220L
+Monday,CSE,CSE 32-B,STAT 235,Statistics,MSH3,11.30am-12.55pm,116
+Monday,DBA,BBA-32-D,STS 201,Research Methodology,MSH,11.30am-12.55pm,118
+Monday,BFT,BFT-32,TEX 316,Textile Design & Surface Ornamentation Lab,MFC,11.30am-12.55pm,D302L
+Monday,BTE,BTE-31,TEX 317,Fabric Structure & Design,MSM2,11.30am-12.55pm,D104L
+Monday,BTE,BTE-29-FME,TEX 474,Special Fabric Manufacturing,ZBS,11.30am-12.55pm,C602L
+Monday,BTE,BTE-30-WPE,TEX 481,Maint. of Wet Processing Machinery Lab,MRK,11.30am-12.55pm,302L
+Monday,BTE,BTE-29-AME,TEX 495,Apparel Manufacturing Engineering -IV,PMA,11.30am-12.55pm,101L
+Monday,JRN,JRN-36,BPJ 103,Concept of Communication,MDA,1.30pm-02.55pm,D304
+Monday,JRN,JRN-31,BPJ 405,Communication Theories,TAE,1.30pm-02.55pm,D305
+Monday,BTE,BTE-34,BUS 321,Business Communicative English,SKT,1.30pm-02.55pm,D104
+Monday,DBA,BBA-34-C,BUS 200,Business Communication,DUG,1.30pm-02.55pm,119
+Monday,DBA,BBA-30-B,BUS 201,Business Law,MSS2,1.30pm-02.55pm,215
+Monday,DBA,BBA-30-D,BUS 201,Business Law,MMR3,1.30pm-02.55pm,110
+Monday,CEN,CEN-35,CEN 102,Civil Engineering Drawing II,MSH2,1.30pm-02.55pm,109L
+Monday,CEN,CEN-34,CEN 208,Quantity Surveying,MMS2,1.30pm-02.55pm,D102L
+Monday,CEN,CEN-32,CEN 311,Structural Analysis and Design I,JAB,1.30pm-02.55pm,D101L
+Monday,CEN,CEN-31,CEN 343,Geotechnical Engineering II,ADA,1.30pm-02.55pm,CL1
+Monday,CEN,CEN-30,CEN 461,Irrigation & Flood Control,MAT,1.30pm-02.55pm,CL2
+Monday,LLB,LLB-30,CRI 451,Criminology,MAP,1.30pm-02.55pm,306
+Monday,CSE,CSE 36-A,CSE 111,Com. Fund. & Programming Tech.,MAE,1.30pm-02.55pm,119
+Monday,CSE,CSE 32-B,CSE 221,Database Management Systems,MTM2,1.30pm-02.55pm,116
+Monday,CSE,CSE 31-B,CSE 323,Com. Networks,MAI3,1.30pm-02.55pm,214
+Monday,CSE,CSE-30-A,CSE 421,Com. Graphics,MFF,1.30pm-02.55pm,208
+Monday,CSE,CSE 32-A,CSE 435,Data Communication,CF-3 (New),1.30pm-02.55pm,D301
+Monday,DBA,BBA-33-E,HUM-100,Bangladesh Studies,FSC,1.30pm-02.55pm,206
+Monday,EEE,EEE-35,ECO 100,Economics,AZM,1.30pm-02.55pm,D201L
+Monday,EEE,EEE-33,EEE 243,Electromagnetic Fields and Waves,AJI,1.30pm-02.55pm,301L
+Monday,CSE,CSE 36-B,ENG 101,Composition,SKT,1.30pm-02.55pm,310
+Monday,ENG,ENG-34,ENG 200,Advanced Reading Strategy & Writing,AHF,1.30pm-02.55pm,219
+Monday,ENG,ENG-30A,ENL 406,Classics in Translation II,MMI,1.30pm-02.55pm,111
+Monday,ENG,ENG-33B,ENL 303,American Literature I,MTA,1.30pm-02.55pm,222
+Monday,ENG,ENG-31A,ENL 401,19th Century Literature – III,MIA,1.30pm-02.55pm,110
+Monday,DBA,BBA-32-C,FIN 300,Financial Management,MKI,1.30pm-02.55pm,112
+Monday,DBA,BBA-30-C,FIN 302,Financial Market and Institution,MFR,1.30pm-02.55pm,214
+Monday,LLB,LLB-35A,HIL 157,Hindu Law,RRS,1.30pm-02.55pm,307
+Monday,ENG,ENG-33A,HIS 203,General History and Western History Highlights,MFC2,1.30pm-02.55pm,211
+Monday,EEE,EEE-36,HIST-101,Hist. of the Emer. of Ind. Bang.,FSC,1.30pm-02.55pm,105L
+Monday,BTE,BTE-35-D,HUM 100,Bangladesh Studies,MSW,1.30pm-02.55pm,312
+Monday,CSE,CSE 34-B,HUM 100,Bangladesh Studies,KCB,1.30pm-02.55pm,308
+Monday,JRN,JRN-29,BPJ 314,Film Theory and Appreciation,MSZ,1.30pm-02.55pm,M.LAB
+Monday,LLB,LLB-29,CRP 454,Code of Criminal Procedure II.,MZK,1.30pm-02.55pm,305
+Monday,LLB,LLB-33A,LTP 256,Law of Transfer of Property,ABT,1.30pm-02.55pm,117
+Monday,DBA,BBA-33-D,MAT 101,BM II,MRA2,1.30pm-02.55pm,113
+Monday,CSE,CSE 35-B,MATH 125,Integral Calculus and Vector Analysis,NKC,1.30pm-02.55pm,213
+Monday,EEE,EEE-34,MEC 213,Fund. of Mechanical Engineering,MRT,1.30pm-02.55pm,D205L
+Monday,MKT,MKT-31,MKT 401,Advertising and Promotion,MNT,1.30pm-02.55pm,208
+Monday,LLB,LLB-32B,PDR 355,Law of Reg. and Rec. of Pub. Dem.,MSA,1.30pm-02.55pm,221
+Monday,CEN,CEN-36,PHY 111,Physics I,MMU,1.30pm-02.55pm,B205
+Monday,LLB,LLB-33B,PIL 258,Public International Law I,MAT2,1.30pm-02.55pm,312
+Monday,BTE,BTE-29-FME,TEX 473,Fabric Manufacturing -III Lab,ZBS,1.30pm-02.55pm,101 L
+Monday,DBA,BBA-32-C,ACC 301,Management Accounting,MPS,3.00pm-4.25pm,110
+Monday,LLB,LLB-30,ADL 457,Administrative Law,ABT,3.00pm-4.25pm,221
+Monday,BFT,BFT-36,ART 100,Basic Art and Sketch Lab,RHS,3.00pm-4.25pm,D105L
+Monday,BFT,BFT-36,ART 100,Basic Art and Sketch Lab,RHS,3.00pm-4.25pm,D105L
+Monday,JRN,JRN-29,BPJ 316,Editorial Writing,MPC2,3.00pm-4.25pm,204
+Monday,JRN,JRN-31,BPJ 405,Communication Theories,TAE,3.00pm-4.25pm,D305
+Monday,BTE,BTE-35-D,MATH 121,Mathematics-ll,MOG,3.00pm-4.25pm,119
+Monday,BFT,BFT-30+31,BUS 221,Consumer Behavior,AZM,3.00pm-4.25pm,222
+Monday,CEN,CEN-34,CEN 208,Quantity Surveying,MMS2,3.00pm-4.25pm,D102L
+Monday,CEN,CEN-32,CEN 316,Concrete Structure Sessional,MJA2,3.00pm-4.25pm,CL1
+Monday,CEN,CEN-31,CEN 353,Transportation Engineering II,MAT,3.00pm-4.25pm,109L
+Monday,CEN,CEN-30,CEN 412,Structural Analysis and Design Sessional II,ADA,3.00pm-4.25pm,CL2
+Monday,EEE,EEE-35,CHEM-111,Chemistry,MSA5,3.00pm-4.25pm,105L
+Monday,LLB,LLB-32B,CPC 353,Code of Civil Procedure I,MRI3,3.00pm-4.25pm,305
+Monday,CSE,CSE 32-A,CSE 221,Database Management Systems,CF-3 (New),3.00pm-4.25pm,116
+Monday,BFT,BFT-33,CSE 322,E-Fas. II Lab,MAI2,3.00pm-4.25pm,223L
+Monday,CSE,CSE 30-A,CSE 411,Compiler,MMR,3.00pm-4.25pm,310
+Monday,CSE,CSE 29-B,CSE 443,Mobile and Telecommunication,MTA4,3.00pm-4.25pm,211
+Monday,DBA,BBA-29-C,MGT 303,Operation and management of NGOs,MHF,3.00pm-4.25pm,212
+Monday,DBA,BBA-33-E,ECO 200,Macro Economics,MPC,3.00pm-4.25pm,112
+Monday,EEE,EEE-33,EEE 221,Electronics II,MRT,3.00pm-4.25pm,D205L
+Monday,ENG,ENG-30A,ENG 201,Technical Writing,MAY,3.00pm-4.25pm,D301
+Monday,DBA,BBA-34-C,ENG-200,Advanced Reading Strategy & Writing,MFC2,3.00pm-4.25pm,208
+Monday,ENG,ENG-35,ENL 101,Intro. to Literary Genres and Terms,MMI,3.00pm-4.25pm,219
+Monday,ENG,ENG-36A,ENL 105,English Short Stories,MRF,3.00pm-4.25pm,218
+Monday,ENG,ENG-34,ENL 202,Seventeenth Century Prose and Drama,MTM,3.00pm-4.25pm,318
+Monday,ENG,ENG-31A,ENL 402,20th Century Poetry,RKM,3.00pm-4.25pm,306
+Monday,DBA,BBA-32-D,FIN 300,Financial Management,MKI,3.00pm-4.25pm,221
+Monday,DBA,BBA-30-D,FIN 302,Financial Market and Institution,MFR,3.00pm-4.25pm,D304
+Monday,BFT,BFT-34 B,GMT 112,Sewing Technology Lab,SNA,3.00pm-4.25pm,C510L
+Monday,BFT,BFT-34 B,GMT 112,Sewing Technology Lab,SNA,3.00pm-4.25pm,C510L
+Monday,LLB,LLB-35-B,HIL157,Hindu Law,RRS,3.00pm-4.25pm,117
+Monday,JRN,JRN-36,ENG 101,Composition,MIA,3.00pm-4.25pm,D304
+Monday,LLB,LLB-34B,LIL 254,Labor & Industrial Law,MSH4,3.00pm-4.25pm,307
+Monday,LLB,LLB-32A,PEL 451,Penal Laws I.,MZK,3.00pm-4.25pm,308
+Monday,EEE,EEE-32,MATH 225,Statistics & Probability,MSH3,3.00pm-4.25pm,B204
+Monday,DBA,BBA-33-D,MKT 300,Marketing Management,MIA2,3.00pm-4.25pm,111
+Monday,LLB,LLB-33A,PIL 258,Public International Law I,MAT2,3.00pm-4.25pm,315
+Monday,BFT,BFT-32,TEX 316,Textile Design & Surface Ornamentation Lab,MFC,3.00pm-4.25pm,D302L
+Monday,BTE,BTE-29-WPE,TEX 487,Application of Com. in WPT,KSM,3.00pm-4.25pm,302 L
+Monday,ACC,ACC-31,ACC 403,Strategic Management Accounting (BBA-,MPS,4.30pm-5.55pm,B204
+Monday,BFT,BFT-36,ART 111,Fas. Art & Color Concept,RHS,4.30pm-5.55pm,D302L
+Monday,BFT,BFT-32,PAT 224,Draping II: Evening Gown Lab,AIT,4.30pm-5.55pm,D105L
+Monday,BTE,BTE-32,TEX 321,Wet Processing Engineering-ll,MIK,4.30pm-5.55pm,D104
+Monday,DBA,BBA-34-A,BUS 200,Business Communication,MSS2,4.30pm-5.55pm,219
+Monday,CEN,CEN-34,CEN 213,Mechanics of Solids II,MST,4.30pm-5.55pm,D102L
+Monday,CEN,CEN-32,CEN 316,Concrete Structure Sessional,MJA2,4.30pm-5.55pm,CL1
+Monday,CEN,CEN-30,CEN 412,Structural Analysis and Design Sessional II,ADA,4.30pm-5.55pm,CL2
+Monday,CEN,CEN-28,CEN 453,Transportation Engineering IV,AHT,4.30pm-5.55pm,D101L
+Monday,LLB,LLB-32A,CPC 353,Code of Civil Procedure I,MRI3,4.30pm-5.55pm,117
+Monday,CSE,CSE 36-A2,CSE 112,Com. Fund. & Programming Tech.s Lab,MFA2,4.30pm-5.55pm,B601L
+Monday,BFT,BFT-33,CSE 322,e-Fas. II Lab,MAI2,4.30pm-5.55pm,223L
+Monday,CSE,CSE 31-C,CSE 334,Com. Peripherals and Interfacing Lab,MEC,4.30pm-5.55pm,303L
+Monday,CSE,CSE-30-A,CSE 341,Artificial Intelligence,MFJ1,4.30pm-5.55pm,211
+Monday,CSE,CSE 29-B,CSE 443,Digital Image Processing,CF-3 (New),4.30pm-5.55pm,116
+Monday,DBA,BBA-33-B,HUM-100,Bangladesh Studies,FSC,4.30pm-5.55pm,305
+Monday,DBA,BBA-33-A,ECO 200,Macro Economics,MPC,4.30pm-5.55pm,D301
+Monday,EEE,EEE-33,EEE 251,Electrical Machine II,MSM,4.30pm-5.55pm,D201L
+Monday,LLB,LLB-34B,ENG 103,English for Law,RRS,4.30pm-5.55pm,118
+Monday,ENG,ENG-34,HIS 102,History of Western Thoughts,MAY,4.30pm-5.55pm,219
+Monday,ENG,ENG-35,ENL 104,Elizabethan and Seventeenth Century Poetry,MMR2,4.30pm-5.55pm,218
+Monday,BFT,BFT-33 B,GMT 212,Garment Assembly Lab,SNA,4.30pm-5.55pm,C510L
+Monday,ENG,ENG-36A,HIST-101,Hist. of the Emer. of Ind. Bang.,ASR,4.30pm-5.55pm,318
+Monday,EEE,EEE-35,HUM-100,Bangladesh Studies,MSW,4.30pm-5.55pm,105L
+Monday,JRN,JRN-29,BPJ 316,Editorial Writing,MPC2,4.30pm-5.55pm,305
+Monday,LLB,LLB-30,LOE 455,Law of Evidence.,MZK,4.30pm-5.55pm,306
+Monday,BTE,BTE-34,MECH 113,Workshop Practice,CMA,4.30pm-5.55pm,101L
+Monday,CSE,CSE 32-A,STAT 235,Statistics,MAIs,4.30pm-5.55pm,D301
+Monday,DBA,BBA-34-C,STS 200,Business Statistics,MSH3,4.30pm-5.55pm,208
+Monday,BTE,BTE-30-AME,TEX 490,Maint. of Apparel Manufacturing Machinery,MTJ,4.30pm-5.55pm,C 602 L
+Tuesday,LLB,LLB-32B,BSL 359,Banking and Security Law –,MAT2,8.30am-09.55am,221
+Tuesday,CEN,CEN-28,CEN 453,Transportation Engineering IV,AHT,8.30am-09.55am,CL1
+Tuesday,CSE,CSE 33-C,CSE 233,Com. Organization and Architecture,CF-4 (New),8.30am-09.55am,117
+Tuesday,DBA,BBA-33-A,MAT 101,Business Mathematics II,DSK,8.30am-09.55am,206
+Tuesday,EEE,EEE-31,EEE 361,Power System Analysis,MSM,8.30am-09.55am,D201L
+Tuesday,EEE,EEE-30,EEE 363,Power System Protection,MRI2,8.30am-09.55am,D205L
+Tuesday,ENG,ENG-30A,ENG 202,English for Professional Purpose,MIA,8.30am-09.55am,307
+Tuesday,ENG,ENG-29B,ENL 408,Intro. to Old and Middle English Literature,MAY,8.30am-09.55am,D305
+Tuesday,ENG,ENG-33B,ENL 204,Eighteenth Century Literature,MRF,8.30am-09.55am,211
+Tuesday,BBA,BBA-31,HRM 403,International Management (BBA-,MRS2,8.30am-09.55am,119
+Tuesday,JRN,JRN-36,HIST 101,Hist. of the Emer. of Ind. Bang.,ASR,8.30am-09.55am,214
+Tuesday,LLB,LLB-34A,LIL 254,Labor & Industrial Law -,MSH4,8.30am-09.55am,112
+Tuesday,LLB,LLB-31,ABP 257,"Law of Agency, Bailment and Partnership",MAP,8.30am-09.55am,110
+Tuesday,LLB,LLB-33B,LTP 256,Law of Transfer of Property,ABT,8.30am-09.55am,118
+Tuesday,LLB,LLB-32B,PDR 355,Law of Reg. and Rec. of Pub. Dem.,MSA,8.30am-09.55am,113
+Tuesday,DBA,BBA-34-A,STS 200,Business Statistics,MAIs,8.30am-09.55am,219
+Tuesday,LLB,LLB-31,ABP 257,"Law of Agency, Bailment and Partnership",MAP,10.00am-11.25am,315
+Tuesday,DBA,BBA-32-A,ACC 301,Management Accounting,MPS,10.00am-11.25am,305
+Tuesday,SEC,BBA-32-D,ACC 301,Management Accounting,MPS,10.00am-11.25am,214
+Tuesday,SEC,SEC-30,ACC 403,Advanced Auditing (BBA-,MSS2,10.00am-11.25am,B204
+Tuesday,BFT,BFT-36,ART 111,Fas. Art & Color Concept,RHS,10.00am-11.25am,D302L
+Tuesday,BFT,BFT-29,BUS 413,Fas. Marketing & Visual Merch. (Theory+Lab),SNA,10.00am-11.25am,C510L
+Tuesday,BFT,BFT-32,PAT 224,Draping II: Evening Gown Lab,AIT,10.00am-11.25am,D105L
+Tuesday,JRN,JRN-34,BPJ 207,Contemporary World Affairs,PKS,10.00am-11.25am,D305
+Tuesday,MJR,MJR-35+36,BPJ 603,Media Research & Cultural Analysis,MDA,10.00am-11.25am,MLAB
+Tuesday,BTE,BTE-31+32,HUM 421,Accounting and Marketing,MKM,10.00am-11.25am,101L
+Tuesday,BTE,BTE-32,TEX 321,Wet Processing Engineering-ll,MIK,10.00am-11.25am,D104
+Tuesday,CEN,CEN-28,CEN 417,Design of Steel Structures,ADA,10.00am-11.25am,CL2
+Tuesday,CEN,CEN-30,CEN 431,Environmental Engineering III,MJA2,10.00am-11.25am,CL1
+Tuesday,CEN,CEN-30,CEN 452,Transportation Engineering Sessional II,AHT,10.00am-11.25am,D101L
+Tuesday,CHN,CEN-35,CHEM 111,Chemistry I,MJA,10.00am-11.25am,D102L
+Tuesday,LLB,LLB-33B,COL 25,Company Law,ABT,10.00am-11.25am,118
+Tuesday,CSE,CSE 33-A,CSE 233,Com. Organization and Architecture,MTA4,10.00am-11.25am,112
+Tuesday,CSE,CSE 33-C,CSE 233,Com. Organization and Architecture,CF-4 (New),10.00am-11.25am,318
+Tuesday,CSE,CSE 31-B,CSE 321,Software Engineering,CF-2 (New),10.00am-11.25am,113
+Tuesday,CSE,CSE 31-C,CSE 321,Software Engineering,MFA2,10.00am-11.25am,212
+Tuesday,CSE,CSE 31-A,CSE 333,Com. Peripherals and Interfacing,CF-1 (New),10.00am-11.25am,310
+Tuesday,CSE,CSE 31-A,CSE 334,Com. Peripherals and Interfacing Lab,MTB,10.00am-11.25am,303L
+Tuesday,CSE,CSE 31-C,CSE 334,Com. Peripherals and Interfacing Lab,MEC,10.00am-11.25am,303L
+Tuesday,CSE,CSE 29-A,CSE 341,Artificial Intelligence,MFJ1,10.00am-11.25am,222
+Tuesday,CSE,CSE-30-B,CSE 341,Artificial Intelligence,MFJ1,10.00am-11.25am,211
+Tuesday,CSE,CSE 32-A,CSE 413,Micro. and Assembly Programming,MTM2,10.00am-11.25am,116
+Tuesday,CSE,CSE 29-A,CSE 443,Mobile and Telecommunication,MEC,10.00am-11.25am,306
+Tuesday,DBA,BBA-33-B,MAT 101,Business Mathematics II,DSK,10.00am-11.25am,310
+Tuesday,DBA,BBA-35-C,ECO 100,Micro Economics,MRS2,10.00am-11.25am,222
+Tuesday,DBA,BBA-33-B,ECO 200,Macro Economics,MPC,10.00am-11.25am,D301
+Tuesday,EEE,EEE-30,EEE 331,Micro. & Interfacing,MRI2,10.00am-11.25am,D205L
+Tuesday,EEE,EEE-29,EEE 463,High Voltage Engineering,DAZ,10.00am-11.25am,301L
+Tuesday,EEE,EEE-31,EEE 467,Renewable Energy Conversion,MSM,10.00am-11.25am,D201L
+Tuesday,BFT,BFT-35,ENG 102,Public speaking,MAY,10.00am-11.25am,305
+Tuesday,ENG,ENG-29A,ENG 201,Technical Writing,RKM,10.00am-11.25am,214
+Tuesday,ENG,ENG-30B,ENG 202,English for Professional Purpose,MIA,10.00am-11.25am,B204
+Tuesday,ENG,ENG-29B,ENL 405,Literary Theory II,MMI,10.00am-11.25am,215
+Tuesday,ENG,ENG-30A,ENL 407,20th Century Literature II,MFT,10.00am-11.25am,218
+Tuesday,BFT,BFT-35,FASH 221,Fas. History I,MFC,10.00am-11.25am,306
+Tuesday,DBA,BBA-34-C,FIN 200,Principles of Business Finance,MTY,10.00am-11.25am,208
+Tuesday,DBA,BBA-30-B,FIN 302,Financial markets & Institutions,MKI,10.00am-11.25am,312
+Tuesday,BFT,BFT-33 B,GMT 212,Garment Assembly Lab,SNA,10.00am-11.25am,C510L
+Tuesday,BFT,BFT-33,GMT 260,Pro. Dev. & Reeng. (Theory+Lab),MAI2,10.00am-11.25am,D105L
+Tuesday,BFT,BFT-36,HIST 101,Hist. of the Emer. of Ind. Bang.,ASR,10.00am-11.25am,221
+Tuesday,JRN,JRN-31,ECO 319,Economics,MKM,10.00am-11.25am,D304
+Tuesday,LLB,LLB-36B,JUR 152,Jurisprudence,RRS,10.00am-11.25am,221
+Tuesday,LLB,LLB-34A,CLB-250,Constitutional Law of BD.,MRI3,10.00am-11.25am,307
+Tuesday,BTE,BTE-36-D,MATH 111,Mathematics-l,FAH,10.00am-11.25am,D104L
+Tuesday,CSE,CSE 33-B,MATH 215,Linear Algebra,MOG,10.00am-11.25am,211
+Tuesday,BTE,BTE-34,MECH 113,Workshop Practice,CMA,10.00am-11.25am,302L
+Tuesday,BTE,BTE-34,MECH 321,Elements of Mechanical Engineering,CMA,10.00am-11.25am,302L
+Tuesday,DBA,BBA-33-D,MGT 201,Organ. Behavior,DUG,10.00am-11.25am,315
+Tuesday,LLB,LLB-32B,PEL 451,Penal Laws I.,MZK,10.00am-11.25am,308
+Tuesday,DBA,BBA-35-B,STS 100,Basic Statistics,MAIs,10.00am-11.25am,219
+Tuesday,BFT,BFT-32,TEX 221,Dyeing & Printing,MIK,10.00am-11.25am,D302L
+Tuesday,BTE,BTE-33,TEX 225,Textile Testing & Quality Control-l,KSM,10.00am-11.25am,117
+Tuesday,BTE,BTE-33,TEX 226,Textile Testing & Quality Control-l Lab,KSM,10.00am-11.25am,101-L
+Tuesday,BTE,BTE-30-AME,TEX 491,Maint. of Apparel Manuf. Machinery Lab,MTJ,10.00am-11.25am,C 602 L
+Tuesday,BTE,BTE-30-AME,TEX 493,Apparel Manufacturing Engineering -III Lab,MTJ,10.00am-11.25am,C 602 L
+Tuesday,DBA,BBA-32-A,ACC 300,Auditing,MSS2,11.30am-12.55pm,212
+Tuesday,BFT,BFT-29,BUS 413,Fas. Marketing & Visual Merch. (Theory+Lab),SNA,11.30am-12.55pm,C510L
+Tuesday,JRN,JRN-34,BPJ 208,Journalistic English,TAE,11.30am-12.55pm,D305
+Tuesday,JRN,JRN-31,BPJ 401,Depth Reporting,MPC2,11.30am-12.55pm,307
+Tuesday,MJR,MJR-35+36-A,BPJ 616,Global Journalism,PKS,11.30am-12.55pm,M.LAB
+Tuesday,BTE,BTE-36-D,CHEM 111,Chemistry-l,MJA,11.30am-12.55pm,D104L
+Tuesday,DBA,BBA-30-C,BUS 201,Business Law,MIA2,11.30am-12.55pm,315
+Tuesday,CEN,CEN-31,CEN 363,Hydrology,MJA2,11.30am-12.55pm,CL1
+Tuesday,CEN,CEN-28,CEN 403,Professional Practices & Communication,ADA,11.30am-12.55pm,CL2
+Tuesday,CEN,CEN-30,CEN 451,Transportation Engineering III,AHT,11.30am-12.55pm,D102L
+Tuesday,CEN,CSE 35-B,CHEM-111,Chemistry,MJA,11.30am-12.55pm,213
+Tuesday,CSE,CSE 31-B,CSE 333,Com. Peripherals and Interfacing,CF-4 (New),11.30am-12.55pm,110
+Tuesday,CSE,CSE 31-A,CSE 334,Com. Peripherals and Interfacing Lab,MTB,11.30am-12.55pm,303L
+Tuesday,CSE,CSE 30-B,CSE 341,Artificial Intelligence,MFJ1,11.30am-12.55pm,213
+Tuesday,DBA,BBA-36-B,ENG 101,Composition,MJA3,11.30am-12.55pm,310
+Tuesday,DBA,BBA-33-D,ECO 200,Macro Economics,MMR3,11.30am-12.55pm,312
+Tuesday,CSE,CSE 33-C,ECO 213,Economics,MPC,11.30am-12.55pm,118
+Tuesday,EEE,EEE-33,EEE 251,Electrical Machine II,MSM,11.30am-12.55pm,D201L
+Tuesday,EEE,EEE-31,EEE 311,Measurement and Instrumentation,MRT,11.30am-12.55pm,105L
+Tuesday,EEE,EEE-30,EEE 331,Micro. & Interfacing,MRI2,11.30am-12.55pm,D205L
+Tuesday,BTE,BTE-31+32,EEE 441,Elements of Micro. Robotics Control Engineering,MRI2,11.30am-12.55pm,222
+Tuesday,EEE,EEE-29,EEE 463,High Voltage Engineering,DAZ,11.30am-12.55pm,301L
+Tuesday,BFT,BFT-35,ENG 102,Public speaking,MAY,11.30am-12.55pm,306
+Tuesday,ENG,ENG-29A,ENL 408,Intro. To Old and Middle English Literature,MBS,11.30am-12.55pm,206
+Tuesday,ENG,ENG-34,ENL 205,Elizabethan and Restoration Drama,MMI,11.30am-12.55pm,318
+Tuesday,ENG,ENG-33A,ENL 301,Romantic Literature – 2,RKM,11.30am-12.55pm,208
+Tuesday,ENG,ENG-30A,ENL 405,Literary Theory II,MHC,11.30am-12.55pm,218
+Tuesday,ENG,ENG-30B,ENL 407,20th Century Literature II,MFT,11.30am-12.55pm,B205
+Tuesday,DBA,BBA-31-D,FIN 301,Law & Practices of Banking,MKI,11.30am-12.55pm,312
+Tuesday,DBA,BBA-30-A,FIN 302,Financial Market and Institution,MFR,11.30am-12.55pm,318
+Tuesday,BFT,BFT-33,GMT 260,Pro. Dev. & Reeng. (Theory+Lab),MAI2,11.30am-12.55pm,D105L
+Tuesday,LLB,LLB-36B,HIST-101,Hist. of the Emer. of Ind. Bang.,FSC,11.30am-12.55pm,215
+Tuesday,JRN,JRN-36,BPJ 102,Concept of Journalism,MDA,11.30am-12.55pm,D304
+Tuesday,LLB,LLB-32A,LAB 354,Land Laws of Bangladesh,SSC,11.30am-12.55pm,112
+Tuesday,LLB,LLB-34B,CLB-250,Constitutional Law of BD.,MRI3,11.30am-12.55pm,116
+Tuesday,LLB,LLB-33A,LTP 256,Law of Transfer of Property,ABT,11.30am-12.55pm,308
+Tuesday,DBA,BBA-35-C,MAT 100,Business Mathematics I,FAH,11.30am-12.55pm,208
+Tuesday,BTE,BTE-34,MECH 321,Elements of Mechanical Engineering,CMA,11.30am-12.55pm,101L
+Tuesday,DBA,BBA-32-D,MGT 302,Entrepreneurship & Small Business,MKM,11.30am-12.55pm,119
+Tuesday,LLB,LLB-35B,MUL 154,Muslim Law,MAP,11.30am-12.55pm,113
+Tuesday,LLB,LLB-31,PEL 461,Penal Laws II.,MZK,11.30am-12.55pm,110
+Tuesday,EEE,EEE 36,PHY 111,PHYSICS-I,MMU,11.30am-12.55pm,204
+Tuesday,DBA,BBA-32-C,STS 201,Research Methodology,MSH3,11.30am-12.55pm,113
+Tuesday,BTE,BTE-30-WPE,TEX 487,Application of Com. in WPT,KSM,11.30am-12.55pm,C602L
+Tuesday,DBA,BBA-36-B,ACC 100,Financial Accounting,MOF,1.30pm-02.55pm,222
+Tuesday,ENG,ENG-31A,BAG 201,Intr. to Bengali Literature,SKT,1.30pm-02.55pm,116
+Tuesday,BFT,BFT-33 A,PAT 212,Draping I: Basic Foundation (Theory+Lab),MFC,1.30pm-02.55pm,D105L
+Tuesday,JRN,JRN-32A,BPJ 307,Mass Media Research,PKS,1.30pm-02.55pm,D305
+Tuesday,JRN,JRN-31,BPJ 401,Depth Reporting,MPC2,1.30pm-02.55pm,221
+Tuesday,JRN,JRN-30,BPJ 403,Broadcast Tech.s & Technology,MDA,1.30pm-02.55pm,204
+Tuesday,MJR,MJR-35+36,BPJ 623,Disaster Management,TAE,1.30pm-02.55pm,M.LAB
+Tuesday,BTE,BTE-31+32,EEE 441,Elements of Micro. Robotics Control Engineering,MRI2,1.30pm-02.55pm,112
+Tuesday,CEN,CEN-31,CEN 363,Hydrology,MJA2,1.30pm-02.55pm,CL1
+Tuesday,CEN,CEN-29,CEN 415,Prestressed Concrete,ADA,1.30pm-02.55pm,CL2
+Tuesday,LLB,LLB-33B,CLU 253,Constitutional Law of UK and USA,SSC,1.30pm-02.55pm,307
+Tuesday,CSE,CSE 36-B,CSE 111,Com. Fund. & Programming Tech.s,CF-2 (New),1.30pm-02.55pm,D301
+Tuesday,CSE,CSE 36-B,CSE 112,Com. Fund. & Programming Tech.s Lab,MAE,1.30pm-02.55pm,B601L
+Tuesday,CSE,CSE 32-A,CSE 222,Database Management Systems Lab,MRB,1.30pm-02.55pm,D202L
+Tuesday,CSE,CSE 31-C,CSE 317,Theory of Computing,MTM2,1.30pm-02.55pm,111
+Tuesday,CSE,CSE 31-B,CSE 321,Software Engineering,MOR (GT),1.30pm-02.55pm,213
+Tuesday,CSE,CSE-30-A,CSE 341,Artificial Intelligence,MFJ1,1.30pm-02.55pm,208
+Tuesday,CSE,CSE 32-A,CSE 414,Micro. and Assembly Programming Lab,MTM2,1.30pm-02.55pm,303L
+Tuesday,CSE,CSE-30-B,CSE 421,Com. Graphics,MFF,1.30pm-02.55pm,113
+Tuesday,DBA,BBA-35-B,MAT 100,Business Mathematics I,FAH,1.30pm-02.55pm,218
+Tuesday,EEE,EEE-33,EEE 252,Electrical Machine Lab,MSM,1.30pm-02.55pm,105L
+Tuesday,LLB,LLB-36A,ENG 101,Composition,AHF,1.30pm-02.55pm,118
+Tuesday,CEN,CEN-35,ENG 102,Public Speaking,MFT,1.30pm-02.55pm,D102L
+Tuesday,ENG,ENG-30B,ENL 405,Literary Theory II,MHC,1.30pm-02.55pm,B204
+Tuesday,ENG,ENG-35,ENL 101,Intro. to Literary Genres and Terms,MMI,1.30pm-02.55pm,218
+Tuesday,ENG,ENG-33A,ENL 204,Eighteenth Century Literature,MRF,1.30pm-02.55pm,211
+Tuesday,LLB,LLB-35B,HIL157,Hindu Law,RRS,1.30pm-02.55pm,D301
+Tuesday,EEE,EEE-36,HIST-101,Hist. of the Emer. of Ind. Bangladesh,FSC,1.30pm-02.55pm,D201L
+Tuesday,JRN,JRN-36,ENG 101,Composition,MIA,1.30pm-02.55pm,D304
+Tuesday,LLB,LLB-31,CRP 454,Code of Criminal Procedure I -,MRI3,1.30pm-02.55pm,112
+Tuesday,LLB,LLB-34B,LOC155,Law of Contract,MSA,1.30pm-02.55pm,305
+Tuesday,CSE,CSE 31-C,MATH 335,Mathematical and Probabilistic Analysis,CF-1 (New),1.30pm-02.55pm,111
+Tuesday,BTE,BTE-34,MECH 322,Elements of Mechanical Engineering Lab,CMA,1.30pm-02.55pm,101L
+Tuesday,ENG,ENG-34,MGT 200,Principles of Management,MPC,1.30pm-02.55pm,219
+Tuesday,DBA,BBA-36-A,MKT 200,Principles of Marketing,MPS,1.30pm-02.55pm,312
+Tuesday,DBA,BBA-33-D,MKT 300,Marketing Management,MIA2,1.30pm-02.55pm,211
+Tuesday,LLB,LLB-32A,PEL 451,Penal Laws I.,MZK,1.30pm-02.55pm,117
+Tuesday,LLB,LLB-33B,PIL 258,Public International Law I,MAT2,1.30pm-02.55pm,308
+Tuesday,BTE,BTE-30-WPE,TEX 480,Maint. of Wet Processing Machinery,KSM,1.30pm-02.55pm,302 L
+Tuesday,LLB,LLB-31,ADR 453,Alternative Dispute Resolution and Trial Advocacy-,MRI3,3.00pm-4.25pm,315
+Tuesday,JRN,JRN-34,BPJ 208,Journalistic English,TAE,3.00pm-4.25pm,116
+Tuesday,JRN,JRN-32A,BPJ 307,Mass Media Research,PKS,3.00pm-4.25pm,D304
+Tuesday,JRN,JRN-35A,BPJ 614,Development Journalism,MSZ,3.00pm-4.25pm,MLBA
+Tuesday,LLB,LLB-32A,BSL-359,Banking and Security Law.,BAA (GT),3.00pm-4.25pm,308
+Tuesday,DBA,BBA-33-D,BUS100,International trade,MTY,3.00pm-4.25pm,211
+Tuesday,CEN,CEN-32,CEN 312,Structural Analysis and Design Sessional I,ADA,3.00pm-4.25pm,CL2
+Tuesday,LLB,LLB-33A,CLU 253,Constitutional Law of UK and USA –,SSC,3.00pm-4.25pm,221
+Tuesday,CSE,CSE 36-B,CSE 112,Com. Fund. & Programming Tech.s Lab,MAE,3.00pm-4.25pm,B601L
+Tuesday,CSE,CSE 31-B,CSE 321,Software Engineering,MOR (GT),3.00pm-4.25pm,213
+Tuesday,CSE,CSE 32-A,CSE 414,Micro. and Assembly Programming Lab,MTM2,3.00pm-4.25pm,303L
+Tuesday,CSE,CSE-30-A,CSE 421,Com. Graphics,MFF,3.00pm-4.25pm,208
+Tuesday,DBA,BBA-32-C,FIN 300,Financial Management,MKI,3.00pm-4.25pm,111
+Tuesday,EEE,EEE-33,EEE 252,Electrical Machine Lab,MSM,3.00pm-4.25pm,105L
+Tuesday,ENG,ENG-35+36,ELIT 521,Shakespeare I,MBS,3.00pm-4.25pm,307
+Tuesday,ENG,ENG-36A,ENG 101,Composition,MJA3,3.00pm-4.25pm,219
+Tuesday,ENG,CEN-35,ENG 102,Public Speaking,MFT,3.00pm-4.25pm,D102L
+Tuesday,ENG,ENG-35,ENL 103,Elizabethan Drama,AHF,3.00pm-4.25pm,318
+Tuesday,JRN,JRN-35,HUM 101,Bangladesh Studies,ASR,3.00pm-4.25pm,214
+Tuesday,JRN,JRN-30,BPJ 414,Magazine Editing & Display,MDA,3.00pm-4.25pm,B205
+Tuesday,LLB,LLB-34B,LET252,Law of Equity and Trust,MSA,3.00pm-4.25pm,D305
+Tuesday,LLB,LLB 36A,CJP 416,Jurisprudence,RRS,3.00pm-4.25pm,117
+Tuesday,LLB,LLB-32B,PEL 451,Penal Laws I.,MZK,3.00pm-4.25pm,212
+Tuesday,LLB,LLB-33A,PIL 258,Public International Law I,MAT2,3.00pm-4.25pm,118
+Tuesday,DBA,BBA-34-C,ACC201,Cost Accounting,MAA,4.30pm-5.55pm,208
+Tuesday,BFT,BFT-31,BUS 411,Apparel Merchandising Management,PMA,4.30pm-5.55pm,B204
+Tuesday,LLB,LLB-32A,BSL-359,Banking and Security Law.,BAA (GT),4.30pm-5.55pm,118
+Tuesday,BTE,BTE-30-AME,TEX 494,Special Apparel Production,MTJ,4.30pm-5.55pm,C 602 L
+Tuesday,DBA,BBA-35-A,BUS 200,Business Communication,MJN,4.30pm-5.55pm,218
+Tuesday,DBA,BBA-33-B,BUS 300,International Trade,MIA2,4.30pm-5.55pm,305
+Tuesday,BFT,BFT-30,CAD 412,CAD II Lab,MAI2,4.30pm-5.55pm,223L
+Tuesday,BTE,BTE-32,CHEM 222,Color Chemistry Lab,KSM,4.30pm-5.55pm,302 L
+Tuesday,CSE,CSE-29-D-A,CSE 443,Mobile and Telecommunication,MEC,4.30pm-5.55pm,D301
+Tuesday,DBA,BBA-29-B,MGT 303,Operation & Management of NGOs,MAR2,4.30pm-5.55pm,306
+Tuesday,EEE,EEE 33,Math 215,Linear Algebra,MOG,4.30pm-5.55pm,204
+Tuesday,ENG,ENG-35+36,ELIT 521,Shakespeare I,MBS,4.30pm-5.55pm,D305
+Tuesday,ENG,ENG-35,ENG 200,Advanced Reading Strategy & Writing,SKT,4.30pm-5.55pm,219
+Tuesday,LLB,LLB-34B,FLB-251,Fiscal Law Of Bangladesh,MRI3,4.30pm-5.55pm,221
+Tuesday,CSE,CSE-32-D-A,Math 415,Numerical Analysis,MSR,4.30pm-5.55pm,116
+Tuesday,LLB,LLB-33A,MEL 352,Mercantile Law-,MSH4,4.30pm-5.55pm,117
+Tuesday,DBA,BBA-36-B,MGT 200,Principles of Management,AZM,4.30pm-5.55pm,318
+Tuesday,BFT,BFT-33,PAT 213,Pattern Drafting II: Intermediate Pattern Lab,AIT,4.30pm-5.55pm,D302L
+Tuesday,DBA,BBA-35-C,STS 100,Basic Statistics,MSH3,4.30pm-5.55pm,222
+Wednesday,JRN,JRN-34,BPJ 206,Contemporary Bangladesh Affairs,PKS,8.30am-09.55am,D304
+Wednesday,CEN,CEN-33,CEN 202,Engineering Materials Sessional,JAB,8.30am-09.55am,CL1
+Wednesday,LLB,LLB-33A,COL 351,Company Law,ABT,8.30am-09.55am,117
+Wednesday,LLB,LLB-30,DAC 458,"Drafting, Conveyancing",MRI3,8.30am-09.55am,315
+Wednesday,DBA,BBA-29-E,MGT 303,Operation & Management of NGOs,MAR2,8.30am-09.55am,113
+Wednesday,EEE,EEE-32,EEE 323,EEE 323 Communication Theory,AJI,8.30am-09.55am,D201L
+Wednesday,ENG,ENG-35+36,ELIT 528,"South Asian, Carib. and Afr. Lit. in English I",RKM,8.30am-09.55am,221
+Wednesday,CEN,CEN-34,ENG 104,Technical Writing,MMR2,8.30am-09.55am,D102L
+Wednesday,ENG,ENG-35,ENL 103,Elizabethan Drama,AHF,8.30am-09.55am,219
+Wednesday,ENG,ENG-30B,ENL 406,Classics in Translation II,MMI,8.30am-09.55am,204
+Wednesday,ENG,ENG-30A,ENL 407,20th Century Literature II,MFT,8.30am-09.55am,D305
+Wednesday,ENG,ENG-33B,HIS 203,General History and Western History Highlights,MFC2,8.30am-09.55am,211
+Wednesday,DBA,BBA-33-B,HUM-100,Bangladesh Studies,FSC,8.30am-09.55am,112
+Wednesday,JRN,JRN-35,BPJ 201,News Gathering and Writing,MPC2,8.30am-09.55am,307
+Wednesday,LLB,LLB-36B,JUR 152,Jurisprudence,RRS,8.30am-09.55am,111
+Wednesday,LLB,LLB-34B,LIL 254,Labor & Industrial Law,MSH4,8.30am-09.55am,112
+Wednesday,LLB,LLB-35A,HUM 100,Bangladesh Studies.,MSW,8.30am-09.55am,118
+Wednesday,LLM,LLM-36,SLH414,South Asian Legal History,MSA,8.30am-09.55am,B205
+Wednesday,DBA,BBA-34-C,STS 200,Business Statistics,MSH3,8.30am-09.55am,119
+Wednesday,DBA,BBA-32-B,ACC 300,Auditing,MSS2,10.00am-11.25am,213
+Wednesday,BFT,BFT-32,KMT 311,Knitwear Design I: Fully Fas.,ZBS,10.00am-11.25am,D302L
+Wednesday,BFT,BFT-31,QLT 411,Apparel Quality Control Management,PMA,10.00am-11.25am,B204
+Wednesday,JRN,JRN-35,BPJ 201,News Gathering and Writing,MPC2,10.00am-11.25am,MLAB
+Wednesday,BTE,BTE-34,HUM 100,Bangladesh Studies,ASR,10.00am-11.25am,204
+Wednesday,BTE,BTE-35-D,HUM 100,Bangladesh Studies,MSW,10.00am-11.25am,318
+Wednesday,BFT,BFT-31,CAD 322,CAD I Lab,MAI2,10.00am-11.25am,223L
+Wednesday,BFT,BFT-30,CAD 412,CAD II Lab,MAI2,10.00am-11.25am,223L
+Wednesday,BTE,BTE-34,CEN 201,Engineering Materials,CMA,10.00am-11.25am,D 104 L
+Wednesday,CEN,CEN-34,CEN 203,Engineering Geology & Geomorphology,JAB,10.00am-11.25am,D102L
+Wednesday,CEN,CEN-33,CEN 262,Fluid Mechanics Sessional,SMA,10.00am-11.25am,D102L
+Wednesday,CEN,CEN-31,CEN 311,Structural Analysis and Design I,MMS2,10.00am-11.25am,CL1
+Wednesday,CSE,CSE-34-B,CSE 213,Digital logic Design,CF-1(NEW),10.00am-11.25am,214
+Wednesday,CSE,CSE 32-D-B,CSE 315,System Analysis and Design,MEC,10.00am-11.25am,116
+Wednesday,CSE,CSE-31-D-B,CSE 317,Theory of Computing,CF-4 (New),10.00am-11.25am,111
+Wednesday,CSE,CSE 31-D-C,CSE 333,Com. Peripherals and Interfacing,CF-1 (New),10.00am-11.25am,113
+Wednesday,DBA,BBA-29-A,MGT 302,Entrepreneurship & Small Business,MRS2,10.00am-11.25am,117
+Wednesday,DBA ,BBA-35-C,ECO 100,Micro Economics,MRS2,10.00am-11.25am,208
+Wednesday,ENG,ENG-30B,ECO 100,Economics,MKM,10.00am-11.25am,D305
+Wednesday,EEE,EEE-32,BUS 317,BUS 317 Industrial Management,AJI,10.00am-11.25am,D201L
+Wednesday,EEE,EEE-35,EEE 122,Electrical Circuit Lab,MSM,10.00am-11.25am,301L
+Wednesday,EEE,EEE-34,EEE 224,Electronics Lab,DKC,10.00am-11.25am,304L
+Wednesday,ENG,ENG-35+36,ELIT 528,"South Asian, Caribbean and Afr. Liter. in Eng. I",RKM,10.00am-11.25am,221
+Wednesday,DBA,BBA-34-C,ENG 200,Advanced Reading Strategy & Writing,MFC2,10.00am-11.25am,211
+Wednesday,BFT,BFT-35,ENG 200,Advanced reading strategies and writing,MIA,10.00am-11.25am,111
+Wednesday,ENG,ENG-35,ENG 200,Advanced Reading Strategy & Writing,SKT,10.00am-11.25am,219
+Wednesday,ENG,ENG-33B,ENL 303,American Literature I,MTA,10.00am-11.25am,211
+Wednesday,ENG,ENG-30A,ENL 406,Classics in Translation II,MMI,10.00am-11.25am,118
+Wednesday,DBA,BBA-34-B,FIN 200,Principles of Business Finance,MFA,10.00am-11.25am,315
+Wednesday,DBA,BBA-34-B,FIN 201,Principles of Insurance,MJN,10.00am-11.25am,110
+Wednesday,DBA,BBA-31-B,FIN 301,Law & Practices of Banking,MWA,10.00am-11.25am,308
+Wednesday,DBA,BBA-30-C,FIN 302,Financial Market and Institution,MFR,10.00am-11.25am,206
+Wednesday,CEN,CEN-35,HUM 113,Economics,AZM,10.00am-11.25am,CL2
+Wednesday,BFT,BFT-34,HUM 311,Bangladesh Studies,KCB,10.00am-11.25am,D305
+Wednesday,DBA,BBA-33-E,HUM-100,Bangladesh Studies,FSC,10.00am-11.25am,214
+Wednesday,LLB,LLB-28,ITL 360,International Trade Law,ABT,10.00am-11.25am,D301
+Wednesday,JRN,JRN-34,BPJ 400,Environment and Climate Change,MSZ,10.00am-11.25am,D304
+Wednesday,LLM,LLM-36,LHR 425,Law of Human Rights,MAT2,10.00am-11.25am,307
+Wednesday,LLB,LLB-35A,MUL 154,Muslim law.,MZK,10.00am-11.25am,117
+Wednesday,LLB,LLB-34B,LOC155,Law of Contract,MSA,10.00am-11.25am,310
+Wednesday,LLB,LLB-29,LRM 462,Legal Research Methodology,MAP,10.00am-11.25am,305
+Wednesday,LLB,LLB-30,LRM462,Legal Research Methodology,MSH4,10.00am-11.25am,312
+Wednesday,DBA,BBA-35-A,MAT 100,Business Mathematics I,NKC,10.00am-11.25am,110
+Wednesday,CSE,CSE 31-D-B,MATH 335,Mathematical and Probabilistic Analysis,ARS,10.00am-11.25am,112
+Wednesday,EEE,EEE-36,Math 115,Differential and Integral Calculus,SRA,10.00am-11.25am,B205
+Wednesday,DBA,BBA-33-C,MGT 201,Organ. Behavior,DUG,10.00am-11.25am,215
+Wednesday,DBA,BBA-32-C,MGT 301,Human Resource Management,MPC,10.00am-11.25am,212
+Wednesday,DBA,BBA-29-E,MGT 302,Entrepreneurship & Small Business,MIA2,10.00am-11.25am,308
+Wednesday,DBA,BBA-29-D,MGT 303,Operation & Management of NGOs,MAR2,10.00am-11.25am,312
+Wednesday,LLB,LLB-36B,MIS-100,Com. Concept.,MAH3,10.00am-11.25am,315
+Wednesday,DBA,BBA-36-B,MKT 200,Principles of Marketing,MRC,10.00am-11.25am,218
+Wednesday,DBA,BBA-33-E,MKT 300,Marketing Management,MRC,10.00am-11.25am,306
+Wednesday,BFT,BFT-33,PAT 213,Pattern Drafting II: Intermediate Pattern Lab,AIT,10.00am-11.25am,D302L
+Wednesday,CEN,CEN-36,PHY 111,Physics I,MMU,10.00am-11.25am,109L
+Wednesday,BTE,BTE-36-D,TEX 111,Textile Raw Materials-l,NTH,10.00am-11.25am,221
+Wednesday,BTE,BTE-35-D,TEX 124,Polymer Science,ADB,10.00am-11.25am,218
+Wednesday,BTE,BTE-32,TEX 315,Textile Testing & Quality Control-ll,MTJ,10.00am-11.25am,D104L
+Wednesday,BTE,BTE-32,TEX 316,Textile Testing & Quality Control-ll Lab,MTJ,10.00am-11.25am,101L
+Wednesday,BTE,BTE-30-WPE,TEX 486,Wet Processing Engineering -IV Lab,MIK,10.00am-11.25am,302 L
+Wednesday,BTE,BTE-30-WPE,TEX 487,Application of Com. in WPT,KSM,10.00am-11.25am,302 L
+Wednesday,BTE,BTE-30-AME,TEX 492,Apparel Manufacturing Engineering -III,MSS,10.00am-11.25am,101L
+Wednesday,BTE,BTE-30-AME,TEX 492,Apparel Manufacturing Engineering -III,MSS,10.00am-11.25am,C 602 L
+Wednesday,DBA,BBA-32-A,ACC 301,Management Accounting,MPS,11.30am-12.55pm,206
+Wednesday,BFT,BFT-36,ENG 101,English Composition,MMR2,11.30am-12.55pm,117
+Wednesday,JRN,JRN-33,BPJ 209,Statistics,MSH,11.30am-12.55pm,D304
+Wednesday,JRN,JRN-34,BPJ 400,Environment and Climate Change,MSZ,11.30am-12.55pm,221
+Wednesday,BTE,BTE-36-D,ENG 101,Composition,MTM,11.30am-12.55pm,307
+Wednesday,DBA,BBA-30-C,BUS 201,Business Law,MIA2,11.30am-12.55pm,215
+Wednesday,BFT,BFT-31,CAD 322,CAD I Lab,MAI2,11.30am-12.55pm,223L
+Wednesday,CEN,CEN-36,CEN 103,Surveying,MMS2,11.30am-12.55pm,215
+Wednesday,CEN,CEN-33,CEN 262,Fluid Mechanics Sessional,SMA,11.30am-12.55pm,D102L
+Wednesday,CEN,CEN-31,CEN 333,Environmental Engineering-II,MSH2,11.30am-12.55pm,CL1
+Wednesday,CEN,CEN-30,CEN 432,Environmental Engineering Sessional II,JAB,11.30am-12.55pm,CL2
+Wednesday,LLB,LLB-28,CLO 356,Comparative law,SSC,11.30am-12.55pm,D301
+Wednesday,CSE,CSE 34-D-B,CSE 217,Data Structure,DKI,11.30am-12.55pm,306
+Wednesday,DBA,BBA-29-D,MGT 302,Entrepreneurship & Small Business,MRS2,11.30am-12.55pm,119
+Wednesday,EEE,EEE-35,EEE 122,Electrical Circuit Lab,MSM,11.30am-12.55pm,301L
+Wednesday,EEE,EEE-34,EEE 224,Electronics Lab,DKC,11.30am-12.55pm,304L
+Wednesday,ENG,ENG-30A,ECO 100,Economics,MKM,11.30am-12.55pm,310
+Wednesday,LLB,LLB-36B,ENG 101,Composition,MFT,11.30am-12.55pm,222
+Wednesday,DBA,BBA-35-A,ENG-102,Public Speaking,MBS,11.30am-12.55pm,219
+Wednesday,ENG,ENG-34,ENG200,Advanced Reading Strategy & Writing,AHF,11.30am-12.55pm,119
+Wednesday,ENG,ENG-30B,ENL 405,Literary Theory II,MHC,11.30am-12.55pm,B204
+Wednesday,DBA,BBA-32-B,FIN 300,Financial Management,MMM,11.30am-12.55pm,222
+Wednesday,BTE,BTE-33,HUM 100,Bangladesh Studies,KCB,11.30am-12.55pm,D104
+Wednesday,JRN,JRN-28,BPJ 408,Public Affairs Reporting,MPC2,11.30am-12.55pm,MLAB
+Wednesday,BFT,BFT-32,KMT 311,Knitwear Design I: Fully Fas.,ZBS,11.30am-12.55pm,221
+Wednesday,LLB,LLB-30,CRP 454,Code of Criminal Procedure II.,MZK,11.30am-12.55pm,206
+Wednesday,LLB,LLB-35A,LOT 156,Law of Torts,MAP,11.30am-12.55pm,307
+Wednesday,DBA,BBA-35-B,MAT 100,Business Mathematics I,FAH,11.30am-12.55pm,312
+Wednesday,CEN,CEN-35,MATH 121,Mathematics II,MOG,11.30am-12.55pm,109L
+Wednesday,CEN,CEN-34,MATH 231,Differential Equations,FAH,11.30am-12.55pm,204
+Wednesday,CSE,CSE 33-D-C,Math 325,Diff. Eqn and Fourier Analysis,SRA,11.30am-12.55pm,213
+Wednesday,CSE,CSE 32-D-B,Math 415,Numerical Analysis,MSR,11.30am-12.55pm,305
+Wednesday,BTE,BTE-35-D,MECH 121,Mechanics of Materials,CMA,11.30am-12.55pm,318
+Wednesday,LLB,LLB-33A,MEL 352,Mercantile Law-,MSH4,11.30am-12.55pm,118
+Wednesday,DBA,BBA-33-E,MGT 201,Organ. Behavior,MAN,11.30am-12.55pm,110
+Wednesday,DBA,BBA-29-A,MGT 302,Entrepreneurship & Small Business,MHF,11.30am-12.55pm,B204
+Wednesday,DBA,BBA-32-D,MGT 302,Entrepreneurship & Small Business,MKM,11.30am-12.55pm,214
+Wednesday,ENG,ENG-32B,MKT 200,Principles of Marketing,AZM,11.30am-12.55pm,212
+Wednesday,DBA,BBA-33-C,MKT 300,Marketing Management,MRC,11.30am-12.55pm,218
+Wednesday,BFT,BFT-33 B,PAT 212,Draping I: Basic Foundation (Theory+Lab),MFC,11.30am-12.55pm,D105L
+Wednesday,BFT,BFT-30,PAT 321,Sustainable Design (Theory+Lab),SNA,11.30am-12.55pm,C510L
+Wednesday,EEE,EEE-36,PHY 111,PHYSICS-I,MMU,11.30am-12.55pm,B205
+Wednesday,BTE,BTE-32,TEX 314,Fabric Manufacturing Engineering-II Lab,ADB,11.30am-12.55pm,101 L
+Wednesday,BTE,BTE-30-WPE,TEX 485,Wet Processing Engineering -IV,MIK,11.30am-12.55pm,302 L
+Wednesday,DBA,BBA-31-C,ACC 302,Taxation,MPS,1.30pm-02.55pm,214
+Wednesday,ENG,ENG-33B,ACC-100,Financial Accounting,MSS2,1.30pm-02.55pm,208
+Wednesday,BFT,BFT-33,BUS 215,Micro Economic,MNT,1.30pm-02.55pm,D105L
+Wednesday,JRN,JRN-33,BPJ 304,Electronic Journalism,TAE,1.30pm-02.55pm,D305
+Wednesday,JRN,JRN-32,BPJ 310,Environmental Reporting,MDA,1.30pm-02.55pm,D304
+Wednesday,BTE,BTE-30-WPE,TEX 485,Wet Processing Engineering -IV,MIK,1.30pm-02.55pm,302 L
+Wednesday,BFT,BFT-35,BUS 121,Principles of Accounting,MSS2,1.30pm-02.55pm,116
+Wednesday,BFT,BFT-30+31,BUS 221,Consumer Behavior,AZM,1.30pm-02.55pm,308
+Wednesday,CEN,CEN-34,CEN 201,Engineering Materials,MSH2,1.30pm-02.55pm,D102L
+Wednesday,CEN,CEN-31,CEN 343,Geotechnical Engineering II,ADA,1.30pm-02.55pm,CL1
+Wednesday,CEN,CEN-29,CEN 451,Transportation Engineering III,MAT,1.30pm-02.55pm,CL2
+Wednesday,CSE,CSE 34-D-A,CSE 217,Data Structure,DKI,1.30pm-02.55pm,113
+Wednesday,CSE,CSE 33-D-C,CSE 227,Algorithm,MMB,1.30pm-02.55pm,116
+Wednesday,CSE,CSE 31-D-C,CSE 321,Software Engineering,MFA2,1.30pm-02.55pm,112
+Wednesday,CSE,CSE 30-D-B,CSE 331,Pattern Recognition,MSD,1.30pm-02.55pm,211
+Wednesday,CSE,CSE 28-D-A,CSE-423,Simulation & Modeling,MAA (GT),1.30pm-02.55pm,318
+Wednesday,LLB,LLB-30,DAC 458,"Drafting, Conveyancing",MRI3,1.30pm-02.55pm,315
+Wednesday,DBA,BBA-35-A,ENG 102,Public Speaking,MBS,1.30pm-02.55pm,110
+Wednesday,DBA,BBA-33-C,ECO 200,Macro Economics,MPC,1.30pm-02.55pm,213
+Wednesday,EEE,EEE-35,CHEM-112,Chemistry Lab,MJA,1.30pm-02.55pm,216L
+Wednesday,CEN,CEN-36,EEE 101,Basic Electrical Technology,MZN,1.30pm-02.55pm,D101L
+Wednesday,ENG,ENG-35+36,ELIT 527,American Literature,MIA,1.30pm-02.55pm,213
+Wednesday,CSE,CSE 36-B,ENG 101,Composition,SKT,1.30pm-02.55pm,306
+Wednesday,EEE,EEE-36,ENG 101,Composition,MGJ,1.30pm-02.55pm,B205
+Wednesday,DBA,BBA-35-B,ENG 102,Public Speaking,MRF,1.30pm-02.55pm,312
+Wednesday,ENG,ENG-30B,ENG 201,Technical Writing,MAY,1.30pm-02.55pm,212
+Wednesday,ENG,ENG-32B,ENL 302,19th Century Literature – I,MJA3,1.30pm-02.55pm,204
+Wednesday,ENG,ENG-33A,ENL 303,American Literature I,MTA,1.30pm-02.55pm,211
+Wednesday,BFT,BFT-34,FASH 321,Fas. History II,MFC,1.30pm-02.55pm,C510L
+Wednesday,DBA,BBA-32-A,FIN 300,Financial Management,MMM,1.30pm-02.55pm,212
+Wednesday,JRN,JRN 28,BPJ 408,Public Affairs Reporting,MPC2,1.30pm-02.55pm,MLAB
+Wednesday,LLB,LLB-32B,LAB 354,Land Laws of Bangladesh,SSC,1.30pm-02.55pm,D301
+Wednesday,LLB,LLB-31,CPC 357,Code of Civil Procedure II,RRS,1.30pm-02.55pm,310
+Wednesday,CEN,CEN-33,MATH 235,Vector Analysis and Statistics,NKC,1.30pm-02.55pm,109L
+Wednesday,CSE,CSE 31-D-B,MATH 335,Mathematical and Probabilistic Analysis,ARS,1.30pm-02.55pm,111
+Wednesday,BTE,BTE-35-D,MECH 121,Mechanics of Materials,CMA,1.30pm-02.55pm,310
+Wednesday,DBA,BBA-32-C,MGT 302,Entrepreneurship & Small Business,MIA2,1.30pm-02.55pm,112
+Wednesday,DBA,BBA-30-B,MGT 303,Operation and management of NGOs,DUG,1.30pm-02.55pm,215
+Wednesday,BFT,BFT-32,PAT 328,Knitwear Pattern Drafting Lab,SNA,1.30pm-02.55pm,D302L
+Wednesday,LLB,LLB-32A,PDR 355,Law of Reg. and Rec. of Pub. Dem. -,MSH4,1.30pm-02.55pm,118
+Wednesday,LLB,LLB-33B,SRA 255,Specific Relief Act & Law of Limitation.,MZK,1.30pm-02.55pm,308
+Wednesday,CSE,CSE 34-D-B,STAT 235,Statistics,MSH,1.30pm-02.55pm,305
+Wednesday,DBA,BBA-34-B,STS 200,Business Statistics,MAIS,1.30pm-02.55pm,222
+Wednesday,BTE,BTE-33,TEX 311,Yarn Manufacturing Engineering-ll,MSM2,1.30pm-02.55pm,101L
+Wednesday,DBA,BBA-32-B,ACC 301,Management Accounting,MSK,3.00pm-4.25pm,212
+Wednesday,BFT,BFT-32,PAT 328,Knitwear Pattern Drafting Lab,SNA,3.00pm-4.25pm,D302L
+Wednesday,JRN,JRN-33,BPJ 305,Mass Communication,TAE,3.00pm-4.25pm,B304
+Wednesday,BTE,BTE-36-D,PHY 112,Physics-l Lab,MAH,3.00pm-4.25pm,220-L
+Wednesday,SBA,BBA-30-B,BUS 201,Business Law,MSS2,3.00pm-4.25pm,214
+Wednesday,CEN,CEN-31,CEN 332,Environmental Engineering Sessional-I,ADA,3.00pm-4.25pm,D101L
+Wednesday,CEN,CEN-32,CEN 341,Geotechnical Engineering I,MPH,3.00pm-4.25pm,109L
+Wednesday,CEN,CEN-30,CEN 411,Structural Analysis and Design III,MRA3,3.00pm-4.25pm,D102L
+Wednesday,CEN,CEN-29,CEN 431,Environmental Engineering III,MJA2,3.00pm-4.25pm,CL1
+Wednesday,CEN,CEN-28,CEN 452,Transportation Engineering Sessional II,MAT,3.00pm-4.25pm,CL2
+Wednesday,BFT,BFT-35,CHEM 111,Chemistry,MSA5,3.00pm-4.25pm,116
+Wednesday,EEE,EEE-35,CHEM-112,Chemistry Lab,MJA,3.00pm-4.25pm,216L
+Wednesday,LLB,LLB-32A,CPC 353,Code of Civil Procedure I,MRI3,3.00pm-4.25pm,307
+Wednesday,CSE,CSE 34-D-A,CSE 213,Digital Logic Design,MTA2,3.00pm-4.25pm,111
+Wednesday,CSE,CSE-33B,CSE 233,Com. Organization and Architecture,MTA4,3.00pm-4.25pm,208
+Wednesday,DBA,BBA-29-C,MGT 302,Entrepreneurship & Small Business,MMR3,3.00pm-4.25pm,307
+Wednesday,EEE,EEE-34,BUS 227,Financial & Managerial Accounting,MSK,3.00pm-4.25pm,119
+Wednesday,EEE,EEE-36,EEE 111,Electrical Circuit I,MZN,3.00pm-4.25pm,105L
+Wednesday,ENG,ENG-35+36,ELIT 527,American Literature,MIA,3.00pm-4.25pm,D305
+Wednesday,DBA,BBA-35-B,ENG 102,Public Speaking,MRF,3.00pm-4.25pm,218
+Wednesday,DBA,BBA-34-B,ENG 200,Advanced Reading Strategy & Writing,MGJ,3.00pm-4.25pm,119
+Wednesday,ENG,ENG-31B,ENL 403,Twentieth Century Literature I,MGJ,3.00pm-4.25pm,D301
+Wednesday,DBA,BBA-31-E,FIN 301,Law & Practices of Banking,MKI,3.00pm-4.25pm,110
+Wednesday,ENG,ENG-34,HIS 102,History of Western Thoughts,MAY,3.00pm-4.25pm,218
+Wednesday,BFT,BFT-36,HIST 101,Hist. of the Emer. of Ind. Bang.,ASR,3.00pm-4.25pm,213
+Wednesday,CEN,CEN-35,HIST 101,Hist. of the Emer. of Ind. Bang.,MSW,3.00pm-4.25pm,B205
+Wednesday,CSE,CSE 35-D-A,HIST-101,Hist. of the Emer. of Ind. Bang.,FSC,3.00pm-4.25pm,306
+Wednesday,LLM,LLM-36,ILO 426,Law of International Organization,MAT2,3.00pm-4.25pm,B204
+Wednesday,JRN,JRN-30,BPJ 414,Magazine Editing & Display,MDA,3.00pm-4.25pm,204
+Wednesday,LLB,LLB-32B,LAB 354,Land Laws of Bangladesh,SSC,3.00pm-4.25pm,221
+Wednesday,LLB,LLB-31,PEL 461,Penal Laws II.,MZK,3.00pm-4.25pm,206
+Wednesday,DBA,BBA-33-C,MAT 101,BUSINESS MATHEMATICS II,MRA2,3.00pm-4.25pm,306
+Wednesday,CSE,CSE 33-D-C,MATH 215,Linear Algebra,MRA2,3.00pm-4.25pm,117
+Wednesday,LLB,LLB-33B,MEL 352,Mercantile Law -,MSH4,3.00pm-4.25pm,118
+Wednesday,DBA,BBA-31-C,MGT 300,Production and Operational Management,MOF,3.00pm-4.25pm,308
+Wednesday,DBA,BBA-32-A,MGT 301,Human Resource Management,PFA,3.00pm-4.25pm,206
+Wednesday,DBA,BBA-30-C,MGT 303,Operation and management of NGOs,MHF,3.00pm-4.25pm,305
+Wednesday,ENG,ENG-36A,MIS:100,Com. Concept,MTE,3.00pm-4.25pm,219
+Wednesday,DBA,BBA-33-A,MKT 300,Marketing Management,AZM,3.00pm-4.25pm,111
+Wednesday,DBA,BBA-34-A,STS 200,Business Statistics,MAIs,3.00pm-4.25pm,222
+Wednesday,BTE,BTE-35-D,TEX 124,Polymer Science,ADB,3.00pm-4.25pm,315
+Wednesday,BTE,BTE-33,TEX 311,Yarn Manufacturing Engineering-ll,MSM2,3.00pm-4.25pm,101L
+Wednesday,BTE,BTE-30-WPE,TEX 483,Wet Processing Engineering -III Lab,MRK,3.00pm-4.25pm,302 L
+Wednesday,DBA,BBA-32-C,ACC 301,Management Accounting,MPS,4.30pm-5.55pm,111
+Wednesday,SEC,SEC-31,ACC 402,Advanced Cost Accounting (BBA-,MAA,4.30pm-5.55pm,B204
+Wednesday,ENG,ENG-33A,ACC-100,Financial Accounting,MPS,4.30pm-5.55pm,211
+Wednesday,ENG,ENG-31B,BAG 201,Intro To Bengali Literature,MHT,4.30pm-5.55pm,310
+Wednesday,BFT,BFT-33 A,GMT 212,Garment Assembly Lab,SNA,4.30pm-5.55pm,C510L
+Wednesday,JRN,JRN-32,BPJ 308,Media & Society,TAE,4.30pm-5.55pm,D304
+Wednesday,BTE,BTE-35-D,CHEM 123,Chemistry-ll,MSA5,4.30pm-5.55pm,318
+Wednesday,CEN,CEN-31,CEN 332,Environmental Engineering Sessional-I,ADA,4.30pm-5.55pm,D101L
+Wednesday,CEN,CEN-32,CEN 361,Open Channel Flow,MRA3,4.30pm-5.55pm,D102L
+Wednesday,CEN,CEN-30,CEN 431,Environmental Engineering III,MJA2,4.30pm-5.55pm,CL1
+Wednesday,CEN,CEN-30,CEN 451,Transportation Engineering III,AHT,4.30pm-5.55pm,109L
+Wednesday,CEN,CEN-28,CEN 452,Transportation Engineering Sessional II,MAT,4.30pm-5.55pm,CL2
+Wednesday,LLB,LLB-32B,CPC 353,Code of Civil Procedure I,MRI3,4.30pm-5.55pm,118
+Wednesday,EEE,EEE-36,CSE 131,Com. Programming Language,MTR,4.30pm-5.55pm,B204
+Wednesday,CSE,CSE 31-D-C,CSE 323,Com. Networks,MAI3,4.30pm-5.55pm,112
+Wednesday,CSE,CSE-32-B,CSE 435,Data Communication,DIA (GT),4.30pm-5.55pm,116
+Wednesday,CSE,CSE 28-D-A,CSE-423,Simulation & Modeling,MAA (GT),4.30pm-5.55pm,318
+Wednesday,DBA,BBA-29-B,MGT 302,Entrepreneurship & Small Business,MIA2,4.30pm-5.55pm,222
+Wednesday,DBA,BBA-33-D,ECO 200,Macro Economics,MMR3,4.30pm-5.55pm,119
+Wednesday,CSE,CSE 33-D-C,ECO 213,Economics,MPC,4.30pm-5.55pm,215
+Wednesday,CSE,CSE-33B,ECO 213,Economics,MNT,4.30pm-5.55pm,208
+Wednesday,EEE,EEE-34,EEE 241,Electrical Machines I,MRT,4.30pm-5.55pm,D201L
+Wednesday,DBA,BBA-34-A,ENG 200,Advanced Reading Strategy & Writing,MRF,4.30pm-5.55pm,110
+Wednesday,ENG,ENG-32A,ENL 302,19th Century Literature – I,MJA3,4.30pm-5.55pm,D305
+Wednesday,ENG,ENG-34,ENL 202,Seventeenth Century Prose and Drama,MTM,4.30pm-5.55pm,219
+Wednesday,BFT,BFT-34,FASH 321,Fas. History II,MFC,4.30pm-5.55pm,D305
+Wednesday,ENG ,ENG-32B,HIS 202,History of Eastern Thoughts and Religion,MBS,4.30pm-5.55pm,221
+Wednesday,CSE,CSE 35-D-A,HIST-101,Hist. of the Emer. of Ind. Bang.,FSC,4.30pm-5.55pm,D301
+Wednesday,EEE,EEE-35,HUM-100,Bangladesh Studies,MSW,4.30pm-5.55pm,105L
+Wednesday,JRN,JRN-30,BPJ,"403, Broadcast Tech.s & Technology",MDA,4.30pm-5.55pm,204
+Wednesday,LLM,LLM-36,LHR 425,Law of Human Rights,MAT2,4.30pm-5.55pm,312
+Wednesday,LLB,LLB-33B,SRA 255,Specific Relief Act & Law of Limitation.,MZK,4.30pm-5.55pm,117
+Wednesday,BTE,BTE-36-D,MECH 112,Engineering Drawing-l,CMA,4.30pm-5.55pm,218
+Wednesday,DBA,BBA-32-A,MGT 302,Entrepreneurship & Small Business,MKM,4.30pm-5.55pm,113
+Wednesday,MKT,MKT-31,MKT 401,Advertising and Promotion,MNT,4.30pm-5.55pm,213
+Wednesday,BFT,BFT-29,PAT 322,Fas. Design II : Collection Development Lab,AIT,4.30pm-5.55pm,D105L
+Wednesday,CSE,CSE 34-D-A,STAT 235,Statistics,MSH,4.30pm-5.55pm,113
+Wednesday,BFT,BFT-32,TEX 222,Dyeing & Printing Lab,KSM,4.30pm-5.55pm,302L
+Wednesday,BTE,BTE-31,TEX 318,Fabric Structure & Design Lab,MSS,4.30pm-5.55pm,101 L
+Wednesday,BTE,BTE-29-AME,TEX 490,Maint. of Apparel Manufacturing Machinery,MTJ,4.30pm-5.55pm,C602L
+Thursday,BBA,BBA30,ACC 403,Advanced Auditing (BBA-,MSS2,8.30am-09.55am,215
+Thursday,BFT,BFT-35,ART 212,Fas. Art & Fas. Illustration Lab I,RHS,8.30am-09.55am,D302L
+Thursday,BFT,BFT-31,QLT 411,Apparel Quality Control Management,PMA,8.30am-09.55am,B204
+Thursday,JRN,JRN-33,BPJ 303,Feature writing,PKS,8.30am-09.55am,D304
+Thursday,JRN,JRN-31A,BPJ 402,Newspaper Editing and Display,MSZ,8.30am-09.55am,221
+Thursday,JRN,JRN-30,BPJ 406,Advertising,MPC2,8.30am-09.55am,204
+Thursday,BTE,BTE-36-D,ENG 101,Composition,MTM,8.30am-09.55am,110
+Thursday,CEN,CEN-35,HIST 101,Hist. of the Emer. of Ind. Bang.,MSW,8.30am-09.55am,109L
+Thursday,LLB,LLB-28,CLO 354,Comparative Law,SSC,8.30am-09.55am,312
+Thursday,CSE,CSE-33B,CSE 231,Operating System Concepts,CF-2 (New),8.30am-09.55am,208
+Thursday,CSE,CSE 30-D-A,CSE 331,Pattern Recognition,CF-1 (New),8.30am-09.55am,208
+Thursday,DBA,BBA-35-C,ENG 102,Public Speaking,AHF,8.30am-09.55am,318
+Thursday,EEE,EEE-31,EEE 333,Control System,MHA,8.30am-09.55am,B205
+Thursday,ENG,ENG-35+36,ELIT 523,20th Century Modern Poetry,SKT,8.30am-09.55am,211
+Thursday,ENG,ENG-32B,ENL 304,Classics in Translation I,MTA,8.30am-09.55am,206
+Thursday,ENG,ENG-34,ENL 305,Intro. to Linguistics,RKM,8.30am-09.55am,310
+Thursday,ENG,ENG-31B,ENL 306,Literary Theory-1,JBS(GT),8.30am-09.55am,212
+Thursday,LLB,LLB-34A,FLB-251,Fiscal Law Of Bangladesh,MRI3,8.30am-09.55am,307
+Thursday,BFT,BFT-34,GMT 111,Sewing Technology,MFC,8.30am-09.55am,221
+Thursday,BFT,BFT-33 A,GMT 212,Garment Assembly Lab,SNA,8.30am-09.55am,C510L
+Thursday,LLB,LLB-36B,HIST-101,Hist. of the Emer. of Ind. Bang.,FSC,8.30am-09.55am,308
+Thursday,DBA,BBA-33-C,HUM-100,Bangladesh Studies,ASR,8.30am-09.55am,119
+Thursday,LLM,LLM-36,IEL 427,International Environmental Law-,ABT,8.30am-09.55am,305
+Thursday,JRN,JRN-34,MIS 100,Com. Concept,MRB,8.30am-09.55am,D301
+Thursday,LLB,LLB-35A,ENG 102,Public Speaking,MIA,8.30am-09.55am,117
+Thursday,BTE,BTE-35-A2,MECH 128,Engineering Drawing-ll,CMA,8.30am-09.55am,101L
+Thursday,DBA,BBA-32-C,MGT 302,Entrepreneurship & Small Business,MIA2,8.30am-09.55am,315
+Thursday,DBA,BBA-35-B,MIS 100,Com. Concept,MTB,8.30am-09.55am,222
+Thursday,LLB,LLB-36A,MIS-100,Com. Concept,MAH3,8.30am-09.55am,118
+Thursday,ENG,ENG-36A,MIS:100,Com. Concept,MTE,8.30am-09.55am,219
+Thursday,BFT,BFT-30,MKT 200,Principle of Marketing,MNT,8.30am-09.55am,223L
+Thursday,BFT,BFT-29,PAT 322,Fas. Design II : Collection Development Lab,AIT,8.30am-09.55am,D105L
+Thursday,CSE,CSE-36-B2,PHY 112,Physics Lab,MMU,8.30am-09.55am,220L
+Thursday,DBA,BBA-34-B,STS 200,Business Statistics,MAIS,8.30am-09.55am,211
+Thursday,BTE,BTE-32,TEX 322,Wet Processing Engineering-ll Lab,KSM,8.30am-09.55am,302-L
+Thursday,BTE,BTE-31,TEX 324,Apparel Manufacturing Engineering-ll Lab,NTH,8.30am-09.55am,305
+Thursday,BTE,BTE-29-WPE,TEX 482,Wet Processing Engineering -III,MRK,8.30am-09.55am,204
+Thursday,BTE,BTE-29-AME,TEX 491,Maint. of Apparel Manuf. Machinery Lab,MTJ,8.30am-09.55am,C 602 L
+Thursday,BTE,BTE-30-AME,TEX 495,Apparel Manufacturing Engineering -IV,MSS,8.30am-09.55am,D 104 L
+Thursday,SEC,SEC30,ACC,"406, Advanced Financial Accounting II (BBA-",MAA,10.00am-11.25am,215
+Thursday,SEC,SEC-31,ACC 401,Advanced Financial Accounting -I(BBA-,MSK,10.00am-11.25am,119
+Thursday,BFT,BFT-35,ART 212,Fas. Art & Fas. Illustration Lab I,RHS,10.00am-11.25am,D302L
+Thursday,BFT,BFT-34,PHY 111,Physics,MMU,10.00am-11.25am,117
+Thursday,JRN,JRN-35,BPJ 104,Media Writing Skills: Bengali,TAE,10.00am-11.25am,117
+Thursday,JRN,JRN-34,BPJ 206,Contemporary Bangladesh Affairs,PKS,10.00am-11.25am,D305
+Thursday,BTE,BTE-35-D,MATH 121,Mathematics-ll,MOG,10.00am-11.25am,218
+Thursday,BFT,BFT-31,BUS 321,Business Communication,MNT,10.00am-11.25am,223L
+Thursday,CEN,CEN-31,CEN 353,Transportation Engineering II,MST,10.00am-11.25am,CL1
+Thursday,BTE,BTE-36-D,CHEM 112,Chemistry-l Lab,MSA5,10.00am-11.25am,216 L
+Thursday,CEN,CEN-34,CHEM 114,Inorganic Quantitative Analysis Sessional,MJA,10.00am-11.25am,CL2
+Thursday,LLB,LLB-31,CRP 454,Code of Criminal Procedure I,MRI3,10.00am-11.25am,206
+Thursday,CSE,CSE 33-D-A,CSE 231,Operating System Concepts,MNJ,10.00am-11.25am,111
+Thursday,CSE,CSE-32-B,CSE 435,Data Communication,DIA(GT),10.00am-11.25am,116
+Thursday,DBA,BBA-35-C,ENG 102,Public Speaking,AHF,10.00am-11.25am,219
+Thursday,CEN,CEN-36,EEE 166,Basic Electrical Technology Lab,MHA,10.00am-11.25am,301L
+Thursday,EEE,EEE-31,EEE 361,Power System Analysis,MSM,10.00am-11.25am,D205L
+Thursday,ENG,ENG-35+36,ELIT 523,20th Century Modern Poetry,SKT,10.00am-11.25am,213
+Thursday,LLB,LLB-35A,ENG 102,Public Speaking,MIA,10.00am-11.25am,306
+Thursday,ENG,ENG-29B,ENG 201,Technical Writing,MFT,10.00am-11.25am,113
+Thursday,ENG,ENG-31B,ENL 306,Literary Theory-1,JBS(GT),10.00am-11.25am,212
+Thursday,ENG,ENG-30B,ENL 406,Classics in Translation II,MMI,10.00am-11.25am,B205
+Thursday,BFT,BFT-33,GMT 123,Clothing Materials and Store Management,MFC,10.00am-11.25am,C510L
+Thursday,HRM,HRM-31,HRM 401,Human Resource planning and policy (BBA-,MHF,10.00am-11.25am,222
+Thursday,LLB,LLB-35B,HUM 100,Bangladesh Studies.,MSW,10.00am-11.25am,308
+Thursday,DBA,BBA-33-D,HUM-100,Bangladesh Studies,KCB,10.00am-11.25am,211
+Thursday,LLB,LLB-28,ITL 360,International Trade Law,ABT,10.00am-11.25am,307
+Thursday,JRN,JRN-31,ECO 100,Economics,MKM,10.00am-11.25am,D304
+Thursday,LLB,LLB-36B,MIS-100,Com. Concept.,MAH3,10.00am-11.25am,D301
+Thursday,LLB,LLB-34A,LOC155,Law of Contract,MSA,10.00am-11.25am,118
+Thursday,CSE,CSE 36-A,MATH 115,Diff.Cal. and Co. Geometry,DSK,10.00am-11.25am,112
+Thursday,CEN,CEN-35,MATH 121,Mathematics II,MOG,10.00am-11.25am,D102L
+Thursday,CSE,CSE-33B,MATH 325,Diff. Equ. & amp Fourier analysis,MRA2,10.00am-11.25am,218
+Thursday,EEE,EEE-36,Math 115,Differential and Integral Calculus,SRA,10.00am-11.25am,105L
+Thursday,BTE,BTE-31,MECH 211,Elements of Theory of Machines & Machine Design,CMA,10.00am-11.25am,116
+Thursday,BFT,BFT-32,MKT 200,Principle of Marketing,MRC,10.00am-11.25am,D105L
+Thursday,BBA,BBA-31,MKT 603,Consumer Behavior (BBA–,AZM,10.00am-11.25am,306
+Thursday,CSE,CSE-36-B2,PHY 112,Physics Lab,MMU,10.00am-11.25am,220L
+Thursday,BTE,BTE-32,TEX 313,Fabric Manufacturing Engineering-ll,ZBS,10.00am-11.25am,101 L
+Thursday,BTE,BTE-30-FME,TEX 470,Maint. of Fabric Manufacturing Machinery,MJK2,10.00am-11.25am,204
+Thursday,BTE,BTE-29-WPE,TEX 483,Wet Processing Engineering -III Lab,MRK,10.00am-11.25am,302 L
+Thursday,BTE,BTE-29-AME,TEX 492,Apparel Manufacturing Engineering -III,MTJ,10.00am-11.25am,C 602 L
+Thursday,BTE,BTE-30-AME,TEX 495,Apparel Manufacturing Engineering -IV,MSS,10.00am-11.25am,D 104 L
+Thursday,DBA,BBA-31-D,ACC 302,Taxation,MTY,11.30am-12.55pm,215
+Thursday,SEC,SEC-30,ACC 405,Intro. to Accounting Theory and Practice (BBA-,MSK,11.30am-12.55pm,B204
+Thursday,JRN,JRN-35,BPJ 104,Media Writing Skills: Bengali,TAE,11.30am-12.55pm,D305
+Thursday,JRN,JRN-34,BPJ 207,Contemporary World Affairs,PKS,11.30am-12.55pm,D304
+Thursday,BTE,BTE-35-D,BUS 321,Business Communicative English,MTM,11.30am-12.55pm,315
+Thursday,DBA,BBA-36-A,BUS 100,Intro. to Business,MKI,11.30am-12.55pm,310
+Thursday,CEN,CEN-33,CEN 261,Fluid Mechanics,SMA,11.30am-12.55pm,D102L
+Thursday,CEN,CEN-31,CEN 354,Transportation Engineering Sessional I,MST,11.30am-12.55pm,CL1
+Thursday,CEN,CEN-28,CEN 433,Environmental Engineering IV,MJA2,11.30am-12.55pm,CL2
+Thursday,CEN,CEN-35,CHEM 111,Chemistry I,MJA,11.30am-12.55pm,B204
+Thursday,CSE,CSE 36-A,CSE 111,Com. Fund. & Programming Tech.s,MAE,11.30am-12.55pm,113
+Thursday,CSE,CSE 36-D-B,CSE 113,Electrical Engineering,NFW,11.30am-12.55pm,305
+Thursday,CSE,CSE 33-D-A,CSE 227,Algorithm,MMB,11.30am-12.55pm,208
+Thursday,CSE,CSE 31-D-A,CSE 321,Software Engineering,MFA2,11.30am-12.55pm,111
+Thursday,CSE,CSE 31-D-B,CSE 323,Com. Networks,MAI3,11.30am-12.55pm,112
+Thursday,DBA,BBA-29-C,MGT 302,Entrepreneurship & Small Business,MMR3,11.30am-12.55pm,308
+Thursday,DBA,BBA-35-A,ECO 100,Micro Economics,AZM,11.30am-12.55pm,214
+Thursday,CEN,CEN-36,EEE 166,Basic Electrical Technology Lab,MHA,11.30am-12.55pm,301L
+Thursday,EEE,EEE-31,EEE 467,Renewable Energy Conversion,MSM,11.30am-12.55pm,D201L
+Thursday,EEE,EEE-36,ENG 101,Composition,MGJ,11.30am-12.55pm,D205L
+Thursday,LLB,LLB-36B,ENG 101,Composition,MFT,11.30am-12.55pm,308
+Thursday,ENG,ENG-31A,FIN 200,Principles of Business Finance,MJN,11.30am-12.55pm,110
+Thursday,ENG,ENG-32B,ENL 201,History of English Literature – 2,MMR2,11.30am-12.55pm,206
+Thursday,ENG,ENG-32A,ENL 304,Classics in Translation I,MTA,11.30am-12.55pm,312
+Thursday,BFT,BFT-30,GMT 421,Ind. Gar.Wash: Care Lab. & Finishing Room,MIK,11.30am-12.55pm,204
+Thursday,BTE,BTE-36-D,HIST 101,Hist. of the Emer. of Ind. Bang.,ASR,11.30am-12.55pm,118
+Thursday,BBA,BBA-30,HRM 405,Organ. change and development (BBA-,MHF,11.30am-12.55pm,B205
+Thursday,CEN ,CEN-34,HUM 110,Bangladesh Studies,FSC,11.30am-12.55pm,109L
+Thursday,JRN,JRN 30,BPJ 406,Advertising,MPC2,11.30am-12.55pm,B205
+Thursday,LLB,LLB-36A,JUR152,Jurisprudence,RRS,11.30am-12.55pm,118
+Thursday,LLB,LLB-34A,LET252,Law of Equity and Trust,MSA,11.30am-12.55pm,221
+Thursday,LLB,LLB-31,ADR 453,Alternative Dispute Resolution and Trial Advocacy-,MRI3,11.30am-12.55pm,315
+Thursday,CSE ,CSE 35-D-A,MATH 135,Discrete Mathematics,CF-4 (New),11.30am-12.55pm,310
+Thursday,ENG ,ENG-34,MGT 200,Principles of Management,MPC,11.30am-12.55pm,318
+Thursday,DBA ,BBA-33-D,MGT 201,Organ. Behavior,DUG,11.30am-12.55pm,206
+Thursday,DBA ,BBA-35-D-C,MIS 100,Com. Concept,MAE,11.30am-12.55pm,119
+Thursday,LLM,LLM-35,PRI 429,Private International Law,MAP,11.30am-12.55pm,307
+Thursday,CSE,CSE 32-D-B,STAT 235,Statistics,MSH3,11.30am-12.55pm,D301
+Thursday,DBA,BBA-35-B,STS 100,Basic Statistics,MAIs,11.30am-12.55pm,318
+Thursday,DBA ,BBA-32,STS 201,Research Methodology(,MSH,11.30am-12.55pm,213
+Thursday,BTE ,BTE-33,TEX 223,Apparel Manufacturing Engineering-l,NTH,11.30am-12.55pm,302L
+Thursday,BTE ,BTE-32,TEX 313,Fabric Manufacturing Engineering-ll,ZBS,11.30am-12.55pm,101L
+Thursday,BTE,BTE-30-FME,TEX 474,Special Fabric Manufacturing,MJK2,11.30am-12.55pm,D104L
+Thursday,BTE,BTE-32,EEE 222,Elements of Electrical Engg. & Electronics Lab,MRI2,1.30pm-02.55pm,201 L
+Thursday,CEN,CEN-31,CEN 354,Transportation Engineering Sessional I,MAT,1.30pm-02.55pm,CL1
+Thursday,CEN,CEN-28,CEN 417,Design of Steel Structures,ADA,1.30pm-02.55pm,CL2
+Thursday,LLB ,LLB-31,CPC 357,Code of Civil Procedure II,RRS,1.30pm-02.55pm,212
+Thursday,CSE ,CSE 36-A,CSE 113,Electrical Engineering,NFW,1.30pm-02.55pm,110
+Thursday,CSE,CSE 35-D-A,CSE 123,Electronics,MAB,1.30pm-02.55pm,312
+Thursday,CSE,CSE 29-D-B,CSE 341,Artificial Intelligence,MAH3,1.30pm-02.55pm,116
+Thursday,CSE,CSE 30-D-A,CSE 411,Compiler,MMR,1.30pm-02.55pm,208
+Thursday,DBA,BBA-35-C,STS100,Basic Statistics,MSH3,1.30pm-02.55pm,222
+Thursday,DBA,BBA-35-B,ECO 100,Micro Economics,MRS2,1.30pm-02.55pm,119
+Thursday,EEE,EEE-36,EEE 111,Electrical Circuit I,MZN,1.30pm-02.55pm,D205L
+Thursday,EEE,EEE-30,EEE 416,Microwave Engineering Lab,MHA,1.30pm-02.55pm,105L
+Thursday,EEE,EEE-29,EEE 470,Power Electronics LAB,MRI2,1.30pm-02.55pm,D201L
+Thursday,ENG,ENG-35+36,ELIT 520,The Old and Middle English Literature,MAY,1.30pm-02.55pm,308
+Thursday,ENG,ENG-35,ENG 103,Listening and Speaking Skills,MJA3,1.30pm-02.55pm,219
+Thursday,EEE,EEE-35,ENG 125,Technical English,MFC2,1.30pm-02.55pm,301L
+Thursday,BFT,BFT-35,ENG 200,Advanced reading strategies and writing,MIA,1.30pm-02.55pm,305
+Thursday,ENG,ENG-36A,ENL 102,History of English Literature – I,MBS,1.30pm-02.55pm,222
+Thursday,ENG,ENG-30-A,ENL 405,Literary Theory II,MHC,1.30pm-02.55pm,111
+Thursday,BFT,BFT-31,FASH 421,Fas. Photography Lab,MSF,1.30pm-02.55pm,D302L
+Thursday,ENG,ENG-31B,FIN 200,Principles of Business Finance,MJN,1.30pm-02.55pm,307
+Thursday,BFT,BFT-30,GMT 421,Ind. Garment Wash: Care Labeling & Finishing Room,MIK,1.30pm-02.55pm,204
+Thursday,DBA,DBA-31,HRM 402,Industrial Relations (BBA-,MAR2,1.30pm-02.55pm,308
+Thursday,CSE,CSE 34-D-A,HUM-100,Bangladesh Studies,KCB,1.30pm-02.55pm,113
+Thursday,LLM,LLM-36,ILO 426,Law of International Organization,MAT2,1.30pm-02.55pm,218
+Thursday,JRN,JRN-33,BPJ 302,Comprehensive Editing,MSZ,1.30pm-02.55pm,D304
+Thursday,LLB,LLB-34A,LIL 254,Labour & Industrial Law,MSH4,1.30pm-02.55pm,D305
+Thursday,LLB,LLB-35A,LEH 151,Legal History and Roman law,SSC,1.30pm-02.55pm,221
+Thursday,LLB,LLB-35B,LOT 156,Law of Torts,MAP,1.30pm-02.55pm,117
+Thursday,CEN,CEN-33,MATH 235,Vector Analysis and Statistics,NKC,1.30pm-02.55pm,D102L
+Thursday,CSE,CSE 31-D-A,MATH 335,Mathematical and Probabilistic Analysis,ARS,1.30pm-02.55pm,112
+Thursday,DBA,BBA-32-D,MGT 301,Human Resource Management,MAN,1.30pm-02.55pm,D301
+Thursday,DBA,BBA-29-A,MGT 303,Operation and management of NGOs,MHF,1.30pm-02.55pm,214
+Thursday,DBA,BBA-30-B,MGT 303,Operation and management of NGOs,DUG,1.30pm-02.55pm,305
+Thursday,DBA,BBA-35-A,MIS 100,Com. Concept,MAE,1.30pm-02.55pm,218
+Thursday,ENG,ENG-32A,MKT 200,Principles of Marketing,MRC,1.30pm-02.55pm,D301
+Thursday,DBA,DBA-31,MKT 402,Marketing Research (BBA-,MMR3,1.30pm-02.55pm,307
+Thursday,BTE ,BTE-35-D,PHY 121,Physics-ll,GT (PHY),1.30pm-02.55pm,318
+Thursday,BTE ,BTE-33,TEX 223,Apparel Manufacturing Engineering-l,NTH,1.30pm-02.55pm,302L
+Thursday,BTE ,BTE-30-FME,TEX 471,Maint. of Fabric Manufacturing Lab,MJK2,1.30pm-02.55pm,101-L
+Thursday,BFT,BFT-28,PAT 412,Fas. Des. III: Final Dress Sub. Lab,AIT,3.00pm-4.25pm,C510L
+Thursday,BTE,BTE-33,EEE 222,Elements of Electrical Engg. & Electronics Lab,MRI2,3.00pm-4.25pm,105L
+Thursday,DBA,BBA-35-B,BUS 200,Business Communication,MSK,3.00pm-4.25pm,218
+Thursday,CEN,CEN-28,CEN 403,Professional Practices & Communication,ADA,3.00pm-4.25pm,CL1
+Thursday,CEN,CEN-29,CEN 451,Transportation Engineering III,MAT,3.00pm-4.25pm,CL2
+Thursday,LLM,LLM-36,CJP 416,Criminal Justice and Due process,RRS,3.00pm-4.25pm,310
+Thursday,CSE,CSE 34-D-A,CSE 211,Object-Oriented Programming,MJK,3.00pm-4.25pm,110
+Thursday,CSE,CSE 31-D-C,CSE 232,Com. Networks,MAI3,3.00pm-4.25pm,111
+Thursday,BFT ,BFT-34,CSE 312,E Fas. I Lab,MAI2,3.00pm-4.25pm,223L
+Thursday,CSE,CSE 30-D-B,CSE 331,Pattern Recognition,MSD,3.00pm-4.25pm,206
+Thursday,CSE,CSE 31-D-A,CSE 333,Com. Peripherals and Interfacing,CF-1 (New),3.00pm-4.25pm,112
+Thursday,CSE,CSE 29-D-B,CSE 341,Artificial Intelligence,MAH3,3.00pm-4.25pm,215
+Thursday,CSE,CSE 32-D-B,CSE 413,Micro. and Assembly Programming,CF-3 (New),3.00pm-4.25pm,312
+Thursday,DBA,BBA-29-C,MGT 303,Operation and management of NGOs,MHF,3.00pm-4.25pm,307
+Thursday,DBA,BBA-33-E,ECO 200,Macro Economics,MPC,3.00pm-4.25pm,306
+Thursday,EEE,EEE-35,EEE 121,Electrical Circuit II,DKC,3.00pm-4.25pm,211
+Thursday,EEE,EEE-30,EEE 416,Microwave Engineering Lab,MHA,3.00pm-4.25pm,105L
+Thursday,ENG,ENG-35+36,ELIT 520,The Old and Middle English Literature,MAY,3.00pm-4.25pm,D305
+Thursday,DBA ,BBA-36-A,ENG 101,Composition,MFC2,3.00pm-4.25pm,219
+Thursday,CSE ,CSE 36-A,ENG 101,Composition,MGJ,3.00pm-4.25pm,113
+Thursday,ENG,ENG-32A,ENL 302,19th Century Literature – I,MJA3,3.00pm-4.25pm,221
+Thursday,BFT,BFT-31,FASH 421,Fas. Photography Lab,MSF,3.00pm-4.25pm,D302L
+Thursday,DBA,BBA-34-C,FIN 201,Principles of Insurance,MJN,3.00pm-4.25pm,211
+Thursday,DBA,BBA-32-D,FIN 300,Financial Management,MKI,3.00pm-4.25pm,D304
+Thursday,LLB ,LLB-32A,GCA 358,General Clauses Act & Interpretation of Statutes,MAT2,3.00pm-4.25pm,118
+Thursday,HRM,HRM-30,HRM 404,Training & Development BBA-,MAR2,3.00pm-4.25pm,112
+Thursday,ENG ,ENG-35,HUM-100,Bangladesh Studies,ASR,3.00pm-4.25pm,219
+Thursday,JRN,JRN 33-A,BPJ 302,Comprehensive Editing,MSZ,3.00pm-4.25pm,208
+Thursday,LLB,LLB-35B,LEH 151,Legal History and Roman law,SSC,3.00pm-4.25pm,117
+Thursday,DBA,BBA-31-E,MGT 300,Production and operation Management,DUG,3.00pm-4.25pm,D305
+Thursday,DBA,BBA-32-B,MGT 301,Human Resource Management,MAN,3.00pm-4.25pm,112
+Thursday,BTE ,BTE-35-D,PHY 121,Physics-ll,GT (PHY),3.00pm-4.25pm,318
+Thursday,LLM,LLM-35,POC 419,Principles of Civil Litigation –,MSH4,3.00pm-4.25pm,B204
+Thursday,BTE ,BTE-30-FME,TEX 476,Fabric Manufacturing Engineering -IV Lab,MJK2,3.00pm-4.25pm,D104L
+Thursday,CEN,CEN-29,CEN 415,Prestressed Concrete,ADA,4.30pm-5.55pm,CL2
+Thursday,CSE,CSE 34-D-A,CSE 213,Digital Logic Design,MTA2,4.30pm-5.55pm,111
+Thursday,CSE,CSE 31-D-C,CSE 317,Theory of Computing,MTM2,4.30pm-5.55pm,110
+Thursday,EEE,EEE-33,EEE 325,Digital Signal Processing I,DKC,4.30pm-5.55pm,117
+Thursday,EEE,EEE-30,EEE 419,Mobile Cellular Communication,MNB,4.30pm-5.55pm,B204
+Thursday,ENG,ENG-30A,201-,Technical Writing,MAY,4.30pm-5.55pm,111
+Thursday,ENG,ENG-32A,ENL 201,History of English Literature – 2,MMR2,4.30pm-5.55pm,D304
+Thursday,LLB,LLB-32A,GCA 358,General Clauses Act & Interpretation of Statutes,MAT2,4.30pm-5.55pm,118
+Thursday,LLM,LLM 35,POC 419,Principles of Civil Litigation -,MSH4,4.30pm-5.55pm,B205
