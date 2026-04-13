@@ -1,0 +1,112 @@
+[
+  {
+    "id": "notice_001",
+    "title": "Campus Closed Tomorrow",
+    "description": "Due to heavy rainfall, all academic activities will remain suspended tomorrow.",
+    "type": "general",
+    "audience": ["student", "teacher", "staff"],
+    "author": "Authority",
+    "createdAt": "2026-04-09T08:00:00Z",
+    "priority": "high",
+    "isPublished": true
+  },
+  {
+    "id": "notice_002",
+    "title": "Midterm Exam Schedule Released",
+    "description": "Students can now check the updated midterm exam schedule from the portal.",
+    "type": "general",
+    "audience": ["student"],
+    "author": "Admin",
+    "createdAt": "2026-04-08T10:30:00Z",
+    "priority": "medium",
+    "isPublished": true
+  },
+  {
+    "id": "notice_003",
+    "title": "Faculty Meeting at 2 PM",
+    "description": "All teachers are requested to attend the monthly meeting in Conference Room.",
+    "type": "teacher",
+    "audience": ["teacher"],
+    "author": "Authority",
+    "createdAt": "2026-04-09T09:15:00Z",
+    "priority": "high",
+    "isPublished": true
+  },
+  {
+    "id": "notice_004",
+    "title": "Assignment Submission Deadline",
+    "description": "The last date for assignment submission has been extended to April 15.",
+    "type": "general",
+    "audience": ["student"],
+    "author": "Teacher",
+    "createdAt": "2026-04-07T14:00:00Z",
+    "priority": "medium",
+    "isPublished": true
+  },
+  {
+    "id": "notice_005",
+    "title": "Library Maintenance Notice",
+    "description": "Library services will be unavailable from 10 AM to 2 PM due to maintenance.",
+    "type": "staff",
+    "audience": ["staff"],
+    "author": "Admin",
+    "createdAt": "2026-04-09T07:45:00Z",
+    "priority": "low",
+    "isPublished": true
+  },
+  {
+    "id": "notice_006",
+    "title": "Workshop on Web Development",
+    "description": "A workshop on modern web development will be held this Saturday.",
+    "type": "general",
+    "audience": ["student", "teacher"],
+    "author": "Admin",
+    "createdAt": "2026-04-06T11:20:00Z",
+    "priority": "medium",
+    "isPublished": true
+  },
+  {
+    "id": "notice_007",
+    "title": "Staff Attendance Update",
+    "description": "All staff members must update their attendance records before 5 PM daily.",
+    "type": "staff",
+    "audience": ["staff"],
+    "author": "Authority",
+    "createdAt": "2026-04-08T13:10:00Z",
+    "priority": "high",
+    "isPublished": true
+  },
+  {
+    "id": "notice_008",
+    "title": "Classroom Change Notice",
+    "description": "Room for CSE-203 has been shifted to Room 305 from tomorrow.",
+    "type": "general",
+    "audience": ["student", "teacher"],
+    "author": "Admin",
+    "createdAt": "2026-04-09T12:00:00Z",
+    "priority": "medium",
+    "isPublished": true
+  },
+  {
+    "id": "notice_009",
+    "title": "Teacher Training Session",
+    "description": "A training session for teachers on new curriculum updates will be आयोजित.",
+    "type": "teacher",
+    "audience": ["teacher"],
+    "author": "Authority",
+    "createdAt": "2026-04-05T15:30:00Z",
+    "priority": "medium",
+    "isPublished": true
+  },
+  {
+    "id": "notice_010",
+    "title": "System Maintenance Downtime",
+    "description": "The notice system will be down from 12 AM to 3 AM for maintenance.",
+    "type": "general",
+    "audience": ["student", "teacher", "staff"],
+    "author": "Admin",
+    "createdAt": "2026-04-09T06:30:00Z",
+    "priority": "high",
+    "isPublished": true
+  }
+]

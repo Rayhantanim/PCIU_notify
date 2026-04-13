@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Hero from "../Components/Hero";
+import NoticeTabs from "../Components/NoticeCategory";
+import Notices from "../Components/Notices";
 
 export default function Profile() {
   const API = "http://localhost:5000";
@@ -57,9 +60,20 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white p-8">
+    <div className=" relative min-h-screen bg-transparent flex flex-col justify-center items-center">
+      {/* hero section */}
+      <div className="w-full h-full"><Hero></Hero></div>
 
-      <div className="max-w-3xl mx-auto bg-white/5 border border-white/10 p-6 rounded-2xl">
+      {/* notices */}
+         <div>
+          <Notices></Notices>
+         </div>
+      {/* Notice category */}
+     <div className="flex justify-center items-center my-6">
+       <NoticeTabs></NoticeTabs>
+     </div>
+      {/* Profile Card */}
+      <div className=" bg-white w-full max-w-3xl rounded-2xl shadow-md overflow-hidden">
 
         {/* HEADER */}
         <div className="flex justify-between items-center mb-6">
@@ -131,6 +145,8 @@ export default function Profile() {
         )}
 
       </div>
+
+      
     </div>
   );
 }
