@@ -13,6 +13,8 @@ import HomePage from "./Pages/HomePage";
 // import HomePage from "./Pages/Home";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import DashboardLayout from "./Pages/DashboardLayout/DashboardLayout";
+import Dashboard from "./Components/dashboards/Dashboard";
+import AllNotices from "./Pages/AllNotices";
 
 const App = () => {
   return (
@@ -42,8 +44,8 @@ const App = () => {
       </Routes>
     <Routes>
   <Route path="dashboard" element={<DashboardLayout />}>
-    {/* <Route index element={<H />} /> */}
-    {/* <Route path="settings" element={<Settings />} /> */}
+    <Route path="dashboardindex" element={<Dashboard />} />
+    <Route path="allnotices" element={<AllNotices/>} />
   </Route>
 </Routes>
 

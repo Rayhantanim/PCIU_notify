@@ -4,7 +4,7 @@ const Notices = () => {
   return (
   <div>
     {/* search */}
-      <div className='w-full flex justify-center text-[#515050] mb-10 bg-white'>
+      {/* <div className='w-full flex justify-center text-[#515050] mb-10 bg-white'>
       <div className=' w-[1660px] bg-white h-16  -mt-6 z-10 flex justify-between items-center px-10 rounded-full border-2 border-[#062359]'>
         <div className='flex justify-center items-center  gap-10'>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -20,10 +20,10 @@ const Notices = () => {
  <button className="btn border text-white bg-[#1B31A3] px-5 py-2 rounded-xl font-bold">Search</button>
 </div>
       </div>
-    </div>
+    </div> */}
 
     {/* notices */}
-    <div className='w-full flex justify-center gap-6 items-center'>
+    <div className='w-full flex flex-col justify-center gap-6 items-center'>
         <div className='w-2/3 border h-96 px-4'>
          <h1 className='text-2xl'>Important Notices </h1>
          <div>
