@@ -6,19 +6,23 @@ const bcrypt = require("bcryptjs");
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173"
+}));
 app.use(express.json());
 
 app.use("/api", require("./routes/auth")); 
-
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log("DB Error:", err));
 
-  app.get("/", (req, res) => {
-  res.send("✅ Server is Running!");
+app.get("/", (req, res) => {
+  res.send("OK");
 });
 
+app.listen(5000, () => {
+  console.log("Server running on 5000");
+});
 // let isConnected = false;
 // async function connectToMongoDB() {
 //   try{

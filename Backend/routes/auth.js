@@ -7,14 +7,22 @@ const User = require("../models/User");
 router.post("/check-email", async (req, res) => {
     try {
         const { email } = req.body;
-        const existingUser = await User.findOne({ email: email.toLowerCase() });
+
+        if (!email) {
+            return res.json({ available: false });
+        }
+
+        const cleanEmail = email.toLowerCase();
+
+        const existingUser = await User.findOne({ email: cleanEmail });
+
         res.json({ available: !existingUser });
+
     } catch (err) {
         console.error(err);
         res.status(500).json({ available: false });
     }
 });
-
 
 
 // SIGNUP
