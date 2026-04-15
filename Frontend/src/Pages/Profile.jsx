@@ -16,19 +16,19 @@ export default function Profile() {
   const [form, setForm] = useState({});
 
   // GET USER DATA
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await axios.get(`${API}/api/user/${userId}`);
-        setUser(res.data);
-        setForm(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     try {
+  //       const res = await axios.get(`${API}/api/user/${userId}`);
+  //       setUser(res.data);
+  //       setForm(res.data);
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   };
 
-    if (userId) fetchUser();
-  }, [userId]);
+  //   if (userId) fetchUser();
+  // }, [userId]);
 
   // HANDLE CHANGE
   const handleChange = (e) => {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-
+import { useNavigate } from "react-router-dom";
 export default function RoleSignupForm({ role = "student", goBack }) {
   // const API = "https://pciu-notify-backend.vercel.app";
   const API = "http://localhost:5000";
@@ -51,7 +51,7 @@ export default function RoleSignupForm({ role = "student", goBack }) {
   const validateEmail = (email) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
-
+const navigate = useNavigate();
   useEffect(() => {
     const { password } = formData;
     setPasswordValid({
@@ -82,23 +82,31 @@ export default function RoleSignupForm({ role = "student", goBack }) {
       return;
     }
 
-    const timer = setTimeout(async () => {
-      setCheckingEmail(true);
-      try {
-        const res = await fetch(`${API}/api/check-email`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: formData.email }),
-        });
-        const data = await res.json();
-        setEmailAvailable(data.available);
-      } catch (err) {
-        console.error(err);
-        setEmailAvailable(false);
-      } finally {
-        setCheckingEmail(false);
-      }
-    }, 500);
+  const currentEmail = formData.email;
+
+const timer = setTimeout(async () => {
+  setCheckingEmail(true);
+
+  try {
+    const res = await fetch(`${API}/api/check-email`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: currentEmail }),
+    });
+
+    const data = await res.json();
+
+    if (currentEmail === formData.email) {
+      setEmailAvailable(data.available);
+    }
+
+  } catch (err) {
+    console.error(err);
+    setEmailAvailable(false);
+  } finally {
+    setCheckingEmail(false);
+  }
+}, 500);
 
     return () => clearTimeout(timer);
   }, [formData.email]);
@@ -175,6 +183,7 @@ export default function RoleSignupForm({ role = "student", goBack }) {
 
       toast.success("Signup successful 🎉");
       console.log(data);
+      navigate('/profile')
     } catch (err) {
       toast.error("Server error ⚠️");
     }

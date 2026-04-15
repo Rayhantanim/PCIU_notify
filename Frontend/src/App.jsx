@@ -12,6 +12,7 @@ import LoginPage from "./Pages/LoginPage";
 import HomePage from "./Pages/HomePage";
 // import HomePage from "./Pages/Home";
 import ProtectedRoute from "./auth/ProtectedRoute";
+import DashboardLayout from "./Pages/DashboardLayout/DashboardLayout";
 
 const App = () => {
   return (
@@ -29,15 +30,22 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-        <Route
+          <Route path="/profile" element={<Profile />} />
+        {/* <Route
           path="/profile"
           element={
             <ProtectedRoute>
               <Profile />
             </ProtectedRoute>
           }
-        />
+        /> */}
       </Routes>
+    <Routes>
+  <Route path="dashboard" element={<DashboardLayout />}>
+    {/* <Route index element={<H />} /> */}
+    {/* <Route path="settings" element={<Settings />} /> */}
+  </Route>
+</Routes>
 
       {/* <Routes> */}
       {/* <Route path="/" element={<LandingPage />} /> */}
@@ -46,7 +54,7 @@ const App = () => {
       {/* <Route path="/" element={<Login/>} /> */}
       {/* <Route path="/login" element={<Login />} /> */}
       {/* <Route path="/signup" element={<Signup />} /> */}
-      {/* <Route path="/profile" element={<Profile />} /> */}
+    
       {/* <Route path="/test" element={<LandingPage />} /> */}
       {/* </Routes> */}
 
