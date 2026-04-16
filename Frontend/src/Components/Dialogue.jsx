@@ -5,6 +5,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import NoticeForm from './AddNoticeForm';
 
 export default function AlertDialog() {
   const [open, setOpen] = React.useState(false);
@@ -12,10 +13,10 @@ export default function AlertDialog() {
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
+
 
   return (
     <React.Fragment>
@@ -31,21 +32,10 @@ export default function AlertDialog() {
         aria-describedby="alert-dialog-description"
         role="alertdialog"
       >
-        <DialogTitle id="alert-dialog-title">
-          {"Use Google's location service?"}
-        </DialogTitle>
+  
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-          </DialogContentText>
+          <NoticeForm handleClose={handleClose} />
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} autoFocus>
-            Disagree
-          </Button>
-          <Button onClick={handleClose}>Agree</Button>
-        </DialogActions>
       </Dialog>
     </React.Fragment>
   );

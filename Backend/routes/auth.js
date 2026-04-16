@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
 
+
 // Check if email is available
 router.post("/check-email", async (req, res) => {
     try {
@@ -60,57 +61,6 @@ router.post("/signup", async (req, res) => {
 
 
 
-// LOGIN
-// router.post("/login", async (req, res) => {
-//     try {
-//         // Login with email
-//         const { email, id, password } = req.body;
-
-//         let user;
-
-//         if (email) {
-//             const cleanEmail = email.trim().toLowerCase();
-
-//             user = await User.findOne({ email: cleanEmail });
-
-//             if (!user) {
-//                 return res.json({ success: false, message: "Email not found" });
-//             }
-//         }
-
-//         // Login with ID (student/teacher/staff)
-//         if (id) {
-//             user = await User.findOne({
-//                 $or: [
-//                     { studentId: id },
-//                     { teacherId: id },
-//                     { staffId: id }
-//                 ]
-//             });
-
-//             if (!user) {
-//                 return res.json({ success: false, message: "ID not found" });
-//             }
-//         }
-
-//         // Check password
-//         const isMatch = await bcrypt.compare(password, user.password);
-
-//         if (!isMatch) {
-//             return res.json({ success: false, message: "Wrong password" });
-//         }
-
-//         res.json({
-//             success: true,
-//             role: user.role
-//         });
-
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).json({ success: false });
-//     }
-
-// }); old
 
 router.post("/login", async (req, res) => {
     try {

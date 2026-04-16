@@ -1,6 +1,10 @@
 import React from 'react'
+import Profile from '../Profile'
 
 const DashboardNav = () => {
+
+
+
   return (
     <div className='flex justify-start mx-20 gap-20'>
       <div className='flex items-center gap-20 my-4'>

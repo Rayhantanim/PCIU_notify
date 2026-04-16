@@ -80,14 +80,16 @@ export default function LoginPage() {
         `${API}/api/login`,
         payload
       );
+       console.log("LOGIN RESPONSE:", res.data);
 
       if (res.data.success) {
+        
         localStorage.setItem(
           "userId",
           loginMode === "id" ? userId : email
         );
         localStorage.setItem("role", res.data.role);
-        navigate("/home");
+        navigate("/dashboard");
       } else {
         setError(res.data.message || "Login failed");
       }

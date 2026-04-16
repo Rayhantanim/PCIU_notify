@@ -11,6 +11,8 @@ app.use(cors({
 }));
 app.use(express.json());
 
+app.use("/api", require("./routes/notice"))
+
 app.use("/api", require("./routes/auth")); 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
@@ -19,7 +21,6 @@ mongoose.connect(process.env.MONGO_URI)
 app.get("/", (req, res) => {
   res.send("OK");
 });
-
 app.listen(5000, () => {
   console.log("Server running on 5000");
 });
