@@ -15,6 +15,11 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 import DashboardLayout from "./Pages/DashboardLayout/DashboardLayout";
 import Dashboard from "./Components/dashboards/Dashboard";
 import AllNotices from "./Pages/AllNotices";
+import TeacherDashboard from "./Components/dashboards/TeacherDashboard";
+import StudentNotices from "./Pages/StudentNotices";
+import AllStudent from "./Pages/AllStudent";
+import AllTeacher from "./Pages/AllTeacher";
+import ImportantNotice from "./Pages/importantNotice";
 
 const App = () => {
   return (
@@ -44,8 +49,13 @@ const App = () => {
       </Routes>
     <Routes>
   <Route path="dashboard" element={<DashboardLayout />}>
-    <Route path="dashboardindex" element={<Dashboard />} />
+    <Route path="dashboardindex" element={<TeacherDashboard />} />
     <Route path="allnotices" element={<AllNotices/>} />
+    <Route path="stuNotices" element={<StudentNotices/>} />
+    <Route path="allstudent" element={<AllStudent/>} />
+    <Route path="allteacher" element={<AllTeacher/>} />
+    <Route path="impnotices" element={<ImportantNotice/>} />
+
   </Route>
 </Routes>
 

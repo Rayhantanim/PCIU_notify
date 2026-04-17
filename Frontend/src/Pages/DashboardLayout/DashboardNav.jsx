@@ -1,5 +1,4 @@
-import React from 'react'
-import Profile from '../Profile'
+import SimpleBadge from '../../Components/Notification'
 
 const DashboardNav = () => {
 
@@ -21,6 +20,9 @@ const DashboardNav = () => {
        </div>
        <div className='w-60 h-12 bg-white rounded-full'>
            <img className='w-20 h-10 px-2' src="https://www.svgrepo.com/show/316857/profile-simple.svg" alt="" />
+       </div>
+       <div>
+        <SimpleBadge></SimpleBadge>
        </div>
       </div>
     </div>

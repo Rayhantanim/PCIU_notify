@@ -183,7 +183,7 @@ const timer = setTimeout(async () => {
 
       toast.success("Signup successful 🎉");
       console.log(data);
-      navigate('/profile')
+      navigate('/home')
     } catch (err) {
       toast.error("Server error ⚠️");
     }

@@ -86,7 +86,7 @@ export default function LoginPage() {
         
         localStorage.setItem(
           "userId",
-          loginMode === "id" ? userId : email
+          loginMode === "id" ? userId : email,
         );
         localStorage.setItem("role", res.data.role);
         navigate("/dashboard");
