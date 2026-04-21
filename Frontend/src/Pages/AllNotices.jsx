@@ -9,6 +9,8 @@ const AllNotices = () => {
      const [notices, setNotices] = useState([]);
   const API = "http://localhost:5000";
 
+
+  console.log(notices)
   useEffect(() => {
     const fetchNotices = async () => {
       try {
@@ -23,8 +25,8 @@ const AllNotices = () => {
     fetchNotices();
   }, []);
   return (
-    <div className='flex gap-10'>
-   <div className='w-2/3 border h-96 m-4 px-4'>
+    <div className='flex gap-10  '>
+   <div className='w-2/3 border bg-[#fde1e1] h-auto m-4 px-4'>
             <h1 className='text-2xl my-4 font-bold'>All Notices </h1>
             {notices.length === 0 ? (
         <p>No notices found</p>

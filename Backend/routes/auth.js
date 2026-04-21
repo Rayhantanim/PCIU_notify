@@ -138,11 +138,15 @@ router.post("/login", async (req, res) => {
             return res.json({ success: false, message: "Wrong password" });
         }
 
-        res.json({
-            success: true,
-            role: user.role,
-            userId: user.studentId || user.teacherId || user.staffId
-        });
+       res.json({
+    success: true,
+    user: {
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        userId: user.studentId || user.teacherId || user.staffId
+    }
+});
 
     } catch (err) {
         console.error(err);

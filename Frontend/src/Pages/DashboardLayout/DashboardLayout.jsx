@@ -8,9 +8,9 @@ const DashboardLayout = () => {
 
     
   return (
-    <div className=' min-h-screen bg-[#d1cccc] flex'>
+    <div className=' min-h-screen bg-[#d8d8d8] flex'>
      <DashboardMenu></DashboardMenu>
-      <div className='w-full border '>
+      <div className='w-full  '>
         <DashboardNav></DashboardNav>
       <div>
         <Outlet>

@@ -82,15 +82,18 @@ export default function LoginPage() {
       );
        console.log("LOGIN RESPONSE:", res.data);
 
-      if (res.data.success) {
-        
-        localStorage.setItem(
-          "userId",
-          loginMode === "id" ? userId : email,
-        );
-        localStorage.setItem("role", res.data.role);
-        navigate("/dashboard");
-      } else {
+     if (res.data.success) {
+  const userData = {
+    name: res.data.name, 
+    role: res.data.role,
+    email: res.data.email,
+  };
+
+  localStorage.setItem("user", JSON.stringify(userData));
+
+  navigate("/dashboard");
+  console.log("userdata", userData)
+} else {
         setError(res.data.message || "Login failed");
       }
     } catch (err) {

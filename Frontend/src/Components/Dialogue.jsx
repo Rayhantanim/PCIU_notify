@@ -16,7 +16,7 @@ export default function AlertDialog() {
   const handleClose = () => {
     setOpen(false);
   };
-
+// const user = JSON.parse(localStorage.getItem("user") || "null");
 
   return (
     <React.Fragment>

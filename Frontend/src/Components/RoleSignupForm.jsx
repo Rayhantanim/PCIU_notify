@@ -175,7 +175,7 @@ const timer = setTimeout(async () => {
       });
 
       const data = await res.json();
-
+        console.log("sent data", data)
       if (!res.ok) {
         alert(data.message);
         return;
@@ -183,7 +183,7 @@ const timer = setTimeout(async () => {
 
       toast.success("Signup successful 🎉");
       console.log(data);
-      navigate('/home')
+      navigate('/dashboard')
     } catch (err) {
       toast.error("Server error ⚠️");
     }
