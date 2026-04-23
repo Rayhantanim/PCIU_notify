@@ -19,11 +19,11 @@ const StudentNotices = () => {
     fetchNotices();
   }, []);
 
-  // 🔥 handle like
+ 
   const handleLike = async (id) => {
-    await fetch(`${API}/api/notices/${id}/like`, {
-      method: "POST",
-    });
+    // await fetch(`${API}/api/notices/${id}/like`, {
+    //   method: "POST",
+    // });
 
     setNotices((prev) =>
       prev.map((n) =>
@@ -32,7 +32,7 @@ const StudentNotices = () => {
     );
   };
 
-  // 🔥 handle comment input
+
   const handleCommentChange = (id, value) => {
     setComments({ ...comments, [id]: value });
   };
@@ -42,13 +42,13 @@ const StudentNotices = () => {
     const text = comments[id];
     if (!text) return;
 
-    await fetch(`${API}/api/notices/${id}/comment`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ text }),
-    });
+    // await fetch(`${API}/api/notices/${id}/comment`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ text }),
+    // });
 
     setNotices((prev) =>
       prev.map((n) =>
@@ -86,7 +86,7 @@ const StudentNotices = () => {
           <div className="flex items-center gap-4 mt-4">
             <button
               onClick={() => handleLike(notice._id)}
-              className="bg-blue-500 text-white px-3 py-1 rounded"
+              className="bg-blue-500 text-white px-3 py-1 rounded-lg"
             >
               👍 Like ({notice.likes || 0})
             </button>

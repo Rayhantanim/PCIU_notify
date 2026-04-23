@@ -24,6 +24,7 @@ const App = () => {
         {/* Public Route */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/test" element={<RoutineViewer/>} />
         {/* Protected Route */}
         <Route
           path="/home"

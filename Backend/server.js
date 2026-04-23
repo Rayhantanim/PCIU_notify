@@ -9,9 +9,7 @@ const app = express();
 app.use(cors({
   origin: "http://localhost:5173"
 }));
-app.use(express.json());
-// app.use("/api", require("./routes/auth")); 
-
+app.use(express.json()); 
 app.use("/api", require("./routes/notice"))
 app.use("/api", require("./routes/auth")); 
 mongoose.connect(process.env.MONGO_URI)
