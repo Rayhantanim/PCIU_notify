@@ -24,7 +24,7 @@ const AllStudent = () => {
   }, []);
 
   return (
-    <div className="p-5">
+    <div className="p-5 bg-white ">
       <h2 className="text-2xl font-bold mb-4">All Students</h2>
 
       <div className="overflow-x-auto">

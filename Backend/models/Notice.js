@@ -11,7 +11,9 @@ const noticeSchema = new mongoose.Schema({
   priority: String,
   isPinned: Boolean,
   expiryDate: Date,
-  attachment: String, // for now
+  attachment: String, 
+  createdBy: String,
+  role: String,
 }, { timestamps: true });
 
 module.exports = mongoose.model("Notice", noticeSchema);

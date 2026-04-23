@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 
-export default function NoticeForm({ handleClose }) {
+export default function NoticeForm ({ handleClose, user }) {
     const initialState = {
   title: "",
   description: "",
@@ -75,6 +75,8 @@ toast.success("Notice crated Successfully 🎉");
     alert("Server error");
   }
 };
+
+
 
   const showDeptSection = !formData.audience.includes("all");
 
