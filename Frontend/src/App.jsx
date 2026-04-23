@@ -20,6 +20,7 @@ import StudentNotices from "./Pages/StudentNotices";
 import AllStudent from "./Pages/AllStudent";
 import AllTeacher from "./Pages/AllTeacher";
 import ImportantNotice from "./Pages/importantNotice";
+import RoutineViewer from "./Components/routine/routine";
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
         {/* Public Route */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/test" element={<RoutineViewer/>} />
         {/* Protected Route */}
         <Route
           path="/home"
@@ -46,18 +48,15 @@ const App = () => {
             </ProtectedRoute>
           }
         /> */}
+        <Route path="dashboard" element={<DashboardLayout />}>
+          <Route path="dashboardindex" element={<TeacherDashboard />} />
+          <Route path="allnotices" element={<AllNotices/>} />
+          <Route path="stuNotices" element={<StudentNotices/>} />
+          <Route path="allstudent" element={<AllStudent/>} />
+          <Route path="allteacher" element={<AllTeacher/>} />
+          <Route path="impnotices" element={<ImportantNotice/>} />
+        </Route>
       </Routes>
-    <Routes>
-  <Route path="dashboard" element={<DashboardLayout />}>
-    <Route path="dashboardindex" element={<TeacherDashboard />} />
-    <Route path="allnotices" element={<AllNotices/>} />
-    <Route path="stuNotices" element={<StudentNotices/>} />
-    <Route path="allstudent" element={<AllStudent/>} />
-    <Route path="allteacher" element={<AllTeacher/>} />
-    <Route path="impnotices" element={<ImportantNotice/>} />
-
-  </Route>
-</Routes>
 
       {/* <Routes> */}
       {/* <Route path="/" element={<LandingPage />} /> */}

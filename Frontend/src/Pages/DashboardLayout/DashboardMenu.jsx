@@ -7,7 +7,7 @@ const DashboardMenu = () => {
   return (
     
     <div className='min-h-screen '>
-       <div className='w-[450px] min-h-screen bg-[#115FF0] rounded-xl '>
+       <div className='w-[450px] min-h-screen bg-[#115FF0]/40 rounded-xl '>
            <div className='flex justify-start gap-10 items-center p-6'>
            <img className='w-10 h-10' src={logo} alt="" />
            <h1 className='text-xl text-white font-bold shadow-2xl'>PCIU NOTIFY  
@@ -67,7 +67,7 @@ const DashboardMenu = () => {
 
 {/* teacher */}
          
-               {/* <div>
+               <div>
                  <NavLink to='dashboardindex' className={({ isActive }) => 
     `${isActive ? 'bg-[#13068833]' : 'hover:bg-[#115FF0]'}`
   }> <div className='flex justify-start items-center gap-4 py-2 px-6 text-white  border-[#3578f5] rounded m-10 shadow-2xl'>     
@@ -108,7 +108,7 @@ const DashboardMenu = () => {
 <h1 className='text-xl'>Settings</h1>
 
       </div>
-               </div> */}
+               </div>
       </div>
     
 

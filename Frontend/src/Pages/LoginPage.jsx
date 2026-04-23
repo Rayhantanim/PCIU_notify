@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import pciubg from "../assets/pciubg.png";
 import axios from "axios";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export default function LoginPage() {
 // const API = "https://pciu-notify-backend.vercel.app";
@@ -183,7 +184,7 @@ export default function LoginPage() {
                 }
                 className="absolute right-3 top-2 text-sm text-gray-300"
               >
-                {showPassword ? "Hide" : "Show"}
+                {showPassword ? <VisibilityOff/> : <Visibility/>}
               </button>
             </div>
 

@@ -22,7 +22,7 @@
     {
         "Day": "Saturday",
         "Department": "LLb",
-        "Section": "LLB 30",
+        "Section": "LLB-30",
         "course code": "ADL 457",
         "course name": "Administrative Law (",
         "teacher": "ABT",
@@ -152,7 +152,7 @@
     {
         "Day": "Saturday",
         "Department": "CSE",
-        "Section": "CSE 35-D-B",
+        "Section": "CSE-35-D-B",
         "course code": "CHEM 111",
         "course name": "Chemistry",
         "teacher": "MJA",
@@ -182,7 +182,7 @@
     {
         "Day": "Saturday",
         "Department": "CSE",
-        "Section": "CSE 32-D-B1",
+        "Section": "CSE-32-D-B1",
         "course code": "CSE 232",
         "course name": "Operating System Concept Lab",
         "teacher": "MMR",
