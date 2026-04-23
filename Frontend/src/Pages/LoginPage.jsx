@@ -83,14 +83,10 @@ export default function LoginPage() {
        console.log("LOGIN RESPONSE:", res.data);
 
      if (res.data.success) {
-  const userData = {
-    name: res.data.name, 
-    role: res.data.role,
-    email: res.data.email,
-  };
+const user = res.data.user;
 
-  localStorage.setItem("user", JSON.stringify(userData));
-
+localStorage.setItem("user", JSON.stringify(user));
+localStorage.setItem("role", user.role); 
   navigate("/dashboard");
   console.log("userdata", userData)
 } else {

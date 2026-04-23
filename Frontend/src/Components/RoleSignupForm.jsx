@@ -96,6 +96,11 @@ const timer = setTimeout(async () => {
 
     const data = await res.json();
 
+if (res.ok) {
+  localStorage.setItem("user", JSON.stringify(data.user));
+}
+    console.log("user", data)
+
     if (currentEmail === formData.email) {
       setEmailAvailable(data.available);
     }

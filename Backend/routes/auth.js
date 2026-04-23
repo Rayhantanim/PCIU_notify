@@ -37,6 +37,19 @@ router.get("/user/:id", async (req, res) => {
 });
 
 
+
+
+router.get("/teachers", async (req, res) => {
+  try {
+    const teachers = await User.find({ role: "teacher" }).select("firstName lastName");
+
+    res.json(teachers);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
 // Check if email is available
 router.post("/check-email", async (req, res) => {
     try {
@@ -138,15 +151,16 @@ router.post("/login", async (req, res) => {
             return res.json({ success: false, message: "Wrong password" });
         }
 
-       res.json({
-    success: true,
-    user: {
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        userId: user.studentId || user.teacherId || user.staffId
-    }
-});
+    res.json({
+  success: true,
+  user: {
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    role: user.role,
+    userId: user.studentId || user.teacherId || user.staffId
+  }
+})
 
     } catch (err) {
         console.error(err);

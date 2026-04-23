@@ -1,29 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
-export default function NoticeForm ({ handleClose, user }) {
-    const initialState = {
-  title: "",
-  description: "",
-  category: "",
-  audience: [],
-  department: "",
-  section: "",
-  priority: "medium",
-  isPinned: false,
-  expiryDate: "",
-  attachment: null,
-  
-};
- const [formData, setFormData] = useState(initialState);
- 
+export default function NoticeForm({ handleClose }) {
+  const API = "http://localhost:5000";
+
+  const initialState = {
+    title: "",
+    description: "",
+    category: "",
+    audience: [],
+    department: "",
+    section: "",
+    priority: "medium",
+    isPinned: false,
+    expiryDate: "",
+    attachment: null,
+    createdBy: "", // 🔥 important
+  };
+
+  const [formData, setFormData] = useState(initialState);
+  const [teachers, setTeachers] = useState([]); // 
 
   const departments = ["CSE", "EEE", "BBA"];
   const sectionsByDepartment = {
-    CSE: ["31A", "31B"],
+    CSE: ["31A", "31B","31C"],
     EEE: ["A", "B"],
     BBA: ["A"],
   };
+
+
+  useEffect(() => {
+    const fetchTeachers = async () => {
+      try {
+        const res = await fetch(`${API}/api/teachers`);
+        const data = await res.json();
+        setTeachers(data);
+      } catch (err) {
+        console.log("Teacher fetch error:", err);
+      }
+    };
+
+    fetchTeachers();
+  }, []);
+
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -43,40 +62,37 @@ export default function NoticeForm ({ handleClose, user }) {
     }
   };
 
-const API = "http://localhost:5000";
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  try {
-    const res = await fetch(`${API}/api/add-notice`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+    try {
+      const res = await fetch(`${API}/api/add-notice`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (!res.ok) {
-      alert(data.message);
-      return;
+      if (!res.ok) {
+        alert(data.message);
+        return;
+      }
+
+      toast.success("Notice created successfully 🎉");
+      console.log("Saved:", data);
+
+      setFormData(initialState);
+      handleClose();
+
+    } catch (err) {
+      console.error(err);
+      alert("Server error");
     }
-toast.success("Notice crated Successfully 🎉");
-    console.log("Saved:", data);
-
-    e.target.reset();
-    setFormData(initialState);
-    handleClose();
-
-  } catch (err) {
-    console.error(err);
-    alert("Server error");
-  }
-};
-
-
+  };
 
   const showDeptSection = !formData.audience.includes("all");
 
@@ -86,6 +102,25 @@ toast.success("Notice crated Successfully 🎉");
       className="max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-lg space-y-4"
     >
       <h2 className="text-xl font-bold">Create Notice</h2>
+
+      {/* 🔥 Teacher Dropdown */}
+      <select
+        name="createdBy"
+        value={formData.createdBy}
+        onChange={handleChange}
+        required
+        className="w-full border p-2 rounded"
+      >
+        <option value="">Select Teacher</option>
+        {teachers.map((teacher) => (
+          <option
+            key={teacher._id}
+            value={`${teacher.firstName} ${teacher.lastName}`}
+          >
+            {teacher.firstName} {teacher.lastName}
+          </option>
+        ))}
+      </select>
 
       {/* Title */}
       <input
@@ -204,14 +239,6 @@ toast.success("Notice crated Successfully 🎉");
         value={formData.expiryDate}
         onChange={handleChange}
         className="w-full border p-2 rounded"
-      />
-
-      {/* Attachment */}
-      <input
-        type="file"
-        name="attachment"
-        onChange={handleChange}
-        className="w-full"
       />
 
       {/* Submit */}
