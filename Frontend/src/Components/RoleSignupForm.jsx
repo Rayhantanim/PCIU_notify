@@ -83,28 +83,37 @@ export default function RoleSignupForm({ role = "student", goBack }) {
       setEmailAvailable(null);
       return;
     }
-    const currentEmail = formData.email;
-    const timer = setTimeout(async () => {
-      setCheckingEmail(true);
-      try {
-        const res = await fetch(`${API}/api/check-email`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: currentEmail }),
-        });
-        const data = await res.json();
-        if (currentEmail === formData.email) {
-          setEmailAvailable(data.available);
-        }
-      } 
-      catch (err) {
-        console.error(err);
-        setEmailAvailable(false);
-      } 
-      finally {
-        setCheckingEmail(false);
-      }
-    }, 500);
+
+  const currentEmail = formData.email;
+
+const timer = setTimeout(async () => {
+  setCheckingEmail(true);
+
+  try {
+    const res = await fetch(`${API}/api/check-email`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: currentEmail }),
+    });
+
+    const data = await res.json();
+
+if (res.ok) {
+  localStorage.setItem("user", JSON.stringify(data.user));
+}
+    console.log("user", data)
+
+    if (currentEmail === formData.email) {
+      setEmailAvailable(data.available);
+    }
+
+  } catch (err) {
+    console.error(err);
+    setEmailAvailable(false);
+  } finally {
+    setCheckingEmail(false);
+  }
+}, 500);
 
     return () => clearTimeout(timer);
   }, [formData.email]);

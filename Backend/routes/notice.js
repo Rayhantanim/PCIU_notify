@@ -26,5 +26,24 @@ router.post("/add-notice", async (req, res) => {
   }
 });
 
+// GET /api/dashboard-stats
+router.get("/dashboard-stats", async (req, res) => {
+  try {
+    const totalNotices = await Notice.countDocuments();
+    const totalStudents = await User.countDocuments({ role: "student" });
+    const totalTeachers = await User.countDocuments({ role: "teacher" });
+    const totalStaff = await User.countDocuments({ role: "staff" });
+
+    res.json({
+      totalNotices,
+      totalStudents,
+      totalTeachers,
+      totalStaff,
+    });
+    console.log(totalNotices)
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 module.exports = router;
