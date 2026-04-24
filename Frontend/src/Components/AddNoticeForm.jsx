@@ -15,7 +15,7 @@ export default function NoticeForm({ handleClose }) {
     isPinned: false,
     expiryDate: "",
     attachment: null,
-    createdBy: "", // 🔥 important
+    createdBy: "", 
   };
 
   const [formData, setFormData] = useState(initialState);

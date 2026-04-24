@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { CartesianGrid, Legend, Line, LineChart, XAxis, YAxis } from 'recharts';
-import { RechartsDevtools } from '@recharts/devtools';
+import { CartesianGrid, Legend, Line, LineChart, XAxis, YAxis } from 'recharts'
 
 
 export default function StaffDashboard() {

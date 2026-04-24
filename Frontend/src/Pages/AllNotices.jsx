@@ -7,21 +7,32 @@ const AllNotices = () => {
   const API = "http://localhost:5000";
 
   console.log("front",notices)
+
   useEffect(() => {
-    const fetchNotices = async () => {
-      try {
-        const res = await fetch(`${API}/api/notices`);
-        const data = await res.json();
+  const fetchNotices = async () => {
+    const res = await fetch("http://localhost:5000/api/notices/teachers");
+    const data = await res.json();
+    setNotices(data);
+  };
+  fetchNotices();
+}, []);
 
-        setNotices(Array.isArray(data) ? data : []);
-      } catch (err) {
-        console.log("Fetch error:", err);
-        setNotices([]);
-      }
-    };
 
-    fetchNotices();
-  }, []);
+  // useEffect(() => {
+  //   const fetchNotices = async () => {
+  //     try {
+  //       const res = await fetch(`${API}/api/notices`);
+  //       const data = await res.json();
+
+  //       setNotices(Array.isArray(data) ? data : []);
+  //     } catch (err) {
+  //       console.log("Fetch error:", err);
+  //       setNotices([]);
+  //     }
+  //   };
+
+  //   fetchNotices();
+  // }, []);
 
   return (
     <div className="flex gap-10">

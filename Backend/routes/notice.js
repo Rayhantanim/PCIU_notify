@@ -26,6 +26,20 @@ router.post("/add-notice", async (req, res) => {
   }
 });
 
+
+router.post("/add-noticestaff", async (req, res) => {
+  try {
+    const newNotice = new Notice(req.body);
+    await newNotice.save();
+
+   res.status(201).json(newNotice);
+
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
 // GET /api/dashboard-stats
 router.get("/dashboard-stats", async (req, res) => {
   try {

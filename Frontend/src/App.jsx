@@ -16,6 +16,7 @@ import AllTeacher from "./Pages/AllTeacher";
 import ImportantNotice from "./Pages/importantNotice";
 import StaffDashboard from "./Components/dashboards/StaffDashboard";
 import AllStaff from "./Pages/AllStaff";
+import StaffNoticeForm from "./Pages/staffNotice";
 
 const App = () => {
   return (
@@ -24,7 +25,8 @@ const App = () => {
         {/* Public Route */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/test" element={<RoutineViewer/>} />
+        {/* <Route path="/test" element={<RoutineViewer/>} />
+         */}
         {/* Protected Route */}
         <Route
           path="/home"
@@ -47,6 +49,7 @@ const App = () => {
     <Route path="impnotices" element={<ImportantNotice/>} />
     <Route path="view" element={<StaffDashboard/>} />
     <Route path="allstaff" element={<AllStaff/>} />
+    <Route path="staffnotice" element={<StaffNoticeForm/>} />
 
   </Route>
 </Routes>

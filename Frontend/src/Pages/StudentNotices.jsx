@@ -5,6 +5,7 @@ const StudentNotices = () => {
   const [comments, setComments] = useState({});
   const API = "http://localhost:5000";
 
+
   useEffect(() => {
     const fetchNotices = async () => {
       try {
