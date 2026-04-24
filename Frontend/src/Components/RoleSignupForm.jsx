@@ -21,27 +21,28 @@ export default function RoleSignupForm({ role = "student", goBack }) {
     confirmPassword: "",
   });
 
-  const formatStudentId = (value) => {
+  const formatId = (value) => {
     // Remove everything except letters & numbers
     let cleaned = value.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
-
     // Split parts
     let part1 = cleaned.slice(0, 3); // CSE
     let part2 = cleaned.slice(3, 6); // 031
     let part3 = cleaned.slice(6, 11); // 08177
-
     let formatted = part1;
     if (part2) formatted += " " + part2;
     if (part3) formatted += " " + part3;
-
     return formatted;
   };
   
   const [isFocused, setIsFocused] = useState(false);
+
   const [passwordValid, setPasswordValid] = useState({});
   const [passwordMismatch, setPasswordMismatch] = useState(false);
+
   const [showPassword, setShowPassword] = useState(false);
+  const [showConPassword, setShowConPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const departments = ["CSE", "EEE", "BBA", "ENG", "LLB", "BFT"];
   const sectionsByDepartment = {
     CSE: ["31A", "31B", "31C"],
@@ -52,7 +53,9 @@ export default function RoleSignupForm({ role = "student", goBack }) {
   const validateEmail = (email) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
-const navigate = useNavigate();
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     const { password } = formData;
     setPasswordValid({
@@ -64,20 +67,18 @@ const navigate = useNavigate();
     });
   }, [formData.password]);
 
-
   const [emailValid, setEmailValid] = useState(null); // null | true | false
   const [emailAvailable, setEmailAvailable] = useState(null); // null = unknown, true = free, false = taken
   const [checkingEmail, setCheckingEmail] = useState(false);
+
   useEffect(() => {
     if (!formData.email) {
       setEmailValid(null);
       setEmailAvailable(null);
       return;
     }
-
     const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
     setEmailValid(isValid);
-
     if (!isValid) {
       setEmailAvailable(null);
       return;
@@ -120,10 +121,21 @@ if (res.ok) {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
+    //================Format Ids==================
     if (name === "studentId") {
       setFormData({
         ...formData,
-        studentId: formatStudentId(value),
+        studentId: formatId(value),
+      });
+    } else if(name === "teacherId"){
+      setFormData({
+        ...formData,
+        teacherId: formatId(value),
+      });
+    } else if(name === "staffId"){
+      setFormData({
+        ...formData,
+        staffId: formatId(value),
       });
     } else {
       setFormData({
@@ -146,28 +158,23 @@ if (res.ok) {
     }
   };
   
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
       toast.error("Passwords do not match ❌");
       return;
     }
-
     // Check if all password requirements are met
     if (!Object.values(passwordValid).every(Boolean)) {
       toast.error("Password does not meet requirements ⚠️");
       return;
     }
-
     // Check if email is available
     if (emailAvailable === false) {
       toast.error("Email already taken ❌");
       return;
     }
-
     try {
       const res = await fetch(`${API}/api/signup`, {
         method: "POST",
@@ -190,35 +197,25 @@ if (res.ok) {
       toast.success("Signup successful 🎉");
       console.log(data);
       navigate('/dashboard')
-    } catch (err) {
+    } 
+    catch (err) {
       toast.error("Server error ⚠️");
     }
   };
 
   const availableSections = sectionsByDepartment[formData.department] || [];
-  const glassSelect =
-    "flex-1 px-4 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-white shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition";
+  const glassSelect = "flex-1 px-4 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-white shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition";
   
   
-    return (
+  return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto no-scrollbar">
       <form
         onSubmit={handleSubmit}
-        className="
-      bg-white/10 backdrop-blur-lg
-      border border-white/20
-      rounded-2xl
-      p-8
-      w-full max-w-2xl
-      flex flex-col gap-4
-      text-white
-      max-h-[90vh] overflow-y-auto no-scrollbar
-    "
+        className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-8 w-full max-w-2xl flex flex-col gap-4 text-white max-h-[90vh] overflow-y-auto no-scrollbar"
       >
         <h1 className="text-2xl font-bold text-center mb-4">
           {role.charAt(0).toUpperCase() + role.slice(1)} Sign Up
         </h1>
-
         {/* Name */}
         <div className="flex gap-4">
           <input
@@ -230,6 +227,7 @@ if (res.ok) {
             required
             className="flex-1 px-4 py-2 rounded-lg bg-white/20 border border-white/30 text-white placeholder-gray-300"
           />
+
           <input
             type="text"
             name="lastName"
@@ -420,7 +418,7 @@ if (res.ok) {
         <button
           type="button"
           onClick={() => setShowPassword(!showPassword)}
-          className="absolute right-3 top-2 text-white"
+          className="absolute right-3 top-2 text-white/60"
         >
           {showPassword ? <VisibilityOff/> : <Visibility/>}
         </button>
@@ -461,10 +459,10 @@ if (res.ok) {
           />
           <button
             type="button"
-            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className="absolute right-3 top-2 text-white"
+            onClick={() => setShowConPassword(!showConPassword)}
+            className="absolute right-3 top-2 text-white/60"
           >
-           {showPassword ? <VisibilityOff/> : <Visibility/>}
+           {showConPassword ? <VisibilityOff/> : <Visibility/>}
           </button>
         </div>
         {passwordMismatch && formData.confirmPassword && (
