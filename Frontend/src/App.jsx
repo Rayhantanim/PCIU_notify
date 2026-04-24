@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "./Components/Navbar";
-import Login from "./Pages/Login/Login";
-import Signup from "./Pages/SignUp/Signup";
+// import Login from "./Pages/Login/Login";
+// import Signup from "./Pages/SignUp/Signup";
 import Profile from "./Pages/Profile";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

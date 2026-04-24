@@ -8,29 +8,30 @@ export default function LoginPage() {
 // const API = "https://pciu-notify-backend.vercel.app";
   const API = "http://localhost:5000";
 
-
   const navigate = useNavigate();
 
   const [loginMode, setLoginMode] = useState("id");
   const [userId, setUserId] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [showPassword, setShowPassword] = useState(false);
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   // ✅ Format ID (CSE03108177 → CSE 031 08177)
   const formatId = (value) => {
-    let cleaned = value.replace(/\s+/g, "").toUpperCase();
+   // Remove everything except letters & numbers
+    let cleaned = value.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
+    // Split parts
+    let part1 = cleaned.slice(0, 3); // CSE
+    let part2 = cleaned.slice(3, 6); // 031
+    let part3 = cleaned.slice(6, 11); // 08177
+    let formatted = part1;
+    if (part2) formatted += " " + part2;
+    if (part3) formatted += " " + part3;
 
-    if (cleaned.length <= 3) return cleaned;
-    if (cleaned.length <= 6)
-      return `${cleaned.slice(0, 3)} ${cleaned.slice(3)}`;
-    return `${cleaned.slice(0, 3)} ${cleaned.slice(
-      3,
-      6
-    )} ${cleaned.slice(6, 11)}`;
+    return formatted;
   };
 
   // ✅ Debounce check
