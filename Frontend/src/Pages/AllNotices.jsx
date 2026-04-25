@@ -4,7 +4,7 @@ import AlertDialog from "../Components/Dialogue";
 
 const AllNotices = () => {
   const [notices, setNotices] = useState([]);
-  const API = "http://localhost:5000";
+  const API = "https://pciu-notify-backend.vercel.app";
 
   console.log("front",notices)
 

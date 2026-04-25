@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import logo from '../../assets/pciulogo.png'
 import { Link, NavLink } from 'react-router-dom'
+<<<<<<< Updated upstream
+=======
+import TeacherDashboard from '../../Components/dashboards/TeacherDashboard'
+import Profile from '../Profile'
+
+>>>>>>> Stashed changes
 const DashboardMenu = () => {
-       const role = localStorage.getItem("role");
+      //  const role = localStorage.getItem("role");
+      const [role, setRole] = useState("");
        console.log(role)
-//       const [role, setRole] = useState("");
 
 // useEffect(() => {
 //   const userRole = localStorage.getItem("role");
@@ -12,6 +18,14 @@ const DashboardMenu = () => {
 //   setRole(userRole);
 // }, []);
 
+<<<<<<< Updated upstream
+=======
+      useEffect(() => {
+      const userRole = localStorage.getItem("role");
+      setRole(userRole);
+      }, []);
+      
+>>>>>>> Stashed changes
   return (
     
     <div className='min-h-screen text-black '>
@@ -69,7 +83,10 @@ const DashboardMenu = () => {
 <h1 className='text-xl'>Settings</h1>
 
       </div>
+<<<<<<< Updated upstream
                </div>
+=======
+>>>>>>> Stashed changes
 )}
 
             
@@ -96,10 +113,20 @@ const DashboardMenu = () => {
 
       </div></Link>
              <div className='flex justify-start items-center gap-4 py-2 px-6 text-black  border-[#3578f5] rounded m-10 shadow-2xl'>     
+<<<<<<< Updated upstream
 <img className='w-10 h-10' src="https://cdn-icons-png.freepik.com/256/18610/18610294.png?semt=ais_white_label" alt="" />
 
 <h1 className='text-xl'>Important Notices</h1>
 
+=======
+            <img className='w-10 h-10' src="https://cdn-icons-png.flaticon.com/512/1373/1373779.png" alt="" />
+            <h1 className='text-xl'>Routine</h1>
+            </div>
+            <div className='flex justify-start items-center gap-4 py-2 px-6 text-black  border-[#3578f5] rounded m-10 shadow-2xl'>     
+            <img className='w-10 h-10' src="https://cdn-icons-png.flaticon.com/512/3524/3524659.png" alt="" />
+            <h1 className='text-xl'>Settings</h1>
+            </div>
+>>>>>>> Stashed changes
       </div>
              <div className='flex justify-start items-center gap-4 py-2 px-6 text-black  border-[#3578f5] rounded m-10 shadow-2xl'>     
 <img className='w-10 h-10' src="https://icons.veryicon.com/png/o/internet--web/billion-square-cloud/department-1.png" alt="" />
@@ -113,6 +140,7 @@ const DashboardMenu = () => {
 <h1 className='text-xl'>Routine</h1>
 
       </div>
+<<<<<<< Updated upstream
              <div className='flex justify-start items-center gap-4 py-2 px-6 text-black  border-[#3578f5] rounded m-10 shadow-2xl'>     
 <img className='w-10 h-10' src="https://cdn-icons-png.flaticon.com/512/3524/3524659.png" alt="" />
 
@@ -180,6 +208,8 @@ const DashboardMenu = () => {
 
 
 
+=======
+>>>>>>> Stashed changes
     </div>
   )
 }

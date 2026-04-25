@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 const ImportantNotice = () => {
   const [notices, setNotices] = useState([]);
-  const API = "http://localhost:5000";
+  const API = "https://pciu-notify-backend.vercel.app";
 
   useEffect(() => {
     const fetchNotices = async () => {
