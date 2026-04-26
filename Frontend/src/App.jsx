@@ -17,6 +17,7 @@ import ImportantNotice from "./Pages/importantNotice";
 import StaffDashboard from "./Components/dashboards/StaffDashboard";
 import AllStaff from "./Pages/AllStaff";
 import StaffNoticeForm from "./Pages/staffNotice";
+import StudentOverview from "./Components/dashboards/studentOverview";
 
 const App = () => {
   return (
@@ -25,8 +26,8 @@ const App = () => {
         {/* Public Route */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
-        {/* <Route path="/test" element={<RoutineViewer/>} />
-         */}
+        {/* <Route path="/test" element={<RoutineViewer/>} /> */}
+        
         {/* Protected Route */}
         <Route
           path="/home"
@@ -41,15 +42,22 @@ const App = () => {
       </Routes>
     <Routes>
   <Route path="dashboard" element={<DashboardLayout />}>
+  {/* teacher */}
     <Route path="dashboardindex" element={<TeacherDashboard />} />
     <Route path="allnotices" element={<AllNotices/>} />
-    <Route path="stuNotices" element={<StudentNotices/>} />
-    <Route path="allstudent" element={<AllStudent/>} />
-    <Route path="allteacher" element={<AllTeacher/>} />
-    <Route path="impnotices" element={<ImportantNotice/>} />
+    
+   
+    {/* staff dashboard */}
     <Route path="view" element={<StaffDashboard/>} />
     <Route path="allstaff" element={<AllStaff/>} />
     <Route path="staffnotice" element={<StaffNoticeForm/>} />
+    
+{/* student dashboard */}
+    <Route path="overview" element={<StudentOverview/>} />
+    <Route path="impnotices" element={<ImportantNotice/>} />
+    <Route path="stuNotices" element={<StudentNotices/>} />
+     <Route path="allstudent" element={<AllStudent/>} />
+    <Route path="allteacher" element={<AllTeacher/>} />
 
   </Route>
 </Routes>

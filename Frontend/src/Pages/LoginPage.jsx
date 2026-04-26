@@ -89,7 +89,10 @@ const user = res.data.user;
 
 localStorage.setItem("user", JSON.stringify(user));
 localStorage.setItem("role", user.role); 
-  navigate("/dashboard");
+user?.role === "student" && navigate("/dashboard/overview");
+user?.role === "teacher" && navigate("/dashboard/dashboardindex");
+user?.role === "staff" && navigate("/dashboard/view");
+
   console.log("userdata", userData)
 } else {
         setError(res.data.message || "Login failed");

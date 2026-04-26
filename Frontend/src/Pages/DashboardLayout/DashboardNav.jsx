@@ -64,7 +64,7 @@ const DashboardNav = () => {
 
           {/* Dropdown */}
           {open && (
-            <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-lg p-2">
+            <div className="absolute z-10 right-0 mt-2 w-40 bg-white shadow-lg rounded-lg p-2">
               <button
                 className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded"
               >

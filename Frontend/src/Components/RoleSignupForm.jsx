@@ -196,7 +196,7 @@ if (res.ok) {
 
       toast.success("Signup successful 🎉");
       console.log(data);
-      navigate('/dashboard')
+      navigate('/dashboard/overview')
     } 
     catch (err) {
       toast.error("Server error ⚠️");

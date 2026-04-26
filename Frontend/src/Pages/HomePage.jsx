@@ -1,5 +1,5 @@
 import React from "react";
-import StudentDashboard from "../Components/dashboards/StudentDashboard";
+// import StudentDashboard from "../Components/dashboards/StudentDashboard";
 import TeacherDashboard from "../Components/dashboards/TeacherDashboard";
 import StaffDashboard from "../Components/dashboards/StaffDashboard";
 
@@ -9,7 +9,8 @@ export default function HomePage() {
   const renderDashboard = () => {
     switch (role) {
       case "student":
-        return <StudentDashboard />;
+        return 
+        // <StudentDashboard />;
       case "teacher":
         return <TeacherDashboard />;
       case "staff":
