@@ -12,7 +12,7 @@ const app = express();
 const allowedOrigins = [
   "https://pciunotify.vercel.app",
   "http://localhost:5173",
-  "http://localhost:5000"
+  // "http://localhost:5000"
 ];
 
 app.use(cors({
@@ -53,7 +53,7 @@ const server = http.createServer(app);
 app.get("/", (req, res) => {
   res.send("OK");
 });
-
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // ✅ IMPORTANT: use server.listen, not app.listen
 server.listen(5000, () => {
   console.log("Server running on 5000");

@@ -3,7 +3,7 @@ import { CartesianGrid, Legend, Line, LineChart, XAxis, YAxis } from 'recharts'
 
 
 export default function StaffDashboard() {
-  const API = "https://pciu-notify-backend.vercel.app";
+  const API = "http://localhost:5000";
 
   const [stats, setStats] = useState({
     notices: 0,

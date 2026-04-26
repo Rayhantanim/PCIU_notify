@@ -4,13 +4,13 @@ import AlertDialog from "../Components/Dialogue";
 
 const AllNotices = () => {
   const [notices, setNotices] = useState([]);
-  const API = "https://pciu-notify-backend.vercel.app";
+  const API = "http://localhost:5000";
 
   console.log("front",notices)
 
   useEffect(() => {
   const fetchNotices = async () => {
-    const res = await fetch("http://localhost:5000/api/notices/teachers");
+    const res = await fetch("http://localhost:5000/api/notices");
     const data = await res.json();
     setNotices(data);
   };

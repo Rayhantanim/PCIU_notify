@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import AlertDialog from "../Dialogue";
 
 export default function TeacherDashboard() {
   const userId = localStorage.getItem("userId");
@@ -9,7 +10,7 @@ export default function TeacherDashboard() {
     <div className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-900 text-white">
 
       {/* HEADER */}
-      <div className="px-8 py-6 border-b border-white/10 backdrop-blur-md bg-white/5">
+      <div className="px-20 py-6 border-b border-white/10 backdrop-blur-md bg-white/5">
         <h1 className="text-2xl font-bold">👨‍🏫 Teacher Dashboard</h1>
         <p className="text-sm text-gray-400 mt-1">
           Welcome back, {userId || "Teacher"}
@@ -61,7 +62,7 @@ export default function TeacherDashboard() {
               Publish notices for students and staff instantly.
             </p>
             <button className="mt-4 w-full px-4 py-2 bg-white text-black rounded-xl text-sm font-medium">
-              Create Notice
+              <AlertDialog />
             </button>
           </div>
 
