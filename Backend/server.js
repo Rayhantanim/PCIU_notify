@@ -1,6 +1,5 @@
 const express = require("express");
 const http = require("http");
-// const { Server } = require("socket.io");
 const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
@@ -8,26 +7,20 @@ const bcrypt = require("bcryptjs");
 
 const app = express();
 
-// ✅ Allow both production and development origins
-const allowedOrigins = [
-  "https://pciunotify.vercel.app",
-  "http://localhost:5173",
-  // "https://pciu-notify-backend.vercel.app"
-];
-
+// ✅ FIX: Allow multiple origins including localhost
 app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps, curl, Postman)
-    if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true
+  origin: [
+    "https://pciunotify.vercel.app",
+    "http://localhost:5173",
+    "http://localhost:3000"
+  ],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
+// Handle preflight requests
+app.options('*', cors());
 
 app.use(express.json());
 app.use("/api", require("./routes/notice"));
@@ -37,24 +30,12 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log("DB Error:", err));
 
-// ✅ Create HTTP server AFTER app is defined
-const server = http.createServer(app);
-
-// ✅ Attach Socket.IO to server (uncomment when needed)
-// const io = new Server(server, {
-//   cors: { origin: allowedOrigins }
-// });
-
-// ✅ Socket.IO connection (uncomment when needed)
-// io.on("connection", (socket) => {
-//   console.log("Client connected:", socket.id);
-// });
-
 app.get("/", (req, res) => {
   res.send("OK");
 });
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-// ✅ IMPORTANT: use server.listen, not app.listen
+
+const server = http.createServer(app);
+
 server.listen(5000, () => {
   console.log("Server running on 5000");
 });
