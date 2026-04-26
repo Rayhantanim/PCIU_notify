@@ -6,7 +6,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export default function LoginPage() {
 // const API = "https://pciu-notify-backend.vercel.app";
-  const API = "http://localhost:5000";
+  const API = "https://pciu-notify-backend.vercel.app";
 
   const navigate = useNavigate();
 

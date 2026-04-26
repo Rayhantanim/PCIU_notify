@@ -51,7 +51,6 @@ const App = () => {
     <Route path="view" element={<StaffDashboard/>} />
     <Route path="allstaff" element={<AllStaff/>} />
     <Route path="staffnotice" element={<StaffNoticeForm/>} />
-    
 {/* student dashboard */}
     <Route path="overview" element={<StudentOverview/>} />
     <Route path="impnotices" element={<ImportantNotice/>} />
