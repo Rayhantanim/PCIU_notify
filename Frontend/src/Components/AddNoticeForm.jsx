@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 
 export default function NoticeForm({ handleClose }) {
-  const API = "http://localhost:5000";
+  const API = "https://pciu-notify-backend.vercel.app";
   const editorRef = useRef(null);
 
   const initialState = {

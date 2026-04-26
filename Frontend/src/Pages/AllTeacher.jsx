@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 const AllTeacher = () => {
   const [teachers, setTeachers] = useState([]);
-  const API = "http://localhost:5000";
+  const API = "https://pciu-notify-backend.vercel.app";
 
   useEffect(() => {
     const fetchTeachers = async () => {

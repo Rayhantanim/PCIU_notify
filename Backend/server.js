@@ -12,7 +12,7 @@ const app = express();
 const allowedOrigins = [
   "https://pciunotify.vercel.app",
   "http://localhost:5173",
-  // "http://localhost:5000"
+  // "https://pciu-notify-backend.vercel.app"
 ];
 
 app.use(cors({

@@ -6,7 +6,7 @@ import NoticeTabs from "../Components/NoticeCategory";
 import Notices from "../Components/Notices";
 
 export default function Profile() {
-  const API = "http://localhost:5000";
+  const API = "https://pciu-notify-backend.vercel.app";
   const navigate = useNavigate();
 
   const userId = localStorage.getItem("userId");
