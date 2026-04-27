@@ -5,8 +5,8 @@ import axios from "axios";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export default function LoginPage() {
-// const API = "https://pciu-notify-backend.vercel.app";
-  const API = "https://pciu-notify-backend.vercel.app";
+// const API = "http://localhost:5000";
+  const API = "http://localhost:5000";
 
   const navigate = useNavigate();
 
@@ -68,42 +68,46 @@ export default function LoginPage() {
   };
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
+  e.preventDefault();
+  setError("");
+  setLoading(true);
 
-    try {
-      const payload =
-        loginMode === "id"
-          ? { id: userId, password }
-          : { email, password };
+  try {
+    const payload = loginMode === "id"
+      ? { id: userId, password }
+      : { email, password };
 
-      const res = await axios.post(
-        `${API}/api/login`,
-        payload
-      );
-       console.log("LOGIN RESPONSE:", res.data);
+    const res = await axios.post(`${API}/api/login`, payload);
+    console.log("LOGIN RESPONSE:", res.data);
 
-     if (res.data.success) {
-const user = res.data.user;
-
-localStorage.setItem("user", JSON.stringify(user));
-localStorage.setItem("role", user.role); 
-user?.role === "student" && navigate("/dashboard/overview");
-user?.role === "teacher" && navigate("/dashboard/dashboardindex");
-user?.role === "staff" && navigate("/dashboard/view");
-
-  console.log("userdata", userData)
-} else {
-        setError(res.data.message || "Login failed");
-      }
-    } catch (err) {
-      setError("Server error. Try again later.");
-    } finally {
-      setLoading(false);
+    if (res.data.success) {
+      const user = res.data.user; // Fix: use res.data.user instead of undefined 'data'
+      
+      localStorage.setItem("userId", user.userId);
+      localStorage.setItem("email", user.email);
+      localStorage.setItem("firstName", user.firstName);
+      localStorage.setItem("lastName", user.lastName);
+      localStorage.setItem("fullName", `${user.firstName} ${user.lastName}`);
+      localStorage.setItem("role", user.role);
+      
+      console.log("User data:", user);
+      console.log("Last name:", user.lastName);
+      
+      // Navigate based on role
+      if (user.role === "student") navigate("/dashboard/overview");
+      else if (user.role === "teacher") navigate("/dashboard/dashboardindex");
+      else if (user.role === "staff") navigate("/dashboard/view");
+    } else {
+      setError(res.data.message || "Login failed");
     }
-  };
-
+  } catch (err) {
+    console.error("Login error:", err);
+    setError(err.response?.data?.message || "Server error. Try again later.");
+  } finally {
+    setLoading(false);
+  }
+};
+  
   return (
     <div className="relative h-screen w-full overflow-hidden">
       {/* Background */}

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 const StudentNotices = () => {
   const [notices, setNotices] = useState([]);
   const [comments, setComments] = useState({});
-  const API = "https://pciu-notify-backend.vercel.app";
+  const API = "http://localhost:5000";
 
 
   useEffect(() => {

@@ -2,13 +2,13 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const path = require("path");
+const mongoose = require("mongoose");
 const Notice = require("../models/Notice");
-const User = require("../models/User"); // Make sure you import User model
+const User = require("../models/User");
 
-// Configure multer storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/"); // Ensure this folder exists in root
+    cb(null, "uploads/");
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
@@ -16,34 +16,29 @@ const storage = multer.diskStorage({
   },
 });
 
-// File filter
 const fileFilter = (req, file, cb) => {
   const allowedTypes = [
-    "image/jpeg",
-    "image/png",
-    "image/gif",
-    "application/pdf",
-    "application/msword",
+    "image/jpeg", "image/png", "image/gif",
+    "application/pdf", "application/msword",
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     "application/vnd.ms-excel",
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     "text/plain",
   ];
-  
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new Error("Invalid file type. Allowed: images, PDF, Word, Excel, text files"), false);
+    cb(new Error("Invalid file type"), false);
   }
 };
 
 const upload = multer({
   storage: storage,
-  limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB max
-  },
+  limits: { fileSize: 10 * 1024 * 1024 },
   fileFilter: fileFilter,
 });
+
+// ============ ALL ROUTES ============
 
 // GET all notices
 router.get("/notices", async (req, res) => {
@@ -55,16 +50,46 @@ router.get("/notices", async (req, res) => {
   }
 });
 
-// POST add notice (with file upload)
+// DELETE a notice
+router.delete("/notice/:id", async (req, res) => {
+  try {
+    const notice = await Notice.findByIdAndDelete(req.params.id);
+    if (!notice) {
+      return res.status(404).json({ message: "Notice not found" });
+    }
+    res.json({ success: true, message: "Notice deleted successfully" });
+  } catch (err) {
+    console.error("Delete error:", err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// UPDATE a notice
+router.put("/notice/:id", async (req, res) => {
+  try {
+    const notice = await Notice.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true, runValidators: true }
+    );
+    if (!notice) {
+      return res.status(404).json({ message: "Notice not found" });
+    }
+    res.json({ success: true, notice });
+  } catch (err) {
+    console.error("Update error:", err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// POST add notice
 router.post("/add-notice", upload.single("attachment"), async (req, res) => {
   try {
     const noticeData = {
       title: req.body.title,
       description: req.body.description,
       category: req.body.category,
-      audience: typeof req.body.audience === 'string' 
-        ? JSON.parse(req.body.audience) 
-        : req.body.audience,
+      audience: typeof req.body.audience === 'string' ? JSON.parse(req.body.audience) : req.body.audience,
       department: req.body.department,
       section: req.body.section,
       priority: req.body.priority,
@@ -73,8 +98,6 @@ router.post("/add-notice", upload.single("attachment"), async (req, res) => {
       createdBy: req.body.createdBy,
       role: req.body.role,
     };
-
-    // Add attachment if file was uploaded
     if (req.file) {
       noticeData.attachment = {
         filename: req.file.filename,
@@ -84,10 +107,8 @@ router.post("/add-notice", upload.single("attachment"), async (req, res) => {
         mimetype: req.file.mimetype,
       };
     }
-
     const notice = new Notice(noticeData);
     await notice.save();
-
     res.status(201).json({ success: true, notice });
   } catch (err) {
     console.log(err);
@@ -95,16 +116,14 @@ router.post("/add-notice", upload.single("attachment"), async (req, res) => {
   }
 });
 
-// POST add notice for staff (with file upload)
+// POST add notice for staff
 router.post("/add-noticestaff", upload.single("attachment"), async (req, res) => {
   try {
     const noticeData = {
       title: req.body.title,
       description: req.body.description,
       category: req.body.category,
-      audience: typeof req.body.audience === 'string' 
-        ? JSON.parse(req.body.audience) 
-        : req.body.audience,
+      audience: typeof req.body.audience === 'string' ? JSON.parse(req.body.audience) : req.body.audience,
       department: req.body.department,
       section: req.body.section,
       priority: req.body.priority,
@@ -113,7 +132,6 @@ router.post("/add-noticestaff", upload.single("attachment"), async (req, res) =>
       createdBy: req.body.createdBy,
       role: req.body.role,
     };
-
     if (req.file) {
       noticeData.attachment = {
         filename: req.file.filename,
@@ -123,10 +141,8 @@ router.post("/add-noticestaff", upload.single("attachment"), async (req, res) =>
         mimetype: req.file.mimetype,
       };
     }
-
     const newNotice = new Notice(noticeData);
     await newNotice.save();
-
     res.status(201).json({ success: true, notice: newNotice });
   } catch (err) {
     console.log(err);
@@ -141,85 +157,13 @@ router.get("/dashboard-stats", async (req, res) => {
     const totalStudents = await User.countDocuments({ role: "student" });
     const totalTeachers = await User.countDocuments({ role: "teacher" });
     const totalStaff = await User.countDocuments({ role: "staff" });
-
-    res.json({
-      totalNotices,
-      totalStudents,
-      totalTeachers,
-      totalStaff,
-    });
+    res.json({ totalNotices, totalStudents, totalTeachers, totalStaff });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
-// Serve static files from uploads folder
+// ============ STATIC FILES - MUST BE LAST ============
 router.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 module.exports = router;
-
-
-
-// const express = require("express");
-// const router = express.Router();
-// const Notice = require("../models/Notice");
-
-
-// router.get("/notices", async (req, res) => {
-//   try {
-//     const notices = await Notice.find().sort({ createdAt: -1 });
-//     res.json(notices);
-//   } catch (err) {
-//     res.status(500).json({ message: err.message });
-//   }
-// });
-
-// router.post("/add-notice", async (req, res) => {
-
-//   try {
-//     const notice = new Notice(req.body);
-//     await notice.save();
-
-//     res.json({ success: true, notice });
-
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).json({ message: err.message });
-//   }
-// });
-
-
-// router.post("/add-noticestaff", async (req, res) => {
-//   try {
-//     const newNotice = new Notice(req.body);
-//     await newNotice.save();
-
-//    res.status(201).json(newNotice);
-
-//   } catch (err) {
-//     res.status(500).json({ message: "Server error" });
-//   }
-// });
-
-
-// // GET /api/dashboard-stats
-// router.get("/dashboard-stats", async (req, res) => {
-//   try {
-//     const totalNotices = await Notice.countDocuments();
-//     const totalStudents = await User.countDocuments({ role: "student" });
-//     const totalTeachers = await User.countDocuments({ role: "teacher" });
-//     const totalStaff = await User.countDocuments({ role: "staff" });
-
-//     res.json({
-//       totalNotices,
-//       totalStudents,
-//       totalTeachers,
-//       totalStaff,
-//     });
-//     console.log(totalNotices)
-//   } catch (err) {
-//     res.status(500).json({ message: err.message });
-//   }
-// });
-
-// module.exports = router;

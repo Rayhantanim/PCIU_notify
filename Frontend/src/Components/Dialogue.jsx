@@ -19,7 +19,7 @@ export default function AlertDialog() {
 
   return (
     <React.Fragment>
-      <div className=' text-center font-bold bg-white' onClick={handleClickOpen}>
+      <div className=' text-center text-black rounded-xl py-1.5 font-bold bg-white' onClick={handleClickOpen}>
         <div >
                     <p> Create Notice</p>
                    </div>

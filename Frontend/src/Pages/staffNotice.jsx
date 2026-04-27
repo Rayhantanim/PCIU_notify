@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { Dialog, DialogContent } from "@mui/material"; // make sure @mui/material is installed
 
 export default function StaffNoticeForm() {
-  const API = "https://pciu-notify-backend.vercel.app";
+  const API = "http://localhost:5000";
   const [open, setOpen] = useState(false);
   const [notices, setNotices] = useState([]);
   const [formData, setFormData] = useState({

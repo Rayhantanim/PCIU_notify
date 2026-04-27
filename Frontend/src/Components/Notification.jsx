@@ -7,7 +7,7 @@ export default function Notification() {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    const socket = io("https://pciu-notify-backend.vercel.app"); // backend URL
+    const socket = io("http://localhost:5000"); // backend URL
 
     socket.on("connect", () => {
       console.log("Connected to server:", socket.id);
