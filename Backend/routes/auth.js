@@ -1,211 +1,181 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 
-
-
-
-// GET ALL USERS
-router.get("/users", async (req, res) => {
+// Register new user (firebaseUid is optional now)
+router.post("/register", async (req, res) => {
   try {
-    const users = await User.find().select("-password"); // hide password
-    res.json(users);
+    const { 
+      firebaseUid, 
+      email, 
+      firstName, 
+      lastName, 
+      role, 
+      password,
+      phone,
+      dob,
+      department,
+      section,
+      studentId,
+      teacherId,
+      staffId,
+      shortName
+    } = req.body;
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    // Hash password if provided
+    let hashedPassword;
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      hashedPassword = await bcrypt.hash(password, salt);
+    }
+
+    // Create user data object
+    const userData = {
+      email,
+      firstName,
+      lastName,
+      role: role || "student",
+      phone,
+      dob,
+      password: hashedPassword,
+    };
+
+    // Add firebaseUid only if provided
+    if (firebaseUid) {
+      userData.firebaseUid = firebaseUid;
+    }
+
+    // Add role-specific fields
+    if (role === "student") {
+      userData.studentId = studentId;
+      userData.department = department;
+      userData.section = section;
+    } else if (role === "teacher") {
+      userData.teacherId = teacherId;
+      userData.shortName = shortName;
+      userData.department = department;
+    } else if (role === "staff") {
+      userData.staffId = staffId;
+    }
+
+    const user = new User(userData);
+    await user.save();
+
+    res.status(201).json({
+      success: true,
+      message: "User registered successfully",
+      userId: user._id,
+      user: {
+        _id: user._id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        role: user.role,
+      },
+    });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    console.error("Register error:", err);
+    res.status(500).json({ message: err.message });
   }
 });
 
-
-router.get("/user/:id", async (req, res) => {
+// Get user by Firebase UID (optional)
+router.get("/user/:firebaseUid", async (req, res) => {
   try {
-   const user = await User.findById(req.params.id);
-
+    const user = await User.findOne({ firebaseUid: req.params.firebaseUid });
+    
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
     res.json({
-  success: true,
-  userId: user._id,  
-  role: user.role
-});
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-
-
-
-router.get("/teachers", async (req, res) => {
-  try {
-    const teachers = await User.find({ role: "teacher" }).select("firstName lastName");
-
-    res.json(teachers);
+      user: {
+        _id: user._id,
+        firebaseUid: user.firebaseUid,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        role: user.role,
+        department: user.department,
+      },
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
-
-// Check if email is available
-router.post("/check-email", async (req, res) => {
-    try {
-        const { email } = req.body;
-
-        if (!email) {
-            return res.json({ available: false });
-        }
-
-        const cleanEmail = email.toLowerCase();
-
-        const existingUser = await User.findOne({ email: cleanEmail });
-
-        res.json({ available: !existingUser });
-
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ available: false });
-    }
-});
-
-
-// SIGNUP
-router.post("/signup", async (req, res) => {
-    try {
-        const data = req.body;
-
-        // check email
-        const cleanEmail = data.email.trim().toLowerCase();
-        const existingUser = await User.findOne({ email: cleanEmail });
-        if (existingUser) {
-            return res.status(400).json({ message: "Email already exists" });
-        }
-
-        // hash password
-        const hashedPassword = await bcrypt.hash(data.password, 10);
-
-        const newUser = new User({
-            ...data,
-            email:  cleanEmail,
-            password: hashedPassword,
-        });
-
-        await newUser.save();
-
-        res.status(201).json({
-            message: "User created successfully",
-            user: newUser,
-        });
-
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-
-
-
+// Login with email/password
 router.post("/login", async (req, res) => {
-    try {
-        const { email, id, password } = req.body;
+  try {
+    const { email, password, id } = req.body;
 
-        let user = null;
+    let user;
+    
+    // Find user by email or ID
+    if (id) {
+      user = await User.findOne({ studentId: id });
+    } else if (email) {
+      user = await User.findOne({ email });
+    }
 
-        // EMAIL LOGIN
-        if (email) {
-            const cleanEmail = email.trim().toLowerCase();
-            user = await User.findOne({ email: cleanEmail });
+    if (!user) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
 
-            if (!user) {
-                return res.json({ success: false, message: "Email not found" });
-            }
-        }
-
-        // ID LOGIN
-        else if (id) {
-            user = await User.findOne({
-                $or: [
-                    { studentId: id },
-                    { teacherId: id },
-                    { staffId: id }
-                ]
-            });
-
-            if (!user) {
-                return res.json({ success: false, message: "ID not found" });
-            }
-        }
-
-        // NO USER FOUND
-        if (!user) {
-            return res.json({ success: false, message: "Invalid login" });
-        }
-
-        // PASSWORD CHECK SAFE
-        const isMatch = await bcrypt.compare(password, user.password);
-
-        if (!isMatch) {
-            return res.json({ success: false, message: "Wrong password" });
-        }
+    // Check password
+    if (user.password) {
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        return res.status(401).json({ message: "Invalid credentials" });
+      }
+    } else if (!user.password && user.firebaseUid) {
+      // User exists in Firebase but not in MongoDB
+      return res.status(400).json({ message: "Please use Firebase authentication" });
+    }
 
     res.json({
-  success: true,
-  user: {
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    role: user.role,
-    userId: user.studentId || user.teacherId || user.staffId
+      success: true,
+      user: {
+        userId: user._id,
+        firebaseUid: user.firebaseUid,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (err) {
+    console.error("Login error:", err);
+    res.status(500).json({ message: err.message });
   }
-})
-
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ success: false, message: "Server error" });
-    }
 });
 
-// router.post("/check-id", async (req, res) => {
-//     try {
-//         const { id } = req.body;
+// Check email availability
+router.post("/check-email", async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    res.json({ available: !user });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
-//         const user = await User.findOne({
-//             $or: [
-//                 { studentId: id },
-//                 { teacherId: id },
-//                 { staffId: id }
-//             ]
-//         });
-
-//         res.json({ available: !!user }); // true মানে exists
-
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).json({ available: false });
-//     }
-// old });
-
-router.post("/check-id", async (req, res) => {
-    try {
-        const { id } = req.body;
-
-        const user = await User.findOne({
-            $or: [
-                { studentId: id },
-                { teacherId: id },
-                { staffId: id }
-            ]
-        });
-
-        res.json({ exists: !!user });
-
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ exists: false });
-    }
+// Get all teachers
+router.get("/teachers", async (req, res) => {
+  try {
+    const teachers = await User.find({ role: "teacher" }).select("firstName lastName email");
+    res.json(teachers);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 module.exports = router;

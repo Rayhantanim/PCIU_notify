@@ -305,9 +305,6 @@ const handleSaveEdit = async (noticeId) => {
             <h1 className="text-3xl font-bold mb-6 text-gray-800">
               ✍️ My Notices
             </h1>
-            <p className="text-sm text-gray-500 mb-4">
-              You can edit or delete only your own notices
-            </p>
 
             {myNotices.length === 0 ? (
               <div className="text-center py-12">

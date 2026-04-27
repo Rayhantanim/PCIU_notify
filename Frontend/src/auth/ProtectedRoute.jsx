@@ -1,13 +1,16 @@
-import React from "react";
 import { Navigate } from "react-router-dom";
 
-export default function ProtectedRoute({ children }) {
+const ProtectedRoute = ({ children }) => {
   const userId = localStorage.getItem("userId");
-  const role = localStorage.getItem("role");
+  const userRole = localStorage.getItem("role");
+  const isLoggedIn = userId && userRole;
 
-  if (!userId || !role) {
+  if (!isLoggedIn) {
+    // Redirect to login if not authenticated
     return <Navigate to="/login" replace />;
   }
 
   return children;
-}
+};
+
+export default ProtectedRoute;

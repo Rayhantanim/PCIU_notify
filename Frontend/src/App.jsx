@@ -1,7 +1,6 @@
 import Profile from "./Pages/Profile";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import { Route, Routes } from "react-router-dom";
 import LandingPage from "./Pages/LandingPage";
 import LoginPage from "./Pages/LoginPage";
@@ -18,59 +17,123 @@ import StaffDashboard from "./Components/dashboards/StaffDashboard";
 import AllStaff from "./Pages/AllStaff";
 import StaffNoticeForm from "./Pages/staffNotice";
 import StudentOverview from "./Components/dashboards/studentOverview";
+import RoleBasedRoute from "./auth/RoleBasedRoute";
 
 const App = () => {
   return (
     <div>
       <Routes>
-        {/* Public Route */}
+        {/* Public Routes */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
-        {/* <Route path="/test" element={<RoutineViewer/>} /> */}
         
-        {/* Protected Route */}
-        <Route
-          path="/home"
+        {/* Protected Routes with DashboardLayout */}
+
+
+// In your routes:
+<Route path="dashboard" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
+  {/* Teacher only */}
+  <Route 
+    path="dashboardindex" 
+    element={
+      <RoleBasedRoute allowedRoles={["teacher"]}>
+        <TeacherDashboard />
+      </RoleBasedRoute>
+    } 
+  />
+  
+  {/* Staff only */}
+  <Route 
+    path="staffnotice" 
+    element={
+      <RoleBasedRoute allowedRoles={["staff"]}>
+        <StaffNoticeForm />
+      </RoleBasedRoute>
+    } 
+  />
+  <Route 
+    path="allstaff" 
+    element={
+      <RoleBasedRoute allowedRoles={["staff"]}>
+        <AllStaff />
+      </RoleBasedRoute>
+    } 
+  />
+  
+  {/* Student only */}
+  <Route 
+    path="overview" 
+    element={
+      <RoleBasedRoute allowedRoles={["student"]}>
+        <StudentOverview />
+      </RoleBasedRoute>
+    } 
+  />
+  <Route 
+    path="impnotices" 
+    element={
+      <RoleBasedRoute allowedRoles={["student"]}>
+        <ImportantNotice />
+      </RoleBasedRoute>
+    } 
+  />
+  
+  {/* Accessible by multiple roles */}
+  <Route 
+    path="allnotices" 
+    element={
+      <RoleBasedRoute allowedRoles={["teacher", "staff", "student"]}>
+        <AllNotices />
+      </RoleBasedRoute>
+    } 
+  />
+  <Route 
+    path="stuNotices" 
+    element={
+      <RoleBasedRoute allowedRoles={[ "student"]}>
+        <StudentNotices />
+      </RoleBasedRoute>
+    } 
+  />
+  <Route 
+    path="allstudent" 
+    element={
+      <RoleBasedRoute allowedRoles={["teacher", "staff"]}>
+        <AllStudent />
+      </RoleBasedRoute>
+    } 
+  />
+  <Route 
+    path="allteacher" 
+    element={
+      <RoleBasedRoute allowedRoles={["admin", "staff"]}>
+        <AllTeacher />
+      </RoleBasedRoute>
+    } 
+  />
+</Route>
+        
+       
+
+        {/* Other Protected Routes */}
+        <Route 
+          path="/home" 
           element={
             <ProtectedRoute>
               <HomePage />
             </ProtectedRoute>
           }
         />
-          <Route path="/profile" element={<Profile />} />
-      
+        
+        <Route 
+          path="/profile" 
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
-    <Routes>
-  <Route path="dashboard" element={<DashboardLayout />}>
-  {/* teacher */}
-    <Route path="dashboardindex" element={<TeacherDashboard />} />
-    <Route path="allnotices" element={<AllNotices/>} />
-    
-   
-    {/* staff dashboard */}
-    <Route path="view" element={<StaffDashboard/>} />
-    <Route path="allstaff" element={<AllStaff/>} />
-    <Route path="staffnotice" element={<StaffNoticeForm/>} />
-{/* student dashboard */}
-    <Route path="overview" element={<StudentOverview/>} />
-    <Route path="impnotices" element={<ImportantNotice/>} />
-    <Route path="stuNotices" element={<StudentNotices/>} />
-     <Route path="allstudent" element={<AllStudent/>} />
-    <Route path="allteacher" element={<AllTeacher/>} />
-
-  </Route>
-</Routes>
-
-      {/* <Routes> */}
-      {/* <Route path="/" element={<LandingPage />} /> */}
-      {/* <Route path="/login" element={<LoginPage />} /> */}
-      {/* <Route path="/home" element={<HomePage/>} /> */}
-      {/* <Route path="/" element={<Login/>} /> */}
-      {/* <Route path="/login" element={<Login />} /> */}
-      {/* <Route path="/signup" element={<Signup />} /> */}
-    
-      {/* <Route path="/test" element={<LandingPage />} /> */}
-      {/* </Routes> */}
 
       <ToastContainer
         position="top-center"

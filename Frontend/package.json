@@ -17,6 +17,7 @@
     "@recharts/devtools": "^0.0.11",
     "@tailwindcss/vite": "^4.1.18",
     "axios": "^1.13.4",
+    "firebase": "^12.12.1",
     "lucide-react": "^0.563.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
