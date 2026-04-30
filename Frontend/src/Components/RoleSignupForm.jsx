@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useAuth } from "../context/AuthContext";
+import Swal from "sweetalert2";
 
 export default function RoleSignupForm({ role = "student", goBack }) {
   const API = "http://localhost:5000";
@@ -199,7 +200,11 @@ const handleSubmit = async (e) => {
     localStorage.setItem("fullName", `${formData.firstName} ${formData.lastName}`);
     localStorage.setItem("role", role);
 
-    toast.success("Signup successful! 🎉");
+    Swal.fire({
+      title: "Signup Successfully!",
+      icon: "success",
+      draggable: true
+    });
 
     // Navigate based on role
     if (role === "student") {

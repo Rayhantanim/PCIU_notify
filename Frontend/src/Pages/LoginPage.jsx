@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import pciubg from "../assets/pciubg.png";
 import axios from "axios";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 export default function LoginPage() {
   const API = "http://localhost:5000";
@@ -57,7 +58,13 @@ export default function LoginPage() {
         localStorage.setItem("fullName", `${user.firstName} ${user.lastName}`);
         localStorage.setItem("role", user.role);
         
-        toast.success(`Welcome back, ${user.firstName}! 🎉`);
+
+Swal.fire({
+  title: `Welcome back, ${user.firstName}!`,
+  icon: "success",
+  draggable: true
+});
+
         
         // Navigate based on role
         if (user.role === "student") {
@@ -205,10 +212,9 @@ export default function LoginPage() {
           <div className="mt-4 flex flex-col gap-2">
             <button
               type="button"
-              onClick={() => navigate("/register")}
               className="text-gray-300 hover:text-white underline text-sm"
             >
-              Don't have an account? Register
+              Don't have an account? <Link to="/">Register</Link>
             </button>
             <button
               type="button"

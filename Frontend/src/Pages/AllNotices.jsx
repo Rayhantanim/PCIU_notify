@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import noticeImg from "../assets/notice.png";
 import { toast } from "react-toastify";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { MdEdit } from "react-icons/md";
+import { IoPeopleSharp } from "react-icons/io5";
+import { RiPushpinLine } from "react-icons/ri";
+import Swal from 'sweetalert2'
 
 const AllNotices = () => {
   const [notices, setNotices] = useState([]);
@@ -71,29 +76,42 @@ const handleDelete = async (noticeId) => {
   console.log("Attempting to delete notice ID:", noticeId);
   console.log("Full notice ID:", JSON.stringify(noticeId));
   
-  if (!window.confirm("Are you sure you want to delete this notice?")) return;
+  const result = await Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!"
+  });
 
-  try {
-    const res = await fetch(`${API}/api/notice/${noticeId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  if (result.isConfirmed) {
+    try {
+      const res = await fetch(`${API}/api/notice/${noticeId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    const data = await res.json();
-    console.log("Delete response:", data);
+      const data = await res.json();
 
-    if (res.ok) {
-      toast.success("Notice deleted successfully!");
-      setMyNotices(myNotices.filter((notice) => notice._id !== noticeId));
-      setNotices(notices.filter((notice) => notice._id !== noticeId));
-    } else {
-      toast.error(data.message || "Failed to delete notice");
+      if (res.ok) {
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your notice has been deleted.",
+          icon: "success"
+        });
+        setMyNotices(myNotices.filter((notice) => notice._id !== noticeId));
+        setNotices(notices.filter((notice) => notice._id !== noticeId));
+      } else {
+        toast.error(data.message || "Failed to delete notice");
+      }
+    } catch (err) {
+      console.error("Error deleting notice:", err);
+      toast.error("Error deleting notice: " + err.message);
     }
-  } catch (err) {
-    console.error("Error deleting notice:", err);
-    toast.error("Error deleting notice: " + err.message);
   }
 };
 
@@ -115,7 +133,12 @@ const handleSaveEdit = async (noticeId) => {
     console.log("Update response:", data);
 
     if (res.ok) {
-      toast.success("Notice updated successfully!");
+     
+Swal.fire({
+  title: "Notice updated successfully!",
+  icon: "success",
+  draggable: true
+});
       
       const updatedNotice = data.notice || data;
       
@@ -216,7 +239,7 @@ const handleSaveEdit = async (noticeId) => {
           <div className="flex-1">
             <div className="flex items-center gap-2 flex-wrap">
               <p className="font-semibold text-gray-800">"{notice.title}"</p>
-              {notice.isPinned && <span className="text-xs">📌</span>}
+              {notice.isPinned && <span className="text-xl text-red-600 "><RiPushpinLine/> </span>}
               {notice.priority && (
                 <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 capitalize">
                   {notice.priority}
@@ -228,7 +251,7 @@ const handleSaveEdit = async (noticeId) => {
               <span>📅 {formatDate(notice.createdAt)}</span>
               <span>📂 {notice.category}</span>
               {notice.audience && notice.audience.length > 0 && (
-                <span>👥 {notice.audience.join(", ")}</span>
+                <span className="flex items-center gap-2"> <IoPeopleSharp/> {notice.audience.join(", ")}</span>
               )}
             </div>
           </div>
@@ -256,15 +279,15 @@ const handleSaveEdit = async (noticeId) => {
         <div className="flex justify-end gap-2 mt-3 pt-3 border-t border-gray-200">
           <button
             onClick={() => handleEditClick(notice)}
-            className="px-4 py-1.5 text-sm bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition flex items-center gap-1"
+            className="px-4 py-1.5 text-xl bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition flex items-center gap-1"
           >
-            ✏️ Edit
+            <MdEdit></MdEdit>
           </button>
           <button
             onClick={() => handleDelete(notice._id)}
-            className="px-4 py-1.5 text-sm bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition flex items-center gap-1"
+            className="px-4 text-xl py-1.5 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition flex items-center gap-1"
           >
-            🗑️ Delete
+          <RiDeleteBin6Line />
           </button>
         </div>
       )}
@@ -285,7 +308,7 @@ const handleSaveEdit = async (noticeId) => {
                 : "bg-white text-gray-600 border-2 border-gray-200 hover:border-blue-300"
             }`}
           >
-            ✍️ My Notices ({myNotices.length})
+            My Notices ({myNotices.length})
           </button>
           <button
             onClick={() => setActiveTab("all")}
@@ -295,7 +318,7 @@ const handleSaveEdit = async (noticeId) => {
                 : "bg-white text-gray-600 border-2 border-gray-200 hover:border-blue-300"
             }`}
           >
-            📢 All Notices ({notices.length})
+            All Notices ({notices.length})
           </button>
         </div>
 
@@ -303,12 +326,12 @@ const handleSaveEdit = async (noticeId) => {
         {activeTab === "my" && (
           <div className="border bg-white rounded-xl shadow-lg p-6">
             <h1 className="text-3xl font-bold mb-6 text-gray-800">
-              ✍️ My Notices
+             My Notices
             </h1>
 
             {myNotices.length === 0 ? (
               <div className="text-center py-12">
-                <p className="text-gray-500 text-lg">📝 You haven't created any notices yet</p>
+                <p className="text-gray-500 text-lg"> You haven't created any notices yet</p>
                 <p className="text-sm text-gray-400 mt-2">
                   Create a notice to see it here
                 </p>
@@ -457,7 +480,7 @@ const handleSaveEdit = async (noticeId) => {
         {activeTab === "all" && (
           <div className="border bg-white rounded-xl shadow-lg p-6">
             <h1 className="text-3xl font-bold mb-6 text-gray-800">
-              📢 All Notices
+              All Notices
             </h1>
 
             {notices.length === 0 ? (

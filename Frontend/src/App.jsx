@@ -4,7 +4,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { Route, Routes } from "react-router-dom";
 import LandingPage from "./Pages/LandingPage";
 import LoginPage from "./Pages/LoginPage";
-import HomePage from "./Pages/HomePage";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import DashboardLayout from "./Pages/DashboardLayout/DashboardLayout";
 import AllNotices from "./Pages/AllNotices";
@@ -18,6 +17,7 @@ import AllStaff from "./Pages/AllStaff";
 import StaffNoticeForm from "./Pages/staffNotice";
 import StudentOverview from "./Components/dashboards/studentOverview";
 import RoleBasedRoute from "./auth/RoleBasedRoute";
+import HomePage from "./Pages/Home";
 
 const App = () => {
   return (
@@ -25,10 +25,10 @@ const App = () => {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<LoginPage />} />
+       <Route path="/login" element={<LoginPage />} />
         
         {/* Protected Routes with DashboardLayout */}
-
+         <Route path="/home" element={< HomePage/>} />
 
 // In your routes:
 <Route path="dashboard" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>

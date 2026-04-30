@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import SimpleBadge from "../../Components/Notification";
+import RealTimeNotification from "../../Components/RealTimeNotification";
+import Swal from "sweetalert2";
 
 const DashboardNav = () => {
   const [open, setOpen] = useState(false);
@@ -48,7 +50,13 @@ const DashboardNav = () => {
     localStorage.removeItem("token");
     
     // Show success message
-    toast.success("Logged out successfully! 👋");
+Swal.fire({
+  position: "top-end",
+  icon: "success",
+  title: "Logout Successfully",
+  showConfirmButton: false,
+  timer: 1500
+});
     
     // Navigate to login page
     navigate("/login");
@@ -94,7 +102,7 @@ const DashboardNav = () => {
 
       {/* Right */}
       <div className="flex items-center gap-10 my-4">
-        <SimpleBadge />
+        <RealTimeNotification></RealTimeNotification>
 
         {/* Profile Dropdown */}
         <div className="relative" ref={dropdownRef}>
