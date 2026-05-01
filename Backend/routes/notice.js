@@ -1,42 +1,42 @@
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
+// const multer = require("multer");
 const path = require("path");
 const mongoose = require("mongoose");
 const Notice = require("../models/Notice");
 const User = require("../models/User");
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  },
-});
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "uploads/");
+//   },
+//   filename: function (req, file, cb) {
+//     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+//     cb(null, uniqueSuffix + path.extname(file.originalname));
+//   },
+// });
 
-const fileFilter = (req, file, cb) => {
-  const allowedTypes = [
-    "image/jpeg", "image/png", "image/gif",
-    "application/pdf", "application/msword",
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    "application/vnd.ms-excel",
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    "text/plain",
-  ];
-  if (allowedTypes.includes(file.mimetype)) {
-    cb(null, true);
-  } else {
-    cb(new Error("Invalid file type"), false);
-  }
-};
+// const fileFilter = (req, file, cb) => {
+//   const allowedTypes = [
+//     "image/jpeg", "image/png", "image/gif",
+//     "application/pdf", "application/msword",
+//     "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+//     "application/vnd.ms-excel",
+//     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+//     "text/plain",
+//   ];
+//   if (allowedTypes.includes(file.mimetype)) {
+//     cb(null, true);
+//   } else {
+//     cb(new Error("Invalid file type"), false);
+//   }
+// };
 
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 10 * 1024 * 1024 },
-  fileFilter: fileFilter,
-});
+// const upload = multer({
+//   storage: storage,
+//   limits: { fileSize: 10 * 1024 * 1024 },
+//   fileFilter: fileFilter,
+// });
 
 // ============ ALL ROUTES ============
 
@@ -83,7 +83,7 @@ router.put("/notice/:id", async (req, res) => {
 });
 
 // POST add notice
-router.post("/add-notice", upload.single("attachment"), async (req, res) => {
+router.post("/add-notice", async (req, res) => {
   try {
     const noticeData = {
       title: req.body.title,
@@ -98,15 +98,15 @@ router.post("/add-notice", upload.single("attachment"), async (req, res) => {
       createdBy: req.body.createdBy,
       role: req.body.role,
     };
-    if (req.file) {
-      noticeData.attachment = {
-        filename: req.file.filename,
-        originalName: req.file.originalname,
-        path: `/uploads/${req.file.filename}`,
-        size: req.file.size,
-        mimetype: req.file.mimetype,
-      };
-    }
+    // if (req.file) {
+    //   noticeData.attachment = {
+    //     filename: req.file.filename,
+    //     originalName: req.file.originalname,
+    //     path: `/uploads/${req.file.filename}`,
+    //     size: req.file.size,
+    //     mimetype: req.file.mimetype,
+    //   };
+    // }
     const notice = new Notice(noticeData);
     await notice.save();
     res.status(201).json({ success: true, notice });
@@ -117,7 +117,7 @@ router.post("/add-notice", upload.single("attachment"), async (req, res) => {
 });
 
 // POST add notice for staff
-router.post("/add-noticestaff", upload.single("attachment"), async (req, res) => {
+router.post("/add-noticestaff",  async (req, res) => {
   try {
     const noticeData = {
       title: req.body.title,
@@ -132,15 +132,15 @@ router.post("/add-noticestaff", upload.single("attachment"), async (req, res) =>
       createdBy: req.body.createdBy,
       role: req.body.role,
     };
-    if (req.file) {
-      noticeData.attachment = {
-        filename: req.file.filename,
-        originalName: req.file.originalname,
-        path: `/uploads/${req.file.filename}`,
-        size: req.file.size,
-        mimetype: req.file.mimetype,
-      };
-    }
+    // if (req.file) {
+    //   noticeData.attachment = {
+    //     filename: req.file.filename,
+    //     originalName: req.file.originalname,
+    //     path: `/uploads/${req.file.filename}`,
+    //     size: req.file.size,
+    //     mimetype: req.file.mimetype,
+    //   };
+    // }
     const newNotice = new Notice(noticeData);
     await newNotice.save();
     res.status(201).json({ success: true, notice: newNotice });
