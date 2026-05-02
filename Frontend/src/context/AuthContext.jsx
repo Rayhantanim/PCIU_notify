@@ -10,7 +10,8 @@ export function AuthProvider({ children }) {
   // Mock signup function - replace with your actual backend call
   const signup = async (email, password, firstName, lastName, role) => {
     // This should call your backend API
-    const response = await fetch("http://localhost:5000/api/register", {
+    const API = "https://pciunotifybackend.onrender.com";
+    const response = await fetch(`${API}/api/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

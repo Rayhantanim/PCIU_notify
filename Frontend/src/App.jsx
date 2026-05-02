@@ -19,10 +19,12 @@ import StudentOverview from "./Components/dashboards/studentOverview";
 import RoleBasedRoute from "./auth/RoleBasedRoute";
 import HomePage from "./Pages/Home";
 import RoutineViewer from "./Components/routine/Routine";
+import SocketProvider from "./Components/SocketProvider";
 
 const App = () => {
   return (
     <div>
+       <SocketProvider />
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<LandingPage />} />

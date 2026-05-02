@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AlertDialog from "../Dialogue";
+import { FaChalkboardTeacher } from "react-icons/fa";
 
 export default function TeacherDashboard() {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ export default function TeacherDashboard() {
   });
   const [loading, setLoading] = useState(true);
 
-  const API = "http://localhost:5000";
+  const API = "https://pciunotifybackend.onrender.com";
 
   // Get user info from localStorage
   const firstName = localStorage.getItem("firstName") || "";
@@ -92,7 +93,7 @@ export default function TeacherDashboard() {
 
       {/* HEADER */}
       <div className="px-20 py-6 border-b border-white/10 backdrop-blur-md bg-white/5">
-        <h1 className="text-2xl font-bold">👨‍🏫 Teacher Dashboard</h1>
+        <h1 className="text-2xl font-bold flex items-center gap-2"> <FaChalkboardTeacher/> Teacher Dashboard</h1>
         <p className="text-sm text-gray-400 mt-1">
           Welcome back, {fullName || "Teacher"}
         </p>

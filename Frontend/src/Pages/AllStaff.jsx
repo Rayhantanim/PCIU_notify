@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 const AllStaff = () => {
       const [staffs, setStaffs] = useState([]);
-      const API = "http://localhost:5000";
+      const API = "https://pciunotifybackend.onrender.com";
     
       useEffect(() => {
         const fetchstaffs = async () => {
