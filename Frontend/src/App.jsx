@@ -18,7 +18,7 @@ import StaffNoticeForm from "./Pages/staffNotice";
 import StudentOverview from "./Components/dashboards/studentOverview";
 import RoleBasedRoute from "./auth/RoleBasedRoute";
 import HomePage from "./Pages/Home";
-import RoutineViewer from "./Components/routine/Routine";
+import RoutineViewer from "./Components/routine/routine";
 import SocketProvider from "./Components/SocketProvider";
 
 const App = () => {
