@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
+import Swal from 'sweetalert2'
 
 export default function NoticeForm({ handleClose }) {
   const API = "http://localhost:5000";
@@ -124,7 +125,11 @@ export default function NoticeForm({ handleClose }) {
         return;
       }
 
-      toast.success("Notice created successfully 🎉");
+Swal.fire({
+  title: "Notice Created Successfully!",
+  icon: "success",
+  draggable: true
+});
       setFormData(initialState);
       handleClose();
     } catch (err) {

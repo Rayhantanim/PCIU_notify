@@ -2,10 +2,13 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import SimpleBadge from "../../Components/Notification";
+import RealTimeNotification from "../../Components/RealTimeNotification";
+import Swal from "sweetalert2";
 
 const DashboardNav = () => {
   const [open, setOpen] = useState(false);
   const [userName, setUserName] = useState("");
+  const [userRole, setUserRole] = useState("");
   const dropdownRef = useRef();
   const navigate = useNavigate();
 
@@ -14,6 +17,7 @@ const DashboardNav = () => {
     const firstName = localStorage.getItem("firstName");
     const lastName = localStorage.getItem("lastName");
     const fullName = localStorage.getItem("fullName");
+    const role = localStorage.getItem("role");
     
     if (fullName) {
       setUserName(fullName);
@@ -23,6 +27,11 @@ const DashboardNav = () => {
       setUserName(firstName);
     } else {
       setUserName("User");
+    }
+
+    // Set user role
+    if (role) {
+      setUserRole(role.toLowerCase());
     }
   }, []);
 
@@ -48,7 +57,13 @@ const DashboardNav = () => {
     localStorage.removeItem("token");
     
     // Show success message
-    toast.success("Logged out successfully! 👋");
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: "Logout Successfully",
+      showConfirmButton: false,
+      timer: 1500
+    });
     
     // Navigate to login page
     navigate("/login");
@@ -64,6 +79,10 @@ const DashboardNav = () => {
     navigate("/dashboard/settings");
   };
 
+  const handleRoutine = () => {
+    navigate("/dashboard/routine");
+  };
+
   // Get user initial for avatar
   const getUserInitial = () => {
     if (userName && userName !== "User") {
@@ -73,11 +92,9 @@ const DashboardNav = () => {
   };
 
   return (
-    <div className="flex justify-between mx-20">
-      {/* Left */}
+    <div className="flex justify-between items-center mx-20">
+      {/* Left Section */}
       <div className="flex items-center gap-10 my-4">
-        <h1 className="text-2xl font-semibold">Dashboard</h1>
-
         <div className="w-80 h-12 flex items-center px-4 rounded-full bg-white shadow-sm">
           <img
             className="w-5 h-5 mr-2 opacity-60"
@@ -92,9 +109,29 @@ const DashboardNav = () => {
         </div>
       </div>
 
-      {/* Right */}
+      {/* Center - Logo */}
+      <div className="absolute left-1/2 transform -translate-x-1/2">
+        <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          PCIU Notify
+        </h1>
+      </div>
+
+      {/* Right Section */}
       <div className="flex items-center gap-10 my-4">
-        <SimpleBadge />
+        {/* Routine Button - Only for students */}
+        {userRole === "student" && (
+          <button
+            onClick={handleRoutine}
+            className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors shadow-sm hover:shadow-md"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span>Routine</span>
+          </button>
+        )}
+
+        <RealTimeNotification />
 
         {/* Profile Dropdown */}
         <div className="relative" ref={dropdownRef}>

@@ -134,10 +134,11 @@ const DashboardMenu = () => {
                   <img className='w-10 h-10' src="https://cdn-icons-png.flaticon.com/512/1373/1373779.png" alt="" />
                   <h1 className='text-xl'>Routine</h1>
                 </div>
+               <Link to="/profile">
                 <div className='flex justify-start items-center gap-4 py-2 px-6 text-black border-[#3578f5] rounded m-10 shadow-2xl cursor-pointer transition-all hover:shadow-lg'>     
                   <img className='w-10 h-10' src="https://cdn-icons-png.flaticon.com/512/3524/3524659.png" alt="" />
-                  <h1 className='text-xl'>Settings</h1>
-                </div>
+                  <h1 className='text-xl'>Home</h1>
+                </div></Link>
               </div>
             )}
 
@@ -176,10 +177,11 @@ const DashboardMenu = () => {
                     <h1 className='text-xl'>Staff</h1>
                   </div>
                 </Link>
+               <Link to="/profile">
                 <div className='flex justify-start items-center gap-4 py-2 px-6 text-black border-[#3578f5] rounded m-10 shadow-2xl cursor-pointer transition-all hover:shadow-lg'>     
                   <img className='w-10 h-10' src="https://cdn-icons-png.flaticon.com/512/3524/3524659.png" alt="" />
-                  <h1 className='text-xl'>Settings</h1>
-                </div>
+                  <h1 className='text-xl'>Home</h1>
+                </div></Link>
               </div>
             )}
           </div>
