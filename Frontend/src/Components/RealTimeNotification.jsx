@@ -12,96 +12,113 @@ export default function RealTimeNotification() {
   const [open, setOpen] = useState(false);
   const socketRef = useRef(null);
   const [isConnected, setIsConnected] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const API = "http://localhost:5000";
 
-  // Fetch existing notifications from database
+  // Fetch existing notifications
   useEffect(() => {
     fetchNotifications();
   }, []);
 
   const fetchNotifications = async () => {
     try {
-      console.log("📥 Fetching existing notifications...");
-      const res = await axios.get(`${API}/api/notifications`);
-      console.log("✅ Fetched notifications:", res.data);
+      const userRole = localStorage.getItem("role");
+      const res = await axios.get(`${API}/api/notifications`, {
+        headers: { 'User-Role': userRole }
+      });
       setNotifications(res.data);
-      const unread = res.data.filter(n => !n.read).length;
-      setUnreadCount(unread);
+      setUnreadCount(res.data.filter(n => !n.read).length);
     } catch (err) {
-      console.error("❌ Error fetching notifications:", err);
+      console.error("Error fetching notifications:", err);
     }
   };
 
-  // Initialize socket
+  // Initialize socket - runs only once
   useEffect(() => {
-    if (!socketRef.current) {
-      console.log("🔄 Creating socket connection...");
+    // Only initialize if not already initialized
+    if (!isInitialized) {
+      console.log("🔄 Initializing socket connection...");
       
-      socketRef.current = io(API, {
+      // Create socket connection
+      const newSocket = io(API, {
         transports: ['websocket', 'polling'],
         withCredentials: true,
         reconnection: true,
-        reconnectionAttempts: 10,
+        reconnectionAttempts: 5,
         reconnectionDelay: 1000,
       });
-
-      socketRef.current.on("connect", () => {
-        console.log("✅ Socket connected! ID:", socketRef.current.id);
+      
+      // Store socket in ref
+      socketRef.current = newSocket;
+      setIsInitialized(true);
+      
+      // Set up event listeners
+      newSocket.on("connect", () => {
+        console.log("✅ Socket connected! ID:", newSocket.id);
         setIsConnected(true);
       });
-
-      socketRef.current.on("disconnect", () => {
+      
+      newSocket.on("disconnect", () => {
         console.log("❌ Socket disconnected");
         setIsConnected(false);
       });
-
-      socketRef.current.on("connect_error", (error) => {
+      
+      newSocket.on("connect_error", (error) => {
         console.error("❌ Socket connection error:", error);
         setIsConnected(false);
       });
-
-      socketRef.current.on("newNotice", (notice) => {
-        console.log("📢 New notice received in frontend:", notice);
+      
+      newSocket.on("newNotice", (notice) => {
+        const userRole = localStorage.getItem("role");
         
-        // Add to notifications list
-        const newNotification = {
-          _id: notice.id,
-          noticeId: notice.noticeId,
-          title: notice.title,
-          message: notice.message,
-          createdAt: notice.time || new Date(),
-          read: false,
-          type: notice.type,
-          createdBy: notice.createdBy,
-          role: notice.role
-        };
+        // Check if notice is for this user
+        let shouldShow = false;
+        if (userRole === "student") {
+          shouldShow = notice.audience === "students" || notice.audience === "all";
+        } else if (userRole === "teacher") {
+          shouldShow = notice.audience === "teachers" || notice.audience === "all";
+        } else if (userRole === "staff") {
+          shouldShow = notice.audience === "staff" || notice.audience === "all";
+        } else {
+          shouldShow = true;
+        }
         
-        setNotifications(prev => {
-          // Check if already exists
-          const exists = prev.some(n => n._id === newNotification._id);
-          if (exists) return prev;
-          return [newNotification, ...prev];
-        });
-        
-        setUnreadCount(prev => prev + 1);
-        
-        // Show toast notification
-        toast.info(`📢 ${notice.title}`, {
-          position: "top-right",
-          autoClose: 5000,
-          onClick: () => setOpen(true)
-        });
+        if (shouldShow) {
+          const newNotification = {
+            _id: notice.id || Date.now(),
+            noticeId: notice.noticeId,
+            title: notice.title,
+            message: notice.message,
+            createdAt: notice.time || new Date(),
+            read: false,
+            type: notice.type,
+            audience: notice.audience,
+            createdBy: notice.createdBy
+          };
+          
+          setNotifications(prev => [newNotification, ...prev]);
+          setUnreadCount(prev => prev + 1);
+          
+          toast.info(`📢 ${notice.title}`, {
+            position: "top-right",
+            autoClose: 5000,
+            onClick: () => setOpen(true)
+          });
+        }
       });
     }
-
+    
+    // Cleanup on unmount
     return () => {
-      if (socketRef.current) {
+      if (socketRef.current && isInitialized) {
+        console.log("🔄 Cleaning up socket connection");
         socketRef.current.disconnect();
         socketRef.current = null;
+        setIsInitialized(false);
       }
     };
-  }, []);
+  }, [API, isInitialized]); // Add dependencies
 
   // Mark as read
   const markAsRead = async (id) => {
@@ -170,6 +187,9 @@ export default function RealTimeNotification() {
         <Badge badgeContent={unreadCount} color="error" overlap="circular">
           <NotificationsIcon sx={{ fontSize: 24, color: "#555" }} />
         </Badge>
+        {isConnected && (
+          <div className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full"></div>
+        )}
       </div>
 
       {/* Notification Dropdown */}

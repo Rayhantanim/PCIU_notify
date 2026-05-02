@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import emailjs from '@emailjs/browser';
 
-export default function NoticeForm({ handleClose }) {
+// Initialize EmailJS with your Public Key
+emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your actual public key
+
+export default function NoticeForm({ handleClose, userRole }) {
   const API = "http://localhost:5000";
   const editorRef = useRef(null);
 
@@ -18,11 +22,13 @@ export default function NoticeForm({ handleClose }) {
     expiryDate: "",
     attachment: null,
     createdBy: "",
+    role: userRole,
   };
 
   const [formData, setFormData] = useState(initialState);
   const [teachers, setTeachers] = useState([]);
   const [previewMode, setPreviewMode] = useState(false);
+  const [sendingEmails, setSendingEmails] = useState(false);
 
   const departments = ["CSE", "EEE", "BBA"];
   const sectionsByDepartment = {
@@ -30,6 +36,12 @@ export default function NoticeForm({ handleClose }) {
     EEE: ["A", "B"],
     BBA: ["A"],
   };
+
+  const audienceOptions = [
+    { value: "students", label: "🎓 Students", icon: "👨‍🎓", color: "blue" },
+    { value: "teachers", label: "👨‍🏫 Teachers", icon: "👨‍🏫", color: "green" },
+    { value: "staff", label: "👔 Staff", icon: "👔", color: "purple" },
+  ];
 
   useEffect(() => {
     const fetchTeachers = async () => {
@@ -89,15 +101,20 @@ export default function NoticeForm({ handleClose }) {
     }
   };
 
+  const handleAudienceChange = (value) => {
+    let updated = [...formData.audience];
+    if (updated.includes(value)) {
+      updated = updated.filter(item => item !== value);
+    } else {
+      updated.push(value);
+    }
+    setFormData({ ...formData, audience: updated });
+  };
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
-    if (name === "audience") {
-      let updated = [...formData.audience];
-      if (checked) updated.push(value);
-      else updated = updated.filter((item) => item !== value);
-      setFormData({ ...formData, audience: updated });
-    } else if (type === "checkbox") {
+    if (type === "checkbox") {
       setFormData({ ...formData, [name]: checked });
     } else if (type === "file") {
       setFormData({ ...formData, attachment: e.target.files[0] });
@@ -106,10 +123,154 @@ export default function NoticeForm({ handleClose }) {
     }
   };
 
+  const getAudienceLabel = () => {
+    const audienceMap = {
+      students: "Students",
+      teachers: "Teachers",
+      staff: "Staff"
+    };
+    
+    if (formData.audience.length === 0) return "No one selected";
+    if (formData.audience.length === 3) return "Everyone";
+    
+    return formData.audience.map(a => audienceMap[a]).join(" & ");
+  };
+
+  // Function to fetch recipients from backend
+  const fetchRecipientsByAudience = async (audiences) => {
+    try {
+      const response = await fetch(`${API}/api/recipients`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ audiences })
+      });
+      const data = await response.json();
+      return data.recipients || [];
+    } catch (error) {
+      console.error("Error fetching recipients:", error);
+      return [];
+    }
+  };
+
+  // Function to send emails via EmailJS
+  const sendEmailNotifications = async (recipients, noticeData, audienceLabel) => {
+    const results = {
+      success: [],
+      failed: [],
+      total: recipients.length
+    };
+
+    const frontendUrl = process.env.REACT_APP_FRONTEND_URL || 'http://localhost:5173';
+    
+    const emailHtml = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;">
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px 10px 0 0; color: white; text-align: center;">
+          <h2 style="margin: 0;">📢 PCIU Notice Board</h2>
+          <p style="margin: 5px 0 0;">New Notice Published for ${audienceLabel}</p>
+        </div>
+        <div style="padding: 20px;">
+          <h3 style="color: #333; margin-top: 0;">${noticeData.title}</h3>
+          <div style="color: #666; line-height: 1.6;">${noticeData.description}</div>
+          <div style="background: #f5f5f5; padding: 10px; border-radius: 5px; margin-top: 20px;">
+            <p style="margin: 5px 0;"><strong>Category:</strong> ${noticeData.category}</p>
+            <p style="margin: 5px 0;"><strong>Priority:</strong> ${noticeData.priority || 'Normal'}</p>
+            <p style="margin: 5px 0;"><strong>Posted by:</strong> ${noticeData.createdBy}</p>
+            <p style="margin: 5px 0;"><strong>Date:</strong> ${new Date().toLocaleString()}</p>
+          </div>
+          <div style="text-align: center; margin-top: 30px;">
+            <a href="${frontendUrl}/dashboard/notices" 
+               style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+              View Notice
+            </a>
+          </div>
+        </div>
+        <div style="text-align: center; padding: 15px; background: #f9f9f9; border-radius: 0 0 10px 10px; color: #999; font-size: 12px;">
+          <p>This is an automated notification from PCIU Notice Board.</p>
+        </div>
+      </div>
+    `;
+
+    for (let i = 0; i < recipients.length; i++) {
+      const recipient = recipients[i];
+      
+      try {
+        const templateParams = {
+          to_email: recipient.email,
+          to_name: recipient.name,
+          subject: `📢 New ${noticeData.category} Notice: ${noticeData.title}`,
+          html_content: emailHtml,
+          from_name: "PCIU Notice Board",
+          reply_to: noticeData.createdBy
+        };
+
+        const response = await emailjs.send(
+          "YOUR_SERVICE_ID",     // Replace with your EmailJS Service ID
+          "YOUR_TEMPLATE_ID",    // Replace with your EmailJS Template ID
+          templateParams
+        );
+        
+        results.success.push({
+          email: recipient.email,
+          name: recipient.name
+        });
+        
+        // Update progress
+        Swal.update({
+          html: `
+            <div>Sending emails to ${audienceLabel}...</div>
+            <div class="mt-2">Progress: ${i + 1} / ${recipients.length}</div>
+            <div class="mt-2 text-green-600">✅ Success: ${results.success.length}</div>
+            <div class="text-red-600">❌ Failed: ${results.failed.length}</div>
+          `
+        });
+        
+        // Add delay between sends to avoid rate limits
+        if (i < recipients.length - 1) {
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+        
+      } catch (error) {
+        console.error(`Failed to send email to ${recipient.email}:`, error);
+        results.failed.push({
+          email: recipient.email,
+          name: recipient.name,
+          error: error.text || error.message
+        });
+      }
+    }
+
+    return results;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validation
+    if (!formData.createdBy) {
+      toast.error("Please select who is publishing this notice");
+      return;
+    }
+
+    if (formData.audience.length === 0) {
+      toast.error("Please select at least one audience");
+      return;
+    }
+
+    if (!formData.description || formData.description === '<br>') {
+      toast.error("Please add content to the notice");
+      return;
+    }
+
+    // Show loading indicator
+    Swal.fire({
+      title: "Publishing Notice...",
+      text: "Saving notice to database",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading()
+    });
+
     try {
+      // 1. Save notice to database
       const res = await fetch(`${API}/api/add-notice`, {
         method: "POST",
         headers: {
@@ -121,24 +282,78 @@ export default function NoticeForm({ handleClose }) {
       const data = await res.json();
 
       if (!res.ok) {
-        toast.error(data.message);
-        return;
+        throw new Error(data.message);
       }
 
-Swal.fire({
-  title: "Notice Created Successfully!",
-  icon: "success",
-  draggable: true
-});
+      // 2. Fetch recipients from backend
+      const recipients = await fetchRecipientsByAudience(formData.audience);
+      
+      let emailResults = null;
+      let emailSentCount = 0;
+
+      // 3. Send emails if there are recipients
+      if (recipients && recipients.length > 0) {
+        Swal.update({
+          title: "Sending Email Notifications...",
+          html: `
+            <div>Sending to ${recipients.length} recipients...</div>
+            <div class="mt-2">Audience: ${getAudienceLabel()}</div>
+          `,
+          allowOutsideClick: false
+        });
+
+        emailResults = await sendEmailNotifications(recipients, formData, getAudienceLabel());
+        emailSentCount = emailResults.success.length;
+        
+        // Show warning if some emails failed
+        if (emailResults.failed.length > 0) {
+          console.warn("Failed emails:", emailResults.failed);
+          toast.warning(`${emailResults.failed.length} emails failed to send`);
+        }
+      }
+
+      // 4. Show success message
+      const resultHtml = `
+        <div class="text-left">
+          <div class="mb-2">✅ Notice sent to: <strong>${getAudienceLabel()}</strong></div>
+          ${recipients && recipients.length > 0 ? `
+            <div class="mb-2">📧 Emails sent: <strong>${emailSentCount} / ${recipients.length}</strong></div>
+            ${emailResults?.failed.length > 0 ? `
+              <div class="text-red-600">❌ Failed: ${emailResults.failed.length} recipients</div>
+            ` : ''}
+          ` : `
+            <div class="text-yellow-600">⚠️ No email recipients found</div>
+          `}
+        </div>
+      `;
+      
+      Swal.fire({
+        title: "Notice Created Successfully!",
+        html: resultHtml,
+        icon: emailResults?.failed.length > 0 ? "warning" : "success",
+        confirmButtonColor: "#3085d6"
+      });
+      
+      // Reset form and close
       setFormData(initialState);
+      if (editorRef.current) {
+        editorRef.current.innerHTML = "";
+      }
       handleClose();
+      
     } catch (err) {
-      console.error(err);
-      toast.error("Server error");
+      console.error("Error:", err);
+      Swal.fire({
+        title: "Error!",
+        text: err.message || "Failed to create notice",
+        icon: "error",
+        confirmButtonColor: "#3085d6"
+      });
+      toast.error(err.message || "Server error");
     }
   };
 
-  const showDeptSection = !formData.audience.includes("all");
+  const showDeptSection = formData.audience.includes("students") && !formData.audience.includes("all");
 
   return (
     <form
@@ -156,7 +371,7 @@ Swal.fire({
         </button>
       </div>
 
-      {/* Teacher Selection */}
+      {/* Published By */}
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-2">
           Published By *
@@ -168,7 +383,7 @@ Swal.fire({
           required
           className="w-full border-2 border-gray-200 p-3 rounded-lg focus:border-blue-500 focus:outline-none"
         >
-          <option value="">Select Teacher</option>
+          <option value="">Select Publisher</option>
           {teachers.map((teacher) => (
             <option key={teacher._id} value={`${teacher.firstName} ${teacher.lastName}`}>
               {teacher.firstName} {teacher.lastName}
@@ -201,211 +416,49 @@ Swal.fire({
         
         {/* Toolbar */}
         <div className="flex flex-wrap gap-1 p-3 bg-gray-50 border-2 border-gray-200 rounded-t-lg border-b-0">
-          {/* Text Formatting */}
-          <button
-            type="button"
-            onClick={() => execCommand('bold')}
-            className="p-2 hover:bg-gray-200 rounded font-bold"
-            title="Bold"
-          >
-            <strong>B</strong>
-          </button>
-          <button
-            type="button"
-            onClick={() => execCommand('italic')}
-            className="p-2 hover:bg-gray-200 rounded italic"
-            title="Italic"
-          >
-            <em>I</em>
-          </button>
-          <button
-            type="button"
-            onClick={() => execCommand('underline')}
-            className="p-2 hover:bg-gray-200 rounded underline"
-            title="Underline"
-          >
-            <u>U</u>
-          </button>
-          <button
-            type="button"
-            onClick={() => execCommand('strikeThrough')}
-            className="p-2 hover:bg-gray-200 rounded line-through"
-            title="Strikethrough"
-          >
-            S
-          </button>
+          <button type="button" onClick={() => execCommand('bold')} className="p-2 hover:bg-gray-200 rounded font-bold"><strong>B</strong></button>
+          <button type="button" onClick={() => execCommand('italic')} className="p-2 hover:bg-gray-200 rounded italic"><em>I</em></button>
+          <button type="button" onClick={() => execCommand('underline')} className="p-2 hover:bg-gray-200 rounded underline"><u>U</u></button>
           
           <div className="w-px h-6 bg-gray-300 mx-1 self-center"></div>
           
-          {/* Alignment */}
-          <button
-            type="button"
-            onClick={() => execCommand('justifyLeft')}
-            className="p-2 hover:bg-gray-200 rounded"
-            title="Align Left"
-          >
-            ⬅️
-          </button>
-          <button
-            type="button"
-            onClick={() => execCommand('justifyCenter')}
-            className="p-2 hover:bg-gray-200 rounded"
-            title="Align Center"
-          >
-            ↔️
-          </button>
-          <button
-            type="button"
-            onClick={() => execCommand('justifyRight')}
-            className="p-2 hover:bg-gray-200 rounded"
-            title="Align Right"
-          >
-            ➡️
-          </button>
-          <button
-            type="button"
-            onClick={() => execCommand('justifyFull')}
-            className="p-2 hover:bg-gray-200 rounded"
-            title="Justify"
-          >
-            ☰
-          </button>
+          <button type="button" onClick={() => execCommand('justifyLeft')} className="p-2 hover:bg-gray-200 rounded" title="Align Left">⬅️</button>
+          <button type="button" onClick={() => execCommand('justifyCenter')} className="p-2 hover:bg-gray-200 rounded" title="Align Center">↔️</button>
+          <button type="button" onClick={() => execCommand('justifyRight')} className="p-2 hover:bg-gray-200 rounded" title="Align Right">➡️</button>
           
           <div className="w-px h-6 bg-gray-300 mx-1 self-center"></div>
           
-          {/* Lists */}
-          <button
-            type="button"
-            onClick={() => execCommand('insertUnorderedList')}
-            className="p-2 hover:bg-gray-200 rounded"
-            title="Bullet List"
-          >
-            • List
-          </button>
-          <button
-            type="button"
-            onClick={() => execCommand('insertOrderedList')}
-            className="p-2 hover:bg-gray-200 rounded"
-            title="Numbered List"
-          >
-            1. List
-          </button>
+          <button type="button" onClick={() => execCommand('insertUnorderedList')} className="p-2 hover:bg-gray-200 rounded">• List</button>
+          <button type="button" onClick={() => execCommand('insertOrderedList')} className="p-2 hover:bg-gray-200 rounded">1. List</button>
           
           <div className="w-px h-6 bg-gray-300 mx-1 self-center"></div>
           
-          {/* Headings */}
-          <select
-            onChange={(e) => {
-              if (e.target.value) execCommand('formatBlock', e.target.value);
-            }}
-            className="p-2 hover:bg-gray-200 rounded border-0 bg-transparent"
-            defaultValue=""
-          >
-            <option value="">Paragraph</option>
-            <option value="h1">Heading 1</option>
-            <option value="h2">Heading 2</option>
-            <option value="h3">Heading 3</option>
-            <option value="h4">Heading 4</option>
-            <option value="pre">Preformatted</option>
-          </select>
+          <button type="button" onClick={insertLink} className="p-2 hover:bg-gray-200 rounded text-blue-600">🔗</button>
+          <button type="button" onClick={insertTable} className="p-2 hover:bg-gray-200 rounded">📊</button>
           
-          <div className="w-px h-6 bg-gray-300 mx-1 self-center"></div>
-          
-          {/* Insert */}
-          <button
-            type="button"
-            onClick={insertLink}
-            className="p-2 hover:bg-gray-200 rounded text-blue-600"
-            title="Insert Link"
-          >
-            🔗
-          </button>
-          <button
-            type="button"
-            onClick={insertTable}
-            className="p-2 hover:bg-gray-200 rounded"
-            title="Insert Table"
-          >
-            📊
-          </button>
-          <button
-            type="button"
-            onClick={() => execCommand('insertHorizontalRule')}
-            className="p-2 hover:bg-gray-200 rounded"
-            title="Horizontal Line"
-          >
-            ―
-          </button>
-
-          <div className="w-px h-6 bg-gray-300 mx-1 self-center"></div>
-          
-          {/* Text Color */}
-          <input
-            type="color"
-            onChange={(e) => execCommand('foreColor', e.target.value)}
-            className="w-8 h-8 p-0 border-0 cursor-pointer"
-            title="Text Color"
-          />
-          <input
-            type="color"
-            onChange={(e) => execCommand('hiliteColor', e.target.value)}
-            className="w-8 h-8 p-0 border-0 cursor-pointer"
-            title="Highlight Color"
-            defaultValue="#ffff00"
-          />
-
           <div className="flex-1"></div>
-
-          {/* Preview Toggle */}
-          <button
-            type="button"
-            onClick={() => setPreviewMode(!previewMode)}
-            className={`px-4 py-2 rounded-lg text-sm font-semibold ${
-              previewMode 
-                ? 'bg-blue-600 text-white' 
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-            }`}
-          >
+          
+          <button type="button" onClick={() => setPreviewMode(!previewMode)} className={`px-4 py-2 rounded-lg text-sm font-semibold ${previewMode ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}>
             {previewMode ? '✏️ Edit' : '👁️ Preview'}
           </button>
         </div>
 
-        {/* Editor/Preview Area */}
+        {/* Editor Area */}
         <div
           ref={editorRef}
           contentEditable={!previewMode}
           suppressContentEditableWarning={true}
           onInput={updateDescription}
-          className={`w-full min-h-[300px] p-4 border-2 border-gray-200 rounded-b-lg focus:border-blue-500 focus:outline-none prose max-w-none ${
-            previewMode ? 'bg-gray-50' : 'bg-white'
-          }`}
-          style={{ 
-            whiteSpace: 'pre-wrap',
-            overflowY: 'auto'
-          }}
-        >
-          {/* Default placeholder */}
-        </div>
-        {(!formData.description || formData.description === '<br>') && !previewMode && (
-          <p className="text-gray-400 text-sm mt-1">
-            Start typing your notice content here... Use the toolbar above to format text.
-          </p>
-        )}
+          className={`w-full min-h-[300px] p-4 border-2 border-gray-200 rounded-b-lg focus:border-blue-500 focus:outline-none prose max-w-none ${previewMode ? 'bg-gray-50' : 'bg-white'}`}
+          style={{ whiteSpace: 'pre-wrap', overflowY: 'auto' }}
+        />
       </div>
 
-      {/* Category & Priority Row */}
+      {/* Category & Priority */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Category *
-          </label>
-          <select
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            required
-            className="w-full border-2 border-gray-200 p-3 rounded-lg focus:border-blue-500 focus:outline-none"
-          >
+          <label className="block text-sm font-semibold text-gray-700 mb-2">Category *</label>
+          <select name="category" value={formData.category} onChange={handleChange} required className="w-full border-2 border-gray-200 p-3 rounded-lg focus:border-blue-500 focus:outline-none">
             <option value="">Select Category</option>
             <option value="general">📋 General</option>
             <option value="academic">📚 Academic</option>
@@ -416,15 +469,8 @@ Swal.fire({
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Priority
-          </label>
-          <select
-            name="priority"
-            value={formData.priority}
-            onChange={handleChange}
-            className="w-full border-2 border-gray-200 p-3 rounded-lg focus:border-blue-500 focus:outline-none"
-          >
+          <label className="block text-sm font-semibold text-gray-700 mb-2">Priority</label>
+          <select name="priority" value={formData.priority} onChange={handleChange} className="w-full border-2 border-gray-200 p-3 rounded-lg focus:border-blue-500 focus:outline-none">
             <option value="low">🔵 Low</option>
             <option value="medium">🟡 Medium</option>
             <option value="high">🟠 High</option>
@@ -433,42 +479,51 @@ Swal.fire({
         </div>
       </div>
 
-      {/* Audience */}
-      <div>
-        <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Target Audience
+      {/* Audience - Multi-Select Checkboxes */}
+      <div className="bg-gray-50 p-4 rounded-lg">
+        <label className="block text-sm font-semibold text-gray-700 mb-3">
+          Target Audience (Select multiple) *
         </label>
-        <div className="flex flex-wrap gap-4">
-          {["students", "teachers", "staff", "all"].map((a) => (
-            <label key={a} className="flex items-center gap-2 cursor-pointer">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          {audienceOptions.map((option) => (
+            <label
+              key={option.value}
+              className={`flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                formData.audience.includes(option.value)
+                  ? `border-${option.color}-500 bg-${option.color}-50`
+                  : 'border-gray-200 bg-white hover:border-gray-300'
+              }`}
+            >
               <input
                 type="checkbox"
-                name="audience"
-                value={a}
-                checked={formData.audience.includes(a)}
-                onChange={handleChange}
-                className="w-4 h-4 text-blue-600 rounded"
+                value={option.value}
+                checked={formData.audience.includes(option.value)}
+                onChange={() => handleAudienceChange(option.value)}
+                className="w-5 h-5 text-blue-600 rounded"
               />
-              <span className="capitalize">{a}</span>
+              <div>
+                <div className="font-semibold text-gray-800">{option.label}</div>
+                <div className="text-xs text-gray-500">Select to send notice</div>
+              </div>
             </label>
           ))}
         </div>
+        
+        {/* Selected Audience Summary */}
+        {formData.audience.length > 0 && (
+          <div className="mt-3 text-sm text-gray-600">
+            ✅ Will be sent to: <strong>{getAudienceLabel()}</strong>
+          </div>
+        )}
       </div>
 
-      {/* Department & Section */}
+      {/* Department & Section - Only show if students are selected */}
       {showDeptSection && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Department
-            </label>
-            <select
-              name="department"
-              value={formData.department}
-              onChange={handleChange}
-              className="w-full border-2 border-gray-200 p-3 rounded-lg focus:border-blue-500 focus:outline-none"
-            >
-              <option value="">Select Department</option>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Department (Optional)</label>
+            <select name="department" value={formData.department} onChange={handleChange} className="w-full border-2 border-gray-200 p-3 rounded-lg focus:border-blue-500 focus:outline-none">
+              <option value="">All Departments</option>
               {departments.map((dep) => (
                 <option key={dep} value={dep}>{dep}</option>
               ))}
@@ -476,16 +531,9 @@ Swal.fire({
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Section
-            </label>
-            <select
-              name="section"
-              value={formData.section}
-              onChange={handleChange}
-              className="w-full border-2 border-gray-200 p-3 rounded-lg focus:border-blue-500 focus:outline-none"
-            >
-              <option value="">Select Section</option>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Section (Optional)</label>
+            <select name="section" value={formData.section} onChange={handleChange} className="w-full border-2 border-gray-200 p-3 rounded-lg focus:border-blue-500 focus:outline-none">
+              <option value="">All Sections</option>
               {(sectionsByDepartment[formData.department] || []).map((sec) => (
                 <option key={sec} value={sec}>{sec}</option>
               ))}
@@ -497,59 +545,29 @@ Swal.fire({
       {/* Expiry Date & Pin Notice */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Expiry Date
-          </label>
-          <input
-            type="date"
-            name="expiryDate"
-            value={formData.expiryDate}
-            onChange={handleChange}
-            className="w-full border-2 border-gray-200 p-3 rounded-lg focus:border-blue-500 focus:outline-none"
-          />
+          <label className="block text-sm font-semibold text-gray-700 mb-2">Expiry Date (Optional)</label>
+          <input type="date" name="expiryDate" value={formData.expiryDate} onChange={handleChange} className="w-full border-2 border-gray-200 p-3 rounded-lg focus:border-blue-500 focus:outline-none" />
         </div>
 
         <div className="flex items-end pb-3">
           <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              name="isPinned"
-              checked={formData.isPinned}
-              onChange={handleChange}
-              className="w-5 h-5 text-blue-600 rounded"
-            />
+            <input type="checkbox" name="isPinned" checked={formData.isPinned} onChange={handleChange} className="w-5 h-5 text-blue-600 rounded" />
             <span className="text-sm font-semibold text-gray-700">📌 Pin this notice</span>
           </label>
         </div>
       </div>
 
-      {/* Attachment */}
-      {/* <div>
-        <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Attachment
-        </label>
-        <input
-          type="file"
-          name="attachment"
-          onChange={handleChange}
-          className="w-full border-2 border-gray-200 p-3 rounded-lg focus:border-blue-500 focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-        />
-      </div> */}
-
       {/* Action Buttons */}
       <div className="flex gap-4 pt-4 border-t">
-        <button
-          type="button"
-          onClick={handleClose}
-          className="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-semibold"
-        >
+        <button type="button" onClick={handleClose} className="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-semibold">
           Cancel
         </button>
-        <button
-          type="submit"
-          className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold shadow-lg hover:shadow-xl transition-all"
+        <button 
+          type="submit" 
+          disabled={sendingEmails}
+          className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          📢 Publish Notice
+          {sendingEmails ? "Sending..." : "📢 Publish Notice"}
         </button>
       </div>
     </form>
