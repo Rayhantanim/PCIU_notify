@@ -23,7 +23,7 @@ const AllNotices = () => {
     section: "",
     expiryDate: "",
   });
-  const API = "http://localhost:5000";
+  const API = "https://pciunotifybackend.onrender.com";
 
   // Get logged-in user info
   const firstName = localStorage.getItem("firstName") || "";

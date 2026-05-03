@@ -32,9 +32,9 @@ export default function StudentDashboard() {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      
+      const API = "https://pciunotifybackend.onrender.com";
       // Fetch all notices from your backend
-      const noticesRes = await axios.get("http://localhost:5000/api/notices");
+      const noticesRes = await axios.get(`${API}/api/notices`);
       
       // Filter notices for students based on audience field
       let studentNotices = noticesRes.data;
@@ -53,7 +53,7 @@ export default function StudentDashboard() {
       
       // Fetch today's classes (you'll need to create this endpoint)
       try {
-        const classesRes = await axios.get("http://localhost:5000/api/classes/today");
+        const classesRes = await axios.get(`${API}/api/classes/today`);
         setTodayClasses(classesRes.data);
       } catch (error) {
         console.log("Classes endpoint not ready yet");

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { MdNotificationImportant } from "react-icons/md";
+
 
 const ImportantNotice = () => {
   const [notices, setNotices] = useState([]);
-  const API = "http://localhost:5000";
+  const API = "https://pciunotifybackend.onrender.com";
 
   useEffect(() => {
     const fetchNotices = async () => {
@@ -25,15 +27,21 @@ const ImportantNotice = () => {
   }, []);
 
   return (
+<<<<<<< HEAD
     <div className="p-5 w-2/4 mx-auto">
       <h2 className="text-2xl font-bold mb-4 text-red-600">
         🚨 Important Notices
+=======
+    <div className="p-5">
+      <h2 className="text-2xl w-2/4 mx-auto font-bold mb-4 text-red-600 flex items-center gap-2">
+        <span className=" text-3xl"><MdNotificationImportant/></span> Important Notices
+>>>>>>> 6a932e7d10db58c57bd4022bfba8a6d2f7877a49
       </h2>
 
       {notices.length === 0 ? (
         <p className="text-gray-500">No urgent notices found</p>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-4 w-2/4 mx-auto">
           {notices.map((notice) => (
             <div
               key={notice._id}
@@ -46,7 +54,11 @@ const ImportantNotice = () => {
               <p className="text-gray-700 mt-1">
                 {notice.description}
               </p>
+<<<<<<< HEAD
               <div className="flex justify-between">
+=======
+   <div className="flex justify-between items-center">
+>>>>>>> 6a932e7d10db58c57bd4022bfba8a6d2f7877a49
               <div className="text-sm text-gray-500 mt-2">
                 Category: {notice.category} | Department: {notice.department}
               </div>

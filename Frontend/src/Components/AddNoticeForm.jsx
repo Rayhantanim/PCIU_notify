@@ -7,7 +7,8 @@ import emailjs from '@emailjs/browser';
 emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your actual public key
 
 export default function NoticeForm({ handleClose, userRole }) {
-  const API = "http://localhost:5000";
+  // const API = "http://localhost:5000";
+  const API = "https://pciunotifybackend.onrender.com";
   const editorRef = useRef(null);
 
   const initialState = {

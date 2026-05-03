@@ -1,43 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
+// const multer = require("multer");
 const path = require("path");
 const mongoose = require("mongoose");
 const Notice = require("../models/Notice");
 const User = require("../models/User");
 const Notification = require("../models/Notification");
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  },
-});
-
-const fileFilter = (req, file, cb) => {
-  const allowedTypes = [
-    "image/jpeg", "image/png", "image/gif",
-    "application/pdf", "application/msword",
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    "application/vnd.ms-excel",
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    "text/plain",
-  ];
-  if (allowedTypes.includes(file.mimetype)) {
-    cb(null, true);
-  } else {
-    cb(new Error("Invalid file type"), false);
-  }
-};
-
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 10 * 1024 * 1024 },
-  fileFilter: fileFilter,
-});
 
 // Helper function to get recipients based on MULTIPLE audiences (array)
 const getRecipientsByAudience = async (audiences) => {
@@ -210,7 +178,15 @@ router.post("/add-notice", async (req, res) => {
       createdByRole: req.body.role,
       role: req.body.role,
     };
-
+    // if (req.file) {
+    //   noticeData.attachment = {
+    //     filename: req.file.filename,
+    //     originalName: req.file.originalname,
+    //     path: `/uploads/${req.file.filename}`,
+    //     size: req.file.size,
+    //     mimetype: req.file.mimetype,
+    //   };
+    // }
     const notice = new Notice(noticeData);
     await notice.save();
     console.log("✅ Notice saved, ID:", notice._id);
@@ -272,8 +248,9 @@ router.post("/add-notice", async (req, res) => {
   }
 });
 
-// POST add notice for staff (with multi-audience support)
-router.post("/add-noticestaff", async (req, res) => {
+
+// POST add notice for staff
+router.post("/add-noticestaff",  async (req, res) => {
   try {
     console.log("📝 Adding staff notice:", req.body.title);
     console.log("🎯 Received audience:", req.body.audience);
@@ -300,7 +277,15 @@ router.post("/add-noticestaff", async (req, res) => {
       createdBy: req.body.createdBy,
       role: req.body.role,
     };
-
+    // if (req.file) {
+    //   noticeData.attachment = {
+    //     filename: req.file.filename,
+    //     originalName: req.file.originalname,
+    //     path: `/uploads/${req.file.filename}`,
+    //     size: req.file.size,
+    //     mimetype: req.file.mimetype,
+    //   };
+    // }
     const newNotice = new Notice(noticeData);
     await newNotice.save();
     console.log("✅ Staff notice saved, ID:", newNotice._id);

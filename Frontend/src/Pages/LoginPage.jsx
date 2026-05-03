@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 
 export default function LoginPage() {
-  const API = "http://localhost:5000";
+  const API = "https://pciunotifybackend.onrender.com";
   const navigate = useNavigate();
 
   const [loginMode, setLoginMode] = useState("email");
