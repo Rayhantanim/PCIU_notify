@@ -3,13 +3,24 @@ const router = express.Router();
 const Notification = require("../models/Notification");
 
 // Get all notifications
+// Get notifications based on user role
 router.get("/notifications", async (req, res) => {
   try {
-    const notifications = await Notification.find().sort({ createdAt: -1 }).limit(50);
-    console.log(`📋 Fetching ${notifications.length} notifications`);
+    const userRole = req.headers['user-role'];
+    let query = {};
+    
+    // Filter notifications based on user role
+    if (userRole === "student") {
+      query = { audience: { $in: ["students", "all"] } };
+    } else if (userRole === "teacher") {
+      query = { audience: { $in: ["teachers", "all"] } };
+    } else if (userRole === "staff") {
+      query = { audience: { $in: ["staff", "all"] } };
+    }
+    
+    const notifications = await Notification.find(query).sort({ createdAt: -1 }).limit(50);
     res.json(notifications);
   } catch (err) {
-    console.error("Error fetching notifications:", err);
     res.status(500).json({ message: err.message });
   }
 });

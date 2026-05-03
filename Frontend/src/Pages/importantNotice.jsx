@@ -25,7 +25,7 @@ const ImportantNotice = () => {
   }, []);
 
   return (
-    <div className="p-5">
+    <div className="p-5 w-2/4 mx-auto">
       <h2 className="text-2xl font-bold mb-4 text-red-600">
         🚨 Important Notices
       </h2>
@@ -46,13 +46,14 @@ const ImportantNotice = () => {
               <p className="text-gray-700 mt-1">
                 {notice.description}
               </p>
-
+              <div className="flex justify-between">
               <div className="text-sm text-gray-500 mt-2">
                 Category: {notice.category} | Department: {notice.department}
               </div>
 
               <div className="text-xs text-red-600 mt-1 font-semibold">
                 Priority: {notice.priority.toUpperCase()}
+              </div>
               </div>
             </div>
           ))}

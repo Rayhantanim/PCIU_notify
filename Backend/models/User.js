@@ -14,6 +14,7 @@ const UserSchema = new mongoose.Schema({
   studentId: { type: String, unique: true, sparse: true },
   department: { type: String },
   section: { type: String },
+    email: { type: String, required: true },
   
   // Teacher specific
   teacherId: { type: String, unique: true, sparse: true },
