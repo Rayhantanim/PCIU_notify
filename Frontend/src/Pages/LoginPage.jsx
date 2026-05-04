@@ -223,6 +223,66 @@ export default function LoginPage() {
     }
   };
 
+
+  // In your handleForgotPassword function
+const handleForgotPassword = async () => {
+  if (!resetEmail) {
+    toast.error("Please enter your email address");
+    return;
+  }
+  
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(resetEmail)) {
+    toast.error("Please enter a valid email address");
+    return;
+  }
+  
+  setLoading(true);
+  try {
+    // Request OTP from backend (backend will send email)
+    const response = await axios.post(`${API}/api/forgot-password`, { 
+      email: resetEmail 
+    });
+    
+    if (response.data.success) {
+      setOtpSent(true);
+      setResetStep(2);
+      toast.success("OTP sent to your email address");
+    } else {
+      toast.error(response.data.message || "Email not found");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    toast.error(error.response?.data?.message || "Failed to process request");
+  } finally {
+    setLoading(false);
+  }
+};
+
+// Add resend OTP function
+const handleResendOtp = async () => {
+  setLoading(true);
+  try {
+    const response = await axios.post(`${API}/api/resend-otp`, { 
+      email: resetEmail 
+    });
+    
+    if (response.data.success) {
+      toast.success("New OTP sent to your email");
+    } else {
+      toast.error(response.data.message || "Failed to resend OTP");
+    }
+  } catch (error) {
+    toast.error("Failed to resend OTP");
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+
+
+
   // Forgot Password Handlers
   const handleSendOtp = async () => {
     if (!resetEmail) {
