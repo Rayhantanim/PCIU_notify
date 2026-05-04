@@ -253,7 +253,7 @@ router.post("/forgot-password", async (req, res) => {
     console.log(`OTP for ${email}: ${otp}`);
     
     // In production, uncomment and configure nodemailer:
-    /*
+    
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -263,7 +263,7 @@ router.post("/forgot-password", async (req, res) => {
     });
     
     await transporter.sendMail({
-      from: '"PCI University" <noreply@pciuniversity.com>',
+      from: '"PCIU Notify" <noreply@pciuniversity.com>',
       to: email,
       subject: 'Password Reset OTP',
       html: `
@@ -280,7 +280,6 @@ router.post("/forgot-password", async (req, res) => {
         </div>
       `
     });
-    */
     
     res.json({ 
       success: true, 
