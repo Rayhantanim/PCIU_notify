@@ -7,7 +7,7 @@ import { IoPeopleSharp } from "react-icons/io5";
 import { RiPushpinLine } from "react-icons/ri";
 import { FaSearch, FaFilter, FaCalendarAlt } from "react-icons/fa";
 import Swal from 'sweetalert2';
-import NoticeModal from "../components/NoticeModal";
+import NoticeModal from "../Components/NoticeModal";
 import { noticeService } from "../services/noticeService";
 
 const AllNotices = () => {

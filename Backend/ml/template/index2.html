@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lost & Found Predictor</title>
+    <style>
+        body { font-family: Arial; margin: 40px; }
+        label, select, textarea, button { display: block; margin: 10px 0; }
+        textarea { width: 300px; height: 80px; }
+        #result { margin-top: 20px; padding: 10px; background: #f0f0f0; }
+    </style>
+</head>
+<body>
+
+<h2>Lost & Found Status Prediction</h2>
+
+<form id="mlForm">
+    <label>Item Name:</label>
+    <select id="item_name">
+        <option value="id card">ID Card</option>
+        <option value="headphones">Headphones</option>
+    </select>
+
+    <label>Description:</label>
+    <textarea id="description" placeholder="Describe the item..."></textarea>
+
+    <label>Category:</label>
+    <select id="category">
+        <option value="document">Document</option>
+        <option value="electronics">Electronics</option>
+    </select>
+
+    <label>Location:</label>
+    <select id="location">
+        <option value="corridor">Corridor</option>
+        <option value="parking area">Parking Area</option>
+    </select>
+
+    <button type="button" onclick="predict()">Predict</button>
+</form>
+
+<div id="result" style="display:none;">
+    <h3>Prediction Result</h3>
+    <p id="output"></p>
+</div>
+
+<script>
+async function predict() {
+
+    // 1. Take values from form
+    const item = document.getElementById("item_name").value;
+    const desc = document.getElementById("description").value;
+    const cat  = document.getElementById("category").value;
+    const loc  = document.getElementById("location").value;
+
+    // 2. Build your API URL
+    const url = `http://127.0.0.1:5000/${encodeURIComponent(item)}/${encodeURIComponent(desc)}/${encodeURIComponent(cat)}/${encodeURIComponent(loc)}`;
+
+    try {
+        const res = await fetch(url);
+        const result = await res.json();
+
+        if (result.error) {
+            alert("Error: " + result.error);
+            return;
+        }
+
+        // 3. Show result
+        document.getElementById("result").style.display = "block";
+        document.getElementById("output").innerHTML =
+            `Status: ${result.status} | Confidence: ${result.confidence}%`;
+
+    } catch (err) {
+        alert("Request failed: " + err.message);
+    }
+}
+</script>
+
+</body>
+</html>
