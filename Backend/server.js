@@ -1,5 +1,7 @@
 const express = require("express");
 const http = require("http");
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
 const { Server } = require("socket.io");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -22,6 +24,13 @@ const io = new Server(server, {
   transports: ['websocket', 'polling'],
 });
 
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'your_email@gmail.com',
+    pass: 'your_app_password'
+  }
+});
 // Store connected users (optional for debugging)
 const connectedUsers = new Map();
 
