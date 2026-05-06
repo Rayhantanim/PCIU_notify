@@ -8,6 +8,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
+app.use(express.urlencoded({ extended: true }));
 const server = http.createServer(app);
 
 // Socket.io with proper CORS

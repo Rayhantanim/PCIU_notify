@@ -1,7 +1,7 @@
 import Profile from "./Pages/Profile";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import LandingPage from "./Pages/LandingPage";
 import LoginPage from "./Pages/LoginPage";
 import ProtectedRoute from "./auth/ProtectedRoute";
@@ -20,11 +20,79 @@ import RoleBasedRoute from "./auth/RoleBasedRoute";
 import HomePage from "./Pages/Home";
 import RoutineViewer from "./Components/routine/routine";
 import SocketProvider from "./Components/SocketProvider";
-import EmailVerify from "./Pages/EmailVerify";
-import ForgotPassword from "./Pages/ForgotPassword";
-import ResetPass from "./Pages/ResetPass";
+import { useEffect, useState } from "react";
 
 const App = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userRole, setUserRole] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Check if user is logged in
+    const checkAuth = () => {
+      const token = localStorage.getItem("token");
+      const userData = localStorage.getItem("user");
+      
+      if (token && userData) {
+        try {
+          const user = JSON.parse(userData);
+          setIsAuthenticated(true);
+          setUserRole(user.role || user.userType || "student");
+        } catch (error) {
+          console.error("Error parsing user data:", error);
+          setIsAuthenticated(false);
+          setUserRole(null);
+        }
+      } else {
+        setIsAuthenticated(false);
+        setUserRole(null);
+      }
+      setLoading(false);
+    };
+
+    checkAuth();
+    
+    // Listen for storage events (when user logs in/out in another tab)
+    window.addEventListener("storage", checkAuth);
+    
+    return () => {
+      window.removeEventListener("storage", checkAuth);
+    };
+  }, []);
+
+  // Get dashboard route based on user role
+  const getDefaultDashboardRoute = () => {
+    switch (userRole?.toLowerCase()) {
+      case "teacher":
+        return "/dashboard/dashboardindex";
+      case "staff":
+        return "/dashboard/staffnotice";
+      case "student":
+        return "/dashboard/overview";
+      default:
+        return "/dashboard/allnotices";
+    }
+  };
+
+  // Redirect component for authenticated users from landing page
+  const AuthRedirect = () => {
+    if (isAuthenticated) {
+      return <Navigate to={getDefaultDashboardRoute()} replace />;
+    }
+    return <LandingPage />;
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
    <div>
   <SocketProvider />
@@ -34,10 +102,10 @@ const App = () => {
     <Route path="/login" element={<LoginPage />} />
     
     {/* ADD THESE NEW PUBLIC ROUTES */}
-    <Route path="/verify" element={<EmailVerify />} />
-    <Route path="/verify-email" element={<EmailVerify />} />
+    {/* <Route path="/verify" element={<EmailVerify />} />
+    <Route path="/verify-email" element={<EmailVerify/>} />
     <Route path="/forgot-password" element={<ForgotPassword />} />
-    <Route path="/reset-password" element={<ResetPass/>} />
+    <Route path="/reset-password" element={<ResetPass/>} /> */}
     
     {/* ========== PROTECTED ROUTES ========== */}
     <Route path="/home" element={<HomePage />} />
@@ -189,3 +257,40 @@ const App = () => {
 };
 
 export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

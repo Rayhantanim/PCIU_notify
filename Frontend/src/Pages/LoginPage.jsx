@@ -10,7 +10,6 @@ import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import app from "../Firebase/Firebase.init";
 
 export default function LoginPage() {
-  // const API = "https://pciunotifybackend.onrender.com";
   const API = "http://localhost:5000";
   const navigate = useNavigate();
   const { userLogin, userLogOut } = useAuth();
@@ -22,12 +21,10 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   
-  // Forgot password modal states
   const [showForgotModal, setShowForgotModal] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
   const [resetting, setResetting] = useState(false);
 
-  // Handle Forgot Password
   const handleForgotPassword = async (e) => {
     e.preventDefault();
     if (!resetEmail) {
@@ -37,14 +34,12 @@ export default function LoginPage() {
 
     setResetting(true);
     try {
-      // Firebase built-in password reset
       await sendPasswordResetEmail(auth, resetEmail);
       toast.success("Password reset link sent to your email!");
       setShowForgotModal(false);
       setResetEmail("");
     } catch (err) {
       console.error("Password reset error:", err);
-      // Always show success message for security (don't reveal if email exists)
       toast.success("If an account exists, a reset link will be sent");
       setShowForgotModal(false);
       setResetEmail("");
@@ -63,10 +58,9 @@ export default function LoginPage() {
       const userCredential = await userLogin(email, password);
       console.log("Firebase login success:", userCredential.user.uid);
       
-      // Step 2: Check if email is verified in Firebase
+      // Step 2: Check email verification
       if (!userCredential.user.emailVerified) {
         await userLogOut();
-        
         Swal.fire({
           title: "Email Not Verified",
           text: "Please verify your email before logging in. Would you like to resend the verification email?",
@@ -77,7 +71,7 @@ export default function LoginPage() {
         }).then(async (result) => {
           if (result.isConfirmed) {
             await userCredential.user.sendEmailVerification();
-            toast.success("Verification email sent! Please check your inbox.");
+            toast.success("Verification email sent!");
           }
         });
         setLoading(false);
@@ -85,9 +79,12 @@ export default function LoginPage() {
       }
       
       // Step 3: Get user data from backend
+      console.log("Fetching user from backend for email:", email);
       const response = await axios.post(`${API}/api/login`, {
         email: email
       });
+      
+      console.log("Backend response:", response.data);
       
       if (response.data.success) {
         const user = response.data.user;
@@ -106,7 +103,7 @@ export default function LoginPage() {
           timer: 1500,
           showConfirmButton: false
         });
-        
+
         // Navigate based on role
         if (user.role === "student") {
           navigate("/dashboard/overview");
@@ -120,18 +117,14 @@ export default function LoginPage() {
       }
     } catch (err) {
       console.error("Login error:", err);
+      console.log("Error response:", err.response?.data);
       
-      if (err.response && err.response.status === 403) {
-        const message = err.response.data?.message || "Please verify your email";
-        setError(message);
-        toast.error(message);
-        
-        Swal.fire({
-          title: "Email Not Verified",
-          text: "Please verify your email before logging in. Check your inbox for the verification link.",
-          icon: "warning",
-          confirmButtonText: "OK"
-        });
+      if (err.response?.status === 404) {
+        setError("User not found in database. Please register first.");
+        toast.error("User not found");
+      } else if (err.response?.status === 400) {
+        setError("Invalid request. Please check your email.");
+        toast.error("Invalid request");
       } else if (err.code) {
         switch (err.code) {
           case "auth/user-not-found":
@@ -150,10 +143,6 @@ export default function LoginPage() {
             setError(err.message);
             toast.error(err.message);
         }
-      } else if (err.response) {
-        const message = err.response.data?.message || "Login failed";
-        setError(message);
-        toast.error(message);
       } else {
         setError("Network error. Please try again.");
         toast.error("Network error");
@@ -203,7 +192,6 @@ export default function LoginPage() {
               </button>
             </div>
 
-            {/* Forgot Password Link */}
             <div className="text-right">
               <button
                 type="button"

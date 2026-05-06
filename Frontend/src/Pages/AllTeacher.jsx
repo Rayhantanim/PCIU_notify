@@ -3,16 +3,43 @@ import React, { useEffect, useState } from "react";
 const AllTeacher = () => {
   const [teachers, setTeachers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const API = "https://pciunotifybackend.onrender.com";
 
   useEffect(() => {
     const fetchTeachers = async () => {
       try {
+        setLoading(true);
         const res = await fetch(`${API}/api/teachers`);
         const data = await res.json();
-        setTeachers(data);
+        
+        console.log("Raw response:", data); // Debug log
+        
+        // Handle different response formats
+        let teachersArray = [];
+        
+        if (Array.isArray(data)) {
+          // If response is directly an array
+          teachersArray = data;
+        } else if (data.teachers && Array.isArray(data.teachers)) {
+          // If response has teachers property
+          teachersArray = data.teachers;
+        } else if (data.data && Array.isArray(data.data)) {
+          // If response has data property
+          teachersArray = data.data;
+        } else if (data.users && Array.isArray(data.users)) {
+          // If response has users property
+          teachersArray = data.users;
+        } else {
+          console.error("Unexpected response format:", data);
+          teachersArray = [];
+        }
+        
+        setTeachers(teachersArray);
       } catch (err) {
-        console.log(err);
+        console.error("Error fetching teachers:", err);
+        setError(err.message);
+        setTeachers([]);
       } finally {
         setLoading(false);
       }
@@ -25,6 +52,22 @@ const AllTeacher = () => {
     return (
       <div className="p-5 bg-white flex justify-center items-center min-h-[300px]">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-5 bg-white">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
+          <p className="text-red-600">Error loading teachers: {error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="mt-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500"
+          >
+            Retry
+          </button>
+        </div>
       </div>
     );
   }
@@ -58,7 +101,7 @@ const AllTeacher = () => {
             </thead>
             <tbody>
               {teachers.map((teacher, index) => (
-                <tr key={teacher._id} className="border-b border-gray-100 hover:bg-blue-50 transition-colors">
+                <tr key={teacher._id || index} className="border-b border-gray-100 hover:bg-blue-50 transition-colors">
                   <td className="p-3 text-sm text-gray-600">{index + 1}</td>
                   <td className="p-3 text-sm font-medium text-gray-800">
                     {teacher.firstName} {teacher.lastName}

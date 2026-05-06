@@ -33,9 +33,6 @@ const getRecipientsByAudience = async (audiences) => {
   }));
 };
 
-
-// ============ ALL ROUTES ============
-
 // GET all notices (with role-based filtering)
 router.get("/notices", async (req, res) => {
   try {

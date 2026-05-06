@@ -1,0 +1,2001 @@
+item_id,item_name,description,category,location,status
+1,id card,black leather id card seen around corridor,document,corridor,found
+2,headphones,lost grey headphones close to parking area,electronics,parking area,lost
+3,umbrella,umbrella of red color found in bus stop,accessory,bus stop,lost
+4,pen drive,green metal pen drive seen around auditorium,electronics,auditorium,found
+5,glasses,white metal glasses seen around bus stop,accessory,bus stop,lost
+6,watch,watch possibly left in corridor,accessory,corridor,found
+7,charger,green charger spotted at library,electronics,library,lost
+8,charger,brown colored charger near parking area,electronics,parking area,found
+9,headphones,lost yellow headphones close to computer lab,electronics,computer lab,lost
+10,backpack,backpack located in parking area area,bag,parking area,found
+11,pen drive,lost white pen drive close to auditorium,electronics,auditorium,lost
+12,notebook,white notebook spotted at library,stationery,library,lost
+13,wallet,wallet of brown color found in playground,wallet,playground,lost
+14,earbuds,red earbuds spotted at corridor,electronics,corridor,found
+15,backpack,purple fabric backpack with logo near classroom,bag,classroom,lost
+16,backpack,backpack of brown color found in library,bag,library,lost
+17,umbrella,brown umbrella spotted at classroom,accessory,classroom,lost
+18,calculator,found calculator with slightly damaged in cafeteria,electronics,cafeteria,found
+19,power bank,power bank possibly left in playground,electronics,playground,found
+20,calculator,grey colored calculator near auditorium,electronics,auditorium,found
+21,charger,rubber charger with zipper around corridor,electronics,corridor,lost
+22,keys,yellow plastic keys with scratches near canteen,accessory,canteen,found
+23,textbook,metal textbook slightly damaged around computer lab,book,computer lab,found
+24,handbag,found handbag with with zipper in bus stop,bag,bus stop,found
+25,laptop,green rubber laptop seen around parking area,electronics,parking area,lost
+26,watch,purple fabric watch slightly damaged near computer lab,accessory,computer lab,lost
+27,watch,watch possibly left in canteen,accessory,canteen,found
+28,pen drive,yellow colored pen drive near corridor,electronics,corridor,lost
+29,pen drive,silver colored pen drive near library,electronics,library,lost
+30,power bank,blue colored power bank near canteen,electronics,canteen,found
+31,tablet,purple rubber tablet seen around library,electronics,library,lost
+32,glasses,lost white glasses close to library,accessory,library,found
+33,watch,plastic watch with name written around library,accessory,library,lost
+34,phone,phone located in playground area,phone,playground,lost
+35,backpack,red fabric backpack seen around cafeteria,bag,cafeteria,found
+36,notebook,notebook of brown color found in playground,stationery,playground,found
+37,glasses,glasses possibly left in auditorium,accessory,auditorium,found
+38,textbook,silver textbook spotted at canteen,book,canteen,found
+39,headphones,headphones located in canteen area,electronics,canteen,lost
+40,notebook,notebook possibly left in classroom,stationery,classroom,found
+41,laptop,plastic laptop with name written around computer lab,electronics,computer lab,lost
+42,watch,watch located in classroom area,accessory,classroom,lost
+43,id card,found id card with with stickers in classroom,document,classroom,found
+44,keys,keys of yellow color found in bus stop,accessory,bus stop,found
+45,pen drive,fabric pen drive slightly damaged around bus stop,electronics,bus stop,lost
+46,laptop,found laptop with with name written in bus stop,electronics,bus stop,found
+47,id card,id card of grey color found in library,document,library,lost
+48,backpack,backpack located in library area,bag,library,found
+49,phone,purple leather phone seen around cafeteria,phone,cafeteria,found
+50,umbrella,red umbrella spotted at canteen,accessory,canteen,lost
+51,handbag,blue colored handbag near canteen,bag,canteen,found
+52,phone,found phone with slightly damaged in computer lab,phone,computer lab,found
+53,water bottle,lost red water bottle close to classroom,accessory,classroom,lost
+54,laptop,white fabric laptop with scratches near corridor,electronics,corridor,found
+55,earbuds,lost blue earbuds close to parking area,electronics,parking area,lost
+56,wallet,red fabric wallet with stickers near library,wallet,library,lost
+57,laptop,brown rubber laptop slightly damaged near classroom,electronics,classroom,found
+58,umbrella,umbrella possibly left in classroom,accessory,classroom,found
+59,notebook,leather notebook with two pockets around computer lab,stationery,computer lab,found
+60,wallet,wallet located in computer lab area,wallet,computer lab,lost
+61,laptop,blue laptop spotted at library,electronics,library,lost
+62,pen drive,blue plastic pen drive with scratches near parking area,electronics,parking area,lost
+63,watch,found watch with with zipper in parking area,accessory,parking area,found
+64,calculator,found calculator with in good condition in auditorium,electronics,auditorium,found
+65,keys,lost purple keys close to library,accessory,library,found
+66,phone,phone of silver color found in bus stop,phone,bus stop,lost
+67,laptop,black metal laptop seen around classroom,electronics,classroom,found
+68,charger,plastic charger in good condition around cafeteria,electronics,cafeteria,found
+69,keys,found keys with with logo in canteen,accessory,canteen,found
+70,calculator,silver calculator spotted at playground,electronics,playground,lost
+71,wallet,metal wallet with stickers around classroom,wallet,classroom,lost
+72,earbuds,silver metal earbuds seen around playground,electronics,playground,found
+73,charger,blue charger spotted at computer lab,electronics,computer lab,lost
+74,backpack,green plastic backpack seen around canteen,bag,canteen,lost
+75,watch,found watch with in good condition in cafeteria,accessory,cafeteria,found
+76,charger,white colored charger near playground,electronics,playground,found
+77,wallet,white wallet spotted at bus stop,wallet,bus stop,lost
+78,tablet,found tablet with in good condition in playground,electronics,playground,lost
+79,pen drive,found pen drive with with logo in bus stop,electronics,bus stop,found
+80,watch,watch of black color found in classroom,accessory,classroom,found
+81,charger,charger possibly left in library,electronics,library,found
+82,handbag,red handbag spotted at computer lab,bag,computer lab,lost
+83,headphones,red colored headphones near auditorium,electronics,auditorium,lost
+84,keys,purple keys spotted at parking area,accessory,parking area,lost
+85,tablet,brown tablet spotted at playground,electronics,playground,found
+86,water bottle,yellow water bottle spotted at canteen,accessory,canteen,found
+87,charger,red charger spotted at parking area,electronics,parking area,found
+88,watch,lost brown watch close to computer lab,accessory,computer lab,lost
+89,phone,yellow phone spotted at corridor,phone,corridor,lost
+90,earbuds,yellow leather earbuds with zipper near computer lab,electronics,computer lab,lost
+91,glasses,glasses possibly left in cafeteria,accessory,cafeteria,found
+92,earbuds,earbuds possibly left in playground,electronics,playground,lost
+93,umbrella,umbrella located in library area,accessory,library,found
+94,charger,green colored charger near playground,electronics,playground,found
+95,headphones,grey plastic headphones slightly damaged near canteen,electronics,canteen,found
+96,phone,grey colored phone near computer lab,phone,computer lab,found
+97,id card,id card of purple color found in cafeteria,document,cafeteria,lost
+98,glasses,lost green glasses close to corridor,accessory,corridor,found
+99,watch,black metal watch with scratches near playground,accessory,playground,lost
+100,notebook,fabric notebook with logo around canteen,stationery,canteen,lost
+101,keys,green metal keys in good condition near auditorium,accessory,auditorium,lost
+102,wallet,wallet of brown color found in canteen,wallet,canteen,found
+103,keys,fabric keys with stickers around auditorium,accessory,auditorium,found
+104,calculator,calculator possibly left in canteen,electronics,canteen,lost
+105,keys,grey keys spotted at playground,accessory,playground,found
+106,laptop,laptop of grey color found in library,electronics,library,found
+107,notebook,grey colored notebook near playground,stationery,playground,found
+108,glasses,leather glasses with logo around computer lab,accessory,computer lab,found
+109,charger,blue colored charger near corridor,electronics,corridor,found
+110,notebook,lost silver notebook close to corridor,stationery,corridor,lost
+111,handbag,blue colored handbag near classroom,bag,classroom,lost
+112,handbag,blue rubber handbag seen around classroom,bag,classroom,lost
+113,umbrella,umbrella located in library area,accessory,library,lost
+114,umbrella,black umbrella spotted at auditorium,accessory,auditorium,lost
+115,keys,keys possibly left in canteen,accessory,canteen,found
+116,wallet,red wallet spotted at parking area,wallet,parking area,lost
+117,id card,purple id card spotted at bus stop,document,bus stop,found
+118,backpack,fabric backpack with logo around classroom,bag,classroom,lost
+119,id card,id card of purple color found in playground,document,playground,lost
+120,water bottle,brown metal water bottle in good condition near bus stop,accessory,bus stop,found
+121,handbag,silver colored handbag near bus stop,bag,bus stop,lost
+122,textbook,blue leather textbook slightly damaged near cafeteria,book,cafeteria,found
+123,notebook,green leather notebook seen around cafeteria,stationery,cafeteria,lost
+124,laptop,found laptop with slightly damaged in playground,electronics,playground,found
+125,wallet,wallet of black color found in computer lab,wallet,computer lab,found
+126,glasses,glasses possibly left in classroom,accessory,classroom,lost
+127,glasses,glasses located in cafeteria area,accessory,cafeteria,lost
+128,id card,lost purple id card close to parking area,document,parking area,lost
+129,id card,plastic id card with zipper around bus stop,document,bus stop,lost
+130,wallet,lost grey wallet close to corridor,wallet,corridor,found
+131,notebook,notebook possibly left in auditorium,stationery,auditorium,lost
+132,power bank,power bank of white color found in canteen,electronics,canteen,found
+133,pen drive,white colored pen drive near corridor,electronics,corridor,found
+134,pen drive,pen drive located in auditorium area,electronics,auditorium,found
+135,backpack,plastic backpack slightly damaged around parking area,bag,parking area,lost
+136,charger,lost silver charger close to corridor,electronics,corridor,found
+137,calculator,purple plastic calculator in good condition near computer lab,electronics,computer lab,found
+138,calculator,calculator possibly left in auditorium,electronics,auditorium,lost
+139,textbook,grey leather textbook in good condition near computer lab,book,computer lab,found
+140,charger,black rubber charger seen around parking area,electronics,parking area,found
+141,wallet,wallet located in cafeteria area,wallet,cafeteria,lost
+142,pen drive,red colored pen drive near library,electronics,library,found
+143,pen drive,found pen drive with with logo in canteen,electronics,canteen,found
+144,backpack,found backpack with with zipper in classroom,bag,classroom,lost
+145,pen drive,green leather pen drive with name written near classroom,electronics,classroom,found
+146,power bank,power bank possibly left in library,electronics,library,found
+147,tablet,tablet possibly left in playground,electronics,playground,lost
+148,umbrella,white rubber umbrella with zipper near corridor,accessory,corridor,lost
+149,charger,black metal charger with logo near classroom,electronics,classroom,found
+150,tablet,fabric tablet with zipper around playground,electronics,playground,found
+151,backpack,backpack of brown color found in library,bag,library,found
+152,umbrella,green leather umbrella with stickers near corridor,accessory,corridor,found
+153,phone,purple phone spotted at canteen,phone,canteen,lost
+154,watch,yellow leather watch seen around computer lab,accessory,computer lab,found
+155,laptop,laptop located in playground area,electronics,playground,lost
+156,water bottle,green water bottle spotted at classroom,accessory,classroom,found
+157,id card,fabric id card with stickers around parking area,document,parking area,lost
+158,id card,yellow rubber id card with stickers near library,document,library,found
+159,watch,lost silver watch close to corridor,accessory,corridor,found
+160,earbuds,earbuds possibly left in bus stop,electronics,bus stop,found
+161,laptop,laptop possibly left in library,electronics,library,found
+162,backpack,fabric backpack slightly damaged around library,bag,library,lost
+163,watch,silver rubber watch seen around library,accessory,library,lost
+164,tablet,lost silver tablet close to cafeteria,electronics,cafeteria,found
+165,wallet,wallet possibly left in playground,wallet,playground,lost
+166,water bottle,found water bottle with with zipper in classroom,accessory,classroom,lost
+167,backpack,red fabric backpack seen around corridor,bag,corridor,lost
+168,earbuds,lost white earbuds close to library,electronics,library,lost
+169,keys,keys of silver color found in classroom,accessory,classroom,lost
+170,textbook,found textbook with with two pockets in parking area,book,parking area,found
+171,earbuds,grey rubber earbuds seen around auditorium,electronics,auditorium,found
+172,pen drive,pen drive of silver color found in cafeteria,electronics,cafeteria,found
+173,calculator,green calculator spotted at canteen,electronics,canteen,found
+174,wallet,leather wallet slightly damaged around playground,wallet,playground,found
+175,earbuds,lost blue earbuds close to auditorium,electronics,auditorium,lost
+176,notebook,lost silver notebook close to auditorium,stationery,auditorium,lost
+177,notebook,black colored notebook near auditorium,stationery,auditorium,lost
+178,laptop,laptop of yellow color found in cafeteria,electronics,cafeteria,found
+179,backpack,backpack located in computer lab area,bag,computer lab,lost
+180,earbuds,earbuds of brown color found in canteen,electronics,canteen,found
+181,id card,id card located in library area,document,library,found
+182,power bank,power bank of black color found in bus stop,electronics,bus stop,found
+183,textbook,textbook located in cafeteria area,book,cafeteria,lost
+184,headphones,brown plastic headphones seen around corridor,electronics,corridor,found
+185,handbag,blue colored handbag near auditorium,bag,auditorium,found
+186,headphones,lost purple headphones close to parking area,electronics,parking area,lost
+187,handbag,green fabric handbag seen around auditorium,bag,auditorium,lost
+188,power bank,found power bank with with name written in parking area,electronics,parking area,found
+189,id card,lost brown id card close to canteen,document,canteen,lost
+190,backpack,lost silver backpack close to computer lab,bag,computer lab,found
+191,backpack,silver plastic backpack seen around cafeteria,bag,cafeteria,found
+192,pen drive,lost purple pen drive close to parking area,electronics,parking area,found
+193,umbrella,umbrella of grey color found in computer lab,accessory,computer lab,lost
+194,keys,keys located in library area,accessory,library,lost
+195,textbook,textbook located in playground area,book,playground,lost
+196,phone,phone located in computer lab area,phone,computer lab,lost
+197,pen drive,found pen drive with with two pockets in corridor,electronics,corridor,lost
+198,glasses,silver glasses spotted at parking area,accessory,parking area,lost
+199,backpack,lost grey backpack close to bus stop,bag,bus stop,lost
+200,earbuds,leather earbuds with stickers around bus stop,electronics,bus stop,lost
+201,power bank,red power bank spotted at bus stop,electronics,bus stop,found
+202,charger,black colored charger near classroom,electronics,classroom,found
+203,textbook,blue colored textbook near auditorium,book,auditorium,lost
+204,backpack,purple rubber backpack seen around computer lab,bag,computer lab,found
+205,power bank,lost yellow power bank close to bus stop,electronics,bus stop,lost
+206,earbuds,silver rubber earbuds with name written near auditorium,electronics,auditorium,found
+207,headphones,headphones of black color found in bus stop,electronics,bus stop,lost
+208,calculator,calculator of purple color found in canteen,electronics,canteen,lost
+209,charger,silver plastic charger with stickers near computer lab,electronics,computer lab,lost
+210,charger,lost silver charger close to parking area,electronics,parking area,found
+211,phone,silver phone spotted at bus stop,phone,bus stop,lost
+212,earbuds,earbuds located in auditorium area,electronics,auditorium,found
+213,phone,red phone spotted at cafeteria,phone,cafeteria,found
+214,textbook,red leather textbook seen around classroom,book,classroom,lost
+215,id card,plastic id card with scratches around auditorium,document,auditorium,found
+216,pen drive,brown pen drive spotted at playground,electronics,playground,lost
+217,umbrella,brown rubber umbrella in good condition near auditorium,accessory,auditorium,found
+218,laptop,found laptop with with scratches in playground,electronics,playground,found
+219,laptop,found laptop with with logo in playground,electronics,playground,lost
+220,earbuds,red earbuds spotted at parking area,electronics,parking area,found
+221,keys,keys possibly left in corridor,accessory,corridor,lost
+222,backpack,fabric backpack with logo around computer lab,bag,computer lab,found
+223,charger,charger possibly left in auditorium,electronics,auditorium,found
+224,handbag,fabric handbag with stickers around classroom,bag,classroom,lost
+225,tablet,tablet of blue color found in playground,electronics,playground,lost
+226,earbuds,earbuds located in classroom area,electronics,classroom,lost
+227,handbag,plastic handbag slightly damaged around classroom,bag,classroom,found
+228,id card,found id card with with name written in cafeteria,document,cafeteria,lost
+229,textbook,blue colored textbook near cafeteria,book,cafeteria,lost
+230,pen drive,blue metal pen drive with logo near auditorium,electronics,auditorium,lost
+231,water bottle,water bottle possibly left in bus stop,accessory,bus stop,found
+232,keys,found keys with with name written in parking area,accessory,parking area,found
+233,charger,charger located in bus stop area,electronics,bus stop,found
+234,keys,black plastic keys seen around canteen,accessory,canteen,lost
+235,water bottle,water bottle located in classroom area,accessory,classroom,lost
+236,tablet,white fabric tablet with two pockets near bus stop,electronics,bus stop,lost
+237,water bottle,water bottle possibly left in playground,accessory,playground,lost
+238,water bottle,found water bottle with with name written in bus stop,accessory,bus stop,found
+239,charger,charger of green color found in library,electronics,library,found
+240,water bottle,water bottle possibly left in corridor,accessory,corridor,lost
+241,calculator,rubber calculator slightly damaged around cafeteria,electronics,cafeteria,lost
+242,backpack,blue colored backpack near parking area,bag,parking area,found
+243,wallet,wallet possibly left in auditorium,wallet,auditorium,lost
+244,laptop,laptop possibly left in corridor,electronics,corridor,found
+245,umbrella,umbrella located in auditorium area,accessory,auditorium,found
+246,calculator,calculator possibly left in computer lab,electronics,computer lab,lost
+247,keys,yellow colored keys near corridor,accessory,corridor,lost
+248,calculator,calculator possibly left in library,electronics,library,found
+249,glasses,glasses of grey color found in parking area,accessory,parking area,lost
+250,wallet,leather wallet with zipper around canteen,wallet,canteen,lost
+251,pen drive,found pen drive with with two pockets in cafeteria,electronics,cafeteria,lost
+252,power bank,blue power bank spotted at canteen,electronics,canteen,found
+253,calculator,plastic calculator with stickers around library,electronics,library,found
+254,wallet,rubber wallet slightly damaged around playground,wallet,playground,lost
+255,pen drive,pen drive of silver color found in cafeteria,electronics,cafeteria,lost
+256,umbrella,white leather umbrella with name written near auditorium,accessory,auditorium,lost
+257,pen drive,pen drive possibly left in classroom,electronics,classroom,found
+258,pen drive,pen drive of green color found in computer lab,electronics,computer lab,lost
+259,backpack,purple colored backpack near classroom,bag,classroom,lost
+260,calculator,calculator located in computer lab area,electronics,computer lab,lost
+261,power bank,power bank possibly left in cafeteria,electronics,cafeteria,found
+262,notebook,leather notebook with scratches around playground,stationery,playground,found
+263,textbook,blue colored textbook near classroom,book,classroom,lost
+264,watch,green plastic watch with scratches near classroom,accessory,classroom,found
+265,watch,watch located in canteen area,accessory,canteen,found
+266,pen drive,purple pen drive spotted at bus stop,electronics,bus stop,found
+267,power bank,power bank located in classroom area,electronics,classroom,found
+268,calculator,red colored calculator near parking area,electronics,parking area,lost
+269,phone,found phone with in good condition in playground,phone,playground,lost
+270,laptop,laptop located in canteen area,electronics,canteen,found
+271,wallet,wallet of purple color found in cafeteria,wallet,cafeteria,lost
+272,handbag,found handbag with slightly damaged in library,bag,library,lost
+273,tablet,tablet of grey color found in classroom,electronics,classroom,found
+274,keys,yellow leather keys seen around library,accessory,library,lost
+275,tablet,found tablet with with logo in corridor,electronics,corridor,lost
+276,backpack,backpack possibly left in auditorium,bag,auditorium,lost
+277,keys,grey colored keys near parking area,accessory,parking area,found
+278,id card,yellow rubber id card seen around library,document,library,lost
+279,laptop,found laptop with slightly damaged in parking area,electronics,parking area,found
+280,laptop,found laptop with with scratches in auditorium,electronics,auditorium,found
+281,id card,black colored id card near cafeteria,document,cafeteria,lost
+282,headphones,lost white headphones close to computer lab,electronics,computer lab,lost
+283,backpack,found backpack with slightly damaged in parking area,bag,parking area,found
+284,phone,blue plastic phone seen around auditorium,phone,auditorium,found
+285,laptop,white colored laptop near bus stop,electronics,bus stop,found
+286,phone,grey plastic phone with two pockets near computer lab,phone,computer lab,found
+287,watch,grey watch spotted at playground,accessory,playground,found
+288,wallet,silver leather wallet slightly damaged near bus stop,wallet,bus stop,lost
+289,keys,lost white keys close to computer lab,accessory,computer lab,found
+290,phone,phone located in library area,phone,library,found
+291,glasses,red leather glasses with scratches near library,accessory,library,lost
+292,id card,id card possibly left in auditorium,document,auditorium,lost
+293,pen drive,green plastic pen drive with logo near cafeteria,electronics,cafeteria,found
+294,earbuds,lost yellow earbuds close to corridor,electronics,corridor,lost
+295,water bottle,found water bottle with in good condition in corridor,accessory,corridor,found
+296,tablet,fabric tablet slightly damaged around auditorium,electronics,auditorium,found
+297,glasses,glasses of silver color found in computer lab,accessory,computer lab,found
+298,tablet,white tablet spotted at auditorium,electronics,auditorium,lost
+299,calculator,grey colored calculator near computer lab,electronics,computer lab,lost
+300,water bottle,green plastic water bottle seen around classroom,accessory,classroom,lost
+301,tablet,tablet possibly left in auditorium,electronics,auditorium,lost
+302,keys,black leather keys seen around bus stop,accessory,bus stop,lost
+303,id card,lost grey id card close to library,document,library,found
+304,charger,grey metal charger slightly damaged near cafeteria,electronics,cafeteria,lost
+305,id card,purple leather id card seen around auditorium,document,auditorium,found
+306,calculator,white metal calculator slightly damaged near canteen,electronics,canteen,found
+307,keys,blue metal keys slightly damaged near cafeteria,accessory,cafeteria,found
+308,id card,id card of black color found in parking area,document,parking area,lost
+309,headphones,red colored headphones near canteen,electronics,canteen,lost
+310,charger,charger possibly left in cafeteria,electronics,cafeteria,found
+311,handbag,black fabric handbag seen around playground,bag,playground,found
+312,pen drive,found pen drive with with logo in bus stop,electronics,bus stop,lost
+313,calculator,found calculator with with two pockets in canteen,electronics,canteen,lost
+314,wallet,green plastic wallet seen around cafeteria,wallet,cafeteria,found
+315,notebook,notebook located in parking area area,stationery,parking area,found
+316,handbag,handbag of green color found in computer lab,bag,computer lab,lost
+317,headphones,headphones possibly left in canteen,electronics,canteen,lost
+318,water bottle,water bottle located in computer lab area,accessory,computer lab,found
+319,keys,found keys with with zipper in playground,accessory,playground,found
+320,pen drive,lost grey pen drive close to canteen,electronics,canteen,lost
+321,umbrella,lost brown umbrella close to classroom,accessory,classroom,found
+322,id card,green metal id card seen around library,document,library,lost
+323,backpack,silver rubber backpack with scratches near cafeteria,bag,cafeteria,found
+324,wallet,purple wallet spotted at canteen,wallet,canteen,lost
+325,charger,charger of purple color found in corridor,electronics,corridor,found
+326,umbrella,lost black umbrella close to bus stop,accessory,bus stop,lost
+327,earbuds,earbuds of red color found in parking area,electronics,parking area,found
+328,tablet,tablet of purple color found in auditorium,electronics,auditorium,found
+329,power bank,found power bank with with scratches in parking area,electronics,parking area,lost
+330,textbook,found textbook with with name written in library,book,library,found
+331,textbook,found textbook with in good condition in bus stop,book,bus stop,lost
+332,glasses,fabric glasses with zipper around playground,accessory,playground,found
+333,glasses,metal glasses with stickers around auditorium,accessory,auditorium,lost
+334,notebook,notebook located in cafeteria area,stationery,cafeteria,lost
+335,umbrella,white rubber umbrella seen around computer lab,accessory,computer lab,found
+336,tablet,lost green tablet close to bus stop,electronics,bus stop,found
+337,keys,lost white keys close to parking area,accessory,parking area,found
+338,earbuds,earbuds located in parking area area,electronics,parking area,found
+339,earbuds,found earbuds with with zipper in cafeteria,electronics,cafeteria,lost
+340,charger,rubber charger with two pockets around corridor,electronics,corridor,lost
+341,phone,fabric phone with two pockets around playground,phone,playground,lost
+342,power bank,power bank located in auditorium area,electronics,auditorium,found
+343,textbook,lost red textbook close to computer lab,book,computer lab,lost
+344,phone,brown leather phone seen around corridor,phone,corridor,lost
+345,notebook,white colored notebook near playground,stationery,playground,lost
+346,backpack,white colored backpack near playground,bag,playground,found
+347,calculator,purple colored calculator near bus stop,electronics,bus stop,lost
+348,glasses,brown fabric glasses with scratches near parking area,accessory,parking area,lost
+349,keys,lost green keys close to library,accessory,library,lost
+350,charger,black rubber charger with scratches near playground,electronics,playground,found
+351,textbook,grey metal textbook with logo near library,book,library,lost
+352,wallet,silver wallet spotted at playground,wallet,playground,lost
+353,charger,silver charger spotted at auditorium,electronics,auditorium,lost
+354,id card,red metal id card with logo near playground,document,playground,found
+355,pen drive,plastic pen drive with scratches around cafeteria,electronics,cafeteria,found
+356,id card,found id card with with two pockets in canteen,document,canteen,found
+357,power bank,found power bank with with stickers in canteen,electronics,canteen,lost
+358,watch,lost grey watch close to bus stop,accessory,bus stop,found
+359,phone,phone possibly left in classroom,phone,classroom,lost
+360,handbag,handbag of purple color found in classroom,bag,classroom,lost
+361,umbrella,umbrella possibly left in auditorium,accessory,auditorium,found
+362,umbrella,black fabric umbrella seen around parking area,accessory,parking area,found
+363,tablet,found tablet with slightly damaged in classroom,electronics,classroom,lost
+364,charger,brown fabric charger seen around bus stop,electronics,bus stop,lost
+365,glasses,glasses located in cafeteria area,accessory,cafeteria,found
+366,tablet,blue colored tablet near library,electronics,library,found
+367,power bank,power bank possibly left in library,electronics,library,lost
+368,laptop,grey colored laptop near parking area,electronics,parking area,lost
+369,headphones,headphones possibly left in playground,electronics,playground,found
+370,tablet,grey plastic tablet with two pockets near auditorium,electronics,auditorium,lost
+371,backpack,fabric backpack with zipper around library,bag,library,lost
+372,id card,plastic id card with logo around corridor,document,corridor,found
+373,backpack,yellow colored backpack near canteen,bag,canteen,lost
+374,umbrella,lost silver umbrella close to bus stop,accessory,bus stop,found
+375,tablet,tablet located in bus stop area,electronics,bus stop,found
+376,tablet,tablet located in playground area,electronics,playground,found
+377,tablet,found tablet with with two pockets in canteen,electronics,canteen,lost
+378,laptop,laptop possibly left in computer lab,electronics,computer lab,found
+379,charger,charger located in auditorium area,electronics,auditorium,lost
+380,backpack,found backpack with with two pockets in corridor,bag,corridor,found
+381,handbag,silver plastic handbag seen around bus stop,bag,bus stop,lost
+382,water bottle,rubber water bottle in good condition around canteen,accessory,canteen,lost
+383,keys,purple keys spotted at library,accessory,library,found
+384,handbag,lost white handbag close to parking area,bag,parking area,found
+385,wallet,blue wallet spotted at playground,wallet,playground,lost
+386,calculator,calculator located in parking area area,electronics,parking area,lost
+387,textbook,blue fabric textbook with scratches near classroom,book,classroom,lost
+388,umbrella,blue fabric umbrella seen around auditorium,accessory,auditorium,lost
+389,calculator,lost grey calculator close to cafeteria,electronics,cafeteria,lost
+390,phone,purple colored phone near library,phone,library,found
+391,backpack,brown leather backpack seen around library,bag,library,found
+392,phone,phone possibly left in computer lab,phone,computer lab,lost
+393,charger,fabric charger with logo around cafeteria,electronics,cafeteria,found
+394,glasses,glasses of black color found in bus stop,accessory,bus stop,found
+395,keys,brown plastic keys seen around library,accessory,library,lost
+396,calculator,purple colored calculator near bus stop,electronics,bus stop,found
+397,tablet,tablet located in library area,electronics,library,lost
+398,calculator,blue colored calculator near parking area,electronics,parking area,lost
+399,tablet,green tablet spotted at parking area,electronics,parking area,found
+400,earbuds,brown earbuds spotted at computer lab,electronics,computer lab,lost
+401,watch,watch located in auditorium area,accessory,auditorium,lost
+402,watch,watch of brown color found in cafeteria,accessory,cafeteria,found
+403,earbuds,silver plastic earbuds seen around library,electronics,library,lost
+404,watch,found watch with in good condition in auditorium,accessory,auditorium,found
+405,water bottle,found water bottle with with name written in classroom,accessory,classroom,lost
+406,charger,charger possibly left in auditorium,electronics,auditorium,lost
+407,handbag,handbag possibly left in playground,bag,playground,found
+408,calculator,silver plastic calculator seen around corridor,electronics,corridor,found
+409,laptop,blue laptop spotted at bus stop,electronics,bus stop,lost
+410,notebook,notebook of grey color found in corridor,stationery,corridor,lost
+411,umbrella,umbrella located in classroom area,accessory,classroom,found
+412,headphones,headphones located in computer lab area,electronics,computer lab,lost
+413,handbag,handbag of grey color found in library,bag,library,lost
+414,backpack,backpack located in cafeteria area,bag,cafeteria,found
+415,textbook,found textbook with with stickers in corridor,book,corridor,found
+416,handbag,blue colored handbag near parking area,bag,parking area,found
+417,wallet,wallet possibly left in computer lab,wallet,computer lab,found
+418,umbrella,umbrella located in corridor area,accessory,corridor,lost
+419,backpack,lost green backpack close to canteen,bag,canteen,lost
+420,tablet,tablet of yellow color found in computer lab,electronics,computer lab,lost
+421,phone,black metal phone slightly damaged near playground,phone,playground,lost
+422,water bottle,blue plastic water bottle seen around classroom,accessory,classroom,lost
+423,glasses,glasses possibly left in bus stop,accessory,bus stop,found
+424,headphones,red headphones spotted at library,electronics,library,found
+425,charger,silver charger spotted at classroom,electronics,classroom,lost
+426,tablet,tablet possibly left in cafeteria,electronics,cafeteria,found
+427,earbuds,silver fabric earbuds with logo near canteen,electronics,canteen,found
+428,laptop,yellow colored laptop near classroom,electronics,classroom,found
+429,phone,found phone with with logo in canteen,phone,canteen,found
+430,laptop,laptop located in parking area area,electronics,parking area,lost
+431,keys,keys of blue color found in bus stop,accessory,bus stop,found
+432,handbag,yellow handbag spotted at playground,bag,playground,found
+433,backpack,grey leather backpack with stickers near canteen,bag,canteen,lost
+434,power bank,power bank possibly left in cafeteria,electronics,cafeteria,found
+435,wallet,silver leather wallet with logo near auditorium,wallet,auditorium,lost
+436,earbuds,found earbuds with in good condition in library,electronics,library,lost
+437,textbook,textbook possibly left in cafeteria,book,cafeteria,lost
+438,phone,phone possibly left in auditorium,phone,auditorium,lost
+439,notebook,green colored notebook near cafeteria,stationery,cafeteria,lost
+440,headphones,headphones of black color found in corridor,electronics,corridor,found
+441,pen drive,pen drive located in cafeteria area,electronics,cafeteria,lost
+442,handbag,black colored handbag near computer lab,bag,computer lab,lost
+443,handbag,green colored handbag near playground,bag,playground,lost
+444,charger,charger possibly left in playground,electronics,playground,lost
+445,notebook,grey notebook spotted at computer lab,stationery,computer lab,found
+446,id card,white id card spotted at cafeteria,document,cafeteria,lost
+447,phone,rubber phone in good condition around computer lab,phone,computer lab,found
+448,keys,keys located in bus stop area,accessory,bus stop,found
+449,pen drive,found pen drive with slightly damaged in playground,electronics,playground,lost
+450,phone,found phone with with scratches in bus stop,phone,bus stop,found
+451,pen drive,lost blue pen drive close to library,electronics,library,lost
+452,textbook,textbook of black color found in auditorium,book,auditorium,found
+453,pen drive,green fabric pen drive seen around canteen,electronics,canteen,lost
+454,notebook,blue notebook spotted at canteen,stationery,canteen,found
+455,pen drive,green pen drive spotted at cafeteria,electronics,cafeteria,found
+456,phone,blue plastic phone with zipper near bus stop,phone,bus stop,found
+457,calculator,red leather calculator with two pockets near cafeteria,electronics,cafeteria,lost
+458,notebook,yellow notebook spotted at playground,stationery,playground,found
+459,headphones,metal headphones with logo around auditorium,electronics,auditorium,found
+460,backpack,backpack possibly left in bus stop,bag,bus stop,lost
+461,keys,fabric keys with zipper around parking area,accessory,parking area,found
+462,watch,watch possibly left in canteen,accessory,canteen,found
+463,tablet,green colored tablet near library,electronics,library,lost
+464,headphones,found headphones with with zipper in canteen,electronics,canteen,found
+465,calculator,lost grey calculator close to parking area,electronics,parking area,found
+466,id card,blue plastic id card with two pockets near computer lab,document,computer lab,lost
+467,textbook,rubber textbook with zipper around library,book,library,found
+468,id card,silver colored id card near classroom,document,classroom,lost
+469,keys,keys of red color found in classroom,accessory,classroom,found
+470,calculator,blue calculator spotted at playground,electronics,playground,lost
+471,power bank,power bank possibly left in library,electronics,library,found
+472,charger,found charger with with name written in parking area,electronics,parking area,lost
+473,notebook,red notebook spotted at computer lab,stationery,computer lab,lost
+474,umbrella,umbrella located in library area,accessory,library,found
+475,textbook,found textbook with with zipper in classroom,book,classroom,found
+476,glasses,glasses located in parking area area,accessory,parking area,found
+477,earbuds,earbuds of blue color found in bus stop,electronics,bus stop,lost
+478,backpack,brown leather backpack with zipper near parking area,bag,parking area,found
+479,phone,phone located in library area,phone,library,lost
+480,water bottle,white water bottle spotted at classroom,accessory,classroom,found
+481,earbuds,silver rubber earbuds in good condition near parking area,electronics,parking area,lost
+482,tablet,brown plastic tablet seen around parking area,electronics,parking area,found
+483,wallet,wallet located in bus stop area,wallet,bus stop,found
+484,earbuds,green leather earbuds with logo near parking area,electronics,parking area,lost
+485,watch,green watch spotted at auditorium,accessory,auditorium,found
+486,glasses,purple plastic glasses seen around parking area,accessory,parking area,found
+487,umbrella,green fabric umbrella seen around cafeteria,accessory,cafeteria,found
+488,umbrella,green umbrella spotted at library,accessory,library,lost
+489,water bottle,found water bottle with with two pockets in parking area,accessory,parking area,lost
+490,tablet,silver leather tablet in good condition near bus stop,electronics,bus stop,lost
+491,tablet,yellow rubber tablet with zipper near playground,electronics,playground,found
+492,pen drive,pen drive of white color found in canteen,electronics,canteen,found
+493,umbrella,umbrella possibly left in classroom,accessory,classroom,lost
+494,keys,keys of brown color found in cafeteria,accessory,cafeteria,lost
+495,water bottle,purple water bottle spotted at library,accessory,library,lost
+496,handbag,handbag of purple color found in classroom,bag,classroom,lost
+497,keys,found keys with slightly damaged in computer lab,accessory,computer lab,lost
+498,id card,brown id card spotted at canteen,document,canteen,lost
+499,tablet,tablet possibly left in library,electronics,library,found
+500,textbook,purple rubber textbook seen around corridor,book,corridor,lost
+501,charger,purple colored charger near corridor,electronics,corridor,found
+502,backpack,backpack of yellow color found in classroom,bag,classroom,found
+503,handbag,plastic handbag with logo around auditorium,bag,auditorium,found
+504,handbag,found handbag with with name written in auditorium,bag,auditorium,found
+505,charger,lost blue charger close to cafeteria,electronics,cafeteria,found
+506,textbook,found textbook with with zipper in parking area,book,parking area,found
+507,calculator,leather calculator in good condition around playground,electronics,playground,lost
+508,wallet,lost grey wallet close to canteen,wallet,canteen,found
+509,id card,lost silver id card close to bus stop,document,bus stop,lost
+510,backpack,backpack possibly left in playground,bag,playground,lost
+511,keys,blue leather keys slightly damaged near playground,accessory,playground,lost
+512,backpack,blue colored backpack near computer lab,bag,computer lab,lost
+513,phone,grey phone spotted at parking area,phone,parking area,found
+514,power bank,power bank located in classroom area,electronics,classroom,lost
+515,textbook,leather textbook with stickers around computer lab,book,computer lab,found
+516,power bank,green colored power bank near library,electronics,library,lost
+517,glasses,yellow metal glasses slightly damaged near library,accessory,library,lost
+518,phone,leather phone with zipper around library,phone,library,found
+519,watch,metal watch with two pockets around bus stop,accessory,bus stop,lost
+520,headphones,found headphones with with name written in playground,electronics,playground,lost
+521,handbag,purple colored handbag near corridor,bag,corridor,lost
+522,keys,black keys spotted at canteen,accessory,canteen,found
+523,backpack,silver leather backpack with logo near computer lab,bag,computer lab,found
+524,wallet,lost white wallet close to cafeteria,wallet,cafeteria,lost
+525,backpack,yellow rubber backpack seen around auditorium,bag,auditorium,found
+526,tablet,lost purple tablet close to library,electronics,library,lost
+527,textbook,white textbook spotted at cafeteria,book,cafeteria,found
+528,notebook,notebook located in playground area,stationery,playground,found
+529,laptop,lost red laptop close to canteen,electronics,canteen,lost
+530,umbrella,silver colored umbrella near library,accessory,library,lost
+531,earbuds,purple colored earbuds near parking area,electronics,parking area,lost
+532,glasses,metal glasses with logo around parking area,accessory,parking area,found
+533,earbuds,black colored earbuds near library,electronics,library,lost
+534,calculator,calculator located in library area,electronics,library,found
+535,watch,found watch with with two pockets in canteen,accessory,canteen,lost
+536,charger,lost red charger close to library,electronics,library,found
+537,textbook,found textbook with slightly damaged in cafeteria,book,cafeteria,found
+538,watch,purple watch spotted at canteen,accessory,canteen,lost
+539,notebook,notebook possibly left in auditorium,stationery,auditorium,lost
+540,headphones,red headphones spotted at bus stop,electronics,bus stop,lost
+541,water bottle,water bottle possibly left in library,accessory,library,lost
+542,glasses,purple metal glasses seen around auditorium,accessory,auditorium,lost
+543,headphones,lost black headphones close to canteen,electronics,canteen,lost
+544,pen drive,brown pen drive spotted at corridor,electronics,corridor,lost
+545,wallet,fabric wallet with zipper around cafeteria,wallet,cafeteria,lost
+546,notebook,black colored notebook near corridor,stationery,corridor,lost
+547,charger,brown colored charger near parking area,electronics,parking area,found
+548,umbrella,red leather umbrella with logo near classroom,accessory,classroom,found
+549,umbrella,umbrella possibly left in classroom,accessory,classroom,found
+550,charger,purple metal charger seen around library,electronics,library,found
+551,headphones,white colored headphones near classroom,electronics,classroom,lost
+552,earbuds,silver plastic earbuds seen around auditorium,electronics,auditorium,found
+553,id card,id card located in corridor area,document,corridor,lost
+554,textbook,textbook located in classroom area,book,classroom,lost
+555,keys,keys possibly left in library,accessory,library,found
+556,pen drive,pen drive of green color found in cafeteria,electronics,cafeteria,lost
+557,wallet,wallet possibly left in cafeteria,wallet,cafeteria,lost
+558,glasses,lost yellow glasses close to parking area,accessory,parking area,found
+559,notebook,notebook possibly left in cafeteria,stationery,cafeteria,lost
+560,id card,fabric id card with logo around auditorium,document,auditorium,lost
+561,glasses,black colored glasses near auditorium,accessory,auditorium,found
+562,watch,rubber watch with two pockets around classroom,accessory,classroom,lost
+563,power bank,red leather power bank with two pockets near corridor,electronics,corridor,lost
+564,notebook,purple colored notebook near auditorium,stationery,auditorium,found
+565,power bank,green fabric power bank slightly damaged near parking area,electronics,parking area,found
+566,textbook,plastic textbook with two pockets around canteen,book,canteen,lost
+567,power bank,yellow plastic power bank in good condition near parking area,electronics,parking area,found
+568,keys,white leather keys seen around bus stop,accessory,bus stop,lost
+569,water bottle,brown water bottle spotted at library,accessory,library,found
+570,headphones,headphones possibly left in parking area,electronics,parking area,found
+571,umbrella,red fabric umbrella seen around parking area,accessory,parking area,found
+572,keys,found keys with with scratches in cafeteria,accessory,cafeteria,lost
+573,wallet,red leather wallet with two pockets near auditorium,wallet,auditorium,found
+574,umbrella,green leather umbrella seen around classroom,accessory,classroom,found
+575,notebook,black plastic notebook seen around corridor,stationery,corridor,found
+576,phone,phone possibly left in library,phone,library,lost
+577,power bank,silver fabric power bank seen around parking area,electronics,parking area,lost
+578,tablet,lost brown tablet close to computer lab,electronics,computer lab,found
+579,textbook,found textbook with with name written in classroom,book,classroom,found
+580,earbuds,lost white earbuds close to playground,electronics,playground,found
+581,id card,id card located in canteen area,document,canteen,found
+582,glasses,found glasses with with zipper in canteen,accessory,canteen,found
+583,water bottle,found water bottle with with name written in parking area,accessory,parking area,lost
+584,phone,phone possibly left in auditorium,phone,auditorium,found
+585,pen drive,found pen drive with with stickers in corridor,electronics,corridor,lost
+586,charger,found charger with with name written in computer lab,electronics,computer lab,lost
+587,calculator,lost grey calculator close to canteen,electronics,canteen,found
+588,wallet,grey wallet spotted at classroom,wallet,classroom,found
+589,wallet,lost yellow wallet close to bus stop,wallet,bus stop,found
+590,glasses,found glasses with in good condition in canteen,accessory,canteen,lost
+591,watch,red watch spotted at classroom,accessory,classroom,lost
+592,textbook,grey colored textbook near cafeteria,book,cafeteria,lost
+593,textbook,green textbook spotted at bus stop,book,bus stop,lost
+594,headphones,plastic headphones with name written around playground,electronics,playground,found
+595,watch,watch located in corridor area,accessory,corridor,found
+596,backpack,lost black backpack close to canteen,bag,canteen,found
+597,calculator,white metal calculator seen around classroom,electronics,classroom,found
+598,earbuds,white leather earbuds seen around bus stop,electronics,bus stop,found
+599,earbuds,white fabric earbuds seen around canteen,electronics,canteen,found
+600,phone,green phone spotted at playground,phone,playground,lost
+601,textbook,textbook located in library area,book,library,lost
+602,watch,yellow leather watch seen around computer lab,accessory,computer lab,found
+603,earbuds,red plastic earbuds with stickers near playground,electronics,playground,lost
+604,pen drive,black fabric pen drive with name written near computer lab,electronics,computer lab,found
+605,tablet,lost grey tablet close to library,electronics,library,found
+606,phone,phone possibly left in playground,phone,playground,lost
+607,umbrella,umbrella located in cafeteria area,accessory,cafeteria,found
+608,umbrella,umbrella possibly left in library,accessory,library,lost
+609,charger,blue colored charger near playground,electronics,playground,found
+610,textbook,brown colored textbook near bus stop,book,bus stop,found
+611,water bottle,white water bottle spotted at playground,accessory,playground,lost
+612,glasses,glasses of white color found in parking area,accessory,parking area,found
+613,notebook,found notebook with with zipper in playground,stationery,playground,found
+614,umbrella,blue metal umbrella with zipper near bus stop,accessory,bus stop,lost
+615,water bottle,green plastic water bottle with logo near playground,accessory,playground,found
+616,handbag,green handbag spotted at cafeteria,bag,cafeteria,found
+617,textbook,lost yellow textbook close to canteen,book,canteen,found
+618,laptop,white fabric laptop with stickers near auditorium,electronics,auditorium,lost
+619,water bottle,lost red water bottle close to bus stop,accessory,bus stop,lost
+620,umbrella,brown rubber umbrella with scratches near canteen,accessory,canteen,lost
+621,phone,found phone with slightly damaged in library,phone,library,lost
+622,earbuds,metal earbuds with scratches around playground,electronics,playground,lost
+623,watch,watch of black color found in auditorium,accessory,auditorium,lost
+624,pen drive,pen drive of brown color found in classroom,electronics,classroom,found
+625,phone,leather phone with logo around corridor,phone,corridor,lost
+626,headphones,headphones possibly left in cafeteria,electronics,cafeteria,lost
+627,wallet,leather wallet with name written around parking area,wallet,parking area,found
+628,charger,leather charger slightly damaged around library,electronics,library,lost
+629,headphones,silver plastic headphones with two pockets near parking area,electronics,parking area,found
+630,notebook,notebook located in parking area area,stationery,parking area,found
+631,wallet,wallet located in corridor area,wallet,corridor,found
+632,umbrella,silver umbrella spotted at auditorium,accessory,auditorium,found
+633,glasses,silver fabric glasses with scratches near corridor,accessory,corridor,found
+634,headphones,grey colored headphones near canteen,electronics,canteen,found
+635,handbag,blue colored handbag near canteen,bag,canteen,found
+636,watch,blue metal watch seen around auditorium,accessory,auditorium,found
+637,watch,watch located in computer lab area,accessory,computer lab,found
+638,backpack,blue plastic backpack seen around parking area,bag,parking area,lost
+639,laptop,red metal laptop seen around parking area,electronics,parking area,found
+640,backpack,backpack possibly left in library,bag,library,lost
+641,umbrella,blue umbrella spotted at classroom,accessory,classroom,found
+642,backpack,brown backpack spotted at playground,bag,playground,lost
+643,watch,lost purple watch close to playground,accessory,playground,lost
+644,id card,yellow colored id card near parking area,document,parking area,lost
+645,textbook,textbook of white color found in playground,book,playground,lost
+646,earbuds,fabric earbuds in good condition around computer lab,electronics,computer lab,found
+647,charger,charger possibly left in computer lab,electronics,computer lab,found
+648,power bank,power bank possibly left in playground,electronics,playground,found
+649,headphones,blue colored headphones near bus stop,electronics,bus stop,lost
+650,calculator,calculator possibly left in computer lab,electronics,computer lab,lost
+651,wallet,wallet possibly left in bus stop,wallet,bus stop,found
+652,pen drive,pen drive located in parking area area,electronics,parking area,found
+653,backpack,backpack possibly left in computer lab,bag,computer lab,found
+654,notebook,metal notebook slightly damaged around library,stationery,library,lost
+655,laptop,blue metal laptop with logo near parking area,electronics,parking area,found
+656,pen drive,brown colored pen drive near computer lab,electronics,computer lab,found
+657,backpack,brown fabric backpack seen around classroom,bag,classroom,found
+658,earbuds,lost grey earbuds close to computer lab,electronics,computer lab,found
+659,keys,lost black keys close to classroom,accessory,classroom,found
+660,umbrella,umbrella possibly left in computer lab,accessory,computer lab,found
+661,umbrella,umbrella possibly left in parking area,accessory,parking area,found
+662,phone,green fabric phone slightly damaged near corridor,phone,corridor,found
+663,id card,brown id card spotted at computer lab,document,computer lab,found
+664,water bottle,water bottle located in auditorium area,accessory,auditorium,lost
+665,power bank,leather power bank in good condition around bus stop,electronics,bus stop,lost
+666,pen drive,pen drive possibly left in parking area,electronics,parking area,found
+667,charger,brown fabric charger seen around corridor,electronics,corridor,lost
+668,calculator,lost silver calculator close to canteen,electronics,canteen,found
+669,laptop,brown fabric laptop in good condition near playground,electronics,playground,lost
+670,laptop,purple fabric laptop seen around canteen,electronics,canteen,found
+671,laptop,laptop of white color found in library,electronics,library,found
+672,handbag,handbag located in computer lab area,bag,computer lab,lost
+673,headphones,rubber headphones with zipper around classroom,electronics,classroom,found
+674,watch,rubber watch in good condition around corridor,accessory,corridor,found
+675,handbag,blue handbag spotted at classroom,bag,classroom,found
+676,id card,blue metal id card seen around classroom,document,classroom,lost
+677,watch,grey plastic watch seen around parking area,accessory,parking area,lost
+678,charger,lost brown charger close to playground,electronics,playground,lost
+679,water bottle,yellow colored water bottle near corridor,accessory,corridor,lost
+680,power bank,power bank of yellow color found in library,electronics,library,lost
+681,watch,found watch with in good condition in computer lab,accessory,computer lab,found
+682,water bottle,water bottle possibly left in playground,accessory,playground,lost
+683,handbag,handbag located in auditorium area,bag,auditorium,found
+684,umbrella,fabric umbrella with two pockets around computer lab,accessory,computer lab,found
+685,headphones,green rubber headphones seen around auditorium,electronics,auditorium,lost
+686,backpack,backpack of green color found in canteen,bag,canteen,lost
+687,earbuds,fabric earbuds with two pockets around cafeteria,electronics,cafeteria,found
+688,earbuds,found earbuds with in good condition in classroom,electronics,classroom,found
+689,power bank,power bank possibly left in classroom,electronics,classroom,found
+690,watch,found watch with with name written in cafeteria,accessory,cafeteria,found
+691,calculator,found calculator with with zipper in corridor,electronics,corridor,found
+692,backpack,backpack of white color found in bus stop,bag,bus stop,found
+693,backpack,black colored backpack near corridor,bag,corridor,found
+694,water bottle,lost red water bottle close to playground,accessory,playground,lost
+695,tablet,purple tablet spotted at parking area,electronics,parking area,found
+696,phone,rubber phone with scratches around computer lab,phone,computer lab,lost
+697,calculator,red plastic calculator seen around corridor,electronics,corridor,found
+698,calculator,calculator possibly left in canteen,electronics,canteen,lost
+699,textbook,textbook possibly left in corridor,book,corridor,found
+700,glasses,found glasses with in good condition in library,accessory,library,lost
+701,calculator,yellow leather calculator seen around library,electronics,library,lost
+702,tablet,grey colored tablet near parking area,electronics,parking area,lost
+703,id card,brown id card spotted at computer lab,document,computer lab,found
+704,watch,silver plastic watch slightly damaged near corridor,accessory,corridor,found
+705,phone,phone located in library area,phone,library,found
+706,textbook,textbook located in playground area,book,playground,found
+707,umbrella,black umbrella spotted at auditorium,accessory,auditorium,lost
+708,id card,id card possibly left in auditorium,document,auditorium,found
+709,pen drive,grey pen drive spotted at computer lab,electronics,computer lab,found
+710,wallet,found wallet with with stickers in canteen,wallet,canteen,lost
+711,notebook,white colored notebook near parking area,stationery,parking area,found
+712,watch,brown rubber watch with scratches near bus stop,accessory,bus stop,found
+713,keys,silver fabric keys slightly damaged near library,accessory,library,lost
+714,keys,keys located in classroom area,accessory,classroom,found
+715,notebook,white fabric notebook in good condition near computer lab,stationery,computer lab,found
+716,tablet,black plastic tablet seen around computer lab,electronics,computer lab,lost
+717,phone,white metal phone seen around parking area,phone,parking area,lost
+718,umbrella,umbrella located in corridor area,accessory,corridor,found
+719,textbook,red textbook spotted at library,book,library,found
+720,headphones,found headphones with with name written in library,electronics,library,found
+721,handbag,rubber handbag with name written around canteen,bag,canteen,lost
+722,watch,silver plastic watch seen around corridor,accessory,corridor,lost
+723,backpack,red metal backpack with logo near cafeteria,bag,cafeteria,found
+724,pen drive,pen drive possibly left in library,electronics,library,lost
+725,glasses,glasses of green color found in cafeteria,accessory,cafeteria,lost
+726,headphones,purple headphones spotted at parking area,electronics,parking area,found
+727,water bottle,rubber water bottle with logo around playground,accessory,playground,lost
+728,water bottle,yellow water bottle spotted at cafeteria,accessory,cafeteria,lost
+729,textbook,grey rubber textbook seen around corridor,book,corridor,found
+730,charger,white metal charger seen around computer lab,electronics,computer lab,found
+731,laptop,laptop located in library area,electronics,library,found
+732,handbag,blue fabric handbag seen around cafeteria,bag,cafeteria,lost
+733,power bank,power bank possibly left in playground,electronics,playground,lost
+734,headphones,headphones located in auditorium area,electronics,auditorium,lost
+735,backpack,black colored backpack near corridor,bag,corridor,found
+736,pen drive,yellow pen drive spotted at bus stop,electronics,bus stop,lost
+737,notebook,notebook possibly left in computer lab,stationery,computer lab,found
+738,power bank,purple plastic power bank seen around classroom,electronics,classroom,found
+739,laptop,laptop located in computer lab area,electronics,computer lab,lost
+740,laptop,found laptop with with two pockets in auditorium,electronics,auditorium,lost
+741,watch,watch of yellow color found in bus stop,accessory,bus stop,lost
+742,id card,id card located in playground area,document,playground,found
+743,backpack,yellow colored backpack near library,bag,library,lost
+744,phone,grey phone spotted at auditorium,phone,auditorium,found
+745,id card,id card possibly left in parking area,document,parking area,lost
+746,headphones,headphones possibly left in auditorium,electronics,auditorium,lost
+747,backpack,found backpack with with name written in playground,bag,playground,lost
+748,power bank,power bank located in auditorium area,electronics,auditorium,lost
+749,earbuds,silver metal earbuds with name written near cafeteria,electronics,cafeteria,lost
+750,calculator,blue leather calculator seen around cafeteria,electronics,cafeteria,lost
+751,handbag,handbag of grey color found in library,bag,library,found
+752,water bottle,water bottle possibly left in library,accessory,library,lost
+753,handbag,silver leather handbag with name written near library,bag,library,lost
+754,power bank,metal power bank with logo around classroom,electronics,classroom,found
+755,headphones,blue headphones spotted at parking area,electronics,parking area,lost
+756,charger,charger located in classroom area,electronics,classroom,lost
+757,handbag,white rubber handbag seen around parking area,bag,parking area,lost
+758,calculator,blue colored calculator near parking area,electronics,parking area,found
+759,notebook,purple metal notebook slightly damaged near playground,stationery,playground,found
+760,umbrella,purple umbrella spotted at playground,accessory,playground,found
+761,id card,green colored id card near bus stop,document,bus stop,found
+762,earbuds,lost green earbuds close to parking area,electronics,parking area,lost
+763,laptop,silver laptop spotted at canteen,electronics,canteen,lost
+764,handbag,plastic handbag in good condition around corridor,bag,corridor,found
+765,water bottle,red rubber water bottle with stickers near computer lab,accessory,computer lab,found
+766,umbrella,umbrella possibly left in canteen,accessory,canteen,lost
+767,charger,leather charger with zipper around bus stop,electronics,bus stop,found
+768,id card,purple id card spotted at parking area,document,parking area,lost
+769,backpack,yellow colored backpack near library,bag,library,found
+770,calculator,black plastic calculator with zipper near auditorium,electronics,auditorium,found
+771,notebook,white colored notebook near auditorium,stationery,auditorium,found
+772,power bank,power bank of silver color found in auditorium,electronics,auditorium,lost
+773,backpack,lost brown backpack close to computer lab,bag,computer lab,lost
+774,laptop,plastic laptop in good condition around cafeteria,electronics,cafeteria,lost
+775,wallet,plastic wallet with logo around canteen,wallet,canteen,found
+776,earbuds,lost brown earbuds close to computer lab,electronics,computer lab,lost
+777,charger,blue plastic charger with scratches near parking area,electronics,parking area,found
+778,notebook,lost brown notebook close to bus stop,stationery,bus stop,found
+779,pen drive,lost green pen drive close to parking area,electronics,parking area,lost
+780,water bottle,grey metal water bottle seen around canteen,accessory,canteen,found
+781,tablet,tablet of grey color found in corridor,electronics,corridor,found
+782,backpack,grey rubber backpack seen around classroom,bag,classroom,lost
+783,wallet,wallet of brown color found in playground,wallet,playground,found
+784,glasses,lost green glasses close to computer lab,accessory,computer lab,found
+785,notebook,notebook possibly left in canteen,stationery,canteen,lost
+786,headphones,headphones possibly left in auditorium,electronics,auditorium,found
+787,keys,keys located in bus stop area,accessory,bus stop,found
+788,textbook,white colored textbook near library,book,library,found
+789,water bottle,red water bottle spotted at computer lab,accessory,computer lab,lost
+790,watch,watch located in library area,accessory,library,found
+791,earbuds,leather earbuds with scratches around auditorium,electronics,auditorium,lost
+792,earbuds,silver fabric earbuds with logo near parking area,electronics,parking area,found
+793,umbrella,umbrella located in auditorium area,accessory,auditorium,found
+794,backpack,backpack possibly left in library,bag,library,found
+795,pen drive,black rubber pen drive seen around parking area,electronics,parking area,found
+796,phone,red phone spotted at playground,phone,playground,found
+797,id card,id card of green color found in bus stop,document,bus stop,lost
+798,earbuds,silver earbuds spotted at library,electronics,library,found
+799,phone,phone located in canteen area,phone,canteen,lost
+800,tablet,black tablet spotted at canteen,electronics,canteen,lost
+801,water bottle,silver metal water bottle with name written near auditorium,accessory,auditorium,lost
+802,phone,phone located in parking area area,phone,parking area,lost
+803,id card,lost blue id card close to library,document,library,lost
+804,wallet,grey colored wallet near parking area,wallet,parking area,found
+805,umbrella,lost yellow umbrella close to corridor,accessory,corridor,lost
+806,umbrella,fabric umbrella with zipper around parking area,accessory,parking area,found
+807,umbrella,umbrella of green color found in playground,accessory,playground,found
+808,calculator,calculator located in auditorium area,electronics,auditorium,lost
+809,handbag,handbag of purple color found in library,bag,library,lost
+810,headphones,purple rubber headphones seen around auditorium,electronics,auditorium,lost
+811,notebook,fabric notebook with logo around auditorium,stationery,auditorium,lost
+812,calculator,red colored calculator near cafeteria,electronics,cafeteria,lost
+813,id card,lost brown id card close to classroom,document,classroom,lost
+814,phone,brown metal phone with logo near auditorium,phone,auditorium,lost
+815,pen drive,found pen drive with with name written in auditorium,electronics,auditorium,lost
+816,water bottle,brown colored water bottle near corridor,accessory,corridor,found
+817,earbuds,earbuds located in library area,electronics,library,found
+818,laptop,laptop possibly left in computer lab,electronics,computer lab,lost
+819,backpack,backpack located in auditorium area,bag,auditorium,found
+820,glasses,purple colored glasses near classroom,accessory,classroom,lost
+821,power bank,lost brown power bank close to bus stop,electronics,bus stop,lost
+822,pen drive,red colored pen drive near canteen,electronics,canteen,found
+823,water bottle,fabric water bottle with stickers around classroom,accessory,classroom,found
+824,glasses,lost black glasses close to classroom,accessory,classroom,found
+825,textbook,leather textbook in good condition around parking area,book,parking area,lost
+826,wallet,metal wallet with stickers around library,wallet,library,lost
+827,watch,grey watch spotted at library,accessory,library,found
+828,water bottle,lost yellow water bottle close to parking area,accessory,parking area,lost
+829,pen drive,pen drive possibly left in classroom,electronics,classroom,lost
+830,id card,id card of brown color found in bus stop,document,bus stop,lost
+831,phone,phone possibly left in library,phone,library,lost
+832,backpack,backpack of red color found in library,bag,library,found
+833,umbrella,umbrella possibly left in bus stop,accessory,bus stop,found
+834,charger,charger located in classroom area,electronics,classroom,found
+835,charger,blue fabric charger seen around corridor,electronics,corridor,found
+836,charger,blue charger spotted at auditorium,electronics,auditorium,found
+837,power bank,black power bank spotted at library,electronics,library,lost
+838,glasses,glasses of grey color found in playground,accessory,playground,found
+839,calculator,fabric calculator with logo around parking area,electronics,parking area,lost
+840,handbag,yellow colored handbag near canteen,bag,canteen,found
+841,power bank,lost white power bank close to canteen,electronics,canteen,found
+842,pen drive,green leather pen drive seen around parking area,electronics,parking area,found
+843,watch,plastic watch with zipper around cafeteria,accessory,cafeteria,found
+844,keys,leather keys with two pockets around auditorium,accessory,auditorium,lost
+845,earbuds,earbuds possibly left in classroom,electronics,classroom,lost
+846,wallet,wallet possibly left in corridor,wallet,corridor,lost
+847,watch,watch located in computer lab area,accessory,computer lab,found
+848,textbook,textbook located in library area,book,library,found
+849,glasses,silver fabric glasses with logo near parking area,accessory,parking area,found
+850,handbag,green colored handbag near corridor,bag,corridor,lost
+851,keys,keys possibly left in parking area,accessory,parking area,found
+852,pen drive,pen drive of blue color found in parking area,electronics,parking area,lost
+853,glasses,grey glasses spotted at computer lab,accessory,computer lab,lost
+854,keys,silver fabric keys slightly damaged near corridor,accessory,corridor,lost
+855,earbuds,red earbuds spotted at corridor,electronics,corridor,lost
+856,laptop,fabric laptop with stickers around playground,electronics,playground,found
+857,id card,id card possibly left in computer lab,document,computer lab,lost
+858,water bottle,lost red water bottle close to playground,accessory,playground,lost
+859,backpack,white backpack spotted at auditorium,bag,auditorium,found
+860,notebook,grey rubber notebook seen around parking area,stationery,parking area,lost
+861,id card,metal id card slightly damaged around library,document,library,lost
+862,watch,plastic watch with name written around canteen,accessory,canteen,lost
+863,power bank,silver plastic power bank seen around library,electronics,library,found
+864,earbuds,grey rubber earbuds with scratches near bus stop,electronics,bus stop,found
+865,headphones,lost green headphones close to corridor,electronics,corridor,lost
+866,keys,keys possibly left in canteen,accessory,canteen,found
+867,phone,grey leather phone with zipper near playground,phone,playground,lost
+868,tablet,tablet possibly left in classroom,electronics,classroom,found
+869,earbuds,red earbuds spotted at cafeteria,electronics,cafeteria,found
+870,keys,fabric keys with zipper around canteen,accessory,canteen,lost
+871,notebook,leather notebook with two pockets around canteen,stationery,canteen,found
+872,backpack,lost brown backpack close to corridor,bag,corridor,found
+873,notebook,purple plastic notebook seen around corridor,stationery,corridor,found
+874,charger,blue metal charger with logo near playground,electronics,playground,found
+875,keys,red keys spotted at library,accessory,library,found
+876,laptop,laptop of red color found in computer lab,electronics,computer lab,lost
+877,tablet,black rubber tablet seen around playground,electronics,playground,lost
+878,headphones,headphones located in computer lab area,electronics,computer lab,lost
+879,phone,phone of red color found in library,phone,library,lost
+880,calculator,calculator possibly left in cafeteria,electronics,cafeteria,found
+881,laptop,yellow colored laptop near playground,electronics,playground,lost
+882,calculator,green rubber calculator slightly damaged near library,electronics,library,found
+883,notebook,notebook possibly left in corridor,stationery,corridor,found
+884,wallet,wallet of black color found in classroom,wallet,classroom,found
+885,watch,watch possibly left in parking area,accessory,parking area,found
+886,watch,watch located in auditorium area,accessory,auditorium,lost
+887,id card,green metal id card with two pockets near playground,document,playground,found
+888,handbag,found handbag with with zipper in classroom,bag,classroom,lost
+889,earbuds,grey earbuds spotted at corridor,electronics,corridor,found
+890,pen drive,fabric pen drive with scratches around classroom,electronics,classroom,lost
+891,power bank,power bank possibly left in classroom,electronics,classroom,found
+892,water bottle,black fabric water bottle in good condition near bus stop,accessory,bus stop,found
+893,pen drive,pen drive located in corridor area,electronics,corridor,found
+894,charger,yellow charger spotted at computer lab,electronics,computer lab,lost
+895,keys,keys of blue color found in auditorium,accessory,auditorium,found
+896,charger,purple colored charger near auditorium,electronics,auditorium,lost
+897,watch,watch located in auditorium area,accessory,auditorium,found
+898,umbrella,umbrella possibly left in parking area,accessory,parking area,found
+899,water bottle,blue colored water bottle near parking area,accessory,parking area,found
+900,id card,rubber id card with zipper around canteen,document,canteen,lost
+901,earbuds,yellow plastic earbuds in good condition near auditorium,electronics,auditorium,lost
+902,wallet,lost blue wallet close to playground,wallet,playground,lost
+903,earbuds,earbuds located in parking area area,electronics,parking area,found
+904,pen drive,lost white pen drive close to classroom,electronics,classroom,lost
+905,tablet,white tablet spotted at cafeteria,electronics,cafeteria,found
+906,glasses,found glasses with with scratches in canteen,accessory,canteen,lost
+907,umbrella,white umbrella spotted at classroom,accessory,classroom,found
+908,power bank,white metal power bank with name written near computer lab,electronics,computer lab,found
+909,calculator,green calculator spotted at auditorium,electronics,auditorium,lost
+910,watch,lost red watch close to library,accessory,library,lost
+911,notebook,white notebook spotted at canteen,stationery,canteen,found
+912,earbuds,black metal earbuds with zipper near corridor,electronics,corridor,lost
+913,backpack,backpack located in parking area area,bag,parking area,found
+914,handbag,handbag located in parking area area,bag,parking area,found
+915,calculator,calculator possibly left in classroom,electronics,classroom,found
+916,laptop,brown leather laptop seen around cafeteria,electronics,cafeteria,found
+917,glasses,purple glasses spotted at computer lab,accessory,computer lab,found
+918,calculator,found calculator with with scratches in computer lab,electronics,computer lab,lost
+919,charger,lost white charger close to computer lab,electronics,computer lab,lost
+920,backpack,backpack possibly left in library,bag,library,found
+921,backpack,backpack located in parking area area,bag,parking area,lost
+922,laptop,laptop of brown color found in canteen,electronics,canteen,found
+923,laptop,laptop located in canteen area,electronics,canteen,found
+924,water bottle,water bottle located in canteen area,accessory,canteen,lost
+925,power bank,blue colored power bank near bus stop,electronics,bus stop,found
+926,watch,silver watch spotted at playground,accessory,playground,lost
+927,watch,brown colored watch near bus stop,accessory,bus stop,lost
+928,charger,yellow colored charger near computer lab,electronics,computer lab,lost
+929,keys,keys of silver color found in bus stop,accessory,bus stop,found
+930,backpack,white backpack spotted at parking area,bag,parking area,found
+931,charger,yellow leather charger in good condition near playground,electronics,playground,found
+932,calculator,lost red calculator close to computer lab,electronics,computer lab,found
+933,laptop,laptop possibly left in classroom,electronics,classroom,lost
+934,power bank,lost blue power bank close to bus stop,electronics,bus stop,lost
+935,umbrella,green colored umbrella near computer lab,accessory,computer lab,lost
+936,umbrella,umbrella possibly left in computer lab,accessory,computer lab,lost
+937,tablet,tablet of purple color found in playground,electronics,playground,found
+938,water bottle,blue leather water bottle with stickers near computer lab,accessory,computer lab,lost
+939,pen drive,lost white pen drive close to bus stop,electronics,bus stop,lost
+940,laptop,laptop located in computer lab area,electronics,computer lab,found
+941,handbag,lost grey handbag close to cafeteria,bag,cafeteria,lost
+942,umbrella,black rubber umbrella with two pockets near classroom,accessory,classroom,lost
+943,headphones,headphones possibly left in parking area,electronics,parking area,found
+944,pen drive,pen drive possibly left in auditorium,electronics,auditorium,found
+945,keys,green metal keys seen around auditorium,accessory,auditorium,lost
+946,power bank,lost yellow power bank close to classroom,electronics,classroom,found
+947,calculator,calculator located in cafeteria area,electronics,cafeteria,found
+948,backpack,green backpack spotted at parking area,bag,parking area,lost
+949,backpack,found backpack with with zipper in bus stop,bag,bus stop,lost
+950,charger,charger of black color found in computer lab,electronics,computer lab,lost
+951,power bank,metal power bank with name written around corridor,electronics,corridor,lost
+952,id card,lost yellow id card close to computer lab,document,computer lab,found
+953,handbag,found handbag with with zipper in auditorium,bag,auditorium,lost
+954,textbook,textbook of grey color found in parking area,book,parking area,found
+955,glasses,glasses of green color found in corridor,accessory,corridor,found
+956,power bank,black fabric power bank with stickers near canteen,electronics,canteen,found
+957,wallet,white fabric wallet seen around cafeteria,wallet,cafeteria,found
+958,earbuds,lost yellow earbuds close to computer lab,electronics,computer lab,lost
+959,calculator,plastic calculator in good condition around classroom,electronics,classroom,found
+960,tablet,tablet possibly left in parking area,electronics,parking area,found
+961,headphones,blue colored headphones near library,electronics,library,lost
+962,id card,white id card spotted at computer lab,document,computer lab,lost
+963,pen drive,pen drive located in bus stop area,electronics,bus stop,lost
+964,charger,charger located in classroom area,electronics,classroom,lost
+965,handbag,white handbag spotted at classroom,bag,classroom,found
+966,notebook,fabric notebook with stickers around canteen,stationery,canteen,found
+967,power bank,lost brown power bank close to library,electronics,library,lost
+968,umbrella,found umbrella with with logo in auditorium,accessory,auditorium,found
+969,glasses,glasses possibly left in cafeteria,accessory,cafeteria,found
+970,headphones,headphones located in auditorium area,electronics,auditorium,lost
+971,power bank,purple leather power bank in good condition near bus stop,electronics,bus stop,found
+972,glasses,brown colored glasses near canteen,accessory,canteen,found
+973,glasses,fabric glasses in good condition around classroom,accessory,classroom,lost
+974,keys,grey colored keys near canteen,accessory,canteen,found
+975,textbook,lost grey textbook close to parking area,book,parking area,found
+976,handbag,brown handbag spotted at playground,bag,playground,found
+977,charger,metal charger with logo around canteen,electronics,canteen,lost
+978,earbuds,earbuds of white color found in classroom,electronics,classroom,lost
+979,tablet,green colored tablet near corridor,electronics,corridor,lost
+980,id card,red id card spotted at auditorium,document,auditorium,lost
+981,headphones,found headphones with with name written in cafeteria,electronics,cafeteria,lost
+982,charger,purple colored charger near computer lab,electronics,computer lab,lost
+983,power bank,grey metal power bank seen around corridor,electronics,corridor,lost
+984,notebook,grey colored notebook near bus stop,stationery,bus stop,found
+985,notebook,rubber notebook in good condition around auditorium,stationery,auditorium,lost
+986,wallet,silver leather wallet with zipper near auditorium,wallet,auditorium,lost
+987,watch,purple fabric watch with two pockets near auditorium,accessory,auditorium,found
+988,handbag,yellow fabric handbag with scratches near playground,bag,playground,lost
+989,keys,keys possibly left in playground,accessory,playground,lost
+990,pen drive,silver rubber pen drive seen around playground,electronics,playground,lost
+991,earbuds,found earbuds with with name written in cafeteria,electronics,cafeteria,lost
+992,glasses,glasses of black color found in auditorium,accessory,auditorium,lost
+993,id card,purple rubber id card seen around classroom,document,classroom,lost
+994,earbuds,earbuds of red color found in corridor,electronics,corridor,found
+995,id card,found id card with with two pockets in corridor,document,corridor,lost
+996,glasses,silver glasses spotted at computer lab,accessory,computer lab,lost
+997,headphones,found headphones with slightly damaged in bus stop,electronics,bus stop,found
+998,tablet,tablet possibly left in canteen,electronics,canteen,found
+999,pen drive,pen drive possibly left in classroom,electronics,classroom,found
+1000,textbook,found textbook with with zipper in computer lab,book,computer lab,found
+1001,charger,silver rubber charger with stickers near classroom,electronics,classroom,lost
+1002,pen drive,blue colored pen drive near computer lab,electronics,computer lab,found
+1003,phone,grey metal phone with logo near computer lab,phone,computer lab,found
+1004,textbook,found textbook with in good condition in cafeteria,book,cafeteria,lost
+1005,phone,black metal phone seen around classroom,phone,classroom,found
+1006,keys,fabric keys with stickers around cafeteria,accessory,cafeteria,lost
+1007,umbrella,plastic umbrella slightly damaged around corridor,accessory,corridor,lost
+1008,backpack,brown rubber backpack seen around canteen,bag,canteen,found
+1009,laptop,found laptop with with stickers in corridor,electronics,corridor,found
+1010,id card,lost grey id card close to classroom,document,classroom,found
+1011,charger,black rubber charger with scratches near parking area,electronics,parking area,lost
+1012,laptop,laptop possibly left in corridor,electronics,corridor,lost
+1013,keys,found keys with slightly damaged in computer lab,accessory,computer lab,found
+1014,phone,lost brown phone close to classroom,phone,classroom,lost
+1015,wallet,red colored wallet near auditorium,wallet,auditorium,found
+1016,phone,phone located in computer lab area,phone,computer lab,found
+1017,charger,lost purple charger close to computer lab,electronics,computer lab,lost
+1018,watch,found watch with in good condition in corridor,accessory,corridor,lost
+1019,wallet,wallet of blue color found in classroom,wallet,classroom,lost
+1020,water bottle,lost blue water bottle close to computer lab,accessory,computer lab,found
+1021,textbook,textbook possibly left in auditorium,book,auditorium,found
+1022,glasses,silver plastic glasses seen around library,accessory,library,found
+1023,water bottle,water bottle located in library area,accessory,library,lost
+1024,backpack,blue leather backpack with two pockets near parking area,bag,parking area,lost
+1025,tablet,rubber tablet with scratches around classroom,electronics,classroom,lost
+1026,textbook,textbook located in auditorium area,book,auditorium,lost
+1027,umbrella,umbrella possibly left in bus stop,accessory,bus stop,found
+1028,backpack,backpack located in bus stop area,bag,bus stop,found
+1029,phone,phone possibly left in cafeteria,phone,cafeteria,found
+1030,tablet,rubber tablet with stickers around classroom,electronics,classroom,lost
+1031,backpack,backpack possibly left in playground,bag,playground,lost
+1032,notebook,found notebook with slightly damaged in bus stop,stationery,bus stop,lost
+1033,handbag,found handbag with with scratches in canteen,bag,canteen,found
+1034,earbuds,rubber earbuds with name written around bus stop,electronics,bus stop,found
+1035,umbrella,purple leather umbrella seen around playground,accessory,playground,found
+1036,textbook,lost green textbook close to bus stop,book,bus stop,found
+1037,keys,blue metal keys with zipper near auditorium,accessory,auditorium,lost
+1038,calculator,calculator possibly left in corridor,electronics,corridor,found
+1039,pen drive,silver plastic pen drive seen around playground,electronics,playground,found
+1040,textbook,rubber textbook with zipper around cafeteria,book,cafeteria,lost
+1041,power bank,silver rubber power bank seen around corridor,electronics,corridor,found
+1042,handbag,handbag located in bus stop area,bag,bus stop,lost
+1043,textbook,green colored textbook near computer lab,book,computer lab,lost
+1044,water bottle,black leather water bottle seen around library,accessory,library,found
+1045,umbrella,found umbrella with with logo in computer lab,accessory,computer lab,lost
+1046,tablet,red plastic tablet seen around library,electronics,library,lost
+1047,handbag,rubber handbag with two pockets around playground,bag,playground,found
+1048,backpack,black metal backpack seen around playground,bag,playground,found
+1049,wallet,found wallet with with zipper in bus stop,wallet,bus stop,found
+1050,handbag,handbag of red color found in bus stop,bag,bus stop,lost
+1051,backpack,backpack of black color found in library,bag,library,found
+1052,charger,metal charger with two pockets around corridor,electronics,corridor,found
+1053,phone,blue metal phone seen around library,phone,library,lost
+1054,umbrella,lost grey umbrella close to auditorium,accessory,auditorium,found
+1055,keys,lost silver keys close to bus stop,accessory,bus stop,found
+1056,umbrella,grey rubber umbrella seen around cafeteria,accessory,cafeteria,found
+1057,water bottle,lost grey water bottle close to cafeteria,accessory,cafeteria,lost
+1058,charger,leather charger slightly damaged around auditorium,electronics,auditorium,found
+1059,earbuds,black colored earbuds near bus stop,electronics,bus stop,lost
+1060,phone,phone of white color found in bus stop,phone,bus stop,lost
+1061,notebook,notebook of black color found in corridor,stationery,corridor,found
+1062,glasses,black colored glasses near playground,accessory,playground,lost
+1063,laptop,rubber laptop with two pockets around parking area,electronics,parking area,lost
+1064,tablet,tablet possibly left in parking area,electronics,parking area,found
+1065,keys,green rubber keys seen around computer lab,accessory,computer lab,found
+1066,keys,keys located in auditorium area,accessory,auditorium,lost
+1067,backpack,purple backpack spotted at playground,bag,playground,lost
+1068,power bank,yellow power bank spotted at canteen,electronics,canteen,found
+1069,notebook,grey colored notebook near auditorium,stationery,auditorium,lost
+1070,handbag,leather handbag with logo around corridor,bag,corridor,lost
+1071,glasses,rubber glasses slightly damaged around classroom,accessory,classroom,lost
+1072,keys,keys of white color found in parking area,accessory,parking area,found
+1073,keys,found keys with in good condition in playground,accessory,playground,found
+1074,keys,keys located in cafeteria area,accessory,cafeteria,found
+1075,handbag,found handbag with with stickers in corridor,bag,corridor,found
+1076,umbrella,purple colored umbrella near auditorium,accessory,auditorium,found
+1077,textbook,red textbook spotted at corridor,book,corridor,lost
+1078,pen drive,found pen drive with with stickers in cafeteria,electronics,cafeteria,found
+1079,glasses,yellow glasses spotted at auditorium,accessory,auditorium,found
+1080,headphones,rubber headphones with two pockets around classroom,electronics,classroom,found
+1081,umbrella,leather umbrella in good condition around canteen,accessory,canteen,lost
+1082,power bank,power bank possibly left in library,electronics,library,found
+1083,tablet,found tablet with with scratches in auditorium,electronics,auditorium,lost
+1084,wallet,leather wallet with logo around cafeteria,wallet,cafeteria,found
+1085,watch,found watch with with two pockets in auditorium,accessory,auditorium,found
+1086,power bank,lost green power bank close to library,electronics,library,lost
+1087,wallet,found wallet with with scratches in classroom,wallet,classroom,found
+1088,umbrella,umbrella possibly left in auditorium,accessory,auditorium,found
+1089,earbuds,green metal earbuds in good condition near canteen,electronics,canteen,lost
+1090,glasses,purple glasses spotted at cafeteria,accessory,cafeteria,lost
+1091,laptop,white rubber laptop with name written near classroom,electronics,classroom,lost
+1092,headphones,headphones possibly left in cafeteria,electronics,cafeteria,found
+1093,earbuds,red earbuds spotted at bus stop,electronics,bus stop,found
+1094,keys,keys of silver color found in library,accessory,library,lost
+1095,power bank,brown leather power bank slightly damaged near cafeteria,electronics,cafeteria,lost
+1096,power bank,lost red power bank close to bus stop,electronics,bus stop,lost
+1097,calculator,black plastic calculator seen around library,electronics,library,lost
+1098,glasses,black glasses spotted at computer lab,accessory,computer lab,lost
+1099,tablet,tablet located in canteen area,electronics,canteen,found
+1100,glasses,grey rubber glasses seen around playground,accessory,playground,lost
+1101,power bank,found power bank with in good condition in classroom,electronics,classroom,lost
+1102,calculator,yellow calculator spotted at library,electronics,library,found
+1103,wallet,wallet possibly left in corridor,wallet,corridor,found
+1104,glasses,glasses located in computer lab area,accessory,computer lab,lost
+1105,tablet,tablet possibly left in corridor,electronics,corridor,lost
+1106,umbrella,yellow rubber umbrella seen around parking area,accessory,parking area,lost
+1107,watch,blue colored watch near corridor,accessory,corridor,found
+1108,textbook,textbook possibly left in parking area,book,parking area,lost
+1109,textbook,textbook located in computer lab area,book,computer lab,found
+1110,power bank,lost green power bank close to library,electronics,library,found
+1111,earbuds,earbuds located in cafeteria area,electronics,cafeteria,found
+1112,umbrella,black plastic umbrella in good condition near library,accessory,library,found
+1113,backpack,lost yellow backpack close to auditorium,bag,auditorium,found
+1114,earbuds,earbuds possibly left in playground,electronics,playground,lost
+1115,watch,fabric watch with logo around auditorium,accessory,auditorium,found
+1116,notebook,notebook of green color found in classroom,stationery,classroom,lost
+1117,headphones,purple headphones spotted at cafeteria,electronics,cafeteria,found
+1118,notebook,notebook possibly left in canteen,stationery,canteen,found
+1119,power bank,plastic power bank in good condition around corridor,electronics,corridor,found
+1120,watch,watch located in computer lab area,accessory,computer lab,found
+1121,handbag,grey handbag spotted at playground,bag,playground,found
+1122,umbrella,leather umbrella slightly damaged around auditorium,accessory,auditorium,lost
+1123,notebook,lost blue notebook close to corridor,stationery,corridor,lost
+1124,notebook,white notebook spotted at corridor,stationery,corridor,found
+1125,textbook,lost purple textbook close to playground,book,playground,lost
+1126,water bottle,water bottle located in cafeteria area,accessory,cafeteria,lost
+1127,id card,id card located in auditorium area,document,auditorium,lost
+1128,glasses,found glasses with in good condition in library,accessory,library,found
+1129,keys,leather keys with scratches around auditorium,accessory,auditorium,lost
+1130,backpack,backpack possibly left in bus stop,bag,bus stop,lost
+1131,charger,charger possibly left in computer lab,electronics,computer lab,lost
+1132,textbook,textbook located in corridor area,book,corridor,found
+1133,glasses,red rubber glasses in good condition near corridor,accessory,corridor,found
+1134,earbuds,green fabric earbuds with two pockets near canteen,electronics,canteen,lost
+1135,pen drive,found pen drive with with zipper in auditorium,electronics,auditorium,found
+1136,watch,found watch with with stickers in auditorium,accessory,auditorium,found
+1137,glasses,silver leather glasses with logo near parking area,accessory,parking area,found
+1138,watch,silver leather watch seen around canteen,accessory,canteen,lost
+1139,wallet,found wallet with with stickers in bus stop,wallet,bus stop,lost
+1140,backpack,grey metal backpack seen around computer lab,bag,computer lab,lost
+1141,phone,yellow phone spotted at classroom,phone,classroom,found
+1142,headphones,red rubber headphones seen around canteen,electronics,canteen,lost
+1143,headphones,headphones of black color found in cafeteria,electronics,cafeteria,found
+1144,id card,white id card spotted at corridor,document,corridor,found
+1145,charger,charger possibly left in parking area,electronics,parking area,found
+1146,water bottle,water bottle of red color found in corridor,accessory,corridor,found
+1147,umbrella,umbrella possibly left in computer lab,accessory,computer lab,found
+1148,earbuds,earbuds located in auditorium area,electronics,auditorium,found
+1149,power bank,black fabric power bank with zipper near playground,electronics,playground,found
+1150,glasses,glasses possibly left in parking area,accessory,parking area,lost
+1151,calculator,found calculator with with stickers in parking area,electronics,parking area,lost
+1152,earbuds,plastic earbuds with stickers around classroom,electronics,classroom,found
+1153,earbuds,found earbuds with with zipper in canteen,electronics,canteen,lost
+1154,textbook,brown colored textbook near bus stop,book,bus stop,found
+1155,wallet,lost brown wallet close to computer lab,wallet,computer lab,lost
+1156,wallet,rubber wallet with two pockets around computer lab,wallet,computer lab,found
+1157,textbook,found textbook with with two pockets in cafeteria,book,cafeteria,found
+1158,charger,found charger with with two pockets in library,electronics,library,found
+1159,tablet,tablet located in canteen area,electronics,canteen,lost
+1160,earbuds,red earbuds spotted at parking area,electronics,parking area,found
+1161,glasses,lost silver glasses close to classroom,accessory,classroom,lost
+1162,glasses,silver glasses spotted at cafeteria,accessory,cafeteria,lost
+1163,tablet,tablet of white color found in computer lab,electronics,computer lab,lost
+1164,earbuds,lost grey earbuds close to cafeteria,electronics,cafeteria,lost
+1165,wallet,purple metal wallet with zipper near parking area,wallet,parking area,found
+1166,glasses,lost black glasses close to playground,accessory,playground,lost
+1167,id card,found id card with with name written in corridor,document,corridor,found
+1168,charger,lost brown charger close to parking area,electronics,parking area,found
+1169,power bank,blue colored power bank near parking area,electronics,parking area,lost
+1170,water bottle,lost black water bottle close to canteen,accessory,canteen,lost
+1171,keys,found keys with with scratches in parking area,accessory,parking area,lost
+1172,water bottle,lost yellow water bottle close to corridor,accessory,corridor,found
+1173,earbuds,grey plastic earbuds with scratches near computer lab,electronics,computer lab,found
+1174,laptop,blue rubber laptop seen around cafeteria,electronics,cafeteria,lost
+1175,watch,watch located in bus stop area,accessory,bus stop,found
+1176,watch,watch of white color found in classroom,accessory,classroom,found
+1177,keys,silver colored keys near corridor,accessory,corridor,lost
+1178,id card,id card possibly left in cafeteria,document,cafeteria,lost
+1179,calculator,yellow calculator spotted at canteen,electronics,canteen,found
+1180,laptop,black laptop spotted at playground,electronics,playground,found
+1181,glasses,lost green glasses close to corridor,accessory,corridor,found
+1182,handbag,grey handbag spotted at classroom,bag,classroom,lost
+1183,watch,watch possibly left in cafeteria,accessory,cafeteria,lost
+1184,calculator,brown leather calculator seen around computer lab,electronics,computer lab,lost
+1185,laptop,laptop of purple color found in bus stop,electronics,bus stop,lost
+1186,wallet,blue fabric wallet seen around computer lab,wallet,computer lab,lost
+1187,calculator,calculator possibly left in classroom,electronics,classroom,lost
+1188,pen drive,pen drive located in library area,electronics,library,lost
+1189,water bottle,brown colored water bottle near computer lab,accessory,computer lab,lost
+1190,keys,found keys with with logo in bus stop,accessory,bus stop,lost
+1191,pen drive,pen drive possibly left in classroom,electronics,classroom,lost
+1192,tablet,yellow colored tablet near computer lab,electronics,computer lab,found
+1193,earbuds,earbuds located in classroom area,electronics,classroom,lost
+1194,phone,black rubber phone in good condition near playground,phone,playground,lost
+1195,tablet,lost purple tablet close to bus stop,electronics,bus stop,lost
+1196,calculator,calculator possibly left in classroom,electronics,classroom,lost
+1197,textbook,purple leather textbook with stickers near playground,book,playground,lost
+1198,glasses,lost red glasses close to bus stop,accessory,bus stop,lost
+1199,earbuds,earbuds possibly left in computer lab,electronics,computer lab,lost
+1200,pen drive,brown metal pen drive seen around playground,electronics,playground,found
+1201,pen drive,fabric pen drive with zipper around classroom,electronics,classroom,lost
+1202,tablet,brown leather tablet seen around parking area,electronics,parking area,lost
+1203,umbrella,purple umbrella spotted at classroom,accessory,classroom,lost
+1204,earbuds,lost yellow earbuds close to auditorium,electronics,auditorium,found
+1205,headphones,yellow fabric headphones with two pockets near playground,electronics,playground,found
+1206,tablet,found tablet with with name written in cafeteria,electronics,cafeteria,lost
+1207,water bottle,plastic water bottle with two pockets around cafeteria,accessory,cafeteria,lost
+1208,power bank,rubber power bank with logo around parking area,electronics,parking area,lost
+1209,id card,id card of white color found in library,document,library,found
+1210,watch,leather watch with two pockets around bus stop,accessory,bus stop,lost
+1211,power bank,power bank possibly left in auditorium,electronics,auditorium,lost
+1212,handbag,black handbag spotted at computer lab,bag,computer lab,lost
+1213,pen drive,red colored pen drive near library,electronics,library,found
+1214,headphones,metal headphones with scratches around classroom,electronics,classroom,lost
+1215,laptop,rubber laptop with zipper around computer lab,electronics,computer lab,lost
+1216,headphones,lost blue headphones close to computer lab,electronics,computer lab,lost
+1217,pen drive,yellow leather pen drive seen around classroom,electronics,classroom,found
+1218,charger,brown leather charger seen around playground,electronics,playground,lost
+1219,water bottle,silver colored water bottle near bus stop,accessory,bus stop,found
+1220,backpack,found backpack with with logo in cafeteria,bag,cafeteria,found
+1221,headphones,found headphones with slightly damaged in playground,electronics,playground,lost
+1222,umbrella,silver colored umbrella near library,accessory,library,found
+1223,earbuds,black metal earbuds in good condition near parking area,electronics,parking area,found
+1224,backpack,white colored backpack near corridor,bag,corridor,lost
+1225,wallet,silver wallet spotted at auditorium,wallet,auditorium,lost
+1226,notebook,found notebook with with stickers in corridor,stationery,corridor,lost
+1227,water bottle,silver fabric water bottle with two pockets near computer lab,accessory,computer lab,found
+1228,water bottle,grey leather water bottle seen around cafeteria,accessory,cafeteria,lost
+1229,glasses,grey colored glasses near library,accessory,library,found
+1230,power bank,blue power bank spotted at parking area,electronics,parking area,lost
+1231,charger,black fabric charger with stickers near playground,electronics,playground,found
+1232,water bottle,plastic water bottle with name written around bus stop,accessory,bus stop,lost
+1233,headphones,plastic headphones in good condition around bus stop,electronics,bus stop,found
+1234,handbag,brown colored handbag near bus stop,bag,bus stop,lost
+1235,umbrella,yellow rubber umbrella seen around auditorium,accessory,auditorium,found
+1236,tablet,rubber tablet with two pockets around corridor,electronics,corridor,found
+1237,umbrella,blue plastic umbrella with two pockets near parking area,accessory,parking area,lost
+1238,textbook,textbook located in computer lab area,book,computer lab,found
+1239,keys,silver fabric keys seen around corridor,accessory,corridor,found
+1240,charger,lost black charger close to computer lab,electronics,computer lab,lost
+1241,headphones,headphones located in bus stop area,electronics,bus stop,found
+1242,phone,found phone with with stickers in auditorium,phone,auditorium,lost
+1243,laptop,found laptop with with stickers in auditorium,electronics,auditorium,found
+1244,calculator,rubber calculator with name written around library,electronics,library,found
+1245,umbrella,umbrella possibly left in playground,accessory,playground,found
+1246,umbrella,umbrella of red color found in playground,accessory,playground,lost
+1247,tablet,metal tablet with scratches around corridor,electronics,corridor,found
+1248,power bank,found power bank with with name written in corridor,electronics,corridor,lost
+1249,tablet,red tablet spotted at cafeteria,electronics,cafeteria,found
+1250,headphones,purple plastic headphones seen around library,electronics,library,found
+1251,tablet,lost blue tablet close to playground,electronics,playground,found
+1252,backpack,red backpack spotted at bus stop,bag,bus stop,found
+1253,laptop,laptop possibly left in auditorium,electronics,auditorium,lost
+1254,phone,white colored phone near auditorium,phone,auditorium,lost
+1255,wallet,brown rubber wallet seen around bus stop,wallet,bus stop,found
+1256,power bank,lost silver power bank close to corridor,electronics,corridor,lost
+1257,headphones,green headphones spotted at playground,electronics,playground,lost
+1258,laptop,brown fabric laptop seen around canteen,electronics,canteen,found
+1259,tablet,metal tablet with zipper around computer lab,electronics,computer lab,found
+1260,textbook,black rubber textbook seen around cafeteria,book,cafeteria,found
+1261,backpack,rubber backpack with two pockets around parking area,bag,parking area,lost
+1262,watch,watch located in playground area,accessory,playground,found
+1263,calculator,found calculator with with scratches in parking area,electronics,parking area,lost
+1264,glasses,blue fabric glasses seen around canteen,accessory,canteen,lost
+1265,notebook,plastic notebook in good condition around canteen,stationery,canteen,lost
+1266,water bottle,found water bottle with with stickers in canteen,accessory,canteen,lost
+1267,pen drive,found pen drive with with zipper in canteen,electronics,canteen,lost
+1268,earbuds,earbuds of red color found in parking area,electronics,parking area,lost
+1269,laptop,laptop possibly left in corridor,electronics,corridor,lost
+1270,watch,found watch with with logo in cafeteria,accessory,cafeteria,found
+1271,wallet,green wallet spotted at playground,wallet,playground,found
+1272,power bank,power bank possibly left in parking area,electronics,parking area,found
+1273,keys,silver keys spotted at computer lab,accessory,computer lab,found
+1274,glasses,grey fabric glasses in good condition near parking area,accessory,parking area,lost
+1275,backpack,backpack of black color found in classroom,bag,classroom,found
+1276,power bank,found power bank with with stickers in classroom,electronics,classroom,found
+1277,phone,yellow metal phone seen around library,phone,library,found
+1278,umbrella,yellow leather umbrella with name written near corridor,accessory,corridor,lost
+1279,pen drive,leather pen drive with logo around corridor,electronics,corridor,lost
+1280,charger,charger of silver color found in library,electronics,library,found
+1281,laptop,purple rubber laptop slightly damaged near auditorium,electronics,auditorium,found
+1282,keys,rubber keys with two pockets around cafeteria,accessory,cafeteria,found
+1283,laptop,lost black laptop close to classroom,electronics,classroom,lost
+1284,power bank,power bank of purple color found in playground,electronics,playground,found
+1285,pen drive,pen drive located in parking area area,electronics,parking area,lost
+1286,notebook,notebook located in playground area,stationery,playground,found
+1287,phone,phone possibly left in canteen,phone,canteen,found
+1288,calculator,silver plastic calculator with name written near playground,electronics,playground,found
+1289,headphones,headphones of purple color found in bus stop,electronics,bus stop,lost
+1290,watch,green fabric watch seen around parking area,accessory,parking area,lost
+1291,backpack,grey backpack spotted at corridor,bag,corridor,lost
+1292,keys,lost grey keys close to library,accessory,library,found
+1293,earbuds,white leather earbuds seen around bus stop,electronics,bus stop,found
+1294,id card,grey id card spotted at playground,document,playground,found
+1295,earbuds,silver plastic earbuds seen around bus stop,electronics,bus stop,lost
+1296,water bottle,fabric water bottle with two pockets around corridor,accessory,corridor,found
+1297,handbag,white handbag spotted at canteen,bag,canteen,lost
+1298,wallet,lost blue wallet close to canteen,wallet,canteen,found
+1299,calculator,lost brown calculator close to playground,electronics,playground,found
+1300,handbag,found handbag with with two pockets in library,bag,library,lost
+1301,handbag,purple handbag spotted at canteen,bag,canteen,lost
+1302,id card,green metal id card seen around auditorium,document,auditorium,lost
+1303,wallet,wallet possibly left in computer lab,wallet,computer lab,lost
+1304,tablet,tablet of silver color found in cafeteria,electronics,cafeteria,lost
+1305,notebook,black colored notebook near auditorium,stationery,auditorium,found
+1306,earbuds,lost white earbuds close to classroom,electronics,classroom,found
+1307,laptop,laptop possibly left in library,electronics,library,found
+1308,keys,green colored keys near parking area,accessory,parking area,lost
+1309,earbuds,found earbuds with in good condition in canteen,electronics,canteen,found
+1310,water bottle,water bottle possibly left in corridor,accessory,corridor,found
+1311,headphones,headphones possibly left in parking area,electronics,parking area,found
+1312,calculator,calculator possibly left in playground,electronics,playground,lost
+1313,id card,purple id card spotted at auditorium,document,auditorium,found
+1314,watch,black colored watch near library,accessory,library,lost
+1315,charger,red fabric charger with logo near playground,electronics,playground,found
+1316,umbrella,green leather umbrella seen around auditorium,accessory,auditorium,lost
+1317,tablet,fabric tablet with logo around classroom,electronics,classroom,lost
+1318,charger,charger of black color found in library,electronics,library,found
+1319,handbag,green metal handbag seen around cafeteria,bag,cafeteria,lost
+1320,umbrella,brown leather umbrella seen around corridor,accessory,corridor,found
+1321,phone,lost white phone close to cafeteria,phone,cafeteria,found
+1322,laptop,laptop of purple color found in parking area,electronics,parking area,lost
+1323,id card,blue metal id card seen around parking area,document,parking area,found
+1324,glasses,glasses possibly left in canteen,accessory,canteen,lost
+1325,charger,lost purple charger close to canteen,electronics,canteen,lost
+1326,pen drive,white metal pen drive with zipper near parking area,electronics,parking area,found
+1327,pen drive,lost blue pen drive close to bus stop,electronics,bus stop,lost
+1328,backpack,backpack of grey color found in auditorium,bag,auditorium,lost
+1329,notebook,found notebook with in good condition in bus stop,stationery,bus stop,lost
+1330,phone,phone possibly left in canteen,phone,canteen,found
+1331,notebook,notebook located in corridor area,stationery,corridor,lost
+1332,headphones,white rubber headphones with two pockets near canteen,electronics,canteen,found
+1333,wallet,found wallet with with two pockets in canteen,wallet,canteen,lost
+1334,handbag,handbag possibly left in canteen,bag,canteen,lost
+1335,id card,blue colored id card near library,document,library,lost
+1336,glasses,lost blue glasses close to parking area,accessory,parking area,found
+1337,textbook,red plastic textbook seen around computer lab,book,computer lab,lost
+1338,power bank,power bank located in library area,electronics,library,lost
+1339,notebook,brown rubber notebook seen around classroom,stationery,classroom,found
+1340,notebook,blue notebook spotted at computer lab,stationery,computer lab,lost
+1341,charger,charger possibly left in auditorium,electronics,auditorium,found
+1342,glasses,found glasses with with zipper in computer lab,accessory,computer lab,found
+1343,laptop,green laptop spotted at cafeteria,electronics,cafeteria,found
+1344,backpack,lost yellow backpack close to computer lab,bag,computer lab,lost
+1345,id card,id card possibly left in parking area,document,parking area,found
+1346,watch,found watch with slightly damaged in cafeteria,accessory,cafeteria,lost
+1347,earbuds,brown colored earbuds near auditorium,electronics,auditorium,lost
+1348,phone,phone possibly left in corridor,phone,corridor,found
+1349,calculator,lost black calculator close to library,electronics,library,lost
+1350,keys,leather keys with zipper around corridor,accessory,corridor,found
+1351,wallet,wallet located in library area,wallet,library,found
+1352,pen drive,found pen drive with with name written in auditorium,electronics,auditorium,lost
+1353,laptop,red rubber laptop seen around classroom,electronics,classroom,lost
+1354,phone,phone located in bus stop area,phone,bus stop,found
+1355,keys,lost black keys close to cafeteria,accessory,cafeteria,lost
+1356,headphones,found headphones with with stickers in bus stop,electronics,bus stop,lost
+1357,calculator,green calculator spotted at computer lab,electronics,computer lab,found
+1358,tablet,tablet of white color found in cafeteria,electronics,cafeteria,lost
+1359,laptop,lost brown laptop close to playground,electronics,playground,found
+1360,handbag,handbag of grey color found in library,bag,library,found
+1361,calculator,found calculator with with zipper in classroom,electronics,classroom,lost
+1362,phone,phone of silver color found in computer lab,phone,computer lab,lost
+1363,textbook,yellow colored textbook near computer lab,book,computer lab,lost
+1364,watch,rubber watch with name written around corridor,accessory,corridor,lost
+1365,laptop,laptop of brown color found in parking area,electronics,parking area,found
+1366,umbrella,found umbrella with with two pockets in parking area,accessory,parking area,found
+1367,earbuds,red colored earbuds near bus stop,electronics,bus stop,found
+1368,water bottle,water bottle of white color found in cafeteria,accessory,cafeteria,lost
+1369,umbrella,lost blue umbrella close to library,accessory,library,lost
+1370,laptop,rubber laptop with name written around bus stop,electronics,bus stop,found
+1371,handbag,found handbag with with zipper in classroom,bag,classroom,found
+1372,wallet,found wallet with slightly damaged in computer lab,wallet,computer lab,found
+1373,backpack,found backpack with in good condition in corridor,bag,corridor,lost
+1374,watch,brown watch spotted at corridor,accessory,corridor,lost
+1375,glasses,fabric glasses with zipper around canteen,accessory,canteen,lost
+1376,headphones,headphones of green color found in parking area,electronics,parking area,lost
+1377,headphones,lost grey headphones close to computer lab,electronics,computer lab,lost
+1378,textbook,textbook located in playground area,book,playground,found
+1379,pen drive,pen drive of yellow color found in classroom,electronics,classroom,found
+1380,backpack,backpack possibly left in canteen,bag,canteen,found
+1381,handbag,leather handbag in good condition around bus stop,bag,bus stop,lost
+1382,handbag,brown fabric handbag with scratches near parking area,bag,parking area,lost
+1383,backpack,lost purple backpack close to cafeteria,bag,cafeteria,lost
+1384,handbag,yellow colored handbag near canteen,bag,canteen,lost
+1385,phone,rubber phone in good condition around bus stop,phone,bus stop,lost
+1386,pen drive,found pen drive with with stickers in corridor,electronics,corridor,lost
+1387,notebook,notebook located in canteen area,stationery,canteen,lost
+1388,textbook,found textbook with slightly damaged in canteen,book,canteen,found
+1389,water bottle,white water bottle spotted at auditorium,accessory,auditorium,found
+1390,notebook,green plastic notebook with name written near cafeteria,stationery,cafeteria,lost
+1391,glasses,glasses possibly left in parking area,accessory,parking area,lost
+1392,glasses,glasses of red color found in computer lab,accessory,computer lab,found
+1393,earbuds,lost yellow earbuds close to cafeteria,electronics,cafeteria,found
+1394,phone,grey colored phone near classroom,phone,classroom,found
+1395,umbrella,lost brown umbrella close to library,accessory,library,lost
+1396,textbook,rubber textbook with name written around classroom,book,classroom,lost
+1397,earbuds,red colored earbuds near canteen,electronics,canteen,lost
+1398,headphones,headphones of grey color found in bus stop,electronics,bus stop,found
+1399,power bank,lost black power bank close to parking area,electronics,parking area,found
+1400,headphones,headphones possibly left in playground,electronics,playground,lost
+1401,calculator,fabric calculator with logo around cafeteria,electronics,cafeteria,lost
+1402,backpack,backpack of blue color found in parking area,bag,parking area,lost
+1403,headphones,leather headphones with logo around corridor,electronics,corridor,found
+1404,power bank,lost purple power bank close to classroom,electronics,classroom,lost
+1405,umbrella,umbrella possibly left in cafeteria,accessory,cafeteria,found
+1406,backpack,blue fabric backpack with two pockets near playground,bag,playground,lost
+1407,notebook,white metal notebook with zipper near canteen,stationery,canteen,found
+1408,tablet,tablet of silver color found in cafeteria,electronics,cafeteria,lost
+1409,keys,white leather keys seen around bus stop,accessory,bus stop,found
+1410,keys,leather keys in good condition around cafeteria,accessory,cafeteria,lost
+1411,id card,lost green id card close to playground,document,playground,lost
+1412,textbook,rubber textbook with name written around playground,book,playground,lost
+1413,umbrella,yellow colored umbrella near library,accessory,library,lost
+1414,charger,charger of yellow color found in computer lab,electronics,computer lab,found
+1415,tablet,found tablet with with scratches in classroom,electronics,classroom,found
+1416,calculator,rubber calculator with logo around canteen,electronics,canteen,found
+1417,wallet,wallet of green color found in canteen,wallet,canteen,found
+1418,handbag,purple rubber handbag slightly damaged near classroom,bag,classroom,found
+1419,power bank,power bank located in corridor area,electronics,corridor,lost
+1420,water bottle,plastic water bottle with logo around classroom,accessory,classroom,lost
+1421,tablet,brown colored tablet near cafeteria,electronics,cafeteria,found
+1422,umbrella,umbrella possibly left in cafeteria,accessory,cafeteria,lost
+1423,calculator,grey metal calculator with scratches near library,electronics,library,lost
+1424,water bottle,water bottle possibly left in library,accessory,library,lost
+1425,power bank,power bank possibly left in classroom,electronics,classroom,found
+1426,calculator,silver rubber calculator slightly damaged near canteen,electronics,canteen,lost
+1427,watch,found watch with with logo in canteen,accessory,canteen,lost
+1428,charger,charger possibly left in corridor,electronics,corridor,lost
+1429,power bank,grey plastic power bank seen around library,electronics,library,found
+1430,glasses,glasses possibly left in cafeteria,accessory,cafeteria,found
+1431,laptop,plastic laptop with name written around library,electronics,library,lost
+1432,calculator,found calculator with with logo in classroom,electronics,classroom,found
+1433,wallet,green plastic wallet with zipper near classroom,wallet,classroom,found
+1434,notebook,blue leather notebook seen around cafeteria,stationery,cafeteria,found
+1435,glasses,red glasses spotted at classroom,accessory,classroom,found
+1436,laptop,laptop located in cafeteria area,electronics,cafeteria,found
+1437,earbuds,earbuds located in corridor area,electronics,corridor,lost
+1438,id card,brown colored id card near library,document,library,lost
+1439,calculator,purple plastic calculator with two pockets near parking area,electronics,parking area,lost
+1440,laptop,laptop of grey color found in canteen,electronics,canteen,lost
+1441,water bottle,water bottle located in library area,accessory,library,found
+1442,handbag,handbag of yellow color found in bus stop,bag,bus stop,lost
+1443,handbag,found handbag with with logo in bus stop,bag,bus stop,found
+1444,umbrella,umbrella located in classroom area,accessory,classroom,found
+1445,power bank,white leather power bank with scratches near library,electronics,library,found
+1446,headphones,green colored headphones near cafeteria,electronics,cafeteria,found
+1447,textbook,found textbook with with name written in computer lab,book,computer lab,lost
+1448,notebook,purple colored notebook near bus stop,stationery,bus stop,lost
+1449,tablet,lost blue tablet close to parking area,electronics,parking area,lost
+1450,phone,blue leather phone with two pockets near corridor,phone,corridor,found
+1451,power bank,black power bank spotted at computer lab,electronics,computer lab,lost
+1452,umbrella,black umbrella spotted at corridor,accessory,corridor,found
+1453,id card,red plastic id card in good condition near corridor,document,corridor,found
+1454,earbuds,lost silver earbuds close to library,electronics,library,found
+1455,textbook,black rubber textbook slightly damaged near classroom,book,classroom,lost
+1456,phone,phone possibly left in corridor,phone,corridor,found
+1457,power bank,blue power bank spotted at classroom,electronics,classroom,lost
+1458,glasses,found glasses with in good condition in playground,accessory,playground,lost
+1459,headphones,white headphones spotted at canteen,electronics,canteen,found
+1460,earbuds,earbuds of green color found in parking area,electronics,parking area,lost
+1461,id card,brown fabric id card slightly damaged near classroom,document,classroom,found
+1462,watch,found watch with with two pockets in playground,accessory,playground,lost
+1463,earbuds,found earbuds with with zipper in canteen,electronics,canteen,found
+1464,laptop,laptop of silver color found in canteen,electronics,canteen,lost
+1465,textbook,found textbook with with name written in auditorium,book,auditorium,found
+1466,tablet,yellow metal tablet seen around cafeteria,electronics,cafeteria,found
+1467,tablet,blue leather tablet seen around corridor,electronics,corridor,lost
+1468,charger,charger of black color found in bus stop,electronics,bus stop,found
+1469,keys,yellow keys spotted at playground,accessory,playground,lost
+1470,handbag,white plastic handbag seen around classroom,bag,classroom,found
+1471,notebook,notebook located in classroom area,stationery,classroom,found
+1472,water bottle,blue water bottle spotted at corridor,accessory,corridor,lost
+1473,calculator,green calculator spotted at parking area,electronics,parking area,found
+1474,laptop,red plastic laptop seen around parking area,electronics,parking area,found
+1475,textbook,green colored textbook near corridor,book,corridor,lost
+1476,glasses,found glasses with with stickers in canteen,accessory,canteen,found
+1477,phone,plastic phone with name written around canteen,phone,canteen,lost
+1478,headphones,yellow plastic headphones in good condition near auditorium,electronics,auditorium,lost
+1479,wallet,found wallet with with two pockets in cafeteria,wallet,cafeteria,lost
+1480,phone,grey phone spotted at classroom,phone,classroom,lost
+1481,earbuds,lost white earbuds close to auditorium,electronics,auditorium,lost
+1482,textbook,plastic textbook slightly damaged around parking area,book,parking area,found
+1483,watch,watch of silver color found in canteen,accessory,canteen,found
+1484,tablet,tablet of silver color found in library,electronics,library,found
+1485,notebook,notebook located in library area,stationery,library,found
+1486,umbrella,brown umbrella spotted at parking area,accessory,parking area,found
+1487,id card,id card possibly left in computer lab,document,computer lab,lost
+1488,phone,purple phone spotted at parking area,phone,parking area,lost
+1489,earbuds,purple leather earbuds slightly damaged near cafeteria,electronics,cafeteria,found
+1490,laptop,purple laptop spotted at bus stop,electronics,bus stop,found
+1491,phone,white phone spotted at canteen,phone,canteen,found
+1492,pen drive,white fabric pen drive with scratches near parking area,electronics,parking area,found
+1493,tablet,found tablet with with logo in classroom,electronics,classroom,found
+1494,watch,watch possibly left in computer lab,accessory,computer lab,lost
+1495,glasses,white colored glasses near cafeteria,accessory,cafeteria,found
+1496,pen drive,lost grey pen drive close to auditorium,electronics,auditorium,found
+1497,earbuds,white earbuds spotted at corridor,electronics,corridor,found
+1498,water bottle,water bottle located in bus stop area,accessory,bus stop,found
+1499,power bank,blue fabric power bank with scratches near parking area,electronics,parking area,lost
+1500,pen drive,found pen drive with in good condition in computer lab,electronics,computer lab,lost
+1501,id card,found id card with in good condition in parking area,document,parking area,found
+1502,handbag,brown handbag spotted at canteen,bag,canteen,lost
+1503,handbag,handbag of purple color found in cafeteria,bag,cafeteria,found
+1504,handbag,brown colored handbag near bus stop,bag,bus stop,found
+1505,notebook,yellow metal notebook seen around corridor,stationery,corridor,lost
+1506,textbook,textbook possibly left in bus stop,book,bus stop,found
+1507,notebook,found notebook with with stickers in bus stop,stationery,bus stop,lost
+1508,keys,lost silver keys close to cafeteria,accessory,cafeteria,found
+1509,laptop,red metal laptop seen around corridor,electronics,corridor,found
+1510,textbook,textbook possibly left in canteen,book,canteen,lost
+1511,notebook,notebook of silver color found in classroom,stationery,classroom,lost
+1512,handbag,silver plastic handbag seen around playground,bag,playground,lost
+1513,pen drive,brown pen drive spotted at parking area,electronics,parking area,lost
+1514,backpack,lost white backpack close to corridor,bag,corridor,lost
+1515,wallet,wallet located in bus stop area,wallet,bus stop,found
+1516,water bottle,green plastic water bottle seen around auditorium,accessory,auditorium,found
+1517,textbook,textbook of white color found in bus stop,book,bus stop,found
+1518,phone,phone of white color found in computer lab,phone,computer lab,lost
+1519,textbook,textbook of grey color found in playground,book,playground,found
+1520,handbag,handbag possibly left in classroom,bag,classroom,found
+1521,power bank,power bank located in classroom area,electronics,classroom,found
+1522,earbuds,found earbuds with with logo in corridor,electronics,corridor,found
+1523,textbook,silver textbook spotted at playground,book,playground,found
+1524,textbook,textbook located in computer lab area,book,computer lab,lost
+1525,charger,silver rubber charger seen around corridor,electronics,corridor,lost
+1526,water bottle,lost silver water bottle close to parking area,accessory,parking area,found
+1527,pen drive,pen drive possibly left in library,electronics,library,found
+1528,earbuds,lost yellow earbuds close to parking area,electronics,parking area,lost
+1529,headphones,headphones of green color found in auditorium,electronics,auditorium,lost
+1530,wallet,wallet possibly left in bus stop,wallet,bus stop,lost
+1531,power bank,power bank located in corridor area,electronics,corridor,lost
+1532,headphones,found headphones with with scratches in computer lab,electronics,computer lab,lost
+1533,handbag,green leather handbag seen around canteen,bag,canteen,lost
+1534,backpack,backpack possibly left in cafeteria,bag,cafeteria,found
+1535,pen drive,brown plastic pen drive slightly damaged near cafeteria,electronics,cafeteria,lost
+1536,wallet,metal wallet with two pockets around classroom,wallet,classroom,lost
+1537,handbag,green fabric handbag seen around canteen,bag,canteen,found
+1538,headphones,grey fabric headphones seen around cafeteria,electronics,cafeteria,found
+1539,power bank,lost purple power bank close to classroom,electronics,classroom,found
+1540,phone,green colored phone near cafeteria,phone,cafeteria,lost
+1541,phone,lost white phone close to classroom,phone,classroom,found
+1542,id card,yellow plastic id card with two pockets near classroom,document,classroom,lost
+1543,power bank,power bank located in corridor area,electronics,corridor,found
+1544,watch,watch of white color found in parking area,accessory,parking area,found
+1545,earbuds,silver colored earbuds near cafeteria,electronics,cafeteria,found
+1546,water bottle,silver water bottle spotted at auditorium,accessory,auditorium,found
+1547,power bank,lost brown power bank close to cafeteria,electronics,cafeteria,lost
+1548,headphones,headphones located in parking area area,electronics,parking area,lost
+1549,backpack,fabric backpack with name written around bus stop,bag,bus stop,lost
+1550,earbuds,black metal earbuds seen around canteen,electronics,canteen,lost
+1551,umbrella,red colored umbrella near playground,accessory,playground,found
+1552,notebook,blue notebook spotted at library,stationery,library,found
+1553,water bottle,lost green water bottle close to computer lab,accessory,computer lab,lost
+1554,charger,charger located in bus stop area,electronics,bus stop,lost
+1555,earbuds,lost silver earbuds close to playground,electronics,playground,found
+1556,calculator,metal calculator with logo around canteen,electronics,canteen,found
+1557,power bank,lost green power bank close to library,electronics,library,found
+1558,wallet,found wallet with in good condition in corridor,wallet,corridor,lost
+1559,keys,black fabric keys seen around parking area,accessory,parking area,lost
+1560,watch,silver fabric watch seen around cafeteria,accessory,cafeteria,lost
+1561,headphones,green colored headphones near library,electronics,library,found
+1562,id card,silver colored id card near bus stop,document,bus stop,lost
+1563,textbook,textbook of yellow color found in classroom,book,classroom,lost
+1564,id card,grey colored id card near playground,document,playground,found
+1565,power bank,yellow plastic power bank with logo near cafeteria,electronics,cafeteria,lost
+1566,umbrella,umbrella located in classroom area,accessory,classroom,lost
+1567,power bank,green fabric power bank with name written near auditorium,electronics,auditorium,lost
+1568,water bottle,water bottle possibly left in corridor,accessory,corridor,lost
+1569,calculator,calculator located in playground area,electronics,playground,found
+1570,watch,watch of purple color found in bus stop,accessory,bus stop,lost
+1571,umbrella,fabric umbrella with name written around cafeteria,accessory,cafeteria,lost
+1572,backpack,found backpack with slightly damaged in library,bag,library,found
+1573,laptop,lost blue laptop close to bus stop,electronics,bus stop,lost
+1574,id card,purple colored id card near classroom,document,classroom,found
+1575,earbuds,found earbuds with with logo in parking area,electronics,parking area,lost
+1576,notebook,notebook of black color found in corridor,stationery,corridor,lost
+1577,backpack,metal backpack with stickers around parking area,bag,parking area,lost
+1578,charger,rubber charger with name written around cafeteria,electronics,cafeteria,lost
+1579,pen drive,yellow colored pen drive near classroom,electronics,classroom,lost
+1580,textbook,textbook possibly left in computer lab,book,computer lab,found
+1581,textbook,lost black textbook close to bus stop,book,bus stop,found
+1582,power bank,found power bank with slightly damaged in playground,electronics,playground,found
+1583,laptop,silver colored laptop near bus stop,electronics,bus stop,found
+1584,keys,white plastic keys seen around bus stop,accessory,bus stop,found
+1585,charger,purple metal charger seen around bus stop,electronics,bus stop,lost
+1586,charger,charger possibly left in cafeteria,electronics,cafeteria,lost
+1587,keys,fabric keys with name written around corridor,accessory,corridor,found
+1588,headphones,silver plastic headphones seen around canteen,electronics,canteen,lost
+1589,id card,white colored id card near computer lab,document,computer lab,found
+1590,phone,phone located in cafeteria area,phone,cafeteria,lost
+1591,backpack,fabric backpack slightly damaged around corridor,bag,corridor,lost
+1592,handbag,fabric handbag with name written around canteen,bag,canteen,lost
+1593,power bank,blue leather power bank seen around auditorium,electronics,auditorium,found
+1594,pen drive,blue rubber pen drive seen around classroom,electronics,classroom,found
+1595,glasses,glasses possibly left in playground,accessory,playground,lost
+1596,notebook,plastic notebook with two pockets around library,stationery,library,found
+1597,water bottle,water bottle of grey color found in classroom,accessory,classroom,found
+1598,headphones,lost brown headphones close to auditorium,electronics,auditorium,found
+1599,wallet,brown rubber wallet slightly damaged near auditorium,wallet,auditorium,found
+1600,notebook,white plastic notebook seen around library,stationery,library,found
+1601,charger,found charger with with scratches in canteen,electronics,canteen,lost
+1602,charger,plastic charger with zipper around cafeteria,electronics,cafeteria,lost
+1603,glasses,white glasses spotted at playground,accessory,playground,found
+1604,id card,id card possibly left in library,document,library,lost
+1605,power bank,found power bank with with name written in classroom,electronics,classroom,found
+1606,charger,charger of silver color found in bus stop,electronics,bus stop,lost
+1607,power bank,power bank of brown color found in bus stop,electronics,bus stop,lost
+1608,handbag,grey handbag spotted at playground,bag,playground,lost
+1609,umbrella,silver leather umbrella seen around bus stop,accessory,bus stop,lost
+1610,headphones,black plastic headphones seen around canteen,electronics,canteen,lost
+1611,tablet,black colored tablet near auditorium,electronics,auditorium,found
+1612,headphones,found headphones with in good condition in auditorium,electronics,auditorium,found
+1613,laptop,purple colored laptop near playground,electronics,playground,found
+1614,textbook,textbook of green color found in library,book,library,lost
+1615,id card,leather id card with zipper around computer lab,document,computer lab,found
+1616,backpack,lost white backpack close to cafeteria,bag,cafeteria,lost
+1617,laptop,found laptop with with two pockets in computer lab,electronics,computer lab,found
+1618,glasses,glasses possibly left in classroom,accessory,classroom,lost
+1619,headphones,headphones of red color found in auditorium,electronics,auditorium,lost
+1620,wallet,black colored wallet near auditorium,wallet,auditorium,lost
+1621,watch,grey plastic watch seen around library,accessory,library,found
+1622,glasses,glasses possibly left in playground,accessory,playground,found
+1623,laptop,found laptop with with logo in corridor,electronics,corridor,lost
+1624,power bank,blue colored power bank near computer lab,electronics,computer lab,found
+1625,handbag,handbag of white color found in parking area,bag,parking area,lost
+1626,power bank,black fabric power bank in good condition near bus stop,electronics,bus stop,lost
+1627,laptop,laptop of red color found in library,electronics,library,lost
+1628,handbag,brown colored handbag near canteen,bag,canteen,lost
+1629,headphones,lost brown headphones close to library,electronics,library,found
+1630,tablet,tablet possibly left in auditorium,electronics,auditorium,found
+1631,handbag,handbag possibly left in classroom,bag,classroom,lost
+1632,umbrella,lost brown umbrella close to classroom,accessory,classroom,lost
+1633,headphones,lost red headphones close to computer lab,electronics,computer lab,found
+1634,power bank,silver plastic power bank seen around corridor,electronics,corridor,found
+1635,watch,yellow metal watch in good condition near computer lab,accessory,computer lab,lost
+1636,keys,black keys spotted at bus stop,accessory,bus stop,found
+1637,umbrella,white leather umbrella seen around auditorium,accessory,auditorium,lost
+1638,tablet,found tablet with in good condition in computer lab,electronics,computer lab,lost
+1639,id card,id card located in classroom area,document,classroom,found
+1640,tablet,tablet possibly left in library,electronics,library,lost
+1641,water bottle,water bottle of black color found in classroom,accessory,classroom,lost
+1642,textbook,brown colored textbook near parking area,book,parking area,lost
+1643,watch,watch possibly left in playground,accessory,playground,lost
+1644,charger,green fabric charger seen around playground,electronics,playground,lost
+1645,charger,purple charger spotted at corridor,electronics,corridor,found
+1646,tablet,black plastic tablet seen around library,electronics,library,lost
+1647,textbook,textbook possibly left in cafeteria,book,cafeteria,found
+1648,headphones,purple colored headphones near classroom,electronics,classroom,lost
+1649,glasses,glasses located in classroom area,accessory,classroom,found
+1650,umbrella,umbrella possibly left in auditorium,accessory,auditorium,lost
+1651,umbrella,found umbrella with in good condition in canteen,accessory,canteen,found
+1652,watch,found watch with with name written in computer lab,accessory,computer lab,lost
+1653,backpack,black metal backpack seen around computer lab,bag,computer lab,lost
+1654,wallet,wallet of grey color found in parking area,wallet,parking area,lost
+1655,id card,found id card with with scratches in bus stop,document,bus stop,lost
+1656,tablet,leather tablet with name written around classroom,electronics,classroom,lost
+1657,handbag,green colored handbag near classroom,bag,classroom,found
+1658,calculator,calculator of silver color found in bus stop,electronics,bus stop,lost
+1659,headphones,headphones of brown color found in canteen,electronics,canteen,lost
+1660,watch,found watch with with name written in parking area,accessory,parking area,found
+1661,keys,white fabric keys seen around bus stop,accessory,bus stop,lost
+1662,keys,found keys with with name written in canteen,accessory,canteen,found
+1663,calculator,purple colored calculator near parking area,electronics,parking area,lost
+1664,umbrella,green rubber umbrella seen around canteen,accessory,canteen,found
+1665,charger,blue rubber charger with zipper near library,electronics,library,lost
+1666,calculator,silver calculator spotted at parking area,electronics,parking area,lost
+1667,water bottle,water bottle of grey color found in bus stop,accessory,bus stop,found
+1668,notebook,grey colored notebook near bus stop,stationery,bus stop,found
+1669,keys,plastic keys slightly damaged around canteen,accessory,canteen,lost
+1670,watch,blue colored watch near library,accessory,library,found
+1671,pen drive,blue leather pen drive seen around bus stop,electronics,bus stop,found
+1672,earbuds,earbuds possibly left in library,electronics,library,lost
+1673,umbrella,lost brown umbrella close to parking area,accessory,parking area,found
+1674,notebook,blue notebook spotted at library,stationery,library,lost
+1675,backpack,backpack of purple color found in bus stop,bag,bus stop,lost
+1676,watch,yellow fabric watch seen around library,accessory,library,lost
+1677,earbuds,yellow plastic earbuds seen around auditorium,electronics,auditorium,lost
+1678,backpack,backpack located in library area,bag,library,lost
+1679,wallet,wallet located in library area,wallet,library,lost
+1680,keys,purple colored keys near corridor,accessory,corridor,found
+1681,notebook,lost silver notebook close to parking area,stationery,parking area,lost
+1682,calculator,found calculator with with zipper in bus stop,electronics,bus stop,lost
+1683,backpack,lost black backpack close to playground,bag,playground,lost
+1684,earbuds,earbuds located in cafeteria area,electronics,cafeteria,found
+1685,tablet,lost white tablet close to classroom,electronics,classroom,lost
+1686,earbuds,grey colored earbuds near computer lab,electronics,computer lab,found
+1687,id card,white metal id card with logo near corridor,document,corridor,lost
+1688,earbuds,grey colored earbuds near playground,electronics,playground,lost
+1689,earbuds,lost brown earbuds close to parking area,electronics,parking area,found
+1690,handbag,grey colored handbag near bus stop,bag,bus stop,lost
+1691,power bank,power bank possibly left in library,electronics,library,found
+1692,laptop,found laptop with with scratches in parking area,electronics,parking area,lost
+1693,textbook,textbook located in classroom area,book,classroom,lost
+1694,pen drive,purple colored pen drive near corridor,electronics,corridor,found
+1695,calculator,blue colored calculator near corridor,electronics,corridor,lost
+1696,water bottle,rubber water bottle in good condition around canteen,accessory,canteen,lost
+1697,calculator,brown calculator spotted at canteen,electronics,canteen,lost
+1698,handbag,handbag possibly left in computer lab,bag,computer lab,found
+1699,headphones,lost purple headphones close to canteen,electronics,canteen,lost
+1700,charger,black colored charger near bus stop,electronics,bus stop,found
+1701,power bank,blue colored power bank near classroom,electronics,classroom,found
+1702,tablet,blue leather tablet seen around classroom,electronics,classroom,found
+1703,keys,silver plastic keys with logo near corridor,accessory,corridor,found
+1704,phone,leather phone with logo around cafeteria,phone,cafeteria,found
+1705,water bottle,found water bottle with with logo in cafeteria,accessory,cafeteria,found
+1706,keys,plastic keys with logo around auditorium,accessory,auditorium,found
+1707,notebook,red rubber notebook with stickers near auditorium,stationery,auditorium,lost
+1708,laptop,lost green laptop close to playground,electronics,playground,found
+1709,charger,charger possibly left in library,electronics,library,lost
+1710,headphones,silver colored headphones near bus stop,electronics,bus stop,found
+1711,phone,found phone with with zipper in computer lab,phone,computer lab,lost
+1712,water bottle,leather water bottle with scratches around library,accessory,library,found
+1713,umbrella,purple umbrella spotted at library,accessory,library,found
+1714,wallet,wallet of brown color found in parking area,wallet,parking area,found
+1715,backpack,brown rubber backpack with two pockets near corridor,bag,corridor,lost
+1716,umbrella,umbrella possibly left in canteen,accessory,canteen,found
+1717,umbrella,umbrella located in classroom area,accessory,classroom,found
+1718,handbag,green handbag spotted at auditorium,bag,auditorium,lost
+1719,headphones,yellow headphones spotted at auditorium,electronics,auditorium,lost
+1720,phone,silver phone spotted at parking area,phone,parking area,lost
+1721,umbrella,umbrella located in cafeteria area,accessory,cafeteria,lost
+1722,handbag,red metal handbag with scratches near auditorium,bag,auditorium,found
+1723,wallet,red fabric wallet seen around parking area,wallet,parking area,lost
+1724,earbuds,green earbuds spotted at playground,electronics,playground,found
+1725,glasses,blue colored glasses near cafeteria,accessory,cafeteria,lost
+1726,headphones,green leather headphones seen around canteen,electronics,canteen,lost
+1727,glasses,found glasses with with stickers in computer lab,accessory,computer lab,lost
+1728,headphones,blue rubber headphones slightly damaged near corridor,electronics,corridor,lost
+1729,glasses,glasses located in corridor area,accessory,corridor,found
+1730,power bank,found power bank with with name written in playground,electronics,playground,found
+1731,umbrella,lost brown umbrella close to auditorium,accessory,auditorium,found
+1732,water bottle,white leather water bottle with zipper near parking area,accessory,parking area,found
+1733,charger,yellow colored charger near bus stop,electronics,bus stop,lost
+1734,glasses,silver metal glasses seen around auditorium,accessory,auditorium,lost
+1735,earbuds,green earbuds spotted at auditorium,electronics,auditorium,lost
+1736,notebook,black plastic notebook seen around library,stationery,library,lost
+1737,umbrella,green umbrella spotted at bus stop,accessory,bus stop,lost
+1738,textbook,found textbook with with logo in parking area,book,parking area,found
+1739,watch,brown watch spotted at auditorium,accessory,auditorium,found
+1740,pen drive,pen drive possibly left in bus stop,electronics,bus stop,found
+1741,water bottle,found water bottle with with stickers in classroom,accessory,classroom,lost
+1742,calculator,found calculator with with name written in corridor,electronics,corridor,found
+1743,pen drive,found pen drive with slightly damaged in cafeteria,electronics,cafeteria,found
+1744,headphones,brown leather headphones with name written near computer lab,electronics,computer lab,lost
+1745,calculator,lost brown calculator close to playground,electronics,playground,found
+1746,charger,green charger spotted at playground,electronics,playground,found
+1747,power bank,yellow leather power bank seen around computer lab,electronics,computer lab,found
+1748,notebook,fabric notebook slightly damaged around canteen,stationery,canteen,lost
+1749,laptop,white colored laptop near classroom,electronics,classroom,lost
+1750,watch,metal watch slightly damaged around playground,accessory,playground,found
+1751,headphones,headphones located in bus stop area,electronics,bus stop,found
+1752,power bank,power bank located in library area,electronics,library,found
+1753,notebook,silver fabric notebook seen around library,stationery,library,found
+1754,pen drive,rubber pen drive in good condition around bus stop,electronics,bus stop,lost
+1755,charger,lost brown charger close to classroom,electronics,classroom,found
+1756,umbrella,green umbrella spotted at bus stop,accessory,bus stop,found
+1757,wallet,yellow leather wallet seen around auditorium,wallet,auditorium,found
+1758,earbuds,earbuds possibly left in cafeteria,electronics,cafeteria,found
+1759,water bottle,lost brown water bottle close to canteen,accessory,canteen,found
+1760,wallet,green plastic wallet slightly damaged near corridor,wallet,corridor,lost
+1761,umbrella,leather umbrella with stickers around classroom,accessory,classroom,lost
+1762,textbook,green plastic textbook seen around parking area,book,parking area,lost
+1763,water bottle,lost red water bottle close to corridor,accessory,corridor,lost
+1764,watch,watch located in classroom area,accessory,classroom,found
+1765,wallet,metal wallet with name written around canteen,wallet,canteen,lost
+1766,power bank,found power bank with with name written in library,electronics,library,lost
+1767,keys,keys of black color found in corridor,accessory,corridor,lost
+1768,watch,grey plastic watch seen around parking area,accessory,parking area,lost
+1769,glasses,grey glasses spotted at playground,accessory,playground,lost
+1770,earbuds,yellow earbuds spotted at auditorium,electronics,auditorium,lost
+1771,id card,found id card with in good condition in cafeteria,document,cafeteria,lost
+1772,pen drive,pen drive possibly left in auditorium,electronics,auditorium,found
+1773,umbrella,grey plastic umbrella with two pockets near parking area,accessory,parking area,lost
+1774,textbook,silver textbook spotted at canteen,book,canteen,lost
+1775,laptop,green plastic laptop seen around parking area,electronics,parking area,found
+1776,wallet,wallet located in canteen area,wallet,canteen,found
+1777,charger,charger located in canteen area,electronics,canteen,found
+1778,wallet,wallet possibly left in playground,wallet,playground,found
+1779,wallet,wallet located in canteen area,wallet,canteen,found
+1780,glasses,brown fabric glasses with stickers near cafeteria,accessory,cafeteria,lost
+1781,keys,keys of silver color found in parking area,accessory,parking area,lost
+1782,headphones,metal headphones with scratches around canteen,electronics,canteen,found
+1783,pen drive,lost red pen drive close to canteen,electronics,canteen,found
+1784,charger,found charger with with logo in library,electronics,library,found
+1785,phone,plastic phone with two pockets around classroom,phone,classroom,found
+1786,notebook,black leather notebook with stickers near bus stop,stationery,bus stop,found
+1787,backpack,rubber backpack with logo around canteen,bag,canteen,lost
+1788,charger,purple rubber charger seen around cafeteria,electronics,cafeteria,found
+1789,glasses,blue glasses spotted at bus stop,accessory,bus stop,found
+1790,handbag,fabric handbag with scratches around bus stop,bag,bus stop,lost
+1791,earbuds,white colored earbuds near classroom,electronics,classroom,found
+1792,phone,phone located in canteen area,phone,canteen,found
+1793,phone,brown colored phone near bus stop,phone,bus stop,lost
+1794,umbrella,black leather umbrella with two pockets near canteen,accessory,canteen,found
+1795,headphones,white leather headphones seen around library,electronics,library,lost
+1796,earbuds,found earbuds with with stickers in parking area,electronics,parking area,found
+1797,charger,charger located in playground area,electronics,playground,lost
+1798,id card,green colored id card near library,document,library,found
+1799,water bottle,found water bottle with with scratches in canteen,accessory,canteen,found
+1800,keys,keys possibly left in corridor,accessory,corridor,found
+1801,notebook,silver notebook spotted at corridor,stationery,corridor,found
+1802,notebook,green colored notebook near corridor,stationery,corridor,found
+1803,notebook,notebook located in bus stop area,stationery,bus stop,found
+1804,textbook,red fabric textbook seen around playground,book,playground,lost
+1805,power bank,found power bank with with scratches in auditorium,electronics,auditorium,found
+1806,power bank,red leather power bank with stickers near canteen,electronics,canteen,found
+1807,umbrella,red colored umbrella near classroom,accessory,classroom,lost
+1808,glasses,black glasses spotted at computer lab,accessory,computer lab,lost
+1809,id card,id card of grey color found in playground,document,playground,found
+1810,tablet,yellow tablet spotted at library,electronics,library,lost
+1811,umbrella,found umbrella with with stickers in library,accessory,library,found
+1812,textbook,found textbook with with two pockets in computer lab,book,computer lab,lost
+1813,pen drive,pen drive possibly left in parking area,electronics,parking area,lost
+1814,water bottle,fabric water bottle slightly damaged around parking area,accessory,parking area,found
+1815,calculator,blue leather calculator in good condition near canteen,electronics,canteen,lost
+1816,earbuds,found earbuds with with stickers in library,electronics,library,lost
+1817,handbag,lost red handbag close to classroom,bag,classroom,found
+1818,charger,charger possibly left in parking area,electronics,parking area,lost
+1819,calculator,lost blue calculator close to canteen,electronics,canteen,lost
+1820,wallet,wallet located in canteen area,wallet,canteen,found
+1821,earbuds,earbuds possibly left in cafeteria,electronics,cafeteria,lost
+1822,backpack,black backpack spotted at canteen,bag,canteen,found
+1823,backpack,grey plastic backpack seen around parking area,bag,parking area,found
+1824,water bottle,rubber water bottle with logo around corridor,accessory,corridor,lost
+1825,handbag,white leather handbag with logo near corridor,bag,corridor,found
+1826,glasses,glasses possibly left in cafeteria,accessory,cafeteria,lost
+1827,handbag,plastic handbag in good condition around computer lab,bag,computer lab,lost
+1828,laptop,laptop possibly left in bus stop,electronics,bus stop,lost
+1829,watch,lost purple watch close to library,accessory,library,lost
+1830,id card,id card located in classroom area,document,classroom,found
+1831,wallet,white fabric wallet slightly damaged near canteen,wallet,canteen,found
+1832,power bank,lost grey power bank close to classroom,electronics,classroom,lost
+1833,keys,keys located in computer lab area,accessory,computer lab,lost
+1834,watch,yellow colored watch near library,accessory,library,lost
+1835,water bottle,green metal water bottle seen around canteen,accessory,canteen,found
+1836,laptop,lost white laptop close to parking area,electronics,parking area,found
+1837,power bank,found power bank with with two pockets in computer lab,electronics,computer lab,lost
+1838,handbag,red handbag spotted at classroom,bag,classroom,lost
+1839,handbag,silver handbag spotted at classroom,bag,classroom,lost
+1840,calculator,purple calculator spotted at computer lab,electronics,computer lab,found
+1841,calculator,lost grey calculator close to bus stop,electronics,bus stop,found
+1842,charger,charger of white color found in classroom,electronics,classroom,found
+1843,headphones,red headphones spotted at cafeteria,electronics,cafeteria,found
+1844,pen drive,blue metal pen drive with scratches near corridor,electronics,corridor,lost
+1845,phone,red fabric phone with stickers near auditorium,phone,auditorium,lost
+1846,charger,charger located in playground area,electronics,playground,found
+1847,headphones,yellow colored headphones near cafeteria,electronics,cafeteria,found
+1848,calculator,silver metal calculator seen around cafeteria,electronics,cafeteria,found
+1849,water bottle,brown colored water bottle near cafeteria,accessory,cafeteria,lost
+1850,pen drive,pen drive possibly left in auditorium,electronics,auditorium,lost
+1851,phone,phone located in parking area area,phone,parking area,lost
+1852,phone,yellow fabric phone seen around auditorium,phone,auditorium,lost
+1853,tablet,lost blue tablet close to classroom,electronics,classroom,lost
+1854,backpack,backpack possibly left in bus stop,bag,bus stop,found
+1855,power bank,leather power bank with stickers around bus stop,electronics,bus stop,found
+1856,wallet,found wallet with slightly damaged in classroom,wallet,classroom,found
+1857,power bank,found power bank with slightly damaged in computer lab,electronics,computer lab,lost
+1858,tablet,lost yellow tablet close to canteen,electronics,canteen,found
+1859,water bottle,water bottle of purple color found in cafeteria,accessory,cafeteria,found
+1860,wallet,yellow plastic wallet with two pockets near classroom,wallet,classroom,lost
+1861,phone,grey colored phone near parking area,phone,parking area,found
+1862,calculator,calculator located in corridor area,electronics,corridor,found
+1863,glasses,glasses located in parking area area,accessory,parking area,found
+1864,tablet,grey metal tablet seen around auditorium,electronics,auditorium,lost
+1865,wallet,leather wallet with zipper around library,wallet,library,lost
+1866,charger,brown colored charger near parking area,electronics,parking area,found
+1867,handbag,handbag possibly left in playground,bag,playground,found
+1868,power bank,power bank located in auditorium area,electronics,auditorium,found
+1869,handbag,found handbag with with zipper in corridor,bag,corridor,lost
+1870,backpack,backpack located in library area,bag,library,lost
+1871,notebook,brown metal notebook with scratches near computer lab,stationery,computer lab,lost
+1872,laptop,brown leather laptop seen around cafeteria,electronics,cafeteria,lost
+1873,headphones,headphones of red color found in parking area,electronics,parking area,found
+1874,textbook,red leather textbook slightly damaged near auditorium,book,auditorium,lost
+1875,backpack,metal backpack slightly damaged around classroom,bag,classroom,found
+1876,keys,keys of brown color found in canteen,accessory,canteen,found
+1877,power bank,lost white power bank close to computer lab,electronics,computer lab,lost
+1878,laptop,laptop located in auditorium area,electronics,auditorium,lost
+1879,backpack,backpack possibly left in classroom,bag,classroom,found
+1880,keys,found keys with with stickers in playground,accessory,playground,found
+1881,watch,brown leather watch in good condition near cafeteria,accessory,cafeteria,found
+1882,keys,purple colored keys near bus stop,accessory,bus stop,lost
+1883,headphones,headphones possibly left in corridor,electronics,corridor,lost
+1884,keys,found keys with with stickers in auditorium,accessory,auditorium,found
+1885,earbuds,earbuds possibly left in cafeteria,electronics,cafeteria,found
+1886,textbook,found textbook with in good condition in parking area,book,parking area,found
+1887,keys,red fabric keys seen around parking area,accessory,parking area,lost
+1888,charger,purple charger spotted at corridor,electronics,corridor,lost
+1889,calculator,metal calculator with name written around classroom,electronics,classroom,lost
+1890,tablet,grey colored tablet near parking area,electronics,parking area,found
+1891,power bank,rubber power bank with two pockets around canteen,electronics,canteen,found
+1892,keys,black leather keys seen around playground,accessory,playground,lost
+1893,id card,red plastic id card with two pockets near bus stop,document,bus stop,lost
+1894,keys,silver leather keys seen around auditorium,accessory,auditorium,lost
+1895,id card,found id card with with zipper in cafeteria,document,cafeteria,lost
+1896,backpack,backpack of blue color found in auditorium,bag,auditorium,lost
+1897,tablet,black colored tablet near canteen,electronics,canteen,lost
+1898,calculator,silver colored calculator near playground,electronics,playground,lost
+1899,glasses,yellow fabric glasses seen around classroom,accessory,classroom,found
+1900,watch,watch of black color found in corridor,accessory,corridor,found
+1901,headphones,leather headphones with stickers around computer lab,electronics,computer lab,found
+1902,phone,phone possibly left in auditorium,phone,auditorium,lost
+1903,notebook,fabric notebook with scratches around corridor,stationery,corridor,found
+1904,earbuds,black leather earbuds with scratches near auditorium,electronics,auditorium,lost
+1905,id card,id card of yellow color found in playground,document,playground,lost
+1906,earbuds,earbuds possibly left in library,electronics,library,lost
+1907,backpack,red rubber backpack seen around parking area,bag,parking area,found
+1908,laptop,purple leather laptop slightly damaged near bus stop,electronics,bus stop,found
+1909,id card,found id card with with name written in auditorium,document,auditorium,lost
+1910,handbag,brown handbag spotted at library,bag,library,lost
+1911,watch,watch located in computer lab area,accessory,computer lab,lost
+1912,glasses,glasses located in playground area,accessory,playground,lost
+1913,id card,plastic id card with zipper around corridor,document,corridor,lost
+1914,textbook,rubber textbook with name written around playground,book,playground,lost
+1915,tablet,blue leather tablet seen around canteen,electronics,canteen,found
+1916,headphones,red headphones spotted at auditorium,electronics,auditorium,lost
+1917,glasses,black rubber glasses seen around parking area,accessory,parking area,lost
+1918,watch,watch located in auditorium area,accessory,auditorium,found
+1919,glasses,brown colored glasses near parking area,accessory,parking area,found
+1920,glasses,grey leather glasses with stickers near canteen,accessory,canteen,found
+1921,phone,phone located in cafeteria area,phone,cafeteria,lost
+1922,glasses,found glasses with in good condition in parking area,accessory,parking area,lost
+1923,umbrella,green umbrella spotted at canteen,accessory,canteen,lost
+1924,id card,id card located in cafeteria area,document,cafeteria,lost
+1925,tablet,metal tablet in good condition around parking area,electronics,parking area,found
+1926,charger,purple metal charger seen around playground,electronics,playground,lost
+1927,keys,purple keys spotted at computer lab,accessory,computer lab,found
+1928,charger,charger of green color found in computer lab,electronics,computer lab,lost
+1929,textbook,lost grey textbook close to bus stop,book,bus stop,found
+1930,backpack,backpack possibly left in canteen,bag,canteen,found
+1931,backpack,backpack of blue color found in library,bag,library,lost
+1932,umbrella,blue fabric umbrella with two pockets near classroom,accessory,classroom,found
+1933,phone,phone possibly left in computer lab,phone,computer lab,found
+1934,watch,silver colored watch near parking area,accessory,parking area,found
+1935,earbuds,lost blue earbuds close to auditorium,electronics,auditorium,lost
+1936,glasses,fabric glasses with stickers around playground,accessory,playground,lost
+1937,umbrella,silver umbrella spotted at playground,accessory,playground,found
+1938,wallet,white colored wallet near cafeteria,wallet,cafeteria,lost
+1939,pen drive,found pen drive with with stickers in canteen,electronics,canteen,lost
+1940,glasses,green leather glasses with name written near canteen,accessory,canteen,lost
+1941,keys,keys located in canteen area,accessory,canteen,found
+1942,earbuds,yellow rubber earbuds with zipper near library,electronics,library,found
+1943,charger,found charger with with logo in cafeteria,electronics,cafeteria,found
+1944,charger,yellow colored charger near classroom,electronics,classroom,lost
+1945,charger,lost purple charger close to computer lab,electronics,computer lab,found
+1946,id card,id card possibly left in playground,document,playground,found
+1947,keys,keys possibly left in playground,accessory,playground,lost
+1948,phone,white rubber phone with scratches near parking area,phone,parking area,lost
+1949,earbuds,found earbuds with with name written in auditorium,electronics,auditorium,found
+1950,watch,red plastic watch with scratches near playground,accessory,playground,found
+1951,charger,lost grey charger close to library,electronics,library,lost
+1952,earbuds,purple colored earbuds near classroom,electronics,classroom,lost
+1953,handbag,white handbag spotted at classroom,bag,classroom,found
+1954,keys,yellow colored keys near library,accessory,library,lost
+1955,watch,lost white watch close to computer lab,accessory,computer lab,lost
+1956,keys,found keys with in good condition in library,accessory,library,found
+1957,charger,charger possibly left in classroom,electronics,classroom,found
+1958,wallet,wallet located in computer lab area,wallet,computer lab,found
+1959,calculator,calculator of purple color found in playground,electronics,playground,lost
+1960,tablet,grey tablet spotted at corridor,electronics,corridor,found
+1961,watch,watch of grey color found in canteen,accessory,canteen,found
+1962,notebook,lost brown notebook close to computer lab,stationery,computer lab,lost
+1963,water bottle,water bottle located in playground area,accessory,playground,found
+1964,backpack,found backpack with with stickers in computer lab,bag,computer lab,lost
+1965,water bottle,water bottle possibly left in playground,accessory,playground,found
+1966,id card,red rubber id card seen around playground,document,playground,found
+1967,textbook,textbook located in computer lab area,book,computer lab,lost
+1968,water bottle,blue leather water bottle seen around parking area,accessory,parking area,lost
+1969,wallet,purple fabric wallet seen around bus stop,wallet,bus stop,found
+1970,textbook,textbook possibly left in corridor,book,corridor,lost
+1971,tablet,tablet of white color found in cafeteria,electronics,cafeteria,found
+1972,calculator,black calculator spotted at bus stop,electronics,bus stop,lost
+1973,laptop,lost black laptop close to canteen,electronics,canteen,lost
+1974,phone,grey plastic phone with name written near parking area,phone,parking area,found
+1975,watch,found watch with with logo in computer lab,accessory,computer lab,lost
+1976,charger,found charger with with zipper in bus stop,electronics,bus stop,lost
+1977,watch,watch possibly left in parking area,accessory,parking area,lost
+1978,glasses,glasses located in corridor area,accessory,corridor,found
+1979,textbook,red textbook spotted at classroom,book,classroom,found
+1980,tablet,lost yellow tablet close to computer lab,electronics,computer lab,found
+1981,handbag,purple leather handbag seen around canteen,bag,canteen,lost
+1982,id card,blue metal id card seen around corridor,document,corridor,lost
+1983,backpack,red metal backpack seen around playground,bag,playground,found
+1984,phone,lost white phone close to cafeteria,phone,cafeteria,found
+1985,phone,phone possibly left in cafeteria,phone,cafeteria,found
+1986,backpack,backpack located in library area,bag,library,found
+1987,backpack,backpack possibly left in corridor,bag,corridor,lost
+1988,watch,blue colored watch near cafeteria,accessory,cafeteria,found
+1989,glasses,yellow leather glasses seen around classroom,accessory,classroom,found
+1990,glasses,glasses possibly left in library,accessory,library,found
+1991,glasses,grey metal glasses in good condition near cafeteria,accessory,cafeteria,found
+1992,id card,id card possibly left in playground,document,playground,found
+1993,id card,found id card with with logo in corridor,document,corridor,lost
+1994,charger,green rubber charger seen around cafeteria,electronics,cafeteria,found
+1995,tablet,green leather tablet with scratches near bus stop,electronics,bus stop,found
+1996,umbrella,found umbrella with with two pockets in playground,accessory,playground,found
+1997,tablet,green plastic tablet seen around parking area,electronics,parking area,lost
+1998,glasses,lost green glasses close to canteen,accessory,canteen,lost
+1999,watch,watch of blue color found in cafeteria,accessory,cafeteria,lost
+2000,textbook,green rubber textbook seen around cafeteria,book,cafeteria,found

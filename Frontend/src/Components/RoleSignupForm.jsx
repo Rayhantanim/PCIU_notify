@@ -71,49 +71,65 @@ export default function RoleSignupForm({ role = "student", goBack }) {
     });
   }, [formData.password]);
 
-  // Email validation and availability check
-  useEffect(() => {
-    if (!formData.email) {
-      setEmailValid(null);
-      setEmailAvailable(null);
-      return;
-    }
-    
-    const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
-    setEmailValid(isValid);
-    
-    if (!isValid) {
-      setEmailAvailable(null);
-      return;
-    }
+// Email validation and availability check
+useEffect(() => {
+  if (!formData.email) {
+    setEmailValid(null);
+    setEmailAvailable(null);
+    return;
+  }
+  
+  const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
+  setEmailValid(isValid);
+  
+  if (!isValid) {
+    setEmailAvailable(null);
+    return;
+  }
 
-    const currentEmail = formData.email;
+  const currentEmail = formData.email;
 
-    const timer = setTimeout(async () => {
-      setCheckingEmail(true);
+  const timer = setTimeout(async () => {
+    setCheckingEmail(true);
+    console.log("🔍 Checking email availability:", currentEmail);
 
-      try {
-        const res = await fetch(`${API}/api/check-email`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: currentEmail }),
-        });
+    try {
+      const res = await fetch(`${API}/api/check-email`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: currentEmail }),
+      });
 
-        const data = await res.json();
+      const data = await res.json();
+      console.log("Email check response:", data);
 
-        if (currentEmail === formData.email) {
-          setEmailAvailable(data.available);
+      if (currentEmail === formData.email) {
+        // Determine if email is available
+        let isAvailable;
+        
+        if (typeof data.available === 'boolean') {
+          isAvailable = data.available;
+        } else if (typeof data.exists === 'boolean') {
+          isAvailable = !data.exists; // exists=true means taken, so available=false
+        } else if (data.success === false) {
+          isAvailable = false;
+        } else {
+          isAvailable = true;
         }
-      } catch (err) {
-        console.error(err);
-        setEmailAvailable(false);
-      } finally {
-        setCheckingEmail(false);
+        
+        console.log("Email available:", isAvailable);
+        setEmailAvailable(isAvailable);
       }
-    }, 500);
+    } catch (err) {
+      console.error("❌ Email check error:", err);
+      setEmailAvailable(false);
+    } finally {
+      setCheckingEmail(false);
+    }
+  }, 500);
 
-    return () => clearTimeout(timer);
-  }, [formData.email]);
+  return () => clearTimeout(timer);
+}, [formData.email, API]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -214,8 +230,6 @@ export default function RoleSignupForm({ role = "student", goBack }) {
       if (!res.ok) {
         console.error("MongoDB save error:", data.message);
         toast.error(data.message || "Error saving user data");
-        // Don't return here - user already created in Firebase
-        // Just show warning but continue
         toast.warning("Account created but some data couldn't be saved. Please contact support.");
       } else {
         console.log("✅ MongoDB save successful");
@@ -419,16 +433,16 @@ export default function RoleSignupForm({ role = "student", goBack }) {
         {formData.email && (
           <span className="text-sm">
             {emailValid === false && (
-              <span className="text-yellow-400">Invalid email format ⚠️</span>
+              <span className="text-yellow-400">⚠️ Invalid email format</span>
             )}
             {emailValid && checkingEmail && (
-              <span className="text-blue-400">Checking availability...</span>
+              <span className="text-blue-400">⏳ Checking availability...</span>
             )}
             {emailValid && emailAvailable && !checkingEmail && (
-              <span className="text-green-400">Email is available ✅</span>
+              <span className="text-green-400">✅ Email is available</span>
             )}
             {emailValid && emailAvailable === false && !checkingEmail && (
-              <span className="text-red-400">Email already taken ❌</span>
+              <span className="text-red-400">❌ Email already taken</span>
             )}
           </span>
         )}
@@ -478,19 +492,19 @@ export default function RoleSignupForm({ role = "student", goBack }) {
         {isFocused && (
           <div className="flex flex-col text-sm text-gray-300 mt-2">
             <span className={`flex items-center ${passwordValid.uppercase ? "text-green-400" : ""}`}>
-              {passwordValid.uppercase && <span className="mr-1">✔</span>} At least one uppercase letter
+              {passwordValid.uppercase && <span className="mr-1">✓</span>} At least one uppercase letter
             </span>
             <span className={`flex items-center ${passwordValid.lowercase ? "text-green-400" : ""}`}>
-              {passwordValid.lowercase && <span className="mr-1">✔</span>} At least one lowercase letter
+              {passwordValid.lowercase && <span className="mr-1">✓</span>} At least one lowercase letter
             </span>
             <span className={`flex items-center ${passwordValid.number ? "text-green-400" : ""}`}>
-              {passwordValid.number && <span className="mr-1">✔</span>} At least one number
+              {passwordValid.number && <span className="mr-1">✓</span>} At least one number
             </span>
             <span className={`flex items-center ${passwordValid.specialChar ? "text-green-400" : ""}`}>
-              {passwordValid.specialChar && <span className="mr-1">✔</span>} At least one special character (!@#$%^&*)
+              {passwordValid.specialChar && <span className="mr-1">✓</span>} At least one special character (!@#$%^&*)
             </span>
             <span className={`flex items-center ${passwordValid.minLength ? "text-green-400" : ""}`}>
-              {passwordValid.minLength && <span className="mr-1">✔</span>} Minimum 8 characters
+              {passwordValid.minLength && <span className="mr-1">✓</span>} Minimum 8 characters
             </span>
           </div>
         )}
@@ -518,7 +532,7 @@ export default function RoleSignupForm({ role = "student", goBack }) {
         </div>
         
         {passwordMismatch && formData.confirmPassword && (
-          <span className="text-red-400 text-sm">Passwords do not match ❌</span>
+          <span className="text-red-400 text-sm">❌ Passwords do not match</span>
         )}
 
         <button
