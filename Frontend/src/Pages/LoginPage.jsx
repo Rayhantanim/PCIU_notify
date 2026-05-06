@@ -7,12 +7,15 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import useAuth from "../Hooks/useAuth";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
-import app from "../Firebase/Firebase.init";
+import app from "../Firebase/Firebase.init"; // Import the already initialized Firebase app
 
 export default function LoginPage() {
+  // const API = "https://pciunotifybackend.onrender.com";
   const API = "http://localhost:5000";
   const navigate = useNavigate();
   const { userLogin, userLogOut } = useAuth();
+  
+  // Use the existing Firebase auth instance from your Firebase.init
   const auth = getAuth(app);
 
   const [email, setEmail] = useState("");
@@ -96,6 +99,7 @@ export default function LoginPage() {
         localStorage.setItem("fullName", `${user.firstName} ${user.lastName}`);
         localStorage.setItem("role", user.role);
         localStorage.setItem("firebaseUid", userCredential.user.uid);
+        localStorage.setItem("token", userCredential.user.accessToken || "firebase-token");
 
         Swal.fire({
           title: `Welcome back, ${user.firstName}!`,
@@ -110,7 +114,7 @@ export default function LoginPage() {
         } else if (user.role === "teacher") {
           navigate("/dashboard/dashboardindex");
         } else if (user.role === "staff") {
-          navigate("/dashboard/view");
+          navigate("/dashboard/staffnotice"); // Fixed: Changed from "/dashboard/view" to "/dashboard/staffnotice"
         } else {
           navigate("/");
         }

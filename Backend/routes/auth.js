@@ -2,44 +2,140 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
-const User = require("../models/User");
 const nodemailer = require("nodemailer");
+const User = require("../models/User");
+const OTP = require("../models/OTP");
 
-// EMAIL SETUP
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
+// ==================== EMAIL CONFIGURATION ====================
+const createTransporter = () => {
+  if (process.env.EMAIL_SERVICE === "gmail") {
+    return nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
   }
-});
-
-const sendVerificationEmail = async (email, token) => {
-  const verifyUrl = `${process.env.FRONTEND_URL}/verify?token=${token}`;
-  await transporter.sendMail({
-    to: email,
-    subject: 'Verify Your Email',
-    html: `<div style="font-family:Arial;text-align:center;padding:20px">
-             <h2>Welcome!</h2>
-             <p>Click the button below to verify your email:</p>
-             <a href="${verifyUrl}" style="background:#4CAF50;color:white;padding:10px 20px;text-decoration:none;border-radius:5px">Verify Email</a>
-             <p>This link expires in 24 hours.</p>
-           </div>`
+  
+  if (process.env.EMAIL_SERVICE === "outlook") {
+    return nodemailer.createTransport({
+      service: "hotmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+  }
+  
+  return nodemailer.createTransport({
+    host: process.env.SMTP_HOST || "smtp.gmail.com",
+    port: process.env.SMTP_PORT || 587,
+    secure: process.env.SMTP_SECURE === "true",
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
   });
 };
 
-// REGISTER endpoint
+// Send email function
+const sendEmail = async (to, subject, html) => {
+  try {
+    const transporter = createTransporter();
+    await transporter.verify();
+    
+    const mailOptions = {
+      from: `"PCIU Notify" <${process.env.EMAIL_FROM || process.env.EMAIL_USER}>`,
+      to: to,
+      subject: subject,
+      html: html,
+    };
+    
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Email sent:", info.messageId);
+    return { success: true, messageId: info.messageId };
+  } catch (error) {
+    console.error("Email sending error:", error);
+    return { success: false, error: error.message };
+  }
+};
+
+// Send verification email function
+const sendVerificationEmail = async (email, token) => {
+  const verifyUrl = `${process.env.FRONTEND_URL}/verify?token=${token}`;
+  return await sendEmail(
+    email,
+    'Verify Your Email',
+    `<div style="font-family:Arial;text-align:center;padding:20px">
+       <h2>Welcome!</h2>
+       <p>Click the button below to verify your email:</p>
+       <a href="${verifyUrl}" style="background:#4CAF50;color:white;padding:10px 20px;text-decoration:none;border-radius:5px">Verify Email</a>
+       <p>This link expires in 24 hours.</p>
+     </div>`
+  );
+};
+
+// ==================== REGISTER ====================
 router.post("/register", async (req, res) => {
   try {
     const { 
-      email, firstName, lastName, role, password, phone, dob,
-      department, section, studentId, teacherId, staffId, shortName,
-      firebaseUid 
+      firebaseUid, 
+      email, 
+      firstName, 
+      lastName, 
+      role, 
+      password,
+      phone,
+      dob,
+      department,
+      section,
+      studentId,
+      teacherId,
+      staffId,
+      shortName
     } = req.body;
 
-    const existingUser = await User.findOne({ email });
+    // Check if user already exists
+    const existingUser = await User.findOne({ email: email?.toLowerCase() });
     if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
+      return res.status(400).json({ 
+        success: false,
+        message: "User already exists with this email" 
+      });
+    }
+
+    // Check if ID already exists for students
+    if (role === "student" && studentId) {
+      const existingId = await User.findOne({ studentId });
+      if (existingId) {
+        return res.status(400).json({ 
+          success: false,
+          message: "Student ID already exists" 
+        });
+      }
+    }
+
+    // Check if teacher ID already exists
+    if (role === "teacher" && teacherId) {
+      const existingId = await User.findOne({ teacherId });
+      if (existingId) {
+        return res.status(400).json({ 
+          success: false,
+          message: "Teacher ID already exists" 
+        });
+      }
+    }
+
+    // Check if staff ID already exists
+    if (role === "staff" && staffId) {
+      const existingId = await User.findOne({ staffId });
+      if (existingId) {
+        return res.status(400).json({ 
+          success: false,
+          message: "Staff ID already exists" 
+        });
+      }
     }
 
     // Hash password if provided
@@ -54,7 +150,7 @@ router.post("/register", async (req, res) => {
     const verifyExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
     const userData = {
-      email,
+      email: email?.toLowerCase(),
       firstName,
       lastName,
       role: role || "student",
@@ -102,11 +198,14 @@ router.post("/register", async (req, res) => {
     });
   } catch (err) {
     console.error("Register error:", err);
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ 
+      success: false,
+      message: err.message 
+    });
   }
 });
 
-// VERIFY EMAIL endpoint
+// ==================== VERIFY EMAIL ====================
 router.get("/verify-email", async (req, res) => {
   try {
     const { token } = req.query;
@@ -127,208 +226,112 @@ router.get("/verify-email", async (req, res) => {
 
     res.json({ message: "Email verified successfully! You can now login." });
   } catch (err) {
+    console.error("Verify email error:", err);
     res.status(500).json({ message: err.message });
   }
 });
 
-// FORGOT PASSWORD endpoint
-router.post("/forgot-password", async (req, res) => {
-  try {
-    const { email } = req.body;
-    const user = await User.findOne({ email });
-
-    if (!user) {
-      return res.json({ message: "If email exists, reset link will be sent" });
-    }
-
-    const resetToken = crypto.randomBytes(32).toString('hex');
-    user.resetToken = resetToken;
-    user.resetExpiry = new Date(Date.now() + 60 * 60 * 1000);
-    await user.save();
-
-    const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
-
-    await transporter.sendMail({
-      to: email,
-      subject: 'Reset Your Password',
-      html: `<div style="font-family:Arial;text-align:center;padding:20px">
-               <h2>Reset Password</h2>
-               <p>Click the button below to reset your password:</p>
-               <a href="${resetUrl}" style="background:#2196F3;color:white;padding:10px 20px;text-decoration:none;border-radius:5px">Reset Password</a>
-               <p>This link expires in 1 hour.</p>
-               <p>If you didn't request this, ignore this email.</p>
-             </div>`
-    });
-
-    res.json({ message: "Password reset link sent to your email" });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// RESET PASSWORD endpoint
-router.post("/reset-password", async (req, res) => {
-  try {
-    const { token, newPassword } = req.body;
-    
-    const user = await User.findOne({
-      resetToken: token,
-      resetExpiry: { $gt: Date.now() }
-    });
-
-    if (!user) {
-      return res.status(400).json({ message: "Invalid or expired reset token" });
-    }
-
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(newPassword, salt);
-    user.resetToken = null;
-    user.resetExpiry = null;
-    await user.save();
-
-    res.json({ message: "Password reset successful! You can now login." });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// RESEND VERIFICATION endpoint
-router.post("/resend-verification", async (req, res) => {
-  try {
-    const { email } = req.body;
-    const user = await User.findOne({ email });
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    if (user.verified) {
-      return res.status(400).json({ message: "Email already verified" });
-    }
-
-    const verifyToken = crypto.randomBytes(32).toString('hex');
-    user.verifyToken = verifyToken;
-    user.verifyExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
-    await user.save();
-
-    await sendVerificationEmail(email, verifyToken);
-    res.json({ message: "Verification email sent!" });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// Check email availability (add this to your authRoutes.js)
-// In your backend authRoutes.js
-// Check email availability endpoint - Complete working version
-router.post("/check-email", async (req, res) => {
-  try {
-    const { email } = req.body;
-    
-    console.log("📧 Email check request for:", email);
-    
-    // Validate email
-    if (!email) {
-      return res.status(400).json({ 
-        success: false,
-        available: false, 
-        message: "Email is required" 
-      });
-    }
-    
-    // Check if email exists in database (case insensitive)
-    const existingUser = await User.findOne({ 
-      email: { $regex: `^${email}$`, $options: 'i' }
-    });
-    
-    const isAvailable = !existingUser;
-    
-    console.log(`Email ${email} is ${isAvailable ? 'available ✅' : 'already taken ❌'}`);
-    
-    // Return response
-    return res.json({
-      success: true,
-      available: isAvailable,
-      message: isAvailable ? "Email is available" : "Email already taken"
-    });
-    
-  } catch (error) {
-    console.error("Error checking email:", error);
-    return res.status(500).json({
-      success: false,
-      available: false,
-      message: "Internal server error"
-    });
-  }
-});
-
-// LOGIN endpoint (simple version)
+// ==================== LOGIN ====================
 router.post("/login", async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, password, id } = req.body;
 
-    if (!email) {
-      console.log("No email provided");
-      return res.status(400).json({ message: "Email is required" });
+    let user;
+    
+    // Find user by email or ID
+    if (id) {
+      const cleanId = id.replace(/\s/g, "");
+      user = await User.findOne({ 
+        $or: [
+          { studentId: cleanId },
+          { teacherId: cleanId },
+          { staffId: cleanId }
+        ]
+      });
+    } else if (email) {
+      user = await User.findOne({ email: email.toLowerCase() });
     }
 
-    const user = await User.findOne({ email });
-    
-    console.log("Database query result:", user);
-    
     if (!user) {
-      console.log("User not found for email:", email);
-      return res.status(404).json({ message: "User not found" });
+      return res.status(401).json({ 
+        success: false,
+        message: "Invalid credentials" 
+      });
     }
 
-    console.log("User found:", {
-      _id: user._id,
-      email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      role: user.role
-    });
+    // Check if user is active
+    if (user.isActive === false) {
+      return res.status(401).json({ 
+        success: false,
+        message: "Your account has been deactivated. Please contact admin." 
+      });
+    }
+
+    // Check password
+    if (user.password && password) {
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        return res.status(401).json({ 
+          success: false,
+          message: "Invalid credentials" 
+        });
+      }
+    } else if (!user.password && user.firebaseUid) {
+      return res.status(400).json({ 
+        success: false,
+        message: "Please use Firebase authentication" 
+      });
+    }
+
+    // Update last login
+    user.lastLogin = new Date();
+    await user.save();
 
     res.json({
       success: true,
       user: {
         _id: user._id,
+        firebaseUid: user.firebaseUid,
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        role: user.role
+        role: user.role,
+        department: user.department,
+        section: user.section,
+        studentId: user.studentId,
+        teacherId: user.teacherId,
+        staffId: user.staffId,
+        phone: user.phone,
+        dob: user.dob,
       }
     });
   } catch (error) {
     console.error("Login error:", error);
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ 
+      success: false,
+      message: error.message 
+    });
   }
 });
 
-// GET USERS endpoint
-router.get("/users", async (req, res) => {
+// ==================== CHECK EMAIL EXISTS ====================
+router.post("/check-email", async (req, res) => {
   try {
-    const users = await User.find().select("-password");
-    res.json(users);
+    const { email } = req.body;
+    
+    if (!email) {
+      return res.status(400).json({ exists: false });
+    }
+    
+    const user = await User.findOne({ email: email.toLowerCase() });
+    res.json({ exists: !!user });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    console.error("Check email error:", err);
+    res.status(500).json({ exists: false });
   }
 });
 
-// GET STUDENTS endpoint
-router.get("/students", async (req, res) => {
-  try {
-    const students = await User.find({ role: "student" })
-      .select("firstName lastName email phone department section studentId verified")
-      .sort({ createdAt: -1 });
-    res.json(students);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// GET TEACHERS endpoint
+// ==================== GET ALL TEACHERS ====================
 router.get("/teachers", async (req, res) => {
   try {
     const teachers = await User.find({ role: "teacher" })
@@ -336,11 +339,31 @@ router.get("/teachers", async (req, res) => {
       .sort({ createdAt: -1 });
     res.json(teachers);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error("Get teachers error:", err);
+    res.status(500).json({ 
+      success: false,
+      message: err.message 
+    });
   }
 });
 
-// GET STAFFS endpoint
+// ==================== GET ALL STUDENTS ====================
+router.get("/students", async (req, res) => {
+  try {
+    const students = await User.find({ role: "student" })
+      .select("firstName lastName email phone department section studentId verified")
+      .sort({ createdAt: -1 });
+    res.json(students);
+  } catch (err) {
+    console.error("Get students error:", err);
+    res.status(500).json({ 
+      success: false,
+      message: err.message 
+    });
+  }
+});
+
+// ==================== GET ALL STAFF ====================
 router.get("/staffs", async (req, res) => {
   try {
     const staffs = await User.find({ role: "staff" })
@@ -348,7 +371,22 @@ router.get("/staffs", async (req, res) => {
       .sort({ createdAt: -1 });
     res.json(staffs);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error("Get staff error:", err);
+    res.status(500).json({ 
+      success: false,
+      message: err.message 
+    });
+  }
+});
+
+// ==================== GET ALL USERS ====================
+router.get("/users", async (req, res) => {
+  try {
+    const users = await User.find().select("-password");
+    res.json(users);
+  } catch (err) {
+    console.error("Get users error:", err);
+    res.status(500).json({ message: "Server error" });
   }
 });
 

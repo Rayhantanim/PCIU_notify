@@ -33,7 +33,7 @@ const UserSchema = new mongoose.Schema({
   },
   role: { 
     type: String, 
-    enum: ["student", "teacher", "staff", "admin"], 
+    enum: ["student", "teacher", "staff"], 
     default: "student" 
   },
   
@@ -90,12 +90,15 @@ const UserSchema = new mongoose.Schema({
     type: Date
   }
 }, {
-  timestamps: true  // This automatically manages createdAt and updatedAt
+  timestamps: true  // Automatically adds createdAt and updatedAt
 });
 
-// ✅ Only keep compound indexes (indexes on multiple fields)
-// Remove all single-field indexes as they're already created by 'unique: true'
-UserSchema.index({ role: 1 });
-UserSchema.index({ department: 1, section: 1 });  // Compound index for queries filtering by both
+// Indexes for better query performance
+// UserSchema.index({ role: 1 });
+// UserSchema.index({ department: 1, section: 1 });
+// UserSchema.index({ email: 1 });
+// UserSchema.index({ studentId: 1 });
+// UserSchema.index({ teacherId: 1 });
+// UserSchema.index({ staffId: 1 });
 
 module.exports = mongoose.model("User", UserSchema);
