@@ -4,10 +4,9 @@ import Swal from 'sweetalert2';
 import emailjs from '@emailjs/browser';
 
 // Initialize EmailJS with your Public Key
-emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your actual public key
+emailjs.init("KeX8QThOfya4pR79L");
 
 export default function NoticeForm({ handleClose, userRole }) {
-  // const API = "http://localhost:5000";
   const API = "https://pciunotifybackend.onrender.com";
   const editorRef = useRef(null);
 
@@ -27,7 +26,7 @@ export default function NoticeForm({ handleClose, userRole }) {
   };
 
   const [formData, setFormData] = useState(initialState);
-  const [teachers, setTeachers] = useState([]);
+  const [teachers, setTeachers] = useState([]) ||[] ;
   const [previewMode, setPreviewMode] = useState(false);
   const [sendingEmails, setSendingEmails] = useState(false);
 
@@ -44,18 +43,27 @@ export default function NoticeForm({ handleClose, userRole }) {
     { value: "staff", label: "👔 Staff", icon: "👔", color: "purple" },
   ];
 
-  useEffect(() => {
+ useEffect(() => {
     const fetchTeachers = async () => {
       try {
         const res = await fetch(`${API}/api/teachers`);
         const data = await res.json();
-        setTeachers(data);
+        // Fixed: Properly extract the teachers array
+        if (data.teachers && Array.isArray(data.teachers)) {
+          setTeachers(data.teachers);
+        } else if (Array.isArray(data)) {
+          setTeachers(data);
+        } else {
+          console.warn("Unexpected API response format:", data);
+          setTeachers([]);
+        }
       } catch (err) {
         console.log("Teacher fetch error:", err);
+        setTeachers([]);
       }
     };
     fetchTeachers();
-  }, []);
+  }, [API]);
 
   // Rich Text Editor Functions
   const execCommand = (command, value = null) => {
@@ -153,14 +161,8 @@ export default function NoticeForm({ handleClose, userRole }) {
     }
   };
 
-  // Function to send emails via EmailJS
-  const sendEmailNotifications = async (recipients, noticeData, audienceLabel) => {
-    const results = {
-      success: [],
-      failed: [],
-      total: recipients.length
-    };
-
+  // Function to send a single email via EmailJS
+  const sendSingleEmail = async (recipient, noticeData, audienceLabel) => {
     const frontendUrl = process.env.REACT_APP_FRONTEND_URL || 'http://localhost:5173';
     
     const emailHtml = `
@@ -191,52 +193,63 @@ export default function NoticeForm({ handleClose, userRole }) {
       </div>
     `;
 
+    const templateParams = {
+      to_email: recipient.email,
+      to_name: recipient.name,
+      subject: `📢 New ${noticeData.category} Notice: ${noticeData.title}`,
+      html_content: emailHtml,
+      from_name: "PCIU Notice Board",
+      reply_to: noticeData.createdBy
+    };
+
+    // Using your actual EmailJS credentials
+    const response = await emailjs.send(
+      "service_i4wkqeq",      // Your Service ID
+      "template_juhzegm",     // Your Template ID
+      templateParams
+    );
+    
+    return response;
+  };
+
+  // Function to send emails to all recipients
+  const sendEmailNotifications = async (recipients, noticeData, audienceLabel, onProgress) => {
+    const results = {
+      success: [],
+      failed: [],
+      total: recipients.length
+    };
+
     for (let i = 0; i < recipients.length; i++) {
       const recipient = recipients[i];
       
       try {
-        const templateParams = {
-          to_email: recipient.email,
-          to_name: recipient.name,
-          subject: `📢 New ${noticeData.category} Notice: ${noticeData.title}`,
-          html_content: emailHtml,
-          from_name: "PCIU Notice Board",
-          reply_to: noticeData.createdBy
-        };
-
-        const response = await emailjs.send(
-          "YOUR_SERVICE_ID",     // Replace with your EmailJS Service ID
-          "YOUR_TEMPLATE_ID",    // Replace with your EmailJS Template ID
-          templateParams
-        );
+        await sendSingleEmail(recipient, noticeData, audienceLabel);
         
         results.success.push({
           email: recipient.email,
           name: recipient.name
         });
         
-        // Update progress
-        Swal.update({
-          html: `
-            <div>Sending emails to ${audienceLabel}...</div>
-            <div class="mt-2">Progress: ${i + 1} / ${recipients.length}</div>
-            <div class="mt-2 text-green-600">✅ Success: ${results.success.length}</div>
-            <div class="text-red-600">❌ Failed: ${results.failed.length}</div>
-          `
-        });
-        
-        // Add delay between sends to avoid rate limits
-        if (i < recipients.length - 1) {
-          await new Promise(resolve => setTimeout(resolve, 1000));
-        }
+        console.log(`✅ Email sent to ${recipient.email} (${i + 1}/${recipients.length})`);
         
       } catch (error) {
-        console.error(`Failed to send email to ${recipient.email}:`, error);
+        console.error(`❌ Failed to send email to ${recipient.email}:`, error);
         results.failed.push({
           email: recipient.email,
           name: recipient.name,
           error: error.text || error.message
         });
+      }
+      
+      // Update progress
+      if (onProgress) {
+        onProgress(i + 1, recipients.length, results);
+      }
+      
+      // Add delay between sends to avoid rate limits
+      if (i < recipients.length - 1) {
+        await new Promise(resolve => setTimeout(resolve, 1000));
       }
     }
 
@@ -261,6 +274,8 @@ export default function NoticeForm({ handleClose, userRole }) {
       toast.error("Please add content to the notice");
       return;
     }
+
+    setSendingEmails(true);
 
     // Show loading indicator
     Swal.fire({
@@ -299,18 +314,32 @@ export default function NoticeForm({ handleClose, userRole }) {
           html: `
             <div>Sending to ${recipients.length} recipients...</div>
             <div class="mt-2">Audience: ${getAudienceLabel()}</div>
+            <div class="mt-2 text-blue-600" id="emailProgress">Preparing...</div>
           `,
           allowOutsideClick: false
         });
 
-        emailResults = await sendEmailNotifications(recipients, formData, getAudienceLabel());
+        // Progress callback
+        const updateProgress = (current, total, results) => {
+          const progressDiv = document.getElementById('emailProgress');
+          if (progressDiv) {
+            progressDiv.innerHTML = `
+              Progress: ${current} / ${total}<br>
+              ✅ Success: ${results.success.length}<br>
+              ❌ Failed: ${results.failed.length}
+            `;
+          }
+        };
+
+        emailResults = await sendEmailNotifications(recipients, formData, getAudienceLabel(), updateProgress);
         emailSentCount = emailResults.success.length;
         
-        // Show warning if some emails failed
         if (emailResults.failed.length > 0) {
           console.warn("Failed emails:", emailResults.failed);
           toast.warning(`${emailResults.failed.length} emails failed to send`);
         }
+      } else {
+        toast.info(`No email recipients found for ${getAudienceLabel()}`);
       }
 
       // 4. Show success message
@@ -320,18 +349,20 @@ export default function NoticeForm({ handleClose, userRole }) {
           ${recipients && recipients.length > 0 ? `
             <div class="mb-2">📧 Emails sent: <strong>${emailSentCount} / ${recipients.length}</strong></div>
             ${emailResults?.failed.length > 0 ? `
-              <div class="text-red-600">❌ Failed: ${emailResults.failed.length} recipients</div>
-            ` : ''}
+              <div class="text-red-600 mt-2">❌ Failed: ${emailResults.failed.length} recipients</div>
+              <div class="text-sm text-gray-500 mt-1">Check console for details</div>
+            ` : '<div class="text-green-600 mt-2">✓ All emails sent successfully!</div>'}
           ` : `
-            <div class="text-yellow-600">⚠️ No email recipients found</div>
+            <div class="text-yellow-600">⚠️ No email recipients found in database</div>
+            <div class="text-sm text-gray-500 mt-2">Notice saved but emails not sent.</div>
           `}
         </div>
       `;
       
       Swal.fire({
-        title: "Notice Created Successfully!",
+        title: recipients?.length > 0 ? "Notice Published!" : "Notice Saved",
         html: resultHtml,
-        icon: emailResults?.failed.length > 0 ? "warning" : "success",
+        icon: recipients?.length > 0 ? (emailResults?.failed.length > 0 ? "warning" : "success") : "info",
         confirmButtonColor: "#3085d6"
       });
       
@@ -351,16 +382,19 @@ export default function NoticeForm({ handleClose, userRole }) {
         confirmButtonColor: "#3085d6"
       });
       toast.error(err.message || "Server error");
+    } finally {
+      setSendingEmails(false);
     }
   };
 
   const showDeptSection = formData.audience.includes("students") && !formData.audience.includes("all");
-
+console.log(teachers)
   return (
     <form
       onSubmit={handleSubmit}
       className="max-w-4xl mx-auto p-6 bg-white shadow-xl rounded-xl space-y-6"
     >
+      {/* Rest of your JSX remains exactly the same */}
       <div className="flex items-center justify-between border-b pb-4">
         <h2 className="text-2xl font-bold text-gray-800">📢 Create Notice</h2>
         <button
@@ -385,7 +419,7 @@ export default function NoticeForm({ handleClose, userRole }) {
           className="w-full border-2 border-gray-200 p-3 rounded-lg focus:border-blue-500 focus:outline-none"
         >
           <option value="">Select Publisher</option>
-          {teachers.map((teacher) => (
+          {teachers?.map((teacher) => (
             <option key={teacher._id} value={`${teacher.firstName} ${teacher.lastName}`}>
               {teacher.firstName} {teacher.lastName}
             </option>
@@ -409,7 +443,7 @@ export default function NoticeForm({ handleClose, userRole }) {
         />
       </div>
 
-      {/* Rich Text Editor */}
+      {/* Rich Text Editor - Keep your existing editor JSX */}
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-2">
           Notice Content *
@@ -486,7 +520,7 @@ export default function NoticeForm({ handleClose, userRole }) {
           Target Audience (Select multiple) *
         </label>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          {audienceOptions.map((option) => (
+          {audienceOptions?.map((option) => (
             <label
               key={option.value}
               className={`flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${
@@ -525,7 +559,7 @@ export default function NoticeForm({ handleClose, userRole }) {
             <label className="block text-sm font-semibold text-gray-700 mb-2">Department (Optional)</label>
             <select name="department" value={formData.department} onChange={handleChange} className="w-full border-2 border-gray-200 p-3 rounded-lg focus:border-blue-500 focus:outline-none">
               <option value="">All Departments</option>
-              {departments.map((dep) => (
+              {departments?.map((dep) => (
                 <option key={dep} value={dep}>{dep}</option>
               ))}
             </select>
@@ -568,7 +602,7 @@ export default function NoticeForm({ handleClose, userRole }) {
           disabled={sendingEmails}
           className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {sendingEmails ? "Sending..." : "📢 Publish Notice"}
+          {sendingEmails ? "Sending Emails..." : "📢 Publish Notice"}
         </button>
       </div>
     </form>

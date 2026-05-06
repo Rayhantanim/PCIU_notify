@@ -33,62 +33,6 @@ const getRecipientsByAudience = async (audiences) => {
   }));
 };
 
-// Helper function to send emails
-const sendEmailNotifications = async (recipients, notice, category) => {
-  const emailAddresses = recipients.map(r => r.email);
-  
-  if (emailAddresses.length === 0) {
-    console.log("⚠️ No recipients found for this notice");
-    return { success: false, count: 0 };
-  }
-  
-  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
-  
-  const emailSubject = `📢 New ${category} Notice: ${notice.title}`;
-  const emailHtml = `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;">
-      <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px 10px 0 0; color: white; text-align: center;">
-        <h2 style="margin: 0;">📢 PCIU Notice Board</h2>
-        <p style="margin: 5px 0 0;">New Notice Published</p>
-      </div>
-      <div style="padding: 20px;">
-        <h3 style="color: #333; margin-top: 0;">${notice.title}</h3>
-        <p style="color: #666; line-height: 1.6;">${notice.description}</p>
-        <div style="background: #f5f5f5; padding: 10px; border-radius: 5px; margin-top: 20px;">
-          <p style="margin: 5px 0;"><strong>Category:</strong> ${notice.category}</p>
-          <p style="margin: 5px 0;"><strong>Priority:</strong> ${notice.priority || 'Normal'}</p>
-          <p style="margin: 5px 0;"><strong>Posted by:</strong> ${notice.createdBy}</p>
-          <p style="margin: 5px 0;"><strong>Date:</strong> ${new Date().toLocaleString()}</p>
-        </div>
-        <div style="text-align: center; margin-top: 30px;">
-          <a href="${frontendUrl}/dashboard/notices" 
-             style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
-            View Notice
-          </a>
-        </div>
-      </div>
-      <div style="text-align: center; padding: 15px; background: #f9f9f9; border-radius: 0 0 10px 10px; color: #999; font-size: 12px;">
-        <p>This is an automated notification from PCIU Notice Board. Please do not reply to this email.</p>
-      </div>
-    </div>
-  `;
-  
-  console.log(`📧 Sending emails to ${emailAddresses.length} recipients...`);
-  
-  let emailResults;
-  if (emailAddresses.length > 100) {
-    emailResults = await sendIndividualEmails(emailAddresses, emailSubject, emailHtml);
-  } else {
-    emailResults = await sendBulkEmail(emailAddresses, emailSubject, emailHtml);
-  }
-  
-  const successCount = Array.isArray(emailResults) 
-    ? emailResults.filter(r => r.success).length 
-    : (emailResults.success ? emailAddresses.length : 0);
-  
-  console.log(`✅ Emails sent successfully to ${successCount} recipients`);
-  return { success: true, count: successCount };
-};
 
 // ============ ALL ROUTES ============
 
@@ -384,23 +328,7 @@ router.post("/recipients", async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-// TEST EMAIL ENDPOINT (remove in production)
-router.post("/test-email", async (req, res) => {
-  try {
-    const { email } = req.body;
-    const testRecipients = [{ email: email || process.env.EMAIL_USER }];
-    const testNotice = {
-      title: "Test Email",
-      description: "This is a test email from PCIU Notice Board.",
-      category: "Test",
-      createdBy: "System"
-    };
-    const result = await sendEmailNotifications(testRecipients, testNotice, "Test");
-    res.json({ success: true, result });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+
 
 // ============ STATIC FILES - MUST BE LAST ============
 router.use("/uploads", express.static(path.join(__dirname, "../uploads")));

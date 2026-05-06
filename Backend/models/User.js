@@ -1,6 +1,21 @@
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
+<<<<<<< HEAD
+  firebaseUid: { type: String, unique: true, sparse: true },
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  email: { type: String, required: true, unique: true }, // Only declare once!
+  password: { type: String },
+  phone: { type: String },
+  dob: { type: String },
+  role: { type: String, enum: ["student", "teacher", "staff"], default: "student" },
+  
+  // Student specific
+  studentId: { type: String, unique: true, sparse: true },
+  department: { type: String },
+  section: { type: String },
+=======
   firebaseUid: { 
     type: String, 
     unique: true, 
@@ -48,6 +63,7 @@ const UserSchema = new mongoose.Schema({
   section: { 
     type: String 
   },
+>>>>>>> 6df186236f605aea63b8a2fe8ad4d9c89714729b
   
   // Teacher specific
   teacherId: { 
@@ -66,6 +82,16 @@ const UserSchema = new mongoose.Schema({
     sparse: true 
   },
   
+<<<<<<< HEAD
+  // Email verification fields
+  verified: { type: Boolean, default: false },
+  verifyToken: String,
+  verifyExpiry: Date,
+  resetToken: String,
+  resetExpiry: Date,
+  
+  createdAt: { type: Date, default: Date.now },
+=======
   // Common fields
   profilePicture: {
     type: String,
@@ -88,6 +114,7 @@ const UserSchema = new mongoose.Schema({
   }
 }, {
   timestamps: true // This automatically manages createdAt and updatedAt
+>>>>>>> 6df186236f605aea63b8a2fe8ad4d9c89714729b
 });
 
 // Remove duplicate email field (line 27 had duplicate)
