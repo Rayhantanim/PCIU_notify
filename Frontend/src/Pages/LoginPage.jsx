@@ -6,6 +6,25 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 
+// Firebase imports
+import { initializeApp } from "firebase/app";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+
+// ACTUAL Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyBXod9G2nVE_mtBZ4E4I6OeRtfnz5MCBFA",
+  authDomain: "pciu-notify.firebaseapp.com",
+  projectId: "pciu-notify",
+  storageBucket: "pciu-notify.firebasestorage.app",
+  messagingSenderId: "617571879607",
+  appId: "1:617571879607:web:fa47059bf8335b0582db32",
+  measurementId: "G-72M0D6D1E1"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
 export default function LoginPage() {
   const API = "https://pciunotifybackend.onrender.com";
   const navigate = useNavigate();
@@ -18,7 +37,6 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   
-  // Real-time validation states
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isIdValid, setIsIdValid] = useState(true);
   const [checkingEmail, setCheckingEmail] = useState(false);
@@ -29,13 +47,9 @@ export default function LoginPage() {
   // Forgot password modal
   const [showForgotModal, setShowForgotModal] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
-  const [resetOtp, setResetOtp] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [otpSent, setOtpSent] = useState(false);
-  const [resetStep, setResetStep] = useState(1); // 1: email, 2: otp, 3: new password
+  const [resetError, setResetError] = useState("");
+  const [resetSuccess, setResetSuccess] = useState(false);
 
-  // Check if user is already logged in
   useEffect(() => {
     const token = localStorage.getItem("token");
     const userData = localStorage.getItem("user");
@@ -49,7 +63,6 @@ export default function LoginPage() {
     }
   }, []);
 
-  // Real-time email validation
   useEffect(() => {
     const checkEmailExists = async () => {
       if (!email || email.length < 5) {
@@ -83,7 +96,6 @@ export default function LoginPage() {
     return () => clearTimeout(timeoutId);
   }, [email]);
 
-  // Real-time ID validation
   useEffect(() => {
     const checkIdExists = async () => {
       if (!userId || userId.length < 5) {
@@ -111,7 +123,6 @@ export default function LoginPage() {
     return () => clearTimeout(timeoutId);
   }, [userId]);
 
-  // Format ID (CSE03108177 → CSE 031 08177)
   const formatId = (value) => {
     let cleaned = value.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
     let part1 = cleaned.slice(0, 3);
@@ -161,12 +172,10 @@ export default function LoginPage() {
       }
 
       const res = await axios.post(`${API}/api/login`, payload);
-      console.log("LOGIN RESPONSE:", res.data);
 
       if (res.data.success) {
         const user = res.data.user;
         
-        // Save complete user data to localStorage
         localStorage.setItem("token", res.data.token || res.data.accessToken);
         localStorage.setItem("userId", user.userId || user._id);
         localStorage.setItem("email", user.email);
@@ -178,7 +187,6 @@ export default function LoginPage() {
         localStorage.setItem("section", user.section || "");
         localStorage.setItem("studentId", user.studentId || user.userId || "");
         
-        // Store full user object
         localStorage.setItem("user", JSON.stringify({
           userId: user.userId || user._id,
           email: user.email,
@@ -198,196 +206,50 @@ export default function LoginPage() {
           showConfirmButton: false
         });
         
-        // Navigate based on role
         redirectBasedOnRole(user.role);
       } else {
-        setError(res.data.message || "Invalid credentials. Please try again.");
+        setError(res.data.message || "Invalid credentials.");
         toast.error(res.data.message || "Invalid credentials");
       }
     } catch (err) {
-      console.error("Login error:", err);
-      
-      if (err.response) {
-        const message = err.response.data?.message || "Login failed";
-        setError(message);
-        toast.error(message);
-      } else if (err.request) {
-        setError("Cannot connect to server. Please check if backend is running.");
-        toast.error("Server connection failed");
-      } else {
-        setError(err.message || "An error occurred");
-        toast.error(err.message || "Login failed");
-      }
+      const message = err.response?.data?.message || "Login failed";
+      setError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
   };
 
-
-  // In your handleForgotPassword function
-const handleForgotPassword = async () => {
-  if (!resetEmail) {
-    toast.error("Please enter your email address");
-    return;
-  }
-  
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(resetEmail)) {
-    toast.error("Please enter a valid email address");
-    return;
-  }
-  
-  setLoading(true);
-  try {
-    // Request OTP from backend (backend will send email)
-    const response = await axios.post(`${API}/api/forgot-password`, { 
-      email: resetEmail 
-    });
+  // Simple Firebase password reset function
+  const handleForgotPassword = async () => {
+    setResetError("");
+    setResetSuccess(false);
     
-    if (response.data.success) {
-      setOtpSent(true);
-      setResetStep(2);
-      toast.success("OTP sent to your email address");
-    } else {
-      toast.error(response.data.message || "Email not found");
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    toast.error(error.response?.data?.message || "Failed to process request");
-  } finally {
-    setLoading(false);
-  }
-};
-
-// Add resend OTP function
-const handleResendOtp = async () => {
-  setLoading(true);
-  try {
-    const response = await axios.post(`${API}/api/resend-otp`, { 
-      email: resetEmail 
-    });
-    
-    if (response.data.success) {
-      toast.success("New OTP sent to your email");
-    } else {
-      toast.error(response.data.message || "Failed to resend OTP");
-    }
-  } catch (error) {
-    toast.error("Failed to resend OTP");
-  } finally {
-    setLoading(false);
-  }
-};
-
-
-
-
-
-  // Forgot Password Handlers
-  const handleSendOtp = async () => {
     if (!resetEmail) {
-      toast.error("Please enter your email address");
-      return;
-    }
-    
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(resetEmail)) {
-      toast.error("Please enter a valid email address");
+      setResetError("Please enter your email address");
       return;
     }
     
     setLoading(true);
-    try {
-      const response = await axios.post(`${API}/api/forgot-password`, { email: resetEmail });
-      
-      if (response.data.success) {
-        setOtpSent(true);
-        setResetStep(2);
-        toast.success("OTP sent to your email address");
-      } else {
-        toast.error(response.data.message || "Email not found");
-      }
-    } catch (error) {
-      console.error("Error sending OTP:", error);
-      toast.error(error.response?.data?.message || "Failed to send OTP");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleVerifyOtp = async () => {
-    if (!resetOtp) {
-      toast.error("Please enter the OTP");
-      return;
-    }
     
-    setLoading(true);
     try {
-      const response = await axios.post(`${API}/api/verify-otp`, { 
-        email: resetEmail, 
-        otp: resetOtp 
+      await sendPasswordResetEmail(auth, resetEmail, {
+        url: 'https://pciu-notify.web.app/login', // Change to your actual domain
+        handleCodeInApp: true
       });
       
-      if (response.data.success) {
-        setResetStep(3);
-        toast.success("OTP verified! Please set your new password.");
-      } else {
-        toast.error(response.data.message || "Invalid OTP");
-      }
+      setResetSuccess(true);
+      toast.success("Reset link sent to your email!");
     } catch (error) {
-      console.error("Error verifying OTP:", error);
-      toast.error(error.response?.data?.message || "Failed to verify OTP");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleResetPassword = async () => {
-    if (!newPassword) {
-      toast.error("Please enter a new password");
-      return;
-    }
-    
-    if (newPassword.length < 6) {
-      toast.error("Password must be at least 6 characters");
-      return;
-    }
-    
-    if (newPassword !== confirmPassword) {
-      toast.error("Passwords do not match");
-      return;
-    }
-    
-    setLoading(true);
-    try {
-      const response = await axios.post(`${API}/api/reset-password`, {
-        email: resetEmail,
-        otp: resetOtp,
-        newPassword: newPassword
-      });
-      
-      if (response.data.success) {
-        Swal.fire({
-          title: "Password Reset Successful!",
-          text: "You can now login with your new password.",
-          icon: "success",
-          draggable: true
-        });
-        
-        // Close modal and reset states
-        setShowForgotModal(false);
-        setResetEmail("");
-        setResetOtp("");
-        setNewPassword("");
-        setConfirmPassword("");
-        setOtpSent(false);
-        setResetStep(1);
+      if (error.code === 'auth/user-not-found') {
+        setResetError("No account found with this email");
+      } else if (error.code === 'auth/invalid-email') {
+        setResetError("Please enter a valid email");
+      } else if (error.code === 'auth/too-many-requests') {
+        setResetError("Too many attempts. Try again later.");
       } else {
-        toast.error(response.data.message || "Failed to reset password");
+        setResetError("Failed to send reset email. Try again.");
       }
-    } catch (error) {
-      console.error("Error resetting password:", error);
-      toast.error(error.response?.data?.message || "Failed to reset password");
     } finally {
       setLoading(false);
     }
@@ -396,28 +258,22 @@ const handleResendOtp = async () => {
   const closeForgotModal = () => {
     setShowForgotModal(false);
     setResetEmail("");
-    setResetOtp("");
-    setNewPassword("");
-    setConfirmPassword("");
-    setOtpSent(false);
-    setResetStep(1);
+    setResetError("");
+    setResetSuccess(false);
   };
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
-      {/* Background */}
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: `url(${pciubg})` }}
       />
       <div className="absolute inset-0 bg-black/50"></div>
 
-      {/* Login Box */}
       <div className="relative z-10 h-full flex items-center justify-center">
         <div className="text-center text-white px-8 py-10 max-w-md w-full mx-4 rounded-2xl backdrop-blur-lg bg-white/10 border border-white/20 shadow-2xl">
           <h2 className="text-4xl font-bold mb-6">Login</h2>
 
-          {/* Toggle */}
           <div className="flex justify-center gap-4 mb-4">
             <button
               type="button"
@@ -457,7 +313,6 @@ const handleResendOtp = async () => {
           </div>
 
           <form onSubmit={handleLogin} className="flex flex-col gap-4">
-            {/* Email / ID with Real-time Validation */}
             {loginMode === "email" ? (
               <div className="relative">
                 <input
@@ -474,21 +329,6 @@ const handleResendOtp = async () => {
                       : "border-white/30 focus:ring-blue-400"
                   }`}
                 />
-                {checkingEmail && (
-                  <div className="absolute right-3 top-2">
-                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
-                  </div>
-                )}
-                {email && !checkingEmail && emailExists === false && (
-                  <p className="text-red-400 text-xs mt-1 text-left">
-                    Email not registered
-                  </p>
-                )}
-                {email && !checkingEmail && emailExists === true && (
-                  <p className="text-green-400 text-xs mt-1 text-left">
-                    Email verified ✓
-                  </p>
-                )}
               </div>
             ) : (
               <div className="relative">
@@ -507,25 +347,9 @@ const handleResendOtp = async () => {
                       : "border-white/30 focus:ring-blue-400"
                   }`}
                 />
-                {checkingId && (
-                  <div className="absolute right-3 top-2">
-                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
-                  </div>
-                )}
-                {userId && !checkingId && idExists === false && (
-                  <p className="text-red-400 text-xs mt-1 text-left">
-                    ID not registered
-                  </p>
-                )}
-                {userId && !checkingId && idExists === true && (
-                  <p className="text-green-400 text-xs mt-1 text-left">
-                    ID verified ✓
-                  </p>
-                )}
               </div>
             )}
 
-            {/* Password */}
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
@@ -544,14 +368,12 @@ const handleResendOtp = async () => {
               </button>
             </div>
 
-            {/* Error */}
             {error && (
               <span className="text-red-400 text-sm bg-red-400/10 px-3 py-2 rounded-lg">
                 {error}
               </span>
             )}
 
-            {/* Submit */}
             <button
               type="submit"
               disabled={loading || (loginMode === "email" ? emailExists !== true : idExists !== true)}
@@ -586,89 +408,45 @@ const handleResendOtp = async () => {
           <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-2xl font-bold text-gray-800">Reset Password</h3>
-              <button
-                onClick={closeForgotModal}
-                className="text-gray-400 hover:text-gray-600 text-2xl"
-              >
-                ×
-              </button>
+              <button onClick={closeForgotModal} className="text-gray-400 hover:text-gray-600 text-2xl">×</button>
             </div>
 
-            {resetStep === 1 && (
+            {resetError && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4 text-sm">
+                {resetError}
+              </div>
+            )}
+
+            {resetSuccess ? (
               <div>
-                <p className="text-gray-600 mb-4">
-                  Enter your registered email address to receive a password reset OTP.
-                </p>
+                <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-4">
+                  <p className="font-semibold mb-1">Email Sent! ✉️</p>
+                  <p className="text-sm">Check {resetEmail} for reset link.</p>
+                </div>
+                <button
+                  onClick={() => setResetSuccess(false)}
+                  className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+                >
+                  Try another email
+                </button>
+              </div>
+            ) : (
+              <div>
+                <p className="text-gray-600 mb-4">Enter your email to receive a password reset link.</p>
                 <input
                   type="email"
                   placeholder="Enter your email"
                   value={resetEmail}
                   onChange={(e) => setResetEmail(e.target.value)}
+                  disabled={loading}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
                 />
                 <button
-                  onClick={handleSendOtp}
-                  disabled={loading}
-                  className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
+                  onClick={handleForgotPassword}
+                  disabled={loading || !resetEmail}
+                  className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
                 >
-                  {loading ? "Sending..." : "Send OTP"}
-                </button>
-              </div>
-            )}
-
-            {resetStep === 2 && (
-              <div>
-                <p className="text-gray-600 mb-4">
-                  Enter the OTP sent to {resetEmail}
-                </p>
-                <input
-                  type="text"
-                  placeholder="Enter OTP"
-                  value={resetOtp}
-                  onChange={(e) => setResetOtp(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
-                />
-                <button
-                  onClick={handleVerifyOtp}
-                  disabled={loading}
-                  className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
-                >
-                  {loading ? "Verifying..." : "Verify OTP"}
-                </button>
-                <button
-                  onClick={() => setResetStep(1)}
-                  className="w-full mt-2 text-blue-600 text-sm hover:underline"
-                >
-                  Back to email
-                </button>
-              </div>
-            )}
-
-            {resetStep === 3 && (
-              <div>
-                <p className="text-gray-600 mb-4">
-                  Set your new password
-                </p>
-                <input
-                  type="password"
-                  placeholder="New password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-3"
-                />
-                <input
-                  type="password"
-                  placeholder="Confirm password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
-                />
-                <button
-                  onClick={handleResetPassword}
-                  disabled={loading}
-                  className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
-                >
-                  {loading ? "Resetting..." : "Reset Password"}
+                  {loading ? "Sending..." : "Send Reset Link"}
                 </button>
               </div>
             )}

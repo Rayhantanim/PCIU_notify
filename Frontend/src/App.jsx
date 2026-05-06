@@ -21,6 +21,7 @@ import HomePage from "./Pages/Home";
 import RoutineViewer from "./Components/routine/routine";
 import SocketProvider from "./Components/SocketProvider";
 import { useEffect, useState } from "react";
+import ResetPassword from "./Components/resetPassword";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -107,6 +108,9 @@ const App = () => {
             <LoginPage />
           } 
         />
+        
+  <Route path="/reset-password" element={<ResetPassword />} />
+
         
         {/* Protected Routes with DashboardLayout */}
         <Route path="dashboard" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
