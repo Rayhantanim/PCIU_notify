@@ -27,15 +27,9 @@ const ImportantNotice = () => {
   }, []);
 
   return (
-<<<<<<< HEAD
-    <div className="p-5 w-2/4 mx-auto">
-      <h2 className="text-2xl font-bold mb-4 text-red-600">
-        🚨 Important Notices
-=======
     <div className="p-5">
       <h2 className="text-2xl w-2/4 mx-auto font-bold mb-4 text-red-600 flex items-center gap-2">
         <span className=" text-3xl"><MdNotificationImportant/></span> Important Notices
->>>>>>> 6a932e7d10db58c57bd4022bfba8a6d2f7877a49
       </h2>
 
       {notices.length === 0 ? (
@@ -54,11 +48,7 @@ const ImportantNotice = () => {
               <p className="text-gray-700 mt-1">
                 {notice.description}
               </p>
-<<<<<<< HEAD
-              <div className="flex justify-between">
-=======
    <div className="flex justify-between items-center">
->>>>>>> 6a932e7d10db58c57bd4022bfba8a6d2f7877a49
               <div className="text-sm text-gray-500 mt-2">
                 Category: {notice.category} | Department: {notice.department}
               </div>

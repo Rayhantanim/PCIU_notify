@@ -48,7 +48,7 @@ console.log(data)
       </div>
 
       {/* 📊 Chart */}
-      <div className="bg-white/5 p-6 rounded-2xl border border-white/10">
+      <div className="bg-white p-6 rounded-2xl border border-white/10">
         <h2 className="text-lg font-semibold mb-4">
           Notice Activity (Last Days)
         </h2>
@@ -61,8 +61,8 @@ console.log(data)
 
 /* 🔹 Reusable Card Component */
 const Card = ({ title, value }) => (
-  <div className="p-4 bg-white/5 border border-white/10 rounded-xl text-center">
-    <h4 className="text-sm text-gray-400">{title}</h4>
+  <div className="p-4 bg-white border border-white rounded-xl text-center">
+    <h4 className="text-sm text-gray-900">{title}</h4>
     <p className="text-2xl font-bold">{value}</p>
   </div>
 );

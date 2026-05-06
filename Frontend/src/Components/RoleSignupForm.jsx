@@ -2,14 +2,17 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useAuth } from "../context/AuthContext";
 import Swal from "sweetalert2";
+import { sendEmailVerification } from "firebase/auth";
+import { getAuth } from "firebase/auth";
+import app from "../Firebase/Firebase.init";
+import useAuth from "../Hooks/useAuth";
 
 export default function RoleSignupForm({ role = "student", goBack }) {
-  // const API = "http://localhost:5000";
   const API = "https://pciunotifybackend.onrender.com";
-  const { signup } = useAuth();
+  const { userRegister, updateUserProfile } = useAuth();
   const navigate = useNavigate();
+  const auth = getAuth(app);
   
   const [formData, setFormData] = useState({
     firstName: "",
@@ -136,10 +139,10 @@ export default function RoleSignupForm({ role = "student", goBack }) {
     }
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  
- // Validation checks
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Validation checks
     if (formData.password !== formData.confirmPassword) {
       toast.error("Passwords do not match ❌");
       return;
@@ -161,181 +164,113 @@ const handleSubmit = async (e) => {
     }
 
     setLoading(true);
-  
-  try {
-    // Save user data directly to MongoDB (no Firebase)
-    const userData = {
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      email: formData.email,
-      phone: formData.phone,
-      dob: formData.dob,
-      role: role,
-      department: formData.department || undefined,
-      section: formData.section || undefined,
-      studentId: role === "student" ? formData.studentId : undefined,
-      teacherId: role === "teacher" ? formData.teacherId : undefined,
-      staffId: role === "staff" ? formData.staffId : undefined,
-      shortName: role === "teacher" ? formData.shortName : undefined,
-      password: formData.password, // Make sure to hash this on backend
-    };
+    
+    try {
+      // 1. Create user in Firebase Authentication
+      console.log("Step 1: Creating Firebase user...");
+      const userCredential = await userRegister(formData.email, formData.password);
+      console.log("✅ Firebase user created:", userCredential.user.uid);
 
-    const res = await fetch(`${API}/api/register`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(userData),
-    });
+      // 2. Update profile with name
+      console.log("Step 2: Updating profile...");
+      await updateUserProfile(`${formData.firstName} ${formData.lastName}`, null);
+      console.log("✅ Profile updated");
 
-    const data = await res.json();
+      // 3. Send email verification
+      console.log("Step 3: Sending verification email...");
+      await sendEmailVerification(userCredential.user);
+      console.log("✅ Verification email sent");
 
-    if (!res.ok) {
-      toast.error(data.message || "Error saving user data");
-      return;
+      // 4. Save additional user data to MongoDB
+      console.log("Step 4: Saving to MongoDB...");
+      const userData = {
+        firebaseUid: userCredential.user.uid,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        dob: formData.dob,
+        role: role,
+        department: formData.department || undefined,
+        section: formData.section || undefined,
+        studentId: role === "student" ? formData.studentId : undefined,
+        teacherId: role === "teacher" ? formData.teacherId : undefined,
+        staffId: role === "staff" ? formData.staffId : undefined,
+        shortName: role === "teacher" ? formData.shortName : undefined,
+        verified: false,
+      };
+
+      console.log("Sending to MongoDB:", userData);
+
+      const res = await fetch(`${API}/api/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData),
+      });
+
+      const data = await res.json();
+      console.log("MongoDB response:", data);
+
+      if (!res.ok) {
+        console.error("MongoDB save error:", data.message);
+        toast.error(data.message || "Error saving user data");
+        // Don't return here - user already created in Firebase
+        // Just show warning but continue
+        toast.warning("Account created but some data couldn't be saved. Please contact support.");
+      } else {
+        console.log("✅ MongoDB save successful");
+      }
+
+      // Save to localStorage
+      localStorage.setItem("userId", userCredential.user.uid);
+      localStorage.setItem("email", formData.email);
+      localStorage.setItem("firstName", formData.firstName);
+      localStorage.setItem("lastName", formData.lastName);
+      localStorage.setItem("fullName", `${formData.firstName} ${formData.lastName}`);
+      localStorage.setItem("role", role);
+
+      // Show success message
+      Swal.fire({
+        title: "Registration Successful!",
+        text: "Please check your email to verify your account before logging in.",
+        icon: "success",
+        confirmButtonText: "OK"
+      }).then(() => {
+        navigate("/login");
+      });
+
+    } catch (err) {
+      console.error("Signup error:", err);
+      
+      // Handle specific errors
+      if (err.code) {
+        // Firebase errors
+        switch (err.code) {
+          case "auth/email-already-in-use":
+            toast.error("This email is already registered");
+            setEmailAvailable(false);
+            break;
+          case "auth/invalid-email":
+            toast.error("Invalid email address");
+            break;
+          case "auth/weak-password":
+            toast.error("Password is too weak. Please choose a stronger password");
+            break;
+          case "auth/network-request-failed":
+            toast.error("Network error. Please check your connection");
+            break;
+          default:
+            toast.error(err.message || "Signup failed. Please try again");
+        }
+      } else if (err.message) {
+        toast.error(err.message);
+      } else {
+        toast.error("An unexpected error occurred. Please try again.");
+      }
+    } finally {
+      setLoading(false);
     }
-
-    // Save to localStorage
-    localStorage.setItem("userId", data.userId || data.user?.id);
-    localStorage.setItem("email", formData.email);
-    localStorage.setItem("firstName", formData.firstName);
-    localStorage.setItem("lastName", formData.lastName);
-    localStorage.setItem("fullName", `${formData.firstName} ${formData.lastName}`);
-    localStorage.setItem("role", role);
-
-    Swal.fire({
-      title: "Signup Successfully!",
-      icon: "success",
-      draggable: true
-    });
-
-    // Navigate based on role
-    if (role === "student") {
-      navigate("/dashboard/overview");
-    } else if (role === "teacher") {
-      navigate("/dashboard/dashboardindex");
-    } else if (role === "staff") {
-      navigate("/dashboard/view");
-    }
-
-  } catch (err) {
-    console.error("Signup error:", err);
-    toast.error(err.message || "Signup failed. Please try again");
-  } finally {
-    setLoading(false);
-  }
-};
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   // Validation checks
-  //   if (formData.password !== formData.confirmPassword) {
-  //     toast.error("Passwords do not match ❌");
-  //     return;
-  //   }
-
-  //   if (!Object.values(passwordValid).every(Boolean)) {
-  //     toast.error("Password does not meet requirements ⚠️");
-  //     return;
-  //   }
-
-  //   if (emailAvailable === false) {
-  //     toast.error("Email already taken ❌");
-  //     return;
-  //   }
-
-  //   if (emailValid === false) {
-  //     toast.error("Please enter a valid email ⚠️");
-  //     return;
-  //   }
-
-  //   setLoading(true);
-
-  //   try {
-  //     // 1. Create user in Firebase Authentication
-  //     const userCredential = await signup(
-  //       formData.email,
-  //       formData.password,
-  //       formData.firstName,
-  //       formData.lastName,
-  //       role
-  //     );
-
-  //     // 2. Save additional user data to MongoDB
-  //     const userData = {
-  //       firebaseUid: userCredential.user.uid,
-  //       firstName: formData.firstName,
-  //       lastName: formData.lastName,
-  //       email: formData.email,
-  //       phone: formData.phone,
-  //       dob: formData.dob,
-  //       role: role,
-  //       department: formData.department || undefined,
-  //       section: formData.section || undefined,
-  //       studentId: role === "student" ? formData.studentId : undefined,
-  //       teacherId: role === "teacher" ? formData.teacherId : undefined,
-  //       staffId: role === "staff" ? formData.staffId : undefined,
-  //       shortName: role === "teacher" ? formData.shortName : undefined,
-  //     };
-
-  //     const res = await fetch(`${API}/api/register`, {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify(userData),
-  //     });
-
-  //     const data = await res.json();
-
-  //     if (!res.ok) {
-  //       // If MongoDB save fails, we should still have Firebase user
-  //       console.error("MongoDB save error:", data.message);
-  //       toast.error(data.message || "Error saving user data");
-  //       return;
-  //     }
-
-  //     // Save to localStorage
-  //     localStorage.setItem("userId", userCredential.user.uid);
-  //     localStorage.setItem("email", formData.email);
-  //     localStorage.setItem("firstName", formData.firstName);
-  //     localStorage.setItem("lastName", formData.lastName);
-  //     localStorage.setItem("fullName", `${formData.firstName} ${formData.lastName}`);
-  //     localStorage.setItem("role", role);
-
-  //     toast.success("Signup successful! 🎉");
-
-  //     // Navigate based on role
-  //     if (role === "student") {
-  //       navigate("/dashboard/overview");
-  //     } else if (role === "teacher") {
-  //       navigate("/dashboard/dashboardindex");
-  //     } else if (role === "staff") {
-  //       navigate("/dashboard/view");
-  //     }
-
-  //   } catch (err) {
-  //     console.error("Signup error:", err);
-
-  //     // Handle Firebase auth errors
-  //     switch (err.code) {
-  //       case "auth/email-already-in-use":
-  //         toast.error("This email is already registered");
-  //         setEmailAvailable(false);
-  //         break;
-  //       case "auth/invalid-email":
-  //         toast.error("Invalid email address");
-  //         break;
-  //       case "auth/weak-password":
-  //         toast.error("Password is too weak. Please choose a stronger password");
-  //         break;
-  //       case "auth/network-request-failed":
-  //         toast.error("Network error. Please check your connection");
-  //         break;
-  //       default:
-  //         toast.error(err.message || "Signup failed. Please try again");
-  //     }
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+  };
 
   const availableSections = sectionsByDepartment[formData.department] || [];
   const glassSelect = "flex-1 px-4 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-white shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition";

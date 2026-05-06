@@ -239,7 +239,7 @@ Swal.fire({
           <div className="flex-1">
             <div className="flex items-center gap-2 flex-wrap">
               <p className="font-semibold text-gray-800">"{notice.title}"</p>
-              {notice.isPinned && <span className="text-xl text-red-600 "><RiPushpinLine/> </span>}
+              {notice.isPinned && <span className="text-sm text-red-600 ">📌  </span>}
               {notice.priority && (
                 <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 capitalize">
                   {notice.priority}
