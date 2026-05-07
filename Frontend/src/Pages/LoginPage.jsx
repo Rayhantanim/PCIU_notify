@@ -10,8 +10,8 @@ import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import app from "../Firebase/Firebase.init"; // Import the already initialized Firebase app
 
 export default function LoginPage() {
-  const API = "https://pciunotifybackend.onrender.com";
-  // const API = "http://localhost:5000";
+  // const API = "https://pciunotifybackend.onrender.com";
+  const API = "http://localhost:5000";
   const navigate = useNavigate();
   const { userLogin, userLogOut } = useAuth();
 
@@ -80,8 +80,7 @@ export default function LoginPage() {
         return;
       }
       
-      // Step 3: Get user data from backend
-      // Step 3: Get user data from backend
+// Step 3: Get user data from backend
 console.log("Fetching user from backend for email:", email);
 const response = await axios.post(`${API}/api/login`, {
   email: email
