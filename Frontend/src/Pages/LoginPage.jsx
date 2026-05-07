@@ -10,8 +10,8 @@ import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import app from "../Firebase/Firebase.init"; // Import the already initialized Firebase app
 
 export default function LoginPage() {
-  // const API = "https://pciunotifybackend.onrender.com";
-  const API = "http://localhost:5000";
+  const API = "https://pciunotifybackend.onrender.com";
+  // const API = "http://localhost:5000";
   const navigate = useNavigate();
   const { userLogin, userLogOut } = useAuth();
 
