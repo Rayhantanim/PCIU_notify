@@ -268,20 +268,22 @@ router.post("/login", async (req, res) => {
     }
 
     // Check password
-    if (user.password && password) {
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) {
-        return res.status(401).json({ 
-          success: false,
-          message: "Invalid credentials" 
-        });
-      }
-    } else if (!user.password && user.firebaseUid) {
-      return res.status(400).json({ 
-        success: false,
-        message: "Please use Firebase authentication" 
-      });
-    }
+    // Check password
+if (user.password && password) {
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    return res.status(401).json({ 
+      success: false,
+      message: "Invalid credentials" 
+    });
+  }
+} else if (!user.password && user.firebaseUid) {
+} else if (!password) {
+  return res.status(400).json({ 
+    success: false,
+    message: "Password is required" 
+  });
+}
 
     // Update last login
     user.lastLogin = new Date();

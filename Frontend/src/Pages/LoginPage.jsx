@@ -14,8 +14,7 @@ export default function LoginPage() {
   const API = "http://localhost:5000";
   const navigate = useNavigate();
   const { userLogin, userLogOut } = useAuth();
-  
-  // Use the existing Firebase auth instance from your Firebase.init
+
   const auth = getAuth(app);
 
   const [email, setEmail] = useState("");
@@ -82,43 +81,43 @@ export default function LoginPage() {
       }
       
       // Step 3: Get user data from backend
-      console.log("Fetching user from backend for email:", email);
-      const response = await axios.post(`${API}/api/login`, {
-        email: email
-      });
-      
-      console.log("Backend response:", response.data);
-      
-      if (response.data.success) {
-        const user = response.data.user;
-        
-        localStorage.setItem("userId", user._id);
-        localStorage.setItem("email", user.email);
-        localStorage.setItem("firstName", user.firstName);
-        localStorage.setItem("lastName", user.lastName);
-        localStorage.setItem("fullName", `${user.firstName} ${user.lastName}`);
-        localStorage.setItem("role", user.role);
-        localStorage.setItem("firebaseUid", userCredential.user.uid);
-        localStorage.setItem("token", userCredential.user.accessToken || "firebase-token");
+      // Step 3: Get user data from backend
+console.log("Fetching user from backend for email:", email);
+const response = await axios.post(`${API}/api/login`, {
+  email: email
+});
 
-        Swal.fire({
-          title: `Welcome back, ${user.firstName}!`,
-          icon: "success",
-          timer: 1500,
-          showConfirmButton: false
-        });
+console.log("Backend response:", response.data);
 
-        // Navigate based on role
-        if (user.role === "student") {
-          navigate("/dashboard/overview");
-        } else if (user.role === "teacher") {
-          navigate("/dashboard/dashboardindex");
-        } else if (user.role === "staff") {
-          navigate("/dashboard/staffnotice"); // Fixed: Changed from "/dashboard/view" to "/dashboard/staffnotice"
-        } else {
-          navigate("/");
-        }
-      }
+if (response.data.success) {
+  const user = response.data.user;  // ✅ only one 'user'
+
+  localStorage.setItem("userId", user._id);
+  localStorage.setItem("email", user.email);
+  localStorage.setItem("firstName", user.firstName);
+  localStorage.setItem("lastName", user.lastName);
+  localStorage.setItem("fullName", `${user.firstName} ${user.lastName}`);
+  localStorage.setItem("role", user.role);
+  localStorage.setItem("firebaseUid", userCredential.user.uid);
+  localStorage.setItem("token", userCredential.user.accessToken || "firebase-token");
+
+  Swal.fire({
+    title: `Welcome back, ${user.firstName}!`,
+    icon: "success",
+    timer: 1500,
+    showConfirmButton: false
+  });
+
+  if (user.role === "student") {
+    navigate("/dashboard/overview");
+  } else if (user.role === "teacher") {
+    navigate("/dashboard/dashboardindex");
+  } else if (user.role === "staff") {
+    navigate("/dashboard/staffnotice");
+  } else {
+    navigate("/");
+  }
+}
     } catch (err) {
       console.error("Login error:", err);
       console.log("Error response:", err.response?.data);
