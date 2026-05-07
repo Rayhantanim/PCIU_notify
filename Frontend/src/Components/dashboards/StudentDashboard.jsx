@@ -32,7 +32,7 @@ export default function StudentDashboard() {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      const API = "https://pciunotifybackend.onrender.com";
+      const API = "http://localhost:5000";
       // Fetch all notices from your backend
       const noticesRes = await axios.get(`${API}/api/notices`);
       

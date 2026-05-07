@@ -15,7 +15,7 @@ export default function RealTimeNotification() {
   const [isInitialized, setIsInitialized] = useState(false);
 
   // const API = "http://localhost:5000";
-  const API = "https://pciunotifybackend.onrender.com";
+  const API = "http://localhost:5000";
 
   // Fetch existing notifications
   useEffect(() => {

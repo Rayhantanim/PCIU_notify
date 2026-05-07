@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 const AllStaff = () => {
   const [staffs, setStaffs] = useState([]);
   const [loading, setLoading] = useState(true);
-  // const API = "https://pciunotifybackend.onrender.com";
+  // const API = "http://localhost:5000";
     const API = "http://localhost:5000";
 
   useEffect(() => {

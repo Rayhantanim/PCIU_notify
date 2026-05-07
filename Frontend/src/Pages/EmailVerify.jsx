@@ -6,7 +6,7 @@ export default function EmailVerify() {
   const [message, setMessage] = useState('Verifying...');
   const [isError, setIsError] = useState(false);
   const navigate = useNavigate();
-  const API = "https://pciunotifybackend.onrender.com";
+  const API = "http://localhost:5000";
 
   useEffect(() => {
     fetch(`${API}/api/verify-email?token=${searchParams.get('token')}`)

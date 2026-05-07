@@ -12,7 +12,7 @@ export default function Notification() {
   const [socket, setSocket] = useState(null);
 
   // const API = "http://localhost:5000";
-  const API = "https://pciunotifybackend.onrender.com";
+  const API = "http://localhost:5000";
   // Fetch initial notifications
   useEffect(() => {
     fetchNotifications();

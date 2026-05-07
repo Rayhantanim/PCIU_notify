@@ -1,5 +1,5 @@
 // services/noticeService.js
-const API = "https://pciunotifybackend.onrender.com";
+const API = "http://localhost:5000";
 
 export const noticeService = {
   // Like a notice
