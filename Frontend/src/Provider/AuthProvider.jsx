@@ -10,7 +10,7 @@ import {
   GoogleAuthProvider
 } from "firebase/auth";
 import app from "../Firebase/Firebase.init";
-import useaxiosPublic from "../Hooks/useAxiosPublic";
+import useaxiosPublic from "../Hooks/useaxiosPublic";
 
 export const AuthContext = createContext();
 
