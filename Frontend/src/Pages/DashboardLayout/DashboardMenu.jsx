@@ -70,6 +70,82 @@ const DashboardMenu = () => {
               <h1 className='text-xl font-bold shadow-2xl'>PCIU NOTIFY</h1>
             </div>
 
+            {/* admin*/}
+            {role === "admin" && (
+              <div>
+                <NavLink 
+                  to='/dashboard/adminoverview' 
+                  className={({ isActive }) => 
+                    `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+                  }
+                >
+                  <div className='flex justify-start items-center gap-4 w-full'>     
+                    <img className='w-10 h-10' src="https://www.svgrepo.com/show/459022/dashboard.svg" alt="" />
+                    <h1 className='text-xl'>OverView</h1>
+                  </div>
+                </NavLink>
+
+                <NavLink 
+                  to="/dashboard/usermanagement"
+                  className={({ isActive }) => 
+                    `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+                  }
+                >
+                  <div className='flex justify-start items-center gap-4 w-full'>     
+                    <img className='w-10 h-10' src="https://www.pngmart.com/files/8/Notice-PNG-Picture.png" alt="" />
+                    <h1 className='text-xl'>User Management</h1>
+                  </div>
+                </NavLink>
+
+                <NavLink 
+                  to="/dashboard/noticemanagement"
+                  className={({ isActive }) => 
+                    `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+                  }
+                >
+                  <div className='flex justify-start items-center gap-4 w-full'>     
+                    <img className='w-10 h-10' src="https://cdn-icons-png.freepik.com/256/18610/18610294.png?semt=ais_white_label" alt="" />
+                    <h1 className='text-xl'>Notice Management</h1>
+                  </div>
+                </NavLink>
+
+                <NavLink 
+                  to="/dashboard/departmentmanagement"
+                  className={({ isActive }) => 
+                    `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+                  }
+                >
+                  <div className='flex justify-start items-center gap-4 w-full'>     
+                    <img className='w-10 h-10' src="https://icons.veryicon.com/png/o/internet--web/billion-square-cloud/department-1.png" alt="" />
+                    <h1 className='text-xl'>Department Management</h1>
+                  </div>
+                </NavLink>
+
+                <NavLink 
+                  to="/dashboard/allteacher"
+                  className={({ isActive }) => 
+                    `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+                  }
+                >
+                  <div className='flex justify-start items-center gap-4 w-full'>     
+                    <img className='w-10 h-10' src="https://cdn-icons-png.flaticon.com/512/1373/1373779.png" alt="" />
+                    <h1 className='text-xl'>Teacher</h1>
+                  </div>
+                </NavLink>
+
+                <NavLink 
+                  to="/dashboard/settings"
+                  className={({ isActive }) => 
+                    `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+                  }
+                >
+                  <div className='flex justify-start items-center gap-4 w-full'>     
+                    <img className='w-10 h-10' src="https://cdn-icons-png.flaticon.com/512/3524/3524659.png" alt="" />
+                    <h1 className='text-xl'>Settings</h1>
+                  </div>
+                </NavLink>
+              </div>
+            )}
             {/* student */}
             {role === "student" && (
               <div>
@@ -148,7 +224,7 @@ const DashboardMenu = () => {
             )}
 
             {/* teacher */}
-            {role === "teacher" && (
+            {/* {role === "teacher" && (
               <div>
                 <NavLink 
                   to='/dashboard/dashboardindex' 
@@ -223,7 +299,7 @@ const DashboardMenu = () => {
                   </div>
                 </NavLink>
               </div>
-            )}
+            )} */}
 
             {/* staff */}
             {role === "staff" && (

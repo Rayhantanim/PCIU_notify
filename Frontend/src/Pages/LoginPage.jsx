@@ -113,7 +113,10 @@ if (response.data.success) {
     navigate("/dashboard/dashboardindex");
   } else if (user.role === "staff") {
     navigate("/dashboard/staffnotice");
-  } else {
+  } else if (user.role === "admin") {
+    navigate("/dashboard/adminoverview");
+  } 
+  else {
     navigate("/");
   }
 }

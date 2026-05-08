@@ -33,7 +33,7 @@ const UserSchema = new mongoose.Schema({
   },
   role: { 
     type: String, 
-    enum: ["student", "teacher", "staff"], 
+    enum: ["student", "teacher", "staff", "admin"], 
     default: "student" 
   },
   
@@ -88,7 +88,23 @@ const UserSchema = new mongoose.Schema({
   },
   lastLogin: {
     type: Date
-  }
+  },
+isActive: {
+  type: Boolean,
+  default: true
+},
+deactivatedAt: {
+  type: Date,
+  default: null
+},
+resetToken: {
+  type: String,
+  default: null
+},
+resetExpiry: {
+  type: Date,
+  default: null
+}
 }, {
   timestamps: true  // Automatically adds createdAt and updatedAt
 });
