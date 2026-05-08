@@ -14,7 +14,7 @@ export default function TeacherDashboard() {
   });
   const [loading, setLoading] = useState(true);
 
-  const API = "http://localhost:5000";
+  const API = "https://pciunotifybackend.onrender.com";
 
   // Get user info from localStorage
   const firstName = localStorage.getItem("firstName") || "";

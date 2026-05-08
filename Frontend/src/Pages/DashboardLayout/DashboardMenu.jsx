@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import logo from '../../assets/pciulogo.png'
 import { Link, NavLink } from 'react-router-dom'
 
 const DashboardMenu = () => {
   const [role, setRole] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const sidebarRef = useRef(null);
 
   useEffect(() => {
     const userRole = localStorage.getItem("role");
@@ -12,30 +13,87 @@ const DashboardMenu = () => {
     setRole(userRole);
   }, []);
 
+  // Handle click outside to close sidebar
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target) && 
+          !event.target.closest('button')) {
+        setIsSidebarOpen(false);
+      }
+    };
+
+    if (isSidebarOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      // Prevent body scroll when sidebar is open on mobile
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isSidebarOpen]);
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
   // Common class for menu items
-  const menuItemClass = "flex justify-start items-center gap-4 py-2 px-6 rounded m-10 shadow-2xl cursor-pointer transition-all hover:shadow-lg";
+  const menuItemClass = "flex justify-start items-center gap-4 py-3 px-6 rounded-xl m-3 cursor-pointer transition-all duration-200 hover:bg-blue-50 hover:shadow-md";
   
   // Active class for NavLink
-  const activeClass = "bg-blue-600 text-white";
-  const inactiveClass = "text-black border-[#3578f5] hover:bg-blue-100";
+  const activeClass = "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg";
+  const inactiveClass = "text-gray-700 hover:text-blue-600";
+
+  // Define menu items based on role
+  const getMenuItems = () => {
+    const menuItems = {
+      student: [
+        { path: '/dashboard/overview', label: 'Overview', icon: 'https://www.svgrepo.com/show/459022/dashboard.svg' },
+        { path: '/dashboard/stuNotices', label: 'All Notices', icon: 'https://www.pngmart.com/files/8/Notice-PNG-Picture.png' },
+        { path: '/dashboard/impnotices', label: 'Important Notices', icon: 'https://cdn-icons-png.freepik.com/256/18610/18610294.png?semt=ais_white_label' },
+        { path: '/dashboard/allstudent', label: 'Students', icon: 'https://icons.veryicon.com/png/o/internet--web/billion-square-cloud/department-1.png' },
+        { path: '/dashboard/allteacher', label: 'Teacher', icon: 'https://cdn-icons-png.flaticon.com/512/1373/1373779.png' },
+        { path: '/dashboard/settings', label: 'Settings', icon: 'https://cdn-icons-png.flaticon.com/512/3524/3524659.png' }
+      ],
+      teacher: [
+        { path: '/dashboard/dashboardindex', label: 'Dashboard', icon: 'https://www.svgrepo.com/show/459022/dashboard.svg' },
+        { path: '/dashboard/allnotices', label: 'All Notices', icon: 'https://www.pngmart.com/files/8/Notice-PNG-Picture.png' },
+        { path: '/dashboard/impnotices', label: 'Important Notices', icon: 'https://cdn-icons-png.freepik.com/256/18610/18610294.png?semt=ais_white_label' },
+        { path: '/dashboard/department', label: 'Department', icon: 'https://icons.veryicon.com/png/o/internet--web/billion-square-cloud/department-1.png' },
+        { path: '/dashboard/routine', label: 'Routine', icon: 'https://cdn-icons-png.flaticon.com/512/1373/1373779.png' },
+        { path: '/profile', label: 'Home', icon: 'https://cdn-icons-png.flaticon.com/512/3524/3524659.png' }
+      ],
+      staff: [
+        { path: '/dashboard/view', label: 'Overview', icon: 'https://www.svgrepo.com/show/459022/dashboard.svg' },
+        { path: '/dashboard/staffnotice', label: 'All Notices', icon: 'https://www.pngmart.com/files/8/Notice-PNG-Picture.png' },
+        { path: '/dashboard/allstudent', label: 'Students', icon: 'https://icons.veryicon.com/png/o/internet--web/billion-square-cloud/department-1.png' },
+        { path: '/dashboard/allteacher', label: 'Teacher', icon: 'https://cdn-icons-png.flaticon.com/512/1373/1373779.png' },
+        { path: '/dashboard/allstaff', label: 'Staff', icon: 'https://cdn-icons-png.flaticon.com/512/1373/1373779.png' }
+      ]
+    };
+
+    return menuItems[role] || [];
+  };
+
+  const menuItems = getMenuItems();
 
   return (
     <div className='relative'>
       {/* Toggle button with hamburger menu icon */}
       <button 
         onClick={toggleSidebar}
-        className={`fixed top-4 z-50 p-2 rounded-lg bg-white shadow-lg hover:bg-gray-100 transition-all duration-300 ${
-          isSidebarOpen ? 'left-[460px]' : 'left-4'
+        className={`fixed top-20 z-50 p-2.5 rounded-xl bg-white shadow-lg hover:bg-gray-100 transition-all duration-300 hover:shadow-xl ${
+          isSidebarOpen ? 'left-[320px]' : 'left-4'
         }`}
+        aria-label={isSidebarOpen ? 'Close menu' : 'Open menu'}
       >
         {isSidebarOpen ? (
           // X icon when sidebar is open
           <svg 
-            className="w-6 h-6 text-gray-700" 
+            className="w-5 h-5 text-gray-700" 
             fill="currentColor" 
             viewBox="0 0 20 20"
           >
@@ -45,10 +103,8 @@ const DashboardMenu = () => {
           // Hamburger menu icon when sidebar is closed
           <svg 
             xmlns="http://www.w3.org/2000/svg" 
-            x="0px" 
-            y="0px" 
-            width="24" 
-            height="24" 
+            width="20" 
+            height="20" 
             viewBox="0 0 50 50"
             className="text-gray-700"
           >
@@ -59,261 +115,106 @@ const DashboardMenu = () => {
 
       {/* Sidebar with slide animation */}
       <div 
+        ref={sidebarRef}
         className={`fixed left-0 top-0 h-full transition-all duration-300 ease-in-out z-40 ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div className='min-h-screen text-black'>
-          <div className='w-[450px] min-h-screen bg-white shadow-2xl rounded-r-xl overflow-y-auto'>
-            <div className='flex justify-start gap-10 items-center p-6'>
-              <img className='w-10 h-10' src={logo} alt="" />
-              <h1 className='text-xl font-bold shadow-2xl'>PCIU NOTIFY</h1>
+        <div className='h-full text-black'>
+          <div className='w-[300px] md:w-[320px] h-full bg-gradient-to-b from-white to-gray-50 shadow-2xl rounded-r-2xl flex flex-col'>
+            {/* Header */}
+            <div className='flex justify-start gap-3 items-center p-6 border-b border-gray-200'>
+              <img className='w-10 h-10 object-contain' src={logo} alt="PCIU Logo" />
+              <h1 className='text-lg font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent'>
+                PCIU NOTIFY
+              </h1>
             </div>
 
-            {/* student */}
-            {role === "student" && (
-              <div>
-                <NavLink 
-                  to='/dashboard/overview' 
-                  className={({ isActive }) => 
-                    `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
-                  }
-                >
-                  <div className='flex justify-start items-center gap-4 w-full'>     
-                    <img className='w-10 h-10' src="https://www.svgrepo.com/show/459022/dashboard.svg" alt="" />
-                    <h1 className='text-xl'>OverView</h1>
-                  </div>
-                </NavLink>
+            {/* Menu Items with scrolling */}
+            <div className='flex-1 overflow-y-auto custom-scrollbar py-4'>
+              {role && menuItems.length > 0 ? (
+                <div className='space-y-1'>
+                  {menuItems.map((item) => (
+                    <NavLink 
+                      key={item.path}
+                      to={item.path} 
+                      onClick={() => {
+                        // Close sidebar on mobile when link is clicked
+                        if (window.innerWidth < 768) {
+                          setIsSidebarOpen(false);
+                        }
+                      }}
+                      className={({ isActive }) => 
+                        `${menuItemClass} ${isActive ? activeClass : inactiveClass} transform transition-all duration-200 ${
+                          isActive ? 'scale-105' : 'hover:translate-x-1'
+                        }`
+                      }
+                    >
+                      <div className='flex justify-start items-center gap-4 w-full'>
+                        <div className={`w-10 h-10 flex items-center justify-center rounded-lg transition-all duration-200 ${
+                          ({ isActive }) => isActive ? 'bg-white bg-opacity-20' : 'bg-gray-100'
+                        }`}>
+                          <img className='w-6 h-6 object-contain' src={item.icon} alt={item.label} />
+                        </div>
+                        <h1 className='text-base font-medium'>{item.label}</h1>
+                      </div>
+                    </NavLink>
+                  ))}
+                </div>
+              ) : (
+                <div className='text-center text-gray-500 mt-10'>
+                  No menu items available
+                </div>
+              )}
+            </div>
 
-                <NavLink 
-                  to="/dashboard/stuNotices"
-                  className={({ isActive }) => 
-                    `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
-                  }
-                >
-                  <div className='flex justify-start items-center gap-4 w-full'>     
-                    <img className='w-10 h-10' src="https://www.pngmart.com/files/8/Notice-PNG-Picture.png" alt="" />
-                    <h1 className='text-xl'>All Notices</h1>
-                  </div>
-                </NavLink>
-
-                <NavLink 
-                  to="/dashboard/impnotices"
-                  className={({ isActive }) => 
-                    `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
-                  }
-                >
-                  <div className='flex justify-start items-center gap-4 w-full'>     
-                    <img className='w-10 h-10' src="https://cdn-icons-png.freepik.com/256/18610/18610294.png?semt=ais_white_label" alt="" />
-                    <h1 className='text-xl'>Important Notices</h1>
-                  </div>
-                </NavLink>
-
-                <NavLink 
-                  to="/dashboard/allstudent"
-                  className={({ isActive }) => 
-                    `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
-                  }
-                >
-                  <div className='flex justify-start items-center gap-4 w-full'>     
-                    <img className='w-10 h-10' src="https://icons.veryicon.com/png/o/internet--web/billion-square-cloud/department-1.png" alt="" />
-                    <h1 className='text-xl'>Students</h1>
-                  </div>
-                </NavLink>
-
-                <NavLink 
-                  to="/dashboard/allteacher"
-                  className={({ isActive }) => 
-                    `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
-                  }
-                >
-                  <div className='flex justify-start items-center gap-4 w-full'>     
-                    <img className='w-10 h-10' src="https://cdn-icons-png.flaticon.com/512/1373/1373779.png" alt="" />
-                    <h1 className='text-xl'>Teacher</h1>
-                  </div>
-                </NavLink>
-
-                <NavLink 
-                  to="/dashboard/settings"
-                  className={({ isActive }) => 
-                    `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
-                  }
-                >
-                  <div className='flex justify-start items-center gap-4 w-full'>     
-                    <img className='w-10 h-10' src="https://cdn-icons-png.flaticon.com/512/3524/3524659.png" alt="" />
-                    <h1 className='text-xl'>Settings</h1>
-                  </div>
-                </NavLink>
+            {/* Footer - optional */}
+            <div className='p-4 border-t border-gray-200'>
+              <div className='text-xs text-gray-500 text-center'>
+                © 2024 PCIU NOTIFY
               </div>
-            )}
-
-            {/* teacher */}
-            {role === "teacher" && (
-              <div>
-                <NavLink 
-                  to='/dashboard/dashboardindex' 
-                  end
-                  className={({ isActive }) => 
-                    `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
-                  }
-                >
-                  <div className='flex justify-start items-center gap-4 w-full'>     
-                    <img className='w-10 h-10' src="https://www.svgrepo.com/show/459022/dashboard.svg" alt="" />
-                    <h1 className='text-xl'>Dashboard</h1>
-                  </div>
-                </NavLink>
-
-                <NavLink 
-                  to="/dashboard/allnotices"
-                  className={({ isActive }) => 
-                    `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
-                  }
-                >
-                  <div className='flex justify-start items-center gap-4 w-full'>     
-                    <img className='w-10 h-10' src="https://www.pngmart.com/files/8/Notice-PNG-Picture.png" alt="" />
-                    <h1 className='text-xl'>All Notices</h1>
-                  </div>
-                </NavLink>
-
-                <NavLink 
-                  to="/dashboard/impnotices"
-                  className={({ isActive }) => 
-                    `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
-                  }
-                >
-                  <div className='flex justify-start items-center gap-4 w-full'>     
-                    <img className='w-10 h-10' src="https://cdn-icons-png.freepik.com/256/18610/18610294.png?semt=ais_white_label" alt="" />
-                    <h1 className='text-xl'>Important Notices</h1>
-                  </div>
-                </NavLink>
-
-                <NavLink 
-                  to="/dashboard/department"
-                  className={({ isActive }) => 
-                    `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
-                  }
-                >
-                  <div className='flex justify-start items-center gap-4 w-full'>     
-                    <img className='w-10 h-10' src="https://icons.veryicon.com/png/o/internet--web/billion-square-cloud/department-1.png" alt="" />
-                    <h1 className='text-xl'>Department</h1>
-                  </div>
-                </NavLink>
-
-                <NavLink 
-                  to="/dashboard/routine"
-                  className={({ isActive }) => 
-                    `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
-                  }
-                >
-                  <div className='flex justify-start items-center gap-4 w-full'>     
-                    <img className='w-10 h-10' src="https://cdn-icons-png.flaticon.com/512/1373/1373779.png" alt="" />
-                    <h1 className='text-xl'>Routine</h1>
-                  </div>
-                </NavLink>
-
-                <NavLink 
-                  to="/profile"
-                  className={({ isActive }) => 
-                    `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
-                  }
-                >
-                  <div className='flex justify-start items-center gap-4 w-full'>     
-                    <img className='w-10 h-10' src="https://cdn-icons-png.flaticon.com/512/3524/3524659.png" alt="" />
-                    <h1 className='text-xl'>Home</h1>
-                  </div>
-                </NavLink>
-              </div>
-            )}
-
-            {/* staff */}
-            {role === "staff" && (
-              <div>
-                <NavLink 
-                  to='/dashboard/view' 
-                  className={({ isActive }) => 
-                    `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
-                  }
-                >
-                  <div className='flex justify-start items-center gap-4 w-full'>     
-                    <img className='w-10 h-10' src="https://www.svgrepo.com/show/459022/dashboard.svg" alt="" />
-                    <h1 className='text-xl'>OverView</h1>
-                  </div>
-                </NavLink>
-
-                <NavLink 
-                  to="/dashboard/staffnotice"
-                  className={({ isActive }) => 
-                    `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
-                  }
-                >
-                  <div className='flex justify-start items-center gap-4 w-full'>     
-                    <img className='w-10 h-10' src="https://www.pngmart.com/files/8/Notice-PNG-Picture.png" alt="" />
-                    <h1 className='text-xl'>All Notices</h1>
-                  </div>
-                </NavLink>
-
-                <NavLink 
-                  to="/dashboard/allstudent"
-                  className={({ isActive }) => 
-                    `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
-                  }
-                >
-                  <div className='flex justify-start items-center gap-4 w-full'>     
-                    <img className='w-10 h-10' src="https://icons.veryicon.com/png/o/internet--web/billion-square-cloud/department-1.png" alt="" />
-                    <h1 className='text-xl'>Students</h1>
-                  </div>
-                </NavLink>
-
-                <NavLink 
-                  to="/dashboard/allteacher"
-                  className={({ isActive }) => 
-                    `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
-                  }
-                >
-                  <div className='flex justify-start items-center gap-4 w-full'>     
-                    <img className='w-10 h-10' src="https://cdn-icons-png.flaticon.com/512/1373/1373779.png" alt="" />
-                    <h1 className='text-xl'>Teacher</h1>
-                  </div>
-                </NavLink>
-
-                <NavLink 
-                  to="/dashboard/allstaff"
-                  className={({ isActive }) => 
-                    `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
-                  }
-                >
-                  <div className='flex justify-start items-center gap-4 w-full'>     
-                    <img className='w-10 h-10' src="https://cdn-icons-png.flaticon.com/512/1373/1373779.png" alt="" />
-                    <h1 className='text-xl'>Staff</h1>
-                  </div>
-                </NavLink>
-
-                {/* <NavLink 
-                  to="/profile"
-                  className={({ isActive }) => 
-                    `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
-                  }
-                >
-                  <div className='flex justify-start items-center gap-4 w-full'>     
-                    <img className='w-10 h-10' src="https://cdn-icons-png.flaticon.com/512/3524/3524659.png" alt="" />
-                    <h1 className='text-xl'>Home</h1>
-                  </div>
-                </NavLink> */}
-              </div>
-            )}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Overlay when sidebar is open (optional - for mobile) */}
+      {/* Overlay when sidebar is open - only for mobile */}
       {isSidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden backdrop-blur-sm transition-all duration-300"
           onClick={toggleSidebar}
         />
       )}
     </div>
   )
+}
+
+// Add custom scrollbar styles to your global CSS or add here
+const styles = `
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+`;
+
+// Inject styles if needed (optional)
+if (typeof document !== 'undefined') {
+  const styleSheet = document.createElement("style");
+  styleSheet.textContent = styles;
+  document.head.appendChild(styleSheet);
 }
 
 export default DashboardMenu

@@ -4,7 +4,7 @@ const AllTeacher = () => {
   const [teachers, setTeachers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const API = "http://localhost:5000";
+  const API = "https://pciunotifybackend.onrender.com";
 
   useEffect(() => {
     const fetchTeachers = async () => {

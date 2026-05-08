@@ -7,7 +7,7 @@ import emailjs from '@emailjs/browser';
 emailjs.init("KeX8QThOfya4pR79L");
 
 export default function NoticeForm({ handleClose, userRole }) {
-  const API = "http://localhost:5000";
+  const API = "https://pciunotifybackend.onrender.com";
   const editorRef = useRef(null);
 
   const initialState = {

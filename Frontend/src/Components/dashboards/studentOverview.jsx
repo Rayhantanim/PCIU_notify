@@ -32,7 +32,7 @@ const StudentOverview = () => {
   const [loadingClasses, setLoadingClasses] = useState(true);
   const [classError, setClassError] = useState(null);
 
-  const API = "http://localhost:5000";
+  const API = "https://pciunotifybackend.onrender.com";
 
   // Get current student from localStorage/session
   const [currentStudent, setCurrentStudent] = useState({
