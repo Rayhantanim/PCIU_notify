@@ -8,7 +8,7 @@ import { IoPeopleSharp } from "react-icons/io5";
 import Swal from 'sweetalert2';
 
 export default function StaffNotice() {
-  const API = "http://localhost:5000";
+  const API = "https://pciunotifybackend.onrender.com";
   const [open, setOpen] = useState(false);
   const [notices, setNotices] = useState([]);
   const [myNotices, setMyNotices] = useState([]);

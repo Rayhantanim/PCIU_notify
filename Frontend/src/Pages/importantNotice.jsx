@@ -4,7 +4,7 @@ import { MdNotificationImportant } from "react-icons/md";
 
 const ImportantNotice = () => {
   const [notices, setNotices] = useState([]);
-  const API = "http://localhost:5000";
+  const API = "https://pciunotifybackend.onrender.com";
 
   useEffect(() => {
     const fetchNotices = async () => {
