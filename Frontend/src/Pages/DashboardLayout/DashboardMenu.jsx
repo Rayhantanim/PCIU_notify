@@ -46,6 +46,33 @@ const DashboardMenu = () => {
   const activeClass = "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg";
   const inactiveClass = "text-gray-700 hover:text-blue-600";
 
+  // // Define menu items based on role
+  // const getMenuItems = () => {
+  //   const menuItems = {
+  //     student: [
+  //       { path: '/dashboard/overview', label: 'Overview', icon: 'https://www.svgrepo.com/show/459022/dashboard.svg' },
+  //       { path: '/dashboard/allnotices', label: 'All Notices', icon: 'https://www.pngmart.com/files/8/Notice-PNG-Picture.png' },
+  //       { path: '/dashboard/impnotices', label: 'Important Notices', icon: 'https://cdn-icons-png.freepik.com/256/18610/18610294.png?semt=ais_white_label' },
+  //       // { path: '/dashboard/allstudent', label: 'Students', icon: 'https://icons.veryicon.com/png/o/internet--web/billion-square-cloud/department-1.png' },
+  //       // { path: '/dashboard/allteacher', label: 'Teacher', icon: 'https://cdn-icons-png.flaticon.com/512/1373/1373779.png' },
+  //       { path: '/dashboard/settings', label: 'Settings', icon: 'https://cdn-icons-png.flaticon.com/512/3524/3524659.png' }
+  //     ],
+  //     teacher: [
+  //       { path: '/dashboard/dashboardindex', label: 'Dashboard', icon: 'https://www.svgrepo.com/show/459022/dashboard.svg' },
+  //       { path: '/dashboard/allnotices', label: 'All Notices', icon: 'https://www.pngmart.com/files/8/Notice-PNG-Picture.png' },
+  //       { path: '/dashboard/impnotices', label: 'Important Notices', icon: 'https://cdn-icons-png.freepik.com/256/18610/18610294.png?semt=ais_white_label' },
+  //       { path: '/dashboard/department', label: 'Department', icon: 'https://icons.veryicon.com/png/o/internet--web/billion-square-cloud/department-1.png' },
+  //       { path: '/dashboard/routine', label: 'Routine', icon: 'https://cdn-icons-png.flaticon.com/512/1373/1373779.png' },
+  //       { path: '/profile', label: 'Home', icon: 'https://cdn-icons-png.flaticon.com/512/3524/3524659.png' }
+  //     ],
+  //     staff: [
+  //       { path: '/dashboard/view', label: 'Overview', icon: 'https://www.svgrepo.com/show/459022/dashboard.svg' },
+  //       { path: '/dashboard/staffnotice', label: 'All Notices', icon: 'https://www.pngmart.com/files/8/Notice-PNG-Picture.png' },
+  //       { path: '/dashboard/allstudent', label: 'Students', icon: 'https://icons.veryicon.com/png/o/internet--web/billion-square-cloud/department-1.png' },
+  //       { path: '/dashboard/allteacher', label: 'Teacher', icon: 'https://cdn-icons-png.flaticon.com/512/1373/1373779.png' },
+  //       { path: '/dashboard/allstaff', label: 'Staff', icon: 'https://cdn-icons-png.flaticon.com/512/1373/1373779.png' }
+  //     ]
+  //   };
   // Render menu items based on role
   const renderMenuItems = () => {
     // Admin Menu
@@ -126,8 +153,6 @@ const DashboardMenu = () => {
         </div>
       );
     }
-
-    // Student Menu - FIXED: Added all student menu items
     if (role === "student") {
       return (
         <div className="space-y-1">
@@ -144,7 +169,7 @@ const DashboardMenu = () => {
           </NavLink>
 
           <NavLink 
-            to="/dashboard/stuNotices"
+            to="/dashboard/allnotices"
             className={({ isActive }) => 
               `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
             }
@@ -406,7 +431,7 @@ const DashboardMenu = () => {
             {/* Footer */}
             <div className='p-4 border-t border-gray-200'>
               <div className='text-xs text-gray-500 text-center'>
-                © 2024 PCIU NOTIFY
+                © 2026 PCIU NOTIFY
               </div>
             </div>
           </div>
@@ -455,4 +480,4 @@ if (typeof document !== 'undefined') {
   }
 }
 
-export default DashboardMenu
+export default DashboardMenu;

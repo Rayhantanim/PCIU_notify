@@ -1,5 +1,6 @@
 // components/NoticeModal.jsx
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const NoticeModal = ({ 
   notice, 
@@ -14,6 +15,17 @@ const NoticeModal = ({
   const [modalComment, setModalComment] = useState('');
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editingText, setEditingText] = useState('');
+  const [localLikes, setLocalLikes] = useState(0);
+  const [localComments, setLocalComments] = useState([]);
+  const [hasLiked, setHasLiked] = useState(false);
+
+  // Initialize local state from notice prop
+  React.useEffect(() => {
+    if (notice) {
+      setLocalLikes(notice.likes || 0);
+      setLocalComments(notice.comments || []);
+    }
+  }, [notice]);
 
   if (!isOpen || !notice) return null;
 
@@ -37,21 +49,46 @@ const NoticeModal = ({
 
     if (diffMins < 1) return 'Just now';
     if (diffMins < 60) return `${diffMins} min ago`;
-    if (diffHours < 24) return `${diffHours} hour ago`;
-    if (diffDays < 7) return `${diffDays} day ago`;
+    if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+    if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
     return formatDate(dateString);
   };
 
-  const handleLike = () => {
+  const handleLike = async () => {
+    if (hasLiked) {
+      toast.info("You already liked this notice");
+      return;
+    }
+    
     if (onLike) {
-      onLike(notice._id);
+      setHasLiked(true);
+      setLocalLikes(prev => prev + 1);
+      await onLike(notice._id);
     }
   };
 
-  const handleCommentSubmit = () => {
+  const handleCommentSubmit = async () => {
     if (modalComment.trim() && onCommentSubmit) {
-      onCommentSubmit(notice._id, modalComment);
+      const newComment = {
+        _id: Date.now().toString(),
+        text: modalComment.trim(),
+        userName: currentUser?.name || 'Anonymous',
+        userEmail: currentUser?.email,
+        userId: currentUser?.userId,
+        createdAt: new Date().toISOString()
+      };
+      
+      // Optimistic update
+      setLocalComments(prev => [...prev, newComment]);
       setModalComment('');
+      
+      try {
+        await onCommentSubmit(notice._id, modalComment.trim());
+      } catch (error) {
+        // Revert on error
+        setLocalComments(prev => prev.filter(c => c._id !== newComment._id));
+        toast.error("Failed to post comment");
+      }
     }
   };
 
@@ -63,7 +100,7 @@ const NoticeModal = ({
   };
 
   const startEdit = (comment, index) => {
-    setEditingCommentId(index);
+    setEditingCommentId(comment._id || index);
     setEditingText(comment.text);
   };
 
@@ -72,10 +109,28 @@ const NoticeModal = ({
     setEditingText('');
   };
 
-  const saveEdit = (commentId, index) => {
+  const saveEdit = async (commentId, index) => {
     if (editingText.trim() && onCommentEdit) {
-      onCommentEdit(notice._id, commentId, editingText.trim());
-      cancelEdit();
+      // Optimistic update
+      setLocalComments(prev => prev.map(comment => 
+        (comment._id === commentId || index === comment._id) 
+          ? { ...comment, text: editingText.trim(), editedAt: new Date().toISOString() }
+          : comment
+      ));
+      
+      try {
+        await onCommentEdit(notice._id, commentId, editingText.trim());
+        cancelEdit();
+      } catch (error) {
+        // Revert on error
+        const originalComment = (notice.comments || []).find(c => c._id === commentId);
+        if (originalComment) {
+          setLocalComments(prev => prev.map(comment => 
+            (comment._id === commentId) ? originalComment : comment
+          ));
+        }
+        toast.error("Failed to edit comment");
+      }
     }
   };
 
@@ -86,18 +141,35 @@ const NoticeModal = ({
     }
   };
 
-  const handleDelete = (commentId) => {
-    if (onCommentDelete && window.confirm('Are you sure you want to delete this comment?')) {
-      onCommentDelete(notice._id, commentId);
+  const handleDelete = async (commentId) => {
+    if (window.confirm('Are you sure you want to delete this comment?')) {
+      // Optimistic update
+      setLocalComments(prev => prev.filter(comment => comment._id !== commentId));
+      
+      try {
+        await onCommentDelete(notice._id, commentId);
+      } catch (error) {
+        // Revert on error
+        const deletedComment = (notice.comments || []).find(c => c._id === commentId);
+        if (deletedComment) {
+          setLocalComments(prev => [...prev, deletedComment]);
+        }
+        toast.error("Failed to delete comment");
+      }
     }
   };
 
   const isOwnComment = (comment) => {
     if (!currentUser) return false;
-    // Check if comment author matches current user
     return comment.userId === currentUser.userId || 
            comment.userEmail === currentUser.email ||
            comment.userName === currentUser.name;
+  };
+
+  // Render HTML content safely
+  const renderContent = () => {
+    const content = notice.description || notice.content || 'No content available';
+    return { __html: content };
   };
 
   return (
@@ -106,7 +178,7 @@ const NoticeModal = ({
       onClick={onClose}
     >
       <div 
-        className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[85vh] overflow-hidden" 
+        className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[85vh] overflow-hidden" 
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
@@ -119,7 +191,7 @@ const NoticeModal = ({
               notice.category === 'Holiday' ? 'bg-orange-100 text-orange-700' :
               'bg-gray-100 text-gray-700'
             }`}>
-              {notice.category}
+              {notice.category || 'General'}
             </span>
             {notice.isPinned && (
               <span className="bg-yellow-100 text-yellow-700 text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1">
@@ -170,13 +242,26 @@ const NoticeModal = ({
                 <span>{notice.section}</span>
               </div>
             )}
+            {notice.department && (
+              <div className="flex items-center gap-2 text-sm text-gray-500">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+                <span>{notice.department}</span>
+              </div>
+            )}
           </div>
           
-          {/* Description/Content */}
+          {/* Description/Content - Using dangerouslySetInnerHTML to preserve formatting */}
           <div className="prose max-w-none mb-6">
-            <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
-              {notice.description || notice.content || 'No content available'}
-            </p>
+            <div 
+              className="text-gray-700 leading-relaxed notice-content"
+              dangerouslySetInnerHTML={renderContent()}
+              style={{ 
+                wordBreak: 'break-word',
+                lineHeight: '1.6'
+              }}
+            />
           </div>
           
           {/* Attachment if exists */}
@@ -203,18 +288,21 @@ const NoticeModal = ({
           <div className="flex items-center gap-6 mb-6 pt-2 border-t border-gray-100">
             <button
               onClick={handleLike}
-              className="flex items-center gap-2 text-gray-600 hover:text-red-500 transition-colors duration-200 group"
+              disabled={hasLiked}
+              className={`flex items-center gap-2 transition-colors duration-200 group ${
+                hasLiked ? 'text-red-500' : 'text-gray-600 hover:text-red-500'
+              }`}
             >
-              <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className={`w-5 h-5 transition-transform group-hover:scale-110 ${hasLiked ? 'fill-red-500' : ''}`} fill={hasLiked ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
               </svg>
-              <span className="font-medium">{notice.likes || 0} Likes</span>
+              <span className="font-medium">{localLikes} Likes</span>
             </button>
             <div className="flex items-center gap-2 text-gray-600">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
-              <span className="font-medium">{notice.comments?.length || 0} Comments</span>
+              <span className="font-medium">{localComments.length} Comments</span>
             </div>
           </div>
           
@@ -224,29 +312,29 @@ const NoticeModal = ({
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
-              Comments
+              Comments ({localComments.length})
             </h4>
             
             <div className="space-y-3 mb-4 max-h-48 overflow-y-auto">
-              {(notice.comments || []).length === 0 ? (
+              {localComments.length === 0 ? (
                 <p className="text-gray-400 text-sm italic">No comments yet. Be the first to comment!</p>
               ) : (
-                (notice.comments || []).map((comment, idx) => (
+                localComments.map((comment, idx) => (
                   <div key={comment._id || idx} className="bg-gray-50 rounded-lg p-3">
-                    {editingCommentId === idx ? (
+                    {editingCommentId === (comment._id || idx) ? (
                       // Edit mode
                       <div className="space-y-2">
                         <textarea
                           value={editingText}
                           onChange={(e) => setEditingText(e.target.value)}
-                          onKeyPress={(e) => handleEditKeyPress(e, comment._id || idx, idx)}
+                          onKeyPress={(e) => handleEditKeyPress(e, comment._id, idx)}
                           className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                           rows="2"
                           autoFocus
                         />
                         <div className="flex gap-2">
                           <button
-                            onClick={() => saveEdit(comment._id || idx, idx)}
+                            onClick={() => saveEdit(comment._id, idx)}
                             className="px-3 py-1 bg-blue-500 text-white text-sm rounded-lg hover:bg-blue-600 transition"
                           >
                             Save
@@ -264,7 +352,7 @@ const NoticeModal = ({
                       <>
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
+                            <div className="flex items-center gap-2 mb-1 flex-wrap">
                               <span className="font-semibold text-sm text-gray-800">
                                 {comment.userName || comment.userEmail || 'Anonymous'}
                               </span>
@@ -277,7 +365,9 @@ const NoticeModal = ({
                                 </span>
                               )}
                             </div>
-                            <p className="text-gray-700 text-sm">{comment.text}</p>
+                            <p className="text-gray-700 text-sm whitespace-pre-wrap break-words">
+                              {comment.text}
+                            </p>
                           </div>
                           {isOwnComment(comment) && (
                             <div className="flex items-center gap-1 ml-2">
@@ -291,7 +381,7 @@ const NoticeModal = ({
                                 </svg>
                               </button>
                               <button
-                                onClick={() => handleDelete(comment._id || idx)}
+                                onClick={() => handleDelete(comment._id)}
                                 className="text-gray-400 hover:text-red-500 transition p-1"
                                 title="Delete comment"
                               >

@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
-  const API = "https://pciunotifybackend.onrender.com";
+  const API = "http://localhost:5000";
 
   const handleSubmit = async (e) => {
     e.preventDefault();

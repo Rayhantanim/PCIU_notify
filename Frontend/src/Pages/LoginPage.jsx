@@ -91,6 +91,11 @@ console.log("Backend response:", response.data);
 if (response.data.success) {
   const user = response.data.user;  // ✅ only one 'user'
 
+  //======================
+  localStorage.removeItem("user");
+  localStorage.setItem("user", JSON.stringify(user));
+  //===============================
+
   localStorage.setItem("userId", user._id);
   localStorage.setItem("email", user.email);
   localStorage.setItem("firstName", user.firstName);

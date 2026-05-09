@@ -7,7 +7,7 @@ export default function ResetPass() {
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const navigate = useNavigate();
-  const API = "https://pciunotifybackend.onrender.com";
+  const API = "http://localhost:5000";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
