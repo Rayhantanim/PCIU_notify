@@ -232,6 +232,90 @@ router.get("/verify-email", async (req, res) => {
 });
 
 // ==================== LOGIN ====================
+// router.post("/login", async (req, res) => {
+//   try {
+//     const { email, password, id } = req.body;
+
+//     let user;
+    
+//     // Find user by email or ID
+//     if (id) {
+//       const cleanId = id.replace(/\s/g, "");
+//       user = await User.findOne({ 
+//         $or: [
+//           { studentId: cleanId },
+//           { teacherId: cleanId },
+//           { staffId: cleanId }
+//         ]
+//       });
+//     } else if (email) {
+//       user = await User.findOne({ email: email.toLowerCase() });
+//     }
+
+//     if (!user) {
+//       return res.status(401).json({ 
+//         success: false,
+//         message: "Invalid credentials" 
+//       });
+//     }
+
+//     // Check if user is active
+//     if (user.isActive === false) {
+//       return res.status(401).json({ 
+//         success: false,
+//         message: "Your account has been deactivated. Please contact admin." 
+//       });
+//     }
+
+//     // Check password
+//     // Check password
+// if (user.password && password) {
+//   const isMatch = await bcrypt.compare(password, user.password);
+//   if (!isMatch) {
+//     return res.status(401).json({ 
+//       success: false,
+//       message: "Invalid credentials" 
+//     });
+//   }
+// } else if (!user.password && user.firebaseUid) {
+// } else if (!password) {
+//   return res.status(400).json({ 
+//     success: false,
+//     message: "Password is required" 
+//   });
+// }
+
+//     // Update last login
+//     user.lastLogin = new Date();
+//     await user.save();
+
+//     res.json({
+//       success: true,
+//       user: {
+//         _id: user._id,
+//         firebaseUid: user.firebaseUid,
+//         firstName: user.firstName,
+//         lastName: user.lastName,
+//         email: user.email,
+//         role: user.role,
+//         department: user.department,
+//         section: user.section,
+//         studentId: user.studentId,
+//         teacherId: user.teacherId,
+//         staffId: user.staffId,
+//         phone: user.phone,
+//         dob: user.dob,
+//       }
+//     });
+//   } catch (error) {
+//     console.error("Login error:", error);
+//     res.status(500).json({ 
+//       success: false,
+//       message: error.message 
+//     });
+//   }
+// });
+// In routes/auth.js - Login route
 router.post("/login", async (req, res) => {
   try {
     const { email, password, id } = req.body;
@@ -259,8 +343,8 @@ router.post("/login", async (req, res) => {
       });
     }
 
-    // Check if user is active
-    if (user.isActive === false) {
+    // Check if user is active (admin can always login)
+    if (user.role !== 'admin' && user.isActive === false) {
       return res.status(401).json({ 
         success: false,
         message: "Your account has been deactivated. Please contact admin." 
@@ -277,7 +361,6 @@ router.post("/login", async (req, res) => {
         });
       }
     } else if (!user.password && user.firebaseUid) {
-      // Firebase user - no password check needed
     } else if (!password) {
       return res.status(400).json({ 
         success: false,
@@ -297,7 +380,7 @@ router.post("/login", async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        role: user.role,
+        role: user.role, // Now includes 'admin'
         department: user.department,
         section: user.section,
         studentId: user.studentId,
@@ -607,6 +690,64 @@ router.get("/staffs", async (req, res) => {
   }
 });
 
+// ==================== CREATE ADMIN USER ====================
+router.post("/create-admin", async (req, res) => {
+  try {
+    const { email, password, firstName, lastName } = req.body;
+    
+    // Check if admin already exists
+    const existingAdmin = await User.findOne({ role: 'admin' });
+    if (existingAdmin) {
+      return res.status(400).json({
+        success: false,
+        message: "Admin user already exists"
+      });
+    }
+    
+    // Check if email already exists
+    const existingUser = await User.findOne({ email: email?.toLowerCase() });
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "Email already registered"
+      });
+    }
+    
+    // Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    
+    const adminUser = new User({
+      firstName: firstName || 'Admin',
+      lastName: lastName || 'User',
+      email: email?.toLowerCase(),
+      password: hashedPassword,
+      role: 'admin',
+      verified: true,
+      isActive: true
+    });
+    
+    await adminUser.save();
+    
+    res.status(201).json({
+      success: true,
+      message: "Admin user created successfully",
+      user: {
+        _id: adminUser._id,
+        firstName: adminUser.firstName,
+        lastName: adminUser.lastName,
+        email: adminUser.email,
+        role: adminUser.role
+      }
+    });
+  } catch (err) {
+    console.error("Create admin error:", err);
+    res.status(500).json({
+      success: false,
+      message: err.message
+    });
+  }
+});
 // ==================== GET ALL USERS ====================
 router.get("/users", async (req, res) => {
   try {
@@ -617,5 +758,6 @@ router.get("/users", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
 
 module.exports = router;

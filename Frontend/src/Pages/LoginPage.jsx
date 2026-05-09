@@ -11,7 +11,7 @@ import app from "../Firebase/Firebase.init"; // Import the already initialized F
 
 export default function LoginPage() {
   const API = "http://localhost:5000";
-  // const API = "http://localhost:5000";
+  // const API = "https://pciunotifybackend.onrender.com";
   const navigate = useNavigate();
   const { userLogin, userLogOut } = useAuth();
 
@@ -118,7 +118,10 @@ if (response.data.success) {
     navigate("/dashboard/dashboardindex");
   } else if (user.role === "staff") {
     navigate("/dashboard/staffnotice");
-  } else {
+  } else if (user.role === "admin") {
+    navigate("/dashboard/adminoverview");
+  } 
+  else {
     navigate("/");
   }
 }

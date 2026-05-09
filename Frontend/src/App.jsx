@@ -21,6 +21,10 @@ import SocketProvider from "./Components/SocketProvider";
 import { useEffect, useState } from "react";
 import ResetPassword from "./Components/resetPassword";
 import AllStaff from "./Pages/AllStaff";
+import AdminDashboard from "./Components/dashboards/AdminDashboard";
+import NoticeManagement from "./Components/NoticeManagement";
+import DepartmentManagement from "./Components/DepartmentManagement";
+import AdminOverView from "./Components/AdminOverView";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -112,12 +116,52 @@ const App = () => {
 
         {/* Protected Routes with DashboardLayout */}
         <Route path="dashboard" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
+          {/* admin */}
+
+        <Route 
+            path="adminoverview" 
+            element={
+              <RoleBasedRoute allowedRoles={["admin"]}>
+                <AdminOverView />
+                
+              </RoleBasedRoute>
+            } 
+            />
+         <Route 
+            path="usermanagement" 
+            element={
+              <RoleBasedRoute allowedRoles={["admin"]}>
+                <AdminDashboard />
+                
+              </RoleBasedRoute>
+            } 
+            />
+         <Route 
+            path="noticemanagement" 
+            element={
+              <RoleBasedRoute allowedRoles={["admin"]}>
+                <NoticeManagement />
+                
+              </RoleBasedRoute>
+            } 
+            />
+         <Route 
+            path="departmentmanagement" 
+            element={
+              <RoleBasedRoute allowedRoles={["admin"]}>
+                <DepartmentManagement />
+                
+              </RoleBasedRoute>
+            } 
+            />
+
           {/* Teacher only */}
           <Route 
             path="dashboardindex" 
             element={
               <RoleBasedRoute allowedRoles={["teacher"]}>
                 <TeacherDashboard />
+                
               </RoleBasedRoute>
             } 
           />
@@ -152,7 +196,7 @@ const App = () => {
           <Route 
             path="impnotices" 
             element={
-              <RoleBasedRoute allowedRoles={["student"]}>
+              <RoleBasedRoute allowedRoles={["student","teacher"]}>
                 <ImportantNotice />
               </RoleBasedRoute>
             } 
@@ -196,7 +240,7 @@ const App = () => {
           <Route 
             path="allteacher" 
             element={
-              <RoleBasedRoute allowedRoles={["admin", "staff"]}>
+              <RoleBasedRoute allowedRoles={["admin", "staff","teacher"]}>
                 <AllTeacher />
               </RoleBasedRoute>
             } 
