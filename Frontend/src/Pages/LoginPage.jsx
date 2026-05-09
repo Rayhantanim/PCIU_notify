@@ -10,8 +10,8 @@ import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import app from "../Firebase/Firebase.init"; // Import the already initialized Firebase app
 
 export default function LoginPage() {
-  const API = "https://pciunotifybackend.onrender.com";
-  // const API = "https://pciunotifybackend.onrender.com";
+  const API = "http://localhost:5000";
+  // const API = "http://localhost:5000";
   const navigate = useNavigate();
   const { userLogin, userLogOut } = useAuth();
 
@@ -90,6 +90,11 @@ console.log("Backend response:", response.data);
 
 if (response.data.success) {
   const user = response.data.user;  // ✅ only one 'user'
+
+  //======================
+  localStorage.removeItem("user");
+  localStorage.setItem("user", JSON.stringify(user));
+  //===============================
 
   localStorage.setItem("userId", user._id);
   localStorage.setItem("email", user.email);

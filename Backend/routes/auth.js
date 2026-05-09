@@ -268,22 +268,22 @@ router.post("/login", async (req, res) => {
     }
 
     // Check password
-    // Check password
-if (user.password && password) {
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) {
-    return res.status(401).json({ 
-      success: false,
-      message: "Invalid credentials" 
-    });
-  }
-} else if (!user.password && user.firebaseUid) {
-} else if (!password) {
-  return res.status(400).json({ 
-    success: false,
-    message: "Password is required" 
-  });
-}
+    if (user.password && password) {
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        return res.status(401).json({ 
+          success: false,
+          message: "Invalid credentials" 
+        });
+      }
+    } else if (!user.password && user.firebaseUid) {
+      // Firebase user - no password check needed
+    } else if (!password) {
+      return res.status(400).json({ 
+        success: false,
+        message: "Password is required" 
+      });
+    }
 
     // Update last login
     user.lastLogin = new Date();
@@ -305,6 +305,9 @@ if (user.password && password) {
         staffId: user.staffId,
         phone: user.phone,
         dob: user.dob,
+        bio: user.bio || "",
+        address: user.address || "",
+        createdAt: user.createdAt,
       }
     });
   } catch (error) {
@@ -312,6 +315,229 @@ if (user.password && password) {
     res.status(500).json({ 
       success: false,
       message: error.message 
+    });
+  }
+});
+
+// ==================== UPDATE USER PROFILE ====================
+// ==================== UPDATE USER PROFILE ====================
+router.put("/user/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const updates = req.body;
+    
+    console.log("Updating user:", userId);
+    console.log("Update data:", updates);
+    
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ 
+        success: false,
+        message: "User not found" 
+      });
+    }
+    
+    // Update allowed fields
+    if (updates.firstName !== undefined) user.firstName = updates.firstName;
+    if (updates.lastName !== undefined) user.lastName = updates.lastName;
+    if (updates.phone !== undefined) user.phone = updates.phone;
+    if (updates.dob !== undefined) user.dob = updates.dob;
+    if (updates.department !== undefined) user.department = updates.department;
+    if (updates.section !== undefined && user.role === "student") user.section = updates.section;
+    if (updates.shortName !== undefined && user.role === "teacher") user.shortName = updates.shortName;
+    
+    user.updatedAt = new Date();
+    await user.save();
+    
+    // Return updated user without sensitive data
+    const updatedUser = {
+      _id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      role: user.role,
+      department: user.department,
+      section: user.section,
+      studentId: user.studentId,
+      teacherId: user.teacherId,
+      staffId: user.staffId,
+      phone: user.phone,
+      dob: user.dob,
+      shortName: user.shortName,
+    };
+    
+    res.json({
+      success: true,
+      message: "Profile updated successfully",
+      user: updatedUser
+    });
+    
+  } catch (err) {
+    console.error("Update user error:", err);
+    res.status(500).json({ 
+      success: false,
+      message: err.message 
+    });
+  }
+});
+
+// ==================== CHANGE PASSWORD ====================
+// router.post("/change-password", async (req, res) => {
+//   try {
+//     const { userId, currentPassword, newPassword } = req.body;
+    
+//     console.log("Change password for user:", userId);
+    
+//     if (!userId || !currentPassword || !newPassword) {
+//       return res.status(400).json({ 
+//         success: false,
+//         message: "All fields are required" 
+//       });
+//     }
+    
+//     if (newPassword.length < 6) {
+//       return res.status(400).json({ 
+//         success: false,
+//         message: "Password must be at least 6 characters" 
+//       });
+//     }
+    
+//     const user = await User.findById(userId);
+//     if (!user) {
+//       return res.status(404).json({ 
+//         success: false,
+//         message: "User not found" 
+//       });
+//     }
+    
+//     if (!user.password) {
+//       return res.status(400).json({ 
+//         success: false,
+//         message: "No password set for this account" 
+//       });
+//     }
+    
+//     const isMatch = await bcrypt.compare(currentPassword, user.password);
+//     if (!isMatch) {
+//       return res.status(401).json({ 
+//         success: false,
+//         message: "Current password is incorrect" 
+//       });
+//     }
+    
+//     const salt = await bcrypt.genSalt(10);
+//     const hashedPassword = await bcrypt.hash(newPassword, salt);
+    
+//     user.password = hashedPassword;
+//     user.updatedAt = new Date();
+//     await user.save();
+    
+//     res.json({ 
+//       success: true,
+//       message: "Password changed successfully" 
+//     });
+    
+//   } catch (err) {
+//     console.error("Change password error:", err);
+//     res.status(500).json({ 
+//       success: false,
+//       message: err.message 
+//     });
+//   }
+// });
+
+// ==================== CHANGE PASSWORD ====================
+router.post("/change-password", async (req, res) => {
+  try {
+    const { userId, currentPassword, newPassword } = req.body;
+    
+    console.log("Change password for user:", userId);
+    
+    if (!userId || !currentPassword || !newPassword) {
+      return res.status(400).json({ 
+        success: false,
+        message: "All fields are required" 
+      });
+    }
+    
+    if (newPassword.length < 6) {
+      return res.status(400).json({ 
+        success: false,
+        message: "Password must be at least 6 characters" 
+      });
+    }
+    
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ 
+        success: false,
+        message: "User not found" 
+      });
+    }
+    
+    // Check if user has a password set
+    if (!user.password) {
+      return res.status(400).json({ 
+        success: false,
+        message: "No password set for this account. Please use Firebase or contact admin." 
+      });
+    }
+    
+    // Verify current password
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ 
+        success: false,
+        message: "Current password is incorrect" 
+      });
+    }
+    
+    // Hash new password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    
+    // Update password
+    user.password = hashedPassword;
+    user.updatedAt = new Date();
+    await user.save();
+    
+    res.json({ 
+      success: true,
+      message: "Password changed successfully" 
+    });
+    
+  } catch (err) {
+    console.error("Change password error:", err);
+    res.status(500).json({ 
+      success: false,
+      message: err.message 
+    });
+  }
+});
+
+// ==================== GET USER BY ID ====================
+router.get("/user/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    
+    const user = await User.findById(userId).select("-password -verifyToken -verifyExpiry");
+    
+    if (!user) {
+      return res.status(404).json({ 
+        success: false,
+        message: "User not found" 
+      });
+    }
+    
+    res.json({
+      success: true,
+      user: user
+    });
+  } catch (err) {
+    console.error("Get user error:", err);
+    res.status(500).json({ 
+      success: false,
+      message: err.message 
     });
   }
 });
@@ -384,7 +610,7 @@ router.get("/staffs", async (req, res) => {
 // ==================== GET ALL USERS ====================
 router.get("/users", async (req, res) => {
   try {
-    const users = await User.find().select("-password");
+    const users = await User.find().select("-password -verifyToken -verifyExpiry");
     res.json(users);
   } catch (err) {
     console.error("Get users error:", err);

@@ -7,3 +7,33 @@
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;     /* Firefox */
 }
+
+.notice-content h1,
+.notice-content h2,
+.notice-content h3 {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.notice-content ul,
+.notice-content ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.notice-content p {
+  margin-bottom: 1rem;
+}
+
+.notice-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.notice-content th,
+.notice-content td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}

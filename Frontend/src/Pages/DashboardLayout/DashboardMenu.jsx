@@ -52,10 +52,10 @@ const DashboardMenu = () => {
     const menuItems = {
       student: [
         { path: '/dashboard/overview', label: 'Overview', icon: 'https://www.svgrepo.com/show/459022/dashboard.svg' },
-        { path: '/dashboard/stuNotices', label: 'All Notices', icon: 'https://www.pngmart.com/files/8/Notice-PNG-Picture.png' },
+        { path: '/dashboard/allnotices', label: 'All Notices', icon: 'https://www.pngmart.com/files/8/Notice-PNG-Picture.png' },
         { path: '/dashboard/impnotices', label: 'Important Notices', icon: 'https://cdn-icons-png.freepik.com/256/18610/18610294.png?semt=ais_white_label' },
-        { path: '/dashboard/allstudent', label: 'Students', icon: 'https://icons.veryicon.com/png/o/internet--web/billion-square-cloud/department-1.png' },
-        { path: '/dashboard/allteacher', label: 'Teacher', icon: 'https://cdn-icons-png.flaticon.com/512/1373/1373779.png' },
+        // { path: '/dashboard/allstudent', label: 'Students', icon: 'https://icons.veryicon.com/png/o/internet--web/billion-square-cloud/department-1.png' },
+        // { path: '/dashboard/allteacher', label: 'Teacher', icon: 'https://cdn-icons-png.flaticon.com/512/1373/1373779.png' },
         { path: '/dashboard/settings', label: 'Settings', icon: 'https://cdn-icons-png.flaticon.com/512/3524/3524659.png' }
       ],
       teacher: [
@@ -171,7 +171,7 @@ const DashboardMenu = () => {
             {/* Footer - optional */}
             <div className='p-4 border-t border-gray-200'>
               <div className='text-xs text-gray-500 text-center'>
-                © 2024 PCIU NOTIFY
+                © 2026 PCIU NOTIFY
               </div>
             </div>
           </div>

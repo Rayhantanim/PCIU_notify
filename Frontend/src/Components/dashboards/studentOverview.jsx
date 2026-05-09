@@ -32,7 +32,7 @@ const StudentOverview = () => {
   const [loadingClasses, setLoadingClasses] = useState(true);
   const [classError, setClassError] = useState(null);
 
-  const API = "https://pciunotifybackend.onrender.com";
+  const API = "http://localhost:5000";
 
   // Get current student from localStorage/session
   const [currentStudent, setCurrentStudent] = useState({
@@ -45,6 +45,45 @@ const StudentOverview = () => {
   });
 
   const DAYS_ORDER = ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'];
+
+  // ================== SORTING FUNCTION - CRITICAL FIX ==================
+  // Sort notices: pinned first, then by date (newest first)
+  const sortNoticesByDate = (noticesArray) => {
+    if (!noticesArray || noticesArray.length === 0) return [];
+    
+    return [...noticesArray].sort((a, b) => {
+      // First priority: Pinned notices come to top
+      if (a.isPinned && !b.isPinned) return -1;
+      if (!a.isPinned && b.isPinned) return 1;
+      
+      // Second priority: Sort by createdAt date (newest first)
+      const dateA = new Date(a.createdAt);
+      const dateB = new Date(b.createdAt);
+      
+      // Ensure valid dates
+      if (isNaN(dateA.getTime())) return 1;
+      if (isNaN(dateB.getTime())) return -1;
+      
+      return dateB - dateA;
+    });
+  };
+
+  // Helper function to format time for display
+  const formatTimeAgo = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMins / 60);
+    const diffDays = Math.floor(diffHours / 24);
+
+    if (diffMins < 1) return 'Just now';
+    if (diffMins < 60) return `${diffMins} min ago`;
+    if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+    if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+    return formatDate(dateString);
+  };
 
   // ================== LOAD CURRENT STUDENT INFO ==================
   useEffect(() => {
@@ -140,15 +179,17 @@ const StudentOverview = () => {
         return true;
       });
       
-      // Sort: pinned first, then by date
-      filteredNotices.sort((a, b) => {
-        if (a.isPinned && !b.isPinned) return -1;
-        if (!a.isPinned && b.isPinned) return 1;
-        return new Date(b.createdAt) - new Date(a.createdAt);
-      });
+      // CRITICAL: Sort notices by date (newest first) and pinned at top
+      const sortedNotices = sortNoticesByDate(filteredNotices);
       
-      setAllNotices(filteredNotices);
-      setNotices(filteredNotices);
+      console.log('Sorted notices - first 3:', sortedNotices.slice(0, 3).map(n => ({ 
+        title: n.title, 
+        createdAt: n.createdAt, 
+        isPinned: n.isPinned 
+      })));
+      
+      setAllNotices(sortedNotices);
+      setNotices(sortedNotices);
       setCurrentPage(1);
       
     } catch (error) {
@@ -185,7 +226,9 @@ const StudentOverview = () => {
       filtered = filtered.filter(notice => new Date(notice.createdAt) >= sevenDaysAgo);
     }
     
-    setNotices(filtered);
+    // Apply sorting after filtering
+    const sortedFiltered = sortNoticesByDate(filtered);
+    setNotices(sortedFiltered);
     setCurrentPage(1);
   }, [filterCategory, showOnlyNew, showOnlyRecent, allNotices]);
 
@@ -199,7 +242,7 @@ const StudentOverview = () => {
         );
       
       setNotices(updateLikes);
-      setAllNotices(updateLikes);
+      setAllNotices(allNotices => sortNoticesByDate(updateLikes(allNotices)));
       
       if (selectedNotice && selectedNotice._id === noticeId) {
         setSelectedNotice(prev => ({ ...prev, likes: (prev.likes || 0) + 1 }));
@@ -210,8 +253,7 @@ const StudentOverview = () => {
       
     } catch (error) {
       console.error('Failed to like notice:', error);
-      // Revert optimistic update on error
-      fetchNotices();
+      await fetchNotices();
     }
   };
 
@@ -239,7 +281,7 @@ const StudentOverview = () => {
         );
       
       setNotices(updateComments);
-      setAllNotices(updateComments);
+      setAllNotices(allNotices => sortNoticesByDate(updateComments(allNotices)));
       
       if (selectedNotice && selectedNotice._id === noticeId) {
         setSelectedNotice(prev => ({ 
@@ -249,14 +291,13 @@ const StudentOverview = () => {
       }
       
       // API call
-      const result = await noticeService.addComment(noticeId, commentData);
+      await noticeService.addComment(noticeId, commentData);
       
       // Refresh to get actual data from server
       await fetchNotices();
       
     } catch (error) {
       console.error('Failed to add comment:', error);
-      // Revert optimistic update
       await fetchNotices();
     }
   };
@@ -279,7 +320,7 @@ const StudentOverview = () => {
       
       // Optimistic update
       setNotices(updateComments);
-      setAllNotices(updateComments);
+      setAllNotices(allNotices => sortNoticesByDate(updateComments(allNotices)));
       
       if (selectedNotice && selectedNotice._id === noticeId) {
         setSelectedNotice(prev => ({
@@ -315,7 +356,7 @@ const StudentOverview = () => {
       
       // Optimistic update
       setNotices(updateComments);
-      setAllNotices(updateComments);
+      setAllNotices(allNotices => sortNoticesByDate(updateComments(allNotices)));
       
       if (selectedNotice && selectedNotice._id === noticeId) {
         setSelectedNotice(prev => ({
@@ -411,6 +452,7 @@ const StudentOverview = () => {
   // ================== PAGINATION ==================
   const indexOfLastNotice = currentPage * noticesPerPage;
   const indexOfFirstNotice = indexOfLastNotice - noticesPerPage;
+  // Ensure we're using the sorted notices array
   const currentNotices = notices.slice(indexOfFirstNotice, indexOfLastNotice);
   const totalPages = Math.ceil(notices.length / noticesPerPage);
 
@@ -459,7 +501,9 @@ const StudentOverview = () => {
 
   const formatDate = (dateString) => {
     if (!dateString) return 'Unknown date';
-    return new Date(dateString).toLocaleDateString('en-US', { 
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return 'Invalid date';
+    return date.toLocaleDateString('en-US', { 
       year: 'numeric', 
       month: 'short', 
       day: 'numeric' 
@@ -568,7 +612,7 @@ const StudentOverview = () => {
                     <p className="text-gray-500">No announcements found</p>
                   </div>
                 ) : (
-                  currentNotices.map((notice) => (
+                  currentNotices.map((notice, index) => (
                     <div 
                       key={notice._id} 
                       className="group cursor-pointer"
@@ -576,7 +620,7 @@ const StudentOverview = () => {
                     >
                       <div className={`bg-white rounded-xl border p-5 transition-all duration-200 hover:shadow-lg hover:border-blue-200 ${
                         notice.isPinned 
-                          ? 'border-yellow-400 shadow-md' 
+                          ? 'border-yellow-400 shadow-md bg-yellow-50/30' 
                           : 'border-gray-200'
                       }`}>
                         <div className="flex items-start justify-between">
@@ -598,7 +642,7 @@ const StudentOverview = () => {
                                 {notice.category}
                               </span>
                               {notice.isNew && (
-                                <span className="bg-green-100 text-green-700 text-xs font-semibold px-2.5 py-1 rounded-full">
+                                <span className="bg-green-100 text-green-700 text-xs font-semibold px-2.5 py-1 rounded-full animate-pulse">
                                   New
                                 </span>
                               )}
@@ -636,6 +680,13 @@ const StudentOverview = () => {
                                 </div>
                               </div>
                             </div>
+                            
+                            {/* Position indicator - for debugging (remove in production) */}
+                            {index === 0 && (
+                              <div className="mt-2 text-xs text-blue-500">
+                                📌 Latest Notice
+                              </div>
+                            )}
                           </div>
                           
                           {/* Arrow indicator */}
@@ -651,7 +702,7 @@ const StudentOverview = () => {
                 )}
               </div>
               
-              {/* Pagination */}
+              {/* Pagination - Make sure it's showing sorted order */}
               {!loadingNotices && notices.length > 0 && totalPages > 1 && (
                 <div className="bg-gray-50 px-6 py-4 border-t">
                   <div className="flex justify-center items-center gap-2">
@@ -717,7 +768,7 @@ const StudentOverview = () => {
           </div>
           
           {/* ================== CLASS ROUTINE SECTION ================== */}
-          <div className="lg:w-96">
+          <div className="lg:w-120">
             <div className="bg-white rounded-2xl shadow-xl overflow-hidden sticky top-8">
               <div className="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-5 text-white">
                 <div className="flex items-center gap-3">
@@ -787,7 +838,7 @@ const StudentOverview = () => {
                         <div className="bg-gradient-to-r from-gray-50 to-white rounded-xl border border-gray-200 p-4 hover:shadow-lg hover:border-indigo-200 transition-all duration-300">
                           <div className="flex items-start gap-3">
                             <div className="flex-shrink-0">
-                              <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600 font-bold text-sm">
+                              <div className="w-30 h-10 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600 font-bold text-sm">
                                 {cls.time?.split(' - ')[0]?.split(':')[0] || '10'}
                               </div>
                             </div>
