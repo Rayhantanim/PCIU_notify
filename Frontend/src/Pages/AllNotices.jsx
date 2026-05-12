@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import noticeImg from "../assets/notice.png";
 import { toast } from "react-toastify";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -11,20 +11,15 @@ import NoticeModal from "../Components/NoticeModal";
 import { noticeService } from "../services/noticeService";
 import { useTheme } from "../context/ThemeContext";
 
-const API = "http://localhost:5000";
-
 const AllNotices = () => {
   const { isDarkMode } = useTheme();
   const [notices, setNotices] = useState([]);
-  const [allNotices, setAllNotices] = useState([]);
   const [filteredNotices, setFilteredNotices] = useState([]);
   const [myNotices, setMyNotices] = useState([]);
   const [otherNotices, setOtherNotices] = useState([]);
   const [editingNotice, setEditingNotice] = useState(null);
-  const [activeTab, setActiveTab] = useState("all");
-  const [loadingNotices, setLoadingNotices] = useState(false);
-  const [noticeError, setNoticeError] = useState(null);
-  const [likingInProgress, setLikingInProgress] = useState(new Set()); // Track likes in progress
+  const [activeTab, setActiveTab] = useState("my");
+  const [likingInProgress, setLikingInProgress] = useState(new Set());
 
   // Modal state
   const [selectedNotice, setSelectedNotice] = useState(null);
@@ -53,25 +48,19 @@ const AllNotices = () => {
     expiryDate: "",
   });
   
+  const API = "https://pciunotifybackend.onrender.com";
+
   // Get logged-in user info
-  const role = localStorage.getItem("role") || "";
   const firstName = localStorage.getItem("firstName") || "";
   const lastName = localStorage.getItem("lastName") || "";
   const fullName = localStorage.getItem("fullName") || `${firstName} ${lastName}`;
   const userId = localStorage.getItem("userId") || localStorage.getItem("_id");
-  const userEmail = localStorage.getItem("email") || "";
-  
-  // Get current student info from localStorage
-  const currentStudent = {
-    department: localStorage.getItem("department") || "",
-    section: localStorage.getItem("section") || ""
-  };
   
   // Current user object for modal
   const currentUser = {
     name: fullName,
     userId: userId,
-    email: userEmail,
+    email: localStorage.getItem("email") || "",
     firstName: firstName,
     lastName: lastName
   };
@@ -79,149 +68,81 @@ const AllNotices = () => {
   // Categories for filtering
   const categories = ["All", "general", "academic", "exam", "event", "urgent"];
 
-  // Helper function to sort notices by date
-  const sortNoticesByDate = (noticesList) => {
-    return [...noticesList].sort((a, b) => {
-      return new Date(b.createdAt) - new Date(a.createdAt);
-    });
-  };
-// Add to AllNotices.jsx - This ensures the modal gets updated notice data
-useEffect(() => {
-  if (selectedNotice && isModalOpen) {
-    // Find the latest version of this notice from current state
-    const updatedNotice = notices.find(n => n._id === selectedNotice._id) ||
-                          allNotices.find(n => n._id === selectedNotice._id) ||
-                          filteredNotices.find(n => n._id === selectedNotice._id);
-    
-    if (updatedNotice && updatedNotice !== selectedNotice) {
-      setSelectedNotice(updatedNotice);
-    }
-  }
-}, [notices, allNotices, filteredNotices, selectedNotice?._id, isModalOpen]);
   // Helper function to check if user liked a notice
-  const hasUserLiked = useCallback((notice) => {
+  const hasUserLiked = (notice) => {
     if (!userId || !notice || !notice.likesArray) return false;
     return notice.likesArray.some(likeId => likeId?.toString() === userId?.toString());
-  }, [userId]);
+  };
 
-  // Fetch notices - wrap in useCallback to avoid recreation
-  const fetchNotices = useCallback(async () => {
-    try {
-      setLoadingNotices(true);
-      setNoticeError(null);
+  // Sync modal with latest notice data when notices change
+  useEffect(() => {
+    if (selectedNotice && isModalOpen) {
+      const latestNotice = 
+        notices.find(n => n._id === selectedNotice._id) ||
+        myNotices.find(n => n._id === selectedNotice._id) ||
+        otherNotices.find(n => n._id === selectedNotice._id) ||
+        filteredNotices.find(n => n._id === selectedNotice._id);
       
-      if (!noticeService || typeof noticeService.getNotices !== 'function') {
-        throw new Error('Notice service not properly initialized');
+      if (latestNotice && JSON.stringify(latestNotice) !== JSON.stringify(selectedNotice)) {
+        setSelectedNotice(latestNotice);
       }
-      
-      const data = await noticeService.getNotices();
-      
-      if (!Array.isArray(data)) { 
-        setNoticeError('Invalid data format'); 
-        setLoadingNotices(false); 
-        return; 
-      }
-
-      let transformedNotices = data.map(notice => {
-        let noticeSection = notice.section;
-        if (noticeSection && !noticeSection.includes('-') && notice.department) {
-          noticeSection = `${notice.department}-${noticeSection}`;
-        }
-        
-        // Handle likes - keep as array for like checking
-        let likesArray = [];
-        let likesCount = 0;
-        if (Array.isArray(notice.likes)) {
-          likesArray = notice.likes.map(like => like?.toString());
-          likesCount = likesArray.length;
-        } else if (typeof notice.likes === 'number') {
-          likesCount = notice.likes;
-        }
-        
-        return {
-          _id: notice._id, 
-          id: notice._id, 
-          title: notice.title,
-          description: notice.description || notice.content,
-          content: notice.content || notice.description,
-          publishedDate: notice.createdAt ? notice.createdAt.split('T')[0] : new Date().toISOString().split('T')[0],
-          createdAt: notice.createdAt,
-          category: notice.category || 'General',
-          isNew: notice.createdAt ? (new Date() - new Date(notice.createdAt)) < 7 * 24 * 60 * 60 * 1000 : false,
-          priority: notice.priority, 
-          audience: notice.audience || [],
-          department: notice.department, 
-          section: noticeSection,
-          likes: likesCount,
-          likesArray: likesArray, // Store the actual array for like checking
-          comments: (notice.comments || []).map(c => ({ ...c, _id: c._id || c.id })),
-          attachment: notice.attachment, 
-          isPinned: notice.isPinned,
-          expiryDate: notice.expiryDate, 
-          author: notice.author || notice.createdBy || 'Admin',
-          createdBy: notice.createdBy
-        };
-      });
-
-      // Separate my notices and others (only for non-student roles)
-      if (role !== "student") {
-        const myNoticesList = transformedNotices.filter((notice) => {
-          if (!notice.createdBy || !fullName) return false;
-          const createdByLower = notice.createdBy.toLowerCase().trim();
-          const fullNameLower = fullName.toLowerCase().trim();
-
-          if (createdByLower === fullNameLower) return true;
-
-          const nameParts = fullNameLower.split(" ");
-          if (nameParts.length === 2) {
-            const reversedName = `${nameParts[1]} ${nameParts[0]}`;
-            if (createdByLower === reversedName) return true;
-          }
-
-          return false;
-        });
-        setMyNotices(myNoticesList);
-      }
-      
-      // Apply student filters if needed
-      let filteredNotices = transformedNotices;
-      if (role === "student" && currentStudent?.department) {
-        filteredNotices = transformedNotices.filter(notice => {
-          if (notice.audience && notice.audience.length > 0) {
-            const audienceIncludesStudent = notice.audience.some(
-              a => a.toLowerCase() === 'students' || a.toLowerCase() === 'student'
-            );
-            if (!audienceIncludesStudent) return false;
-            if (notice.department && notice.department !== currentStudent.department) return false;
-            if (notice.section && notice.section !== currentStudent.section) return false;
-            return true;
-          }
-          return true;
-        });
-      }
-
-      const sortedNotices = sortNoticesByDate(filteredNotices);
-      setAllNotices(sortedNotices);
-      setNotices(sortedNotices);
-      setCurrentPage(1);
-    } catch (error) {
-      console.error("Error in fetchNotices:", error);
-      setNoticeError(error.message);
-      toast.error("Failed to fetch notices: " + error.message);
-    } finally {
-      setLoadingNotices(false);
     }
-  }, [fullName, role, currentStudent.department, currentStudent.section]);
+  }, [notices, myNotices, otherNotices, filteredNotices, selectedNotice?._id, isModalOpen]);
 
-  // Fetch notices on mount
+  // Fetch notices
   useEffect(() => {
     fetchNotices();
-  }, [fetchNotices]);
+  }, []);
 
   // Apply filters and search
   useEffect(() => {
     applyFilters();
-  }, [notices, selectedCategory, searchQuery, startDate, endDate, activeTab, myNotices]);
+  }, [notices, selectedCategory, searchQuery, startDate, endDate, activeTab]);
+
+  const fetchNotices = async () => {
+    try {
+      const res = await fetch(`${API}/api/notices`);
+      const data = await res.json();
+      
+      // Transform notices to include likesArray
+      const transformedNotices = data.map(notice => ({
+        ...notice,
+        likesArray: Array.isArray(notice.likes) ? notice.likes : [],
+        likes: Array.isArray(notice.likes) ? notice.likes.length : (notice.likes || 0)
+      }));
+      
+      setNotices(transformedNotices);
+
+      // Separate my notices and others
+      const myNoticesList = transformedNotices.filter((notice) => {
+        if (!notice.createdBy || !fullName) return false;
+        const createdByLower = notice.createdBy.toLowerCase().trim();
+        const fullNameLower = fullName.toLowerCase().trim();
+
+        if (createdByLower === fullNameLower) return true;
+
+        const nameParts = fullNameLower.split(" ");
+        if (nameParts.length === 2) {
+          const reversedName = `${nameParts[1]} ${nameParts[0]}`;
+          if (createdByLower === reversedName) return true;
+        }
+
+        return false;
+      });
+
+      const otherNoticesList = transformedNotices.filter(
+        (notice) => !myNoticesList.find((my) => my._id === notice._id)
+      );
+
+      setMyNotices(myNoticesList);
+      setOtherNotices(otherNoticesList);
+      
+      // Reset to first page when data changes
+      setCurrentPage(1);
+    } catch (err) {
+      console.error("Error fetching notices:", err);
+    }
+  };
 
   const applyFilters = () => {
     let sourceNotices = activeTab === "my" ? myNotices : notices;
@@ -281,8 +202,8 @@ useEffect(() => {
       text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!"
     });
 
@@ -301,7 +222,10 @@ useEffect(() => {
             text: "Your notice has been deleted.",
             icon: "success"
           });
-          await fetchNotices();
+          fetchNotices();
+          if (selectedNotice && selectedNotice._id === noticeId) {
+            closeModal();
+          }
         } else {
           const data = await res.json();
           toast.error(data.message || "Failed to delete notice");
@@ -341,7 +265,7 @@ useEffect(() => {
           draggable: true
         });
         
-        await fetchNotices();
+        fetchNotices();
         setEditingNotice(null);
       } else {
         toast.error(data.message || "Failed to update notice");
@@ -397,78 +321,87 @@ useEffect(() => {
     setSelectedNotice(null);
   };
 
- // Professional like handler with disable state and persistent like
-const handleLike = async (noticeId) => {
-  if (!userId) {
-    toast.error("Please login to like notices");
-    return;
-  }
-  
-  // Prevent multiple clicks while processing
-  if (likingInProgress.has(noticeId)) {
-    return;
-  }
-  
-  // Find current notice to check like status BEFORE API call
-  const currentNotice = notices.find(n => n._id === noticeId);
-  if (!currentNotice) return;
-  
-  const wasLiked = hasUserLiked(currentNotice);
-  
-  // Mark this notice as being processed
-  setLikingInProgress(prev => new Set(prev).add(noticeId));
-  
-  try {
-    const result = await noticeService.likeNotice(noticeId, userId);
-    
-    if (result.success) {
-      // Update all state arrays by finding the notice and toggling like
-      const updateNoticeLikes = (notice) => {
-        if (notice._id === noticeId) {
-          // Use wasLiked from before API call
-          const newLikesCount = wasLiked ? notice.likes - 1 : notice.likes + 1;
-          const newLikesArray = wasLiked 
-            ? (notice.likesArray || []).filter(id => id?.toString() !== userId?.toString())
-            : [...(notice.likesArray || []), userId];
-          
-          return {
-            ...notice,
-            likes: newLikesCount,
-            likesArray: newLikesArray
-          };
-        }
-        return notice;
-      };
-      
-      // Update all state arrays for consistency
-      setNotices(prev => prev.map(updateNoticeLikes));
-      setAllNotices(prev => prev.map(updateNoticeLikes));
-      setFilteredNotices(prev => prev.map(updateNoticeLikes));
-      if (role !== "student") {
-        setMyNotices(prev => prev.map(updateNoticeLikes));
-      }
-      
-      // Show appropriate toast message based on wasLiked (before API call)
-      if (wasLiked) {
-        toast.success("💔 Unliked successfully");
-      } else {
-        toast.success("❤️ Liked successfully");
-      }
-    } else {
-      toast.error(result.message || "Failed to update like");
+  const handleLike = async (noticeId) => {
+    if (!userId) {
+      toast.error("Please login to like notices");
+      return;
     }
-  } catch (error) {
-    console.error("Failed to like notice:", error);
-    toast.error("Failed to update like");
-  } finally {
-    // Remove the processing flag
-    setLikingInProgress(prev => {
-      const newSet = new Set(prev);
-      newSet.delete(noticeId);
-      return newSet;
-    });
-  }
-};
+    
+    if (likingInProgress.has(noticeId)) {
+      return;
+    }
+    
+    // Find current notice to check like status BEFORE API call
+    const allNoticesList = [...notices, ...myNotices];
+    const currentNotice = allNoticesList.find(n => n._id === noticeId);
+    if (!currentNotice) return;
+    
+    const wasLiked = hasUserLiked(currentNotice);
+    
+    setLikingInProgress(prev => new Set(prev).add(noticeId));
+    
+    try {
+      const result = await noticeService.likeNotice(noticeId, userId);
+      
+      if (result.success) {
+        const updateNoticeLikes = (notice) => {
+          if (notice._id === noticeId) {
+            const newLikesCount = wasLiked ? notice.likes - 1 : notice.likes + 1;
+            const newLikesArray = wasLiked 
+              ? (notice.likesArray || []).filter(id => id?.toString() !== userId?.toString())
+              : [...(notice.likesArray || []), userId];
+            
+            return {
+              ...notice,
+              likes: newLikesCount,
+              likesArray: newLikesArray
+            };
+          }
+          return notice;
+        };
+        
+        // Update all state arrays
+        setNotices(prev => prev.map(updateNoticeLikes));
+        setMyNotices(prev => prev.map(updateNoticeLikes));
+        setOtherNotices(prev => prev.map(updateNoticeLikes));
+        setFilteredNotices(prev => prev.map(updateNoticeLikes));
+        
+        // Update selectedNotice if this notice is currently open in modal
+        if (selectedNotice && selectedNotice._id === noticeId) {
+          setSelectedNotice(prev => {
+            const newLikesCount = wasLiked ? prev.likes - 1 : prev.likes + 1;
+            const newLikesArray = wasLiked 
+              ? (prev.likesArray || []).filter(id => id?.toString() !== userId?.toString())
+              : [...(prev.likesArray || []), userId];
+            
+            return {
+              ...prev,
+              likes: newLikesCount,
+              likesArray: newLikesArray
+            };
+          });
+        }
+        
+        if (wasLiked) {
+          toast.success("💔 Unliked successfully");
+        } else {
+          toast.success("❤️ Liked successfully");
+        }
+      } else {
+        toast.error(result.message || "Failed to update like");
+      }
+    } catch (error) {
+      console.error("Failed to like notice:", error);
+      toast.error("Failed to update like");
+    } finally {
+      setLikingInProgress(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(noticeId);
+        return newSet;
+      });
+    }
+  };
+
   const handleCommentSubmit = async (noticeId, text) => {
     if (!text.trim()) {
       toast.error("Comment cannot be empty");
@@ -491,7 +424,6 @@ const handleLike = async (noticeId) => {
     try {
       const result = await noticeService.addComment(noticeId, commentData);
       if (result.success) {
-        // Immediately update local state to show comment without refresh
         const newComment = {
           _id: result.comment?._id || Date.now().toString(),
           text: text.trim(),
@@ -511,9 +443,19 @@ const handleLike = async (noticeId) => {
           return notice;
         };
         
+        // Update all state arrays
         setNotices(prev => prev.map(updateComments));
-        setAllNotices(prev => prev.map(updateComments));
+        setMyNotices(prev => prev.map(updateComments));
+        setOtherNotices(prev => prev.map(updateComments));
         setFilteredNotices(prev => prev.map(updateComments));
+        
+        // Update selectedNotice if this notice is currently open in modal
+        if (selectedNotice && selectedNotice._id === noticeId) {
+          setSelectedNotice(prev => ({
+            ...prev,
+            comments: [...(prev.comments || []), newComment]
+          }));
+        }
         
         toast.success("💬 Comment added successfully");
         return true;
@@ -552,8 +494,21 @@ const handleLike = async (noticeId) => {
         };
         
         setNotices(prev => prev.map(updateComments));
-        setAllNotices(prev => prev.map(updateComments));
+        setMyNotices(prev => prev.map(updateComments));
+        setOtherNotices(prev => prev.map(updateComments));
         setFilteredNotices(prev => prev.map(updateComments));
+        
+        // Update selectedNotice if this notice is currently open in modal
+        if (selectedNotice && selectedNotice._id === noticeId) {
+          setSelectedNotice(prev => ({
+            ...prev,
+            comments: prev.comments.map(comment => 
+              comment._id === commentId 
+                ? { ...comment, text: text.trim(), updatedAt: new Date().toISOString() }
+                : comment
+            )
+          }));
+        }
         
         toast.success("✏️ Comment updated successfully");
       } else {
@@ -591,8 +546,17 @@ const handleLike = async (noticeId) => {
           };
           
           setNotices(prev => prev.map(updateComments));
-          setAllNotices(prev => prev.map(updateComments));
+          setMyNotices(prev => prev.map(updateComments));
+          setOtherNotices(prev => prev.map(updateComments));
           setFilteredNotices(prev => prev.map(updateComments));
+          
+          // Update selectedNotice if this notice is currently open in modal
+          if (selectedNotice && selectedNotice._id === noticeId) {
+            setSelectedNotice(prev => ({
+              ...prev,
+              comments: prev.comments.filter(comment => comment._id !== commentId)
+            }));
+          }
           
           toast.success("🗑️ Comment deleted successfully");
         } else {
@@ -673,24 +637,33 @@ const handleLike = async (noticeId) => {
       >
         <div className="flex justify-between items-start">
           <div className="flex-1">
+            {/* Title & Badges */}
             <div className="flex items-center gap-2 flex-wrap mb-2">
               <span className={`w-2.5 h-2.5 rounded-full ${getPriorityColor(notice.priority)}`}></span>
               <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${getCategoryColor(notice.category)}`}>
                 {notice.category || "General"}
               </span>
-              {notice.isPinned && <span className="text-yellow-500"><RiPushpinLine /></span>}
+              {notice.isPinned && (
+                <span className="text-yellow-500"><RiPushpinLine /></span>
+              )}
               {notice.audience && notice.audience.length > 0 && (
                 <span className={`text-xs flex items-center gap-1 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                   <IoPeopleSharp /> {notice.audience.join(", ")}
                 </span>
               )}
             </div>
-            <h3 className={`text-xl font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+
+            <h3 className={`text-xl font-bold mb-2 transition-colors ${
+              isDarkMode ? 'text-white hover:text-blue-400' : 'text-gray-800 hover:text-blue-600'
+            }`}>
               {notice.title}
             </h3>
+
             <p className={`text-sm line-clamp-2 mb-3 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
               {notice.description?.replace(/<[^>]*>/g, "").substring(0, 120)}
+              {notice.description?.replace(/<[^>]*>/g, "").length > 120 ? "..." : ""}
             </p>
+            
             <div className={`flex items-center gap-4 text-sm ${isDarkMode ? 'text-gray-500' : 'text-gray-500'}`}>
               <span>📅 {formatDate(notice.createdAt)}</span>
               <button 
@@ -717,6 +690,7 @@ const handleLike = async (noticeId) => {
               <span>💬 {notice.comments?.length || 0} {notice.comments?.length === 1 ? 'comment' : 'comments'}</span>
             </div>
           </div>
+          
           <div className="flex items-center gap-3 ml-4">
             <div className="text-right">
               <div className="flex items-center gap-2">
@@ -733,22 +707,34 @@ const handleLike = async (noticeId) => {
             </div>
           </div>
         </div>
+
+        {/* Action Buttons */}
         {showActions && (
           <div className={`flex justify-end gap-2 mt-4 pt-3 border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-100'}`}>
-            <button onClick={(e) => { e.stopPropagation(); handleEditClick(notice); }}
-              className={`px-4 py-2 text-sm rounded-lg flex items-center gap-2 transition-all duration-200 ${
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleEditClick(notice);
+              }}
+              className={`px-4 py-2 text-sm rounded-lg transition flex items-center gap-2 ${
                 isDarkMode 
                   ? 'bg-blue-900/30 text-blue-400 hover:bg-blue-900/50' 
                   : 'bg-blue-50 text-blue-600 hover:bg-blue-100'
-              }`}>
+              }`}
+            >
               <MdEdit /> Edit
             </button>
-            <button onClick={(e) => { e.stopPropagation(); handleDelete(notice._id); }}
-              className={`px-4 py-2 text-sm rounded-lg flex items-center gap-2 transition-all duration-200 ${
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete(notice._id);
+              }}
+              className={`px-4 py-2 text-sm rounded-lg transition flex items-center gap-2 ${
                 isDarkMode 
                   ? 'bg-red-900/30 text-red-400 hover:bg-red-900/50' 
                   : 'bg-red-50 text-red-600 hover:bg-red-100'
-              }`}>
+              }`}
+            >
               <RiDeleteBin6Line /> Delete
             </button>
           </div>
@@ -757,100 +743,78 @@ const handleLike = async (noticeId) => {
     );
   };
 
-  // Loading state
-  if (loadingNotices) {
-    return (
-      <div className={`min-h-screen flex items-center justify-center ${isDarkMode ? 'bg-gray-900' : 'bg-gray-100'}`}>
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className={`mt-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Loading notices...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Error state
-  if (noticeError) {
-    return (
-      <div className={`min-h-screen flex items-center justify-center ${isDarkMode ? 'bg-gray-900' : 'bg-gray-100'}`}>
-        <div className={`text-center p-8 rounded-lg ${isDarkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg`}>
-          <div className="text-6xl mb-4">⚠️</div>
-          <h2 className={`text-xl font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>Error Loading Notices</h2>
-          <p className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>{noticeError}</p>
-          <button
-            onClick={fetchNotices}
-            className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all duration-200"
-          >
-            Try Again
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-slate-50 via-white to-blue-50'}`}>
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl shadow-lg p-6 mb-8 text-white">
-          <h1 className="text-3xl font-bold mb-2">📢 Notice Board</h1>
-          <p className="text-blue-50">Stay updated with the latest announcements</p>
+        <div className="bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl shadow-lg shadow-blue-200 dark:shadow-blue-900/30 p-6 mb-8 text-white">
+          <h1 className="text-3xl font-bold mb-2">Notice Board</h1>
+          <p className="text-blue-50">Manage and view all announcements</p>
         </div>
 
-        {/* Tabs - Only show "All Notices" for students */}
+        {/* Tabs */}
         <div className="flex gap-4 mb-6">
-          {role !== "student" && (
-            <button 
-              onClick={() => { setActiveTab("my"); setSelectedCategory("All"); setSearchQuery(""); }}
-              className={`px-6 py-3 rounded-xl font-semibold text-lg transition-all duration-200 ${
-                activeTab === "my" 
-                  ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-md" 
-                  : isDarkMode 
-                    ? "bg-gray-800 text-gray-300 border border-gray-700 hover:border-blue-500" 
-                    : "bg-white text-slate-700 border border-slate-200 hover:border-blue-300"
-              }`}
-            >
-              📝 My Notices ({myNotices.length})
-            </button>
-          )}
-          <button 
-            onClick={() => { setActiveTab("all"); setSelectedCategory("All"); setSearchQuery(""); }}
+          <button
+            onClick={() => {
+              setActiveTab("my");
+              setSelectedCategory("All");
+              setSearchQuery("");
+            }}
             className={`px-6 py-3 rounded-xl font-semibold text-lg transition-all duration-200 ${
-              activeTab === "all" 
-                ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-md" 
+              activeTab === "my"
+                ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-md shadow-blue-200 dark:shadow-blue-900/30"
                 : isDarkMode 
-                  ? "bg-gray-800 text-gray-300 border border-gray-700 hover:border-blue-500" 
-                  : "bg-white text-slate-700 border border-slate-200 hover:border-blue-300"
+                  ? "bg-gray-800 text-gray-300 border border-gray-700 hover:border-blue-500 hover:shadow-sm"
+                  : "bg-white text-slate-700 border border-slate-200 hover:border-blue-300 hover:shadow-sm"
             }`}
           >
-            📋 All Notices ({notices.length})
+            My Notices ({myNotices.length})
+          </button>
+          <button
+            onClick={() => {
+              setActiveTab("all");
+              setSelectedCategory("All");
+              setSearchQuery("");
+            }}
+            className={`px-6 py-3 rounded-xl font-semibold text-lg transition-all duration-200 ${
+              activeTab === "all"
+                ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-md shadow-blue-200 dark:shadow-blue-900/30"
+                : isDarkMode 
+                  ? "bg-gray-800 text-gray-300 border border-gray-700 hover:border-blue-500 hover:shadow-sm"
+                  : "bg-white text-slate-700 border border-slate-200 hover:border-blue-300 hover:shadow-sm"
+            }`}
+          >
+            All Notices ({notices.length})
           </button>
         </div>
 
-        {/* Search and Filter Bar */}
-        <div className={`rounded-xl shadow-sm border p-4 mb-6 transition-all duration-200 ${
-          isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-slate-200'
+        {/* Search and Filter Bar - same as before */}
+        <div className={`rounded-xl shadow-sm border p-4 mb-6 ${
+          isDarkMode 
+            ? 'bg-gray-800 border-gray-700' 
+            : 'bg-white border-slate-200'
         }`}>
           <div className="flex flex-wrap gap-3 items-center">
             <div className="flex-1 min-w-[200px]">
               <div className="relative">
                 <FaSearch className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${isDarkMode ? 'text-gray-500' : 'text-slate-400'}`} />
-                <input 
-                  type="text" 
-                  placeholder="🔍 Search by title, description, or author..." 
+                <input
+                  type="text"
+                  placeholder="Search by title, description, or author..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className={`w-full pl-10 pr-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ${
+                  className={`w-full pl-10 pr-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-slate-400 transition-all duration-200 ${
                     isDarkMode 
                       ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
                       : 'bg-white border-slate-300 text-slate-900'
-                  }`} 
+                  }`}
                 />
               </div>
             </div>
-            <button 
+            
+            <button
               onClick={() => setShowFilters(!showFilters)}
-              className={`px-4 py-2 rounded-xl flex items-center gap-2 font-medium transition-all duration-200 ${
+              className={`px-4 py-2 rounded-xl transition-all duration-200 flex items-center gap-2 font-medium ${
                 isDarkMode 
                   ? 'bg-gray-700 text-gray-300 border border-gray-600 hover:bg-gray-600' 
                   : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50'
@@ -858,9 +822,10 @@ const handleLike = async (noticeId) => {
             >
               <FaFilter /> Filters
             </button>
+            
             {(selectedCategory !== "All" || startDate || endDate) && (
-              <button 
-                onClick={clearFilters} 
+              <button
+                onClick={clearFilters}
                 className="px-4 py-2 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-xl transition-all duration-200 font-medium"
               >
                 Clear Filters
@@ -873,43 +838,51 @@ const handleLike = async (noticeId) => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>Category</label>
-                  <select 
-                    value={selectedCategory} 
+                  <select
+                    value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                    className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ${
+                    className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
                       isDarkMode 
                         ? 'bg-gray-700 border-gray-600 text-white' 
                         : 'bg-white border-slate-300 text-slate-700'
                     }`}
                   >
-                    {categories.map(cat => <option key={cat} value={cat}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</option>)}
+                    {categories.map(cat => (
+                      <option key={cat} value={cat}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</option>
+                    ))}
                   </select>
                 </div>
                 <div>
                   <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>Start Date</label>
-                  <input 
-                    type="date" 
-                    value={startDate} 
-                    onChange={(e) => setStartDate(e.target.value)}
-                    className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ${
-                      isDarkMode 
-                        ? 'bg-gray-700 border-gray-600 text-white' 
-                        : 'bg-white border-slate-300 text-slate-700'
-                    }`} 
-                  />
+                  <div className="relative">
+                    <FaCalendarAlt className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${isDarkMode ? 'text-gray-500' : 'text-slate-400'}`} />
+                    <input
+                      type="date"
+                      value={startDate}
+                      onChange={(e) => setStartDate(e.target.value)}
+                      className={`w-full pl-10 pr-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
+                        isDarkMode 
+                          ? 'bg-gray-700 border-gray-600 text-white' 
+                          : 'bg-white border-slate-300 text-slate-700'
+                      }`}
+                    />
+                  </div>
                 </div>
                 <div>
                   <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>End Date</label>
-                  <input 
-                    type="date" 
-                    value={endDate} 
-                    onChange={(e) => setEndDate(e.target.value)}
-                    className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ${
-                      isDarkMode 
-                        ? 'bg-gray-700 border-gray-600 text-white' 
-                        : 'bg-white border-slate-300 text-slate-700'
-                    }`} 
-                  />
+                  <div className="relative">
+                    <FaCalendarAlt className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${isDarkMode ? 'text-gray-500' : 'text-slate-400'}`} />
+                    <input
+                      type="date"
+                      value={endDate}
+                      onChange={(e) => setEndDate(e.target.value)}
+                      className={`w-full pl-10 pr-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
+                        isDarkMode 
+                          ? 'bg-gray-700 border-gray-600 text-white' 
+                          : 'bg-white border-slate-300 text-slate-700'
+                      }`}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -919,12 +892,12 @@ const handleLike = async (noticeId) => {
         {/* Category Quick Filters */}
         <div className="flex flex-wrap gap-2 mb-6">
           {categories.map(cat => (
-            <button 
-              key={cat} 
+            <button
+              key={cat}
               onClick={() => setSelectedCategory(cat)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                 selectedCategory === cat
-                  ? "bg-blue-500 text-white shadow-md shadow-blue-200 dark:shadow-blue-900/30"
+                  ? "bg-blue-500 text-white shadow-sm shadow-blue-200 dark:shadow-blue-900/30"
                   : isDarkMode 
                     ? "bg-gray-800 text-gray-400 border border-gray-700 hover:bg-gray-700 hover:border-blue-500"
                     : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:border-blue-300"
@@ -936,13 +909,13 @@ const handleLike = async (noticeId) => {
         </div>
 
         {/* Notices List */}
-        <div className={`rounded-2xl shadow-sm border overflow-hidden transition-all duration-200 ${
+        <div className={`rounded-2xl shadow-sm border overflow-hidden ${
           isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-slate-200'
         }`}>
           <div className="p-6">
             <div className="flex justify-between items-center mb-6">
               <h2 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
-                {activeTab === "my" ? "📝 My Notices" : "📋 All Notices"}
+                {activeTab === "my" ? "My Notices" : "All Notices"}
               </h2>
               <p className={isDarkMode ? 'text-gray-400' : 'text-slate-500'}>
                 Showing {filteredNotices.length} of {activeTab === "my" ? myNotices.length : notices.length} notices
@@ -967,37 +940,51 @@ const handleLike = async (noticeId) => {
                 {currentNotices.map((notice) => (
                   <div key={notice._id}>
                     {editingNotice === notice._id ? (
+                      // EDIT MODE (same as before)
                       <div className={`border-2 border-blue-400 rounded-xl p-6 my-4 ${isDarkMode ? 'bg-gray-700/50' : 'bg-blue-50/50'}`}>
-                        <h3 className={`text-lg font-semibold mb-4 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>✏️ Edit Notice</h3>
+                        <h3 className={`text-lg font-semibold mb-4 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>Edit Notice</h3>
                         <div className="space-y-4">
                           <div>
                             <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>Title</label>
-                            <input type="text" name="title" value={editForm.title} onChange={handleEditChange}
-                              className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ${
+                            <input
+                              type="text"
+                              name="title"
+                              value={editForm.title}
+                              onChange={handleEditChange}
+                              className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
                                 isDarkMode 
                                   ? 'bg-gray-800 border-gray-600 text-white' 
                                   : 'bg-white border-slate-300 text-slate-700'
-                              }`} />
+                              }`}
+                            />
                           </div>
                           <div>
                             <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>Description</label>
-                            <textarea name="description" value={editForm.description?.replace(/<[^>]*>/g, "")}
-                              onChange={(e) => setEditForm({ ...editForm, description: e.target.value })} rows="4"
-                              className={`w-full border rounded-xl p-2 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ${
+                            <textarea
+                              name="description"
+                              value={editForm.description?.replace(/<[^>]*>/g, "")}
+                              onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
+                              rows="4"
+                              className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 resize-none ${
                                 isDarkMode 
                                   ? 'bg-gray-800 border-gray-600 text-white' 
                                   : 'bg-white border-slate-300 text-slate-700'
-                              }`} />
+                              }`}
+                            />
                           </div>
                           <div className="grid grid-cols-2 gap-4">
                             <div>
                               <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>Category</label>
-                              <select name="category" value={editForm.category} onChange={handleEditChange}
-                                className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ${
+                              <select
+                                name="category"
+                                value={editForm.category}
+                                onChange={handleEditChange}
+                                className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
                                   isDarkMode 
                                     ? 'bg-gray-800 border-gray-600 text-white' 
                                     : 'bg-white border-slate-300 text-slate-700'
-                                }`}>
+                                }`}
+                              >
                                 <option value="">Select Category</option>
                                 <option value="general">General</option>
                                 <option value="academic">Academic</option>
@@ -1008,12 +995,16 @@ const handleLike = async (noticeId) => {
                             </div>
                             <div>
                               <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>Priority</label>
-                              <select name="priority" value={editForm.priority} onChange={handleEditChange}
-                                className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ${
+                              <select
+                                name="priority"
+                                value={editForm.priority}
+                                onChange={handleEditChange}
+                                className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
                                   isDarkMode 
                                     ? 'bg-gray-800 border-gray-600 text-white' 
                                     : 'bg-white border-slate-300 text-slate-700'
-                                }`}>
+                                }`}
+                              >
                                 <option value="low">Low</option>
                                 <option value="medium">Medium</option>
                                 <option value="high">High</option>
@@ -1026,9 +1017,14 @@ const handleLike = async (noticeId) => {
                             <div className="flex gap-4">
                               {["students", "teachers", "staff", "all"].map((a) => (
                                 <label key={a} className="flex items-center gap-1 cursor-pointer">
-                                  <input type="checkbox" name="audience" value={a}
-                                    checked={editForm.audience.includes(a)} onChange={handleEditChange}
-                                    className="rounded border-slate-300 text-blue-500 focus:ring-blue-500" />
+                                  <input
+                                    type="checkbox"
+                                    name="audience"
+                                    value={a}
+                                    checked={editForm.audience.includes(a)}
+                                    onChange={handleEditChange}
+                                    className="rounded border-slate-300 text-blue-500 focus:ring-blue-500"
+                                  />
                                   <span className={`capitalize ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>{a}</span>
                                 </label>
                               ))}
@@ -1036,31 +1032,44 @@ const handleLike = async (noticeId) => {
                           </div>
                           <div>
                             <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>Expiry Date</label>
-                            <input type="date" name="expiryDate" value={editForm.expiryDate} onChange={handleEditChange}
-                              className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ${
+                            <input
+                              type="date"
+                              name="expiryDate"
+                              value={editForm.expiryDate}
+                              onChange={handleEditChange}
+                              className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
                                 isDarkMode 
                                   ? 'bg-gray-800 border-gray-600 text-white' 
                                   : 'bg-white border-slate-300 text-slate-700'
-                              }`} />
+                              }`}
+                            />
                           </div>
                           <div className="flex gap-3 pt-2">
-                            <button onClick={() => handleSaveEdit(notice._id)}
-                              className="px-6 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-all duration-200 font-medium shadow-sm hover:shadow-md">
+                            <button
+                              onClick={() => handleSaveEdit(notice._id)}
+                              className="px-6 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-all duration-200 font-medium shadow-sm hover:shadow-md"
+                            >
                               💾 Save Changes
                             </button>
-                            <button onClick={handleCancelEdit}
-                              className={`px-6 py-2 rounded-xl font-medium transition-all duration-200 ${
+                            <button
+                              onClick={handleCancelEdit}
+                              className={`px-6 py-2 rounded-xl transition-all duration-200 font-medium ${
                                 isDarkMode 
                                   ? 'bg-gray-700 text-gray-300 border border-gray-600 hover:bg-gray-600' 
                                   : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50'
-                              }`}>
+                              }`}
+                            >
                               Cancel
                             </button>
                           </div>
                         </div>
                       </div>
                     ) : (
-                      <NoticeCard notice={notice} showActions={activeTab === "my"} onClick={openModal} />
+                      <NoticeCard 
+                        notice={notice} 
+                        showActions={activeTab === "my"} 
+                        onClick={openModal}
+                      />
                     )}
                   </div>
                 ))}
@@ -1070,7 +1079,9 @@ const handleLike = async (noticeId) => {
             {/* Pagination */}
             {filteredNotices.length > 0 && totalPages > 1 && (
               <div className={`flex justify-center items-center gap-2 mt-6 pt-4 border-t ${isDarkMode ? 'border-gray-700' : 'border-slate-200'}`}>
-                <button onClick={goToPreviousPage} disabled={currentPage === 1}
+                <button
+                  onClick={goToPreviousPage}
+                  disabled={currentPage === 1}
                   className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                     currentPage === 1
                       ? isDarkMode 
@@ -1079,27 +1090,45 @@ const handleLike = async (noticeId) => {
                       : isDarkMode 
                         ? 'bg-gray-700 text-gray-300 border border-gray-600 hover:bg-gray-600'
                         : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50'
-                  }`}>
-                  ← Previous
+                  }`}
+                >
+                  Previous
                 </button>
+                
                 <div className="flex gap-1">
                   {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                    let pageNum = totalPages <= 5 ? i + 1 : (currentPage <= 3 ? i + 1 : (currentPage >= totalPages - 2 ? totalPages - 4 + i : currentPage - 2 + i));
+                    let pageNum;
+                    if (totalPages <= 5) {
+                      pageNum = i + 1;
+                    } else if (currentPage <= 3) {
+                      pageNum = i + 1;
+                    } else if (currentPage >= totalPages - 2) {
+                      pageNum = totalPages - 4 + i;
+                    } else {
+                      pageNum = currentPage - 2 + i;
+                    }
+                    
                     return (
-                      <button key={pageNum} onClick={() => paginate(pageNum)}
+                      <button
+                        key={pageNum}
+                        onClick={() => paginate(pageNum)}
                         className={`w-10 h-10 rounded-xl text-sm font-medium transition-all duration-200 ${
-                          currentPage === pageNum 
-                            ? 'bg-blue-500 text-white shadow-sm' 
+                          currentPage === pageNum
+                            ? 'bg-blue-500 text-white shadow-sm'
                             : isDarkMode 
                               ? 'bg-gray-700 text-gray-300 border border-gray-600 hover:bg-gray-600'
                               : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50'
-                        }`}>
+                        }`}
+                      >
                         {pageNum}
                       </button>
                     );
                   })}
                 </div>
-                <button onClick={goToNextPage} disabled={currentPage === totalPages}
+                
+                <button
+                  onClick={goToNextPage}
+                  disabled={currentPage === totalPages}
                   className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                     currentPage === totalPages
                       ? isDarkMode 
@@ -1108,8 +1137,9 @@ const handleLike = async (noticeId) => {
                       : isDarkMode 
                         ? 'bg-gray-700 text-gray-300 border border-gray-600 hover:bg-gray-600'
                         : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50'
-                  }`}>
-                  Next →
+                  }`}
+                >
+                  Next
                 </button>
               </div>
             )}
@@ -1117,6 +1147,7 @@ const handleLike = async (noticeId) => {
         </div>
       </div>
 
+      {/* Notice Modal */}
       <NoticeModal
         notice={selectedNotice}
         isOpen={isModalOpen}
@@ -1126,7 +1157,7 @@ const handleLike = async (noticeId) => {
         onCommentEdit={handleCommentEdit}
         onCommentDelete={handleCommentDelete}
         currentUser={currentUser}
-         likingInProgress={likingInProgress}
+        likingInProgress={likingInProgress}
       />
     </div>
   );
