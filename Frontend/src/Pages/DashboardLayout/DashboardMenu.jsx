@@ -43,36 +43,8 @@ const DashboardMenu = () => {
   const menuItemClass = "flex justify-start items-center gap-4 py-3 px-6 rounded-xl m-3 cursor-pointer transition-all duration-200 hover:bg-blue-50 hover:shadow-md";
   
   // Active class for NavLink
-  const activeClass = "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg";
-  const inactiveClass = "text-gray-700 hover:text-blue-600";
-
-  // // Define menu items based on role
-  // const getMenuItems = () => {
-  //   const menuItems = {
-  //     student: [
-  //       { path: '/dashboard/overview', label: 'Overview', icon: 'https://www.svgrepo.com/show/459022/dashboard.svg' },
-  //       { path: '/dashboard/allnotices', label: 'All Notices', icon: 'https://www.pngmart.com/files/8/Notice-PNG-Picture.png' },
-  //       { path: '/dashboard/impnotices', label: 'Important Notices', icon: 'https://cdn-icons-png.freepik.com/256/18610/18610294.png?semt=ais_white_label' },
-  //       // { path: '/dashboard/allstudent', label: 'Students', icon: 'https://icons.veryicon.com/png/o/internet--web/billion-square-cloud/department-1.png' },
-  //       // { path: '/dashboard/allteacher', label: 'Teacher', icon: 'https://cdn-icons-png.flaticon.com/512/1373/1373779.png' },
-  //       { path: '/dashboard/settings', label: 'Settings', icon: 'https://cdn-icons-png.flaticon.com/512/3524/3524659.png' }
-  //     ],
-  //     teacher: [
-  //       { path: '/dashboard/dashboardindex', label: 'Dashboard', icon: 'https://www.svgrepo.com/show/459022/dashboard.svg' },
-  //       { path: '/dashboard/allnotices', label: 'All Notices', icon: 'https://www.pngmart.com/files/8/Notice-PNG-Picture.png' },
-  //       { path: '/dashboard/impnotices', label: 'Important Notices', icon: 'https://cdn-icons-png.freepik.com/256/18610/18610294.png?semt=ais_white_label' },
-  //       { path: '/dashboard/department', label: 'Department', icon: 'https://icons.veryicon.com/png/o/internet--web/billion-square-cloud/department-1.png' },
-  //       { path: '/dashboard/routine', label: 'Routine', icon: 'https://cdn-icons-png.flaticon.com/512/1373/1373779.png' },
-  //       { path: '/profile', label: 'Home', icon: 'https://cdn-icons-png.flaticon.com/512/3524/3524659.png' }
-  //     ],
-  //     staff: [
-  //       { path: '/dashboard/view', label: 'Overview', icon: 'https://www.svgrepo.com/show/459022/dashboard.svg' },
-  //       { path: '/dashboard/staffnotice', label: 'All Notices', icon: 'https://www.pngmart.com/files/8/Notice-PNG-Picture.png' },
-  //       { path: '/dashboard/allstudent', label: 'Students', icon: 'https://icons.veryicon.com/png/o/internet--web/billion-square-cloud/department-1.png' },
-  //       { path: '/dashboard/allteacher', label: 'Teacher', icon: 'https://cdn-icons-png.flaticon.com/512/1373/1373779.png' },
-  //       { path: '/dashboard/allstaff', label: 'Staff', icon: 'https://cdn-icons-png.flaticon.com/512/1373/1373779.png' }
-  //     ]
-  //   };
+const activeClass = "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-md";
+const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors";
   // Render menu items based on role
   const renderMenuItems = () => {
     // Admin Menu
@@ -138,9 +110,9 @@ const DashboardMenu = () => {
               <h1 className='text-base font-medium'>Teacher</h1>
             </div>
           </NavLink>
-
+{/* 
           <NavLink 
-            to="/dashboard/settings"
+            to=""
             className={({ isActive }) => 
               `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
             }
@@ -149,7 +121,7 @@ const DashboardMenu = () => {
               <img className='w-6 h-6' src="https://cdn-icons-png.flaticon.com/512/3524/3524659.png" alt="" />
               <h1 className='text-base font-medium'>Settings</h1>
             </div>
-          </NavLink>
+          </NavLink> */}
         </div>
       );
     }
@@ -390,7 +362,7 @@ const DashboardMenu = () => {
       {/* Toggle button */}
       <button 
         onClick={toggleSidebar}
-        className={`fixed top-20 z-50 p-2.5 rounded-xl bg-white shadow-lg hover:bg-gray-100 transition-all duration-300 hover:shadow-xl ${
+        className={`fixed top-5 z-50 p-2.5 rounded-xl bg-white shadow-lg hover:bg-gray-100 transition-all duration-300 hover:shadow-xl ${
           isSidebarOpen ? 'left-[320px]' : 'left-4'
         }`}
         aria-label={isSidebarOpen ? 'Close menu' : 'Open menu'}
@@ -414,27 +386,35 @@ const DashboardMenu = () => {
         }`}
       >
         <div className='h-full text-black'>
-          <div className='w-[280px] md:w-[300px] h-full bg-gradient-to-b from-white to-gray-50 shadow-2xl rounded-r-2xl flex flex-col'>
-            {/* Header */}
-            <div className='flex justify-start gap-3 items-center p-6 border-b border-gray-200'>
-              <img className='w-10 h-10 object-contain' src={logo} alt="PCIU Logo" />
-              <h1 className='text-lg font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent'>
-                PCIU NOTIFY
-              </h1>
-            </div>
+          <div className='w-[280px] md:w-[300px] h-full bg-white border-r border-slate-200 shadow-sm flex flex-col relative z-10'>
+  {/* Header */}
+  <div className='flex justify-start gap-3 items-center p-6 border-b border-slate-200'>
+    <img 
+      className='w-10 h-10 object-contain rounded-lg' 
+      src={logo} 
+      alt="PCIU Logo" 
+      onError={(e) => {
+        e.target.onerror = null;
+        e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHJ4PSI4IiBmaWxsPSIjM0I4MkY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjAiIGZvbnQtd2VpZ2h0PSJib2xkIj5QPC90ZXh0Pjwvc3ZnPg==';
+      }}
+    />
+    <h1 className='text-lg font-bold bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent'>
+      PCIU NOTIFY
+    </h1>
+  </div>
 
-            {/* Menu Items - Scrollable */}
-            <div className='flex-1 overflow-y-auto custom-scrollbar py-4'>
-              {renderMenuItems()}
-            </div>
+  {/* Menu Items - Scrollable */}
+  <div className='flex-1 overflow-y-auto custom-scrollbar py-4'>
+    {renderMenuItems()}
+  </div>
 
-            {/* Footer */}
-            <div className='p-4 border-t border-gray-200'>
-              <div className='text-xs text-gray-500 text-center'>
-                © 2026 PCIU NOTIFY
-              </div>
-            </div>
-          </div>
+  {/* Footer */}
+  <div className='p-4 border-t border-slate-200'>
+    <div className='text-xs text-slate-400 text-center'>
+      © 2026 PCIU NOTIFY
+    </div>
+  </div>
+</div>
         </div>
       </div>
 

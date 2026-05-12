@@ -62,6 +62,7 @@ app.use(express.json());
 app.use("/api", require("./routes/notice"));
 app.use("/api", require("./routes/auth"));
 app.use("/api", require("./routes/notifications"));
+app.use("/api", require("./routes/Department"));
 
 // MongoDB Connection - WITHOUT deprecated options
 const connectDB = async () => {

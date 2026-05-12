@@ -49,6 +49,15 @@ const UserSchema = new mongoose.Schema({
   section: { 
     type: String 
   },
+  // Add these fields to your existing user schema
+resetPasswordToken: {
+  type: String,
+  default: null
+},
+resetPasswordExpiry: {
+  type: Date,
+  default: null
+},
 
   // Teacher specific fields
   teacherId: { 

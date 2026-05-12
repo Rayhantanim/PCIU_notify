@@ -6,9 +6,12 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { MdEdit } from "react-icons/md";
 import { IoPeopleSharp } from "react-icons/io5";
 import Swal from 'sweetalert2';
+import { useTheme } from "../context/ThemeContext";
+
 
 export default function StaffNotice() {
-  const API = "http://localhost:5000";
+  const { isDarkMode } = useTheme();
+  const API = "https://pciunotifybackend.onrender.com";
   const [open, setOpen] = useState(false);
   const [notices, setNotices] = useState([]);
   const [myNotices, setMyNotices] = useState([]);
@@ -232,31 +235,41 @@ export default function StaffNotice() {
   // Get priority color
   const getPriorityColor = (priority) => {
     switch (priority) {
-      case "urgent": return "bg-red-500";
-      case "high": return "bg-orange-500";
-      case "medium": return "bg-yellow-500";
-      case "low": return "bg-green-500";
-      default: return "bg-gray-500";
+      case "urgent": return isDarkMode ? "bg-red-600" : "bg-red-500";
+      case "high": return isDarkMode ? "bg-orange-600" : "bg-orange-500";
+      case "medium": return isDarkMode ? "bg-yellow-600" : "bg-yellow-500";
+      case "low": return isDarkMode ? "bg-green-600" : "bg-green-500";
+      default: return isDarkMode ? "bg-gray-600" : "bg-gray-500";
     }
   };
 
   // Notice Card Component
   const NoticeCard = ({ notice, showActions = false }) => (
-    <div className="w-full border-2 border-[#062359] rounded-xl p-4 my-3 hover:shadow-lg transition bg-white">
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-4 flex-1">
-          <span className={`w-3 h-3 rounded-full ${getPriorityColor(notice.priority)}`}></span>
-          <div className="flex-1">
-            <div className="flex items-center gap-2 flex-wrap">
-              <p className="font-semibold text-gray-800">"{notice.title}"</p>
+    <div className={`w-full border-2 rounded-xl p-4 my-3 hover:shadow-lg transition ${
+      isDarkMode 
+        ? 'border-blue-700 bg-gray-800 hover:shadow-gray-900/50' 
+        : 'border-[#062359] bg-white hover:shadow-blue-200'
+    }`}>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+        <div className="flex items-start sm:items-center gap-4 flex-1 w-full">
+          <span className={`w-3 h-3 rounded-full flex-shrink-0 mt-1 sm:mt-0 ${getPriorityColor(notice.priority)}`}></span>
+          <div className="flex-1 w-full">
+            <div className="flex flex-wrap items-center gap-2">
+              <p className={`font-semibold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+                "{notice.title}"
+              </p>
               {notice.isPinned && <span className="text-sm text-red-600">📌</span>}
               {notice.priority && (
-                <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 capitalize">
+                <span className={`text-xs px-2 py-0.5 rounded-full capitalize ${
+                  isDarkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'
+                }`}>
                   {notice.priority}
                 </span>
               )}
             </div>
-            <div className="flex items-center gap-4 mt-1 text-sm text-gray-500">
+            <div className={`flex flex-wrap items-center gap-4 mt-1 text-sm ${
+              isDarkMode ? 'text-gray-400' : 'text-gray-500'
+            }`}>
               <span>📅 {formatDate(notice.createdAt)}</span>
               <span>📂 {notice.category}</span>
               {notice.audience && notice.audience.length > 0 && (
@@ -265,32 +278,40 @@ export default function StaffNotice() {
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 text-sm text-gray-600">
-            <img className="w-8 h-8 rounded-full" src={noticeImg} alt="" />
-            <p>{notice.createdBy || "Unknown"}</p>
+        <div className="flex items-center gap-3 ml-0 sm:ml-4">
+          <div className="flex items-center gap-2 text-sm">
+            <img className="w-8 h-8 rounded-full object-cover" src={noticeImg} alt="" />
+            <p className={isDarkMode ? 'text-gray-300' : 'text-gray-600'}>{notice.createdBy || "Unknown"}</p>
           </div>
         </div>
       </div>
 
       {notice.description && (
-        <p className="text-sm text-gray-600 mt-3 ml-7 line-clamp-2">
+        <p className={`text-sm mt-3 ml-0 sm:ml-11 line-clamp-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
           {notice.description.replace(/<[^>]*>/g, "").substring(0, 150)}
           {notice.description.replace(/<[^>]*>/g, "").length > 150 ? "..." : ""}
         </p>
       )}
 
       {showActions && (
-        <div className="flex justify-end gap-2 mt-3 pt-3 border-t border-gray-200">
+        <div className={`flex justify-end gap-2 mt-3 pt-3 border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
           <button
             onClick={() => handleEditClick(notice)}
-            className="px-4 py-1.5 text-xl bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition flex items-center gap-1"
+            className={`px-4 py-1.5 text-xl rounded-lg transition flex items-center gap-1 ${
+              isDarkMode 
+                ? 'bg-blue-900/30 text-blue-400 hover:bg-blue-900/50' 
+                : 'bg-blue-50 text-blue-600 hover:bg-blue-100'
+            }`}
           >
             <MdEdit />
           </button>
           <button
             onClick={() => handleDelete(notice._id)}
-            className="px-4 text-xl py-1.5 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition flex items-center gap-1"
+            className={`px-4 text-xl py-1.5 rounded-lg transition flex items-center gap-1 ${
+              isDarkMode 
+                ? 'bg-red-900/30 text-red-400 hover:bg-red-900/50' 
+                : 'bg-red-50 text-red-600 hover:bg-red-100'
+            }`}
           >
             <RiDeleteBin6Line />
           </button>
@@ -300,37 +321,50 @@ export default function StaffNotice() {
   );
 
   return (
-    <div className="flex gap-10 p-4">
-      {/* Main Content */}
-      <div className="w-full mx-auto max-w-6xl">
+    <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-slate-50 via-white to-blue-50'}`}>
+      <div className="container mx-auto px-4 py-6 sm:px-6 lg:px-8">
+        
+        {/* Header */}
+        <div className="mb-6">
+          <div className="bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl shadow-lg shadow-blue-200 dark:shadow-blue-900/30 p-6 mb-8 text-white">
+            <h1 className="text-2xl sm:text-3xl font-bold mb-2">Staff Notice Management</h1>
+            <p className="text-blue-100 text-sm sm:text-base">Create and manage important announcements for students and teachers</p>
+          </div>
+        </div>
+
         {/* Add New Notice Button */}
-        <div className="flex justify-end mb-4">
+        <div className="flex justify-end mb-6">
           <button
             onClick={handleClickOpen}
-            className="px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition shadow-lg"
+            className="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-xl font-semibold hover:bg-blue-700 transition shadow-lg flex items-center gap-2"
           >
-            + ADD New Notice
+            <span className="text-xl">+</span>
+            <span>ADD New Notice</span>
           </button>
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-4 mb-6">
+        <div className="flex flex-wrap gap-3 mb-6">
           <button
             onClick={() => setActiveTab("my")}
-            className={`px-6 py-3 rounded-xl font-semibold text-lg transition ${
+            className={`px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold text-sm sm:text-lg transition ${
               activeTab === "my"
                 ? "bg-blue-600 text-white shadow-lg"
-                : "bg-white text-gray-600 border-2 border-gray-200 hover:border-blue-300"
+                : isDarkMode
+                  ? "bg-gray-800 text-gray-300 border-2 border-gray-700 hover:border-blue-500"
+                  : "bg-white text-gray-600 border-2 border-gray-200 hover:border-blue-300"
             }`}
           >
             My Notices ({myNotices.length})
           </button>
           <button
             onClick={() => setActiveTab("all")}
-            className={`px-6 py-3 rounded-xl font-semibold text-lg transition ${
+            className={`px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold text-sm sm:text-lg transition ${
               activeTab === "all"
                 ? "bg-blue-600 text-white shadow-lg"
-                : "bg-white text-gray-600 border-2 border-gray-200 hover:border-blue-300"
+                : isDarkMode
+                  ? "bg-gray-800 text-gray-300 border-2 border-gray-700 hover:border-blue-500"
+                  : "bg-white text-gray-600 border-2 border-gray-200 hover:border-blue-300"
             }`}
           >
             All Notices ({notices.length})
@@ -339,52 +373,87 @@ export default function StaffNotice() {
 
         {/* My Notices Tab */}
         {activeTab === "my" && (
-          <div className="border bg-white rounded-xl shadow-lg p-6">
-            <h1 className="text-3xl font-bold mb-6 text-gray-800">My Notices</h1>
-            <p className="text-sm text-gray-500 mb-4">
-              You can edit or delete only your own notices
-            </p>
+          <div className={`rounded-xl shadow-lg p-4 sm:p-6 ${
+            isDarkMode ? 'bg-gray-800 border border-gray-700' : 'bg-white border'
+          }`}>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
+              <div>
+                <h1 className={`text-2xl sm:text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+                  My Notices
+                </h1>
+                <p className={`text-sm mt-1 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                  You can edit or delete only your own notices
+                </p>
+              </div>
+            </div>
 
             {myNotices.length === 0 ? (
               <div className="text-center py-12">
-                <p className="text-gray-500 text-lg">You haven't created any notices yet</p>
-                <p className="text-sm text-gray-400 mt-2">Click "ADD New Notice" to create one</p>
+                <div className="text-5xl mb-3">📝</div>
+                <p className={`text-lg ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                  You haven't created any notices yet
+                </p>
+                <p className={`text-sm mt-2 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                  Click "ADD New Notice" to create one
+                </p>
               </div>
             ) : (
               myNotices.map((notice) => (
                 <div key={notice._id}>
                   {editingNotice === notice._id ? (
-                    <div className="border-2 border-blue-500 rounded-xl p-6 my-4 bg-blue-50">
-                      <h3 className="text-lg font-semibold mb-4">Edit Notice</h3>
+                    <div className={`border-2 border-blue-500 rounded-xl p-4 sm:p-6 my-4 ${
+                      isDarkMode ? 'bg-gray-700' : 'bg-blue-50'
+                    }`}>
+                      <h3 className={`text-lg font-semibold mb-4 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+                        Edit Notice
+                      </h3>
                       <div className="space-y-4">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                          <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                            Title
+                          </label>
                           <input
                             type="text"
                             name="title"
                             value={editForm.title}
                             onChange={handleEditChange}
-                            className="w-full border border-gray-300 rounded-lg p-2 focus:border-blue-500 focus:outline-none"
+                            className={`w-full border rounded-lg p-2 focus:border-blue-500 focus:outline-none ${
+                              isDarkMode 
+                                ? 'bg-gray-800 border-gray-600 text-white' 
+                                : 'bg-white border-gray-300 text-gray-900'
+                            }`}
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                          <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                            Description
+                          </label>
                           <textarea
                             name="description"
                             value={editForm.description.replace(/<[^>]*>/g, "")}
                             onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
                             rows="4"
-                            className="w-full border border-gray-300 rounded-lg p-2 focus:border-blue-500 focus:outline-none"
+                            className={`w-full border rounded-lg p-2 focus:border-blue-500 focus:outline-none ${
+                              isDarkMode 
+                                ? 'bg-gray-800 border-gray-600 text-white' 
+                                : 'bg-white border-gray-300 text-gray-900'
+                            }`}
                           />
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                            <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                              Category
+                            </label>
                             <select
                               name="category"
                               value={editForm.category}
                               onChange={handleEditChange}
-                              className="w-full border border-gray-300 rounded-lg p-2 focus:border-blue-500 focus:outline-none"
+                              className={`w-full border rounded-lg p-2 focus:border-blue-500 focus:outline-none ${
+                                isDarkMode 
+                                  ? 'bg-gray-800 border-gray-600 text-white' 
+                                  : 'bg-white border-gray-300 text-gray-900'
+                              }`}
                             >
                               <option value="">Select Category</option>
                               <option value="general">General</option>
@@ -395,12 +464,18 @@ export default function StaffNotice() {
                             </select>
                           </div>
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Priority</label>
+                            <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                              Priority
+                            </label>
                             <select
                               name="priority"
                               value={editForm.priority}
                               onChange={handleEditChange}
-                              className="w-full border border-gray-300 rounded-lg p-2 focus:border-blue-500 focus:outline-none"
+                              className={`w-full border rounded-lg p-2 focus:border-blue-500 focus:outline-none ${
+                                isDarkMode 
+                                  ? 'bg-gray-800 border-gray-600 text-white' 
+                                  : 'bg-white border-gray-300 text-gray-900'
+                              }`}
                             >
                               <option value="low">Low</option>
                               <option value="medium">Medium</option>
@@ -410,34 +485,42 @@ export default function StaffNotice() {
                           </div>
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Audience</label>
+                          <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                            Audience
+                          </label>
                           <div className="flex gap-4">
                             {["students", "teachers"].map((a) => (
-                              <label key={a} className="flex items-center gap-1">
+                              <label key={a} className="flex items-center gap-1 cursor-pointer">
                                 <input
                                   type="checkbox"
                                   name="audience"
                                   value={a}
                                   checked={editForm.audience.includes(a)}
                                   onChange={handleEditChange}
-                                  className="rounded"
+                                  className="rounded border-gray-300"
                                 />
-                                <span className="capitalize">{a}</span>
+                                <span className={`capitalize ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>{a}</span>
                               </label>
                             ))}
                           </div>
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Expiry Date</label>
+                          <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                            Expiry Date
+                          </label>
                           <input
                             type="date"
                             name="expiryDate"
                             value={editForm.expiryDate}
                             onChange={handleEditChange}
-                            className="w-full border border-gray-300 rounded-lg p-2 focus:border-blue-500 focus:outline-none"
+                            className={`w-full border rounded-lg p-2 focus:border-blue-500 focus:outline-none ${
+                              isDarkMode 
+                                ? 'bg-gray-800 border-gray-600 text-white' 
+                                : 'bg-white border-gray-300 text-gray-900'
+                            }`}
                           />
                         </div>
-                        <div className="flex gap-3 pt-2">
+                        <div className="flex flex-col sm:flex-row gap-3 pt-2">
                           <button
                             onClick={() => handleSaveEdit(notice._id)}
                             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium"
@@ -446,7 +529,11 @@ export default function StaffNotice() {
                           </button>
                           <button
                             onClick={handleCancelEdit}
-                            className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition font-medium"
+                            className={`px-6 py-2 rounded-lg transition font-medium ${
+                              isDarkMode 
+                                ? 'bg-gray-600 text-gray-300 hover:bg-gray-500' 
+                                : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
+                            }`}
                           >
                             Cancel
                           </button>
@@ -464,12 +551,19 @@ export default function StaffNotice() {
 
         {/* All Notices Tab */}
         {activeTab === "all" && (
-          <div className="border bg-white rounded-xl shadow-lg p-6">
-            <h1 className="text-3xl font-bold mb-6 text-gray-800">All Notices</h1>
+          <div className={`rounded-xl shadow-lg p-4 sm:p-6 ${
+            isDarkMode ? 'bg-gray-800 border border-gray-700' : 'bg-white border'
+          }`}>
+            <h1 className={`text-2xl sm:text-3xl font-bold mb-6 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+              All Notices
+            </h1>
 
             {notices.length === 0 ? (
               <div className="text-center py-12">
-                <p className="text-gray-500 text-lg">No notices found</p>
+                <div className="text-5xl mb-3">📭</div>
+                <p className={`text-lg ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                  No notices found
+                </p>
               </div>
             ) : (
               notices.map((notice) => (
@@ -487,11 +581,24 @@ export default function StaffNotice() {
         )}
       </div>
 
-      {/* Dialog Form */}
-      <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+      {/* Dialog Form - Custom styled for dark mode */}
+      <Dialog 
+        open={open} 
+        onClose={handleClose} 
+        maxWidth="md" 
+        fullWidth
+        PaperProps={{
+          style: {
+            backgroundColor: isDarkMode ? '#1f2937' : '#ffffff',
+            borderRadius: '1rem',
+          }
+        }}
+      >
         <DialogContent>
           <form onSubmit={handleSubmit} className="p-4 space-y-4">
-            <h2 className="text-xl font-bold">Staff Create Notice</h2>
+            <h2 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+              Staff Create Notice
+            </h2>
 
             <input
               type="text"
@@ -500,7 +607,11 @@ export default function StaffNotice() {
               value={formData.title}
               onChange={handleChange}
               required
-              className="w-full border p-2 rounded"
+              className={`w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                isDarkMode 
+                  ? 'bg-gray-800 border-gray-600 text-white placeholder-gray-400' 
+                  : 'bg-white border-gray-300 text-gray-900'
+              }`}
             />
 
             <textarea
@@ -509,8 +620,12 @@ export default function StaffNotice() {
               value={formData.description}
               onChange={handleChange}
               required
-              className="w-full border p-2 rounded"
               rows="4"
+              className={`w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                isDarkMode 
+                  ? 'bg-gray-800 border-gray-600 text-white placeholder-gray-400' 
+                  : 'bg-white border-gray-300 text-gray-900'
+              }`}
             />
 
             <select
@@ -518,7 +633,11 @@ export default function StaffNotice() {
               value={formData.category}
               onChange={handleChange}
               required
-              className="w-full border p-2 rounded"
+              className={`w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                isDarkMode 
+                  ? 'bg-gray-800 border-gray-600 text-white' 
+                  : 'bg-white border-gray-300 text-gray-900'
+              }`}
             >
               <option value="">Select Category</option>
               <option value="general">General</option>
@@ -529,26 +648,37 @@ export default function StaffNotice() {
             </select>
 
             <div>
-              <p className="font-medium mb-2">Audience</p>
-              {["students", "teachers"].map((a) => (
-                <label key={a} className="mr-4">
-                  <input
-                    type="checkbox"
-                    name="audience"
-                    value={a}
-                    checked={formData.audience.includes(a)}
-                    onChange={handleChange}
-                  />{" "}
-                  {a}
-                </label>
-              ))}
+              <p className={`font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                Audience
+              </p>
+              <div className="flex flex-wrap gap-4">
+                {["students", "teachers"].map((a) => (
+                  <label key={a} className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      name="audience"
+                      value={a}
+                      checked={formData.audience.includes(a)}
+                      onChange={handleChange}
+                      className="rounded border-gray-300"
+                    />
+                    <span className={`capitalize ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                      {a}
+                    </span>
+                  </label>
+                ))}
+              </div>
             </div>
 
             <select
               name="priority"
               value={formData.priority}
               onChange={handleChange}
-              className="w-full border p-2 rounded"
+              className={`w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                isDarkMode 
+                  ? 'bg-gray-800 border-gray-600 text-white' 
+                  : 'bg-white border-gray-300 text-gray-900'
+              }`}
             >
               <option value="low">Low</option>
               <option value="medium">Medium</option>
@@ -556,14 +686,17 @@ export default function StaffNotice() {
               <option value="urgent">Urgent</option>
             </select>
 
-            <label className="flex items-center gap-2">
+            <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"
                 name="isPinned"
                 checked={formData.isPinned}
                 onChange={handleChange}
+                className="rounded border-gray-300"
               />
-              Pin Notice
+              <span className={isDarkMode ? 'text-gray-300' : 'text-gray-700'}>
+                Pin Notice
+              </span>
             </label>
 
             <input
@@ -571,20 +704,28 @@ export default function StaffNotice() {
               name="expiryDate"
               value={formData.expiryDate}
               onChange={handleChange}
-              className="w-full border p-2 rounded"
+              className={`w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                isDarkMode 
+                  ? 'bg-gray-800 border-gray-600 text-white' 
+                  : 'bg-white border-gray-300 text-gray-900'
+              }`}
             />
 
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <button
                 type="submit"
-                className="flex-1 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+                className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition font-medium"
               >
                 Submit
               </button>
               <button
                 type="button"
                 onClick={handleClose}
-                className="flex-1 bg-gray-300 text-gray-700 py-2 rounded hover:bg-gray-400 transition"
+                className={`flex-1 py-2 rounded-lg transition font-medium ${
+                  isDarkMode 
+                    ? 'bg-gray-600 text-gray-300 hover:bg-gray-500' 
+                    : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
+                }`}
               >
                 Cancel
               </button>

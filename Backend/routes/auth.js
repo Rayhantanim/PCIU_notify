@@ -401,8 +401,6 @@ router.post("/login", async (req, res) => {
     });
   }
 });
-
-// ==================== UPDATE USER PROFILE ====================
 // ==================== UPDATE USER PROFILE ====================
 router.put("/user/:userId", async (req, res) => {
   try {
@@ -464,7 +462,242 @@ router.put("/user/:userId", async (req, res) => {
   }
 });
 
-// ==================== CHANGE PASSWORD ====================
+
+// ==================== DELETE USER (Hard Delete) ====================
+router.delete("/user/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    // Find user first
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+    
+    // Prevent deleting own admin account
+    if (user.role === 'admin') {
+      return res.status(403).json({
+        success: false,
+        message: "Cannot delete admin account"
+      });
+    }
+    
+    // Delete the user
+    await User.findByIdAndDelete(id);
+    
+    res.json({
+      success: true,
+      message: "User deleted successfully"
+    });
+  } catch (err) {
+    console.error("Delete user error:", err);
+    res.status(500).json({
+      success: false,
+      message: err.message
+    });
+  }
+});
+
+// ==================== TOGGLE USER STATUS (Activate/Deactivate) ====================
+router.patch("/users/:id/toggle-status", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { isActive } = req.body;
+    
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+    
+    // Don't allow deactivating own admin account
+    if (user.role === 'admin' && isActive === false) {
+      return res.status(403).json({
+        success: false,
+        message: "Cannot deactivate admin account"
+      });
+    }
+    
+    user.isActive = isActive;
+    user.updatedAt = new Date();
+    await user.save();
+    
+    res.json({
+      success: true,
+      message: `User ${isActive ? 'activated' : 'deactivated'} successfully`
+    });
+  } catch (err) {
+    console.error("Toggle user status error:", err);
+    res.status(500).json({
+      success: false,
+      message: err.message
+    });
+  }
+});
+
+// ==================== RESET PASSWORD (Send reset email) ====================
+router.post("/users/:id/reset-password", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { email } = req.body;
+    
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+    
+    // Generate reset token
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const resetExpiry = new Date(Date.now() + 1 * 60 * 60 * 1000); // 1 hour
+    
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpiry = resetExpiry;
+    await user.save();
+    
+    // Send reset email
+    const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/reset-password?token=${resetToken}`;
+    
+    const emailSent = await sendEmail(
+      user.email,
+      'Password Reset Request',
+      `<div style="font-family:Arial;text-align:center;padding:20px">
+         <h2>Password Reset Request</h2>
+         <p>You requested to reset your password for PCIU Notify account.</p>
+         <p>Click the button below to reset your password:</p>
+         <a href="${resetUrl}" style="background:#3b82f6;color:white;padding:10px 20px;text-decoration:none;border-radius:5px">Reset Password</a>
+         <p>This link expires in 1 hour.</p>
+         <p>If you didn't request this, please ignore this email.</p>
+       </div>`
+    );
+    
+    if (emailSent.success) {
+      res.json({
+        success: true,
+        message: "Password reset email sent successfully"
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: "Failed to send reset email"
+      });
+    }
+  } catch (err) {
+    console.error("Reset password error:", err);
+    res.status(500).json({
+      success: false,
+      message: err.message
+    });
+  }
+});
+
+// ==================== RESET PASSWORD CONFIRM ====================
+router.post("/reset-password-confirm", async (req, res) => {
+  try {
+    const { token, newPassword } = req.body;
+    
+    const user = await User.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpiry: { $gt: Date.now() }
+    });
+    
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid or expired reset token"
+      });
+    }
+    
+    // Hash new password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    
+    user.password = hashedPassword;
+    user.resetPasswordToken = null;
+    user.resetPasswordExpiry = null;
+    await user.save();
+    
+    res.json({
+      success: true,
+      message: "Password reset successfully"
+    });
+  } catch (err) {
+    console.error("Reset password confirm error:", err);
+    res.status(500).json({
+      success: false,
+      message: err.message
+    });
+  }
+});
+
+// ==================== UPDATE USER BY ADMIN ====================
+router.put("/users/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+    
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+    
+    // Update allowed fields (prevent role changes for admin)
+    if (updateData.firstName !== undefined) user.firstName = updateData.firstName;
+    if (updateData.lastName !== undefined) user.lastName = updateData.lastName;
+    if (updateData.phone !== undefined) user.phone = updateData.phone;
+    if (updateData.dob !== undefined) user.dob = updateData.dob;
+    if (updateData.department !== undefined) user.department = updateData.department;
+    if (updateData.section !== undefined && user.role === "student") user.section = updateData.section;
+    if (updateData.shortName !== undefined && user.role === "teacher") user.shortName = updateData.shortName;
+    
+    // Update role-specific IDs
+    if (updateData.studentId !== undefined && user.role === "student") user.studentId = updateData.studentId;
+    if (updateData.teacherId !== undefined && user.role === "teacher") user.teacherId = updateData.teacherId;
+    if (updateData.staffId !== undefined && user.role === "staff") user.staffId = updateData.staffId;
+    
+    user.updatedAt = new Date();
+    await user.save();
+    
+    res.json({
+      success: true,
+      message: "User updated successfully",
+      user: {
+        _id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        role: user.role,
+        department: user.department,
+        section: user.section,
+        studentId: user.studentId,
+        teacherId: user.teacherId,
+        staffId: user.staffId,
+        phone: user.phone,
+        dob: user.dob,
+        shortName: user.shortName,
+        isActive: user.isActive,
+        verified: user.verified
+      }
+    });
+  } catch (err) {
+    console.error("Update user error:", err);
+    res.status(500).json({
+      success: false,
+      message: err.message
+    });
+  }
+});
+
 // router.post("/change-password", async (req, res) => {
 //   try {
 //     const { userId, currentPassword, newPassword } = req.body;

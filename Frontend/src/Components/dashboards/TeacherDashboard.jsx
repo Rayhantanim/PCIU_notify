@@ -6,9 +6,11 @@ import { FaChalkboardTeacher, FaEdit, FaTrash, FaUserGraduate, FaCalendarAlt, Fa
 import { MdClose, MdNotificationsActive } from "react-icons/md";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { useTheme } from "../../context/ThemeContext";
 
 // ============== NOTICE MODAL COMPONENT ==============
 const NoticeModal = ({ notice, onClose }) => {
+  const { isDarkMode } = useTheme();
   if (!notice) return null;
   
   const formatDate = (dateString) => {
@@ -25,23 +27,23 @@ const NoticeModal = ({ notice, onClose }) => {
   
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onClick={onClose}>
-      <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
+      <div className={`rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`} onClick={(e) => e.stopPropagation()}>
+        <div className={`sticky top-0 ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b px-6 py-4 flex justify-between items-center`}>
           <div className="flex items-center gap-3">
-            <h2 className="text-xl font-bold text-gray-900">{notice.title}</h2>
+            <h2 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{notice.title}</h2>
             {notice.isPinned && (
               <span className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 bg-blue-50 text-blue-700 rounded-full">
                 📌 Pinned
               </span>
             )}
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+          <button onClick={onClose} className={`${isDarkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'}`}>
             <MdClose size={24} />
           </button>
         </div>
         
         <div className="p-6 space-y-4">
-          <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+          <div className={`flex flex-wrap gap-4 text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
             <span className="flex items-center gap-1">👤 {notice.createdBy}</span>
             <span className="flex items-center gap-1">📅 {formatDate(notice.createdAt)}</span>
             <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
@@ -52,13 +54,13 @@ const NoticeModal = ({ notice, onClose }) => {
             }`}>
               {notice.priority}
             </span>
-            <span className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 rounded-full text-xs">
+            <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs ${isDarkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-700'}`}>
               {notice.category}
             </span>
           </div>
           
           {notice.audience && notice.audience.length > 0 && (
-            <div className="flex items-center gap-2 text-sm text-gray-600">
+            <div className={`flex items-center gap-2 text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
               <span className="font-semibold">Audience:</span>
               <div className="flex gap-2">
                 {notice.audience.map(aud => (
@@ -70,14 +72,14 @@ const NoticeModal = ({ notice, onClose }) => {
             </div>
           )}
           
-          <div className="border-t border-gray-200 pt-4">
+          <div className={`border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} pt-4`}>
             <div dangerouslySetInnerHTML={{ __html: notice.description || 'No description provided' }} 
-              className="prose max-w-none text-gray-700" />
+              className={`prose max-w-none ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`} />
           </div>
           
           {notice.attachment && (
-            <div className="border-t border-gray-200 pt-4">
-              <h4 className="font-semibold mb-2">Attachment:</h4>
+            <div className={`border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} pt-4`}>
+              <h4 className={`font-semibold mb-2 ${isDarkMode ? 'text-gray-200' : 'text-gray-900'}`}>Attachment:</h4>
               <a href={notice.attachment} target="_blank" rel="noopener noreferrer" 
                 className="text-blue-600 hover:text-blue-800 flex items-center gap-2">
                 📎 View Attachment
@@ -86,7 +88,7 @@ const NoticeModal = ({ notice, onClose }) => {
           )}
           
           {notice.expiryDate && (
-            <div className="border-t border-gray-200 pt-4 text-sm text-gray-500">
+            <div className={`border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} pt-4 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
               ⏰ Expires: {formatDate(notice.expiryDate)}
             </div>
           )}
@@ -98,6 +100,7 @@ const NoticeModal = ({ notice, onClose }) => {
 
 // ============== EDIT NOTICE MODAL COMPONENT ==============
 const EditNoticeModal = ({ isOpen, notice, onClose, onUpdate }) => {
+  const { isDarkMode } = useTheme();
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -154,15 +157,15 @@ const EditNoticeModal = ({ isOpen, notice, onClose, onUpdate }) => {
       onClick={onClose}
     >
       <div 
-        className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto" 
+        className={`rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`} 
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
-          <h2 className="text-xl font-bold text-gray-900">Edit Notice</h2>
+        <div className={`sticky top-0 ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b px-6 py-4 flex justify-between items-center`}>
+          <h2 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Edit Notice</h2>
           <button 
             type="button"
             onClick={onClose} 
-            className="text-gray-400 hover:text-gray-600"
+            className={`${isDarkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'}`}
           >
             <MdClose size={24} />
           </button>
@@ -170,36 +173,42 @@ const EditNoticeModal = ({ isOpen, notice, onClose, onUpdate }) => {
         
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Title *</label>
+            <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Title *</label>
             <input
               type="text"
               name="title"
               required
               value={formData.title}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'
+              }`}
             />
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+            <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Description</label>
             <textarea
               name="description"
               rows="4"
               value={formData.description}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'
+              }`}
             />
           </div>
           
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+              <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Category</label>
               <select
                 name="category"
                 value={formData.category}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
+                  isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'
+                }`}
               >
                 {categoryOptions.map(opt => (
                   <option key={opt} value={opt} className="capitalize">{opt}</option>
@@ -208,12 +217,14 @@ const EditNoticeModal = ({ isOpen, notice, onClose, onUpdate }) => {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Priority</label>
+              <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Priority</label>
               <select
                 name="priority"
                 value={formData.priority}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
+                  isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'
+                }`}
               >
                 {priorityOptions.map(opt => (
                   <option key={opt} value={opt} className="capitalize">{opt}</option>
@@ -223,7 +234,7 @@ const EditNoticeModal = ({ isOpen, notice, onClose, onUpdate }) => {
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Audience</label>
+            <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Audience</label>
             <div className="flex gap-3 flex-wrap">
               {audienceOptions.map(opt => (
                 <label key={opt} className="flex items-center gap-2">
@@ -233,20 +244,22 @@ const EditNoticeModal = ({ isOpen, notice, onClose, onUpdate }) => {
                     onChange={() => toggleAudience(opt)}
                     className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
-                  <span className="text-sm capitalize">{opt}</span>
+                  <span className={`text-sm capitalize ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>{opt}</span>
                 </label>
               ))}
             </div>
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Expiry Date</label>
+            <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Expiry Date</label>
             <input
               type="date"
               name="expiryDate"
               value={formData.expiryDate}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
+                isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'
+              }`}
             />
           </div>
           
@@ -260,7 +273,9 @@ const EditNoticeModal = ({ isOpen, notice, onClose, onUpdate }) => {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 bg-gray-200 text-gray-700 py-2 rounded-lg font-semibold hover:bg-gray-300 transition"
+              className={`flex-1 py-2 rounded-lg font-semibold transition ${
+                isDarkMode ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
             >
               Cancel
             </button>
@@ -273,11 +288,12 @@ const EditNoticeModal = ({ isOpen, notice, onClose, onUpdate }) => {
 
 // ============== ROUTINE DETAIL MODAL ==============
 const RoutineDetailModal = ({ classItem, onClose }) => {
+  const { isDarkMode } = useTheme();
   if (!classItem) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onClick={onClose}>
-      <div className="bg-white rounded-2xl max-w-md w-full" onClick={(e) => e.stopPropagation()}>
+      <div className={`rounded-2xl max-w-md w-full ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`} onClick={(e) => e.stopPropagation()}>
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-4 rounded-t-2xl flex justify-between items-center">
           <div className="flex items-center gap-2">
             <FaBook className="text-white" />
@@ -289,43 +305,43 @@ const RoutineDetailModal = ({ classItem, onClose }) => {
         </div>
         
         <div className="p-6 space-y-4">
-          <div className="border-b border-gray-200 pb-3">
-            <h3 className="font-bold text-gray-900 text-lg">{classItem.courseName}</h3>
-            <p className="text-sm text-gray-500 font-mono">{classItem.courseCode}</p>
+          <div className={`border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} pb-3`}>
+            <h3 className={`font-bold text-lg ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{classItem.courseName}</h3>
+            <p className={`text-sm font-mono ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>{classItem.courseCode}</p>
           </div>
           
           <div className="space-y-3">
-            <div className="flex items-center gap-3 text-gray-600">
+            <div className={`flex items-center gap-3 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
               <FaCalendarAlt className="text-blue-500 w-5" />
               <span className="font-medium">Day:</span>
               <span>{classItem.day}</span>
             </div>
             
-            <div className="flex items-center gap-3 text-gray-600">
+            <div className={`flex items-center gap-3 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
               <FaClock className="text-blue-500 w-5" />
               <span className="font-medium">Time:</span>
               <span>{classItem.time}</span>
             </div>
             
-            <div className="flex items-center gap-3 text-gray-600">
+            <div className={`flex items-center gap-3 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
               <FaDoorOpen className="text-blue-500 w-5" />
               <span className="font-medium">Room:</span>
               <span>{classItem.room || "N/A"}</span>
             </div>
             
-            <div className="flex items-center gap-3 text-gray-600">
+            <div className={`flex items-center gap-3 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
               <FaBuilding className="text-blue-500 w-5" />
               <span className="font-medium">Department:</span>
               <span>{classItem.department || "N/A"}</span>
             </div>
             
-            <div className="flex items-center gap-3 text-gray-600">
+            <div className={`flex items-center gap-3 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
               <FaUsers className="text-blue-500 w-5" />
               <span className="font-medium">Section:</span>
               <span>{classItem.section || "N/A"}</span>
             </div>
             
-            <div className="flex items-center gap-3 text-gray-600">
+            <div className={`flex items-center gap-3 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
               <FaUser className="text-blue-500 w-5" />
               <span className="font-medium">Teacher:</span>
               <span>{classItem.teacher}</span>
@@ -349,6 +365,7 @@ const RoutineDetailModal = ({ classItem, onClose }) => {
 // ============== MAIN TEACHER DASHBOARD COMPONENT ==============
 export default function TeacherDashboard() {
   const navigate = useNavigate();
+  const { isDarkMode } = useTheme();
   const [recentNotices, setRecentNotices] = useState([]);
   const [allNotices, setAllNotices] = useState([]);
   const [stats, setStats] = useState({
@@ -634,9 +651,9 @@ export default function TeacherDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 to-gray-100'}`}>
       {/* HEADER */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-lg">
+      <div className="bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl shadow-lg shadow-blue-200 dark:shadow-blue-900/30 p-6 mb-8 text-white">
         <div className="px-6 md:px-20 py-6">
           <h1 className="text-2xl md:text-3xl font-bold flex items-center gap-3">
             <FaChalkboardTeacher className="text-3xl" />
@@ -652,11 +669,11 @@ export default function TeacherDashboard() {
         
         {/* STATS SECTION */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition border border-gray-100">
+          <div className={`rounded-2xl p-6 shadow-sm hover:shadow-md transition border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'}`}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm">My Notices</p>
-                <p className="text-3xl font-bold text-gray-800 mt-2">{loading ? '...' : allNotices.length}</p>
+                <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>My Notices</p>
+                <p className={`text-3xl font-bold mt-2 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>{loading ? '...' : allNotices.length}</p>
               </div>
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
                 <MdNotificationsActive className="text-blue-600 text-xl" />
@@ -664,11 +681,11 @@ export default function TeacherDashboard() {
             </div>
           </div>
           
-          <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition border border-gray-100">
+          <div className={`rounded-2xl p-6 shadow-sm hover:shadow-md transition border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'}`}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm">Total Students</p>
-                <p className="text-3xl font-bold text-gray-800 mt-2">{loading ? '...' : stats.totalStudents}</p>
+                <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Total Students</p>
+                <p className={`text-3xl font-bold mt-2 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>{loading ? '...' : stats.totalStudents}</p>
               </div>
               <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
                 <FaUserGraduate className="text-green-600 text-xl" />
@@ -676,11 +693,11 @@ export default function TeacherDashboard() {
             </div>
           </div>
           
-          <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition border border-gray-100">
+          <div className={`rounded-2xl p-6 shadow-sm hover:shadow-md transition border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'}`}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm">My Courses</p>
-                <p className="text-3xl font-bold text-gray-800 mt-2">{routineLoading ? '...' : myCourses.length}</p>
+                <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>My Courses</p>
+                <p className={`text-3xl font-bold mt-2 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>{routineLoading ? '...' : myCourses.length}</p>
               </div>
               <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
                 <FaBook className="text-purple-600 text-xl" />
@@ -688,11 +705,11 @@ export default function TeacherDashboard() {
             </div>
           </div>
           
-          <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition border border-gray-100">
+          <div className={`rounded-2xl p-6 shadow-sm hover:shadow-md transition border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'}`}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm">Today's Classes</p>
-                <p className="text-3xl font-bold text-gray-800 mt-2">{routineLoading ? '...' : todaysSchedule.length}</p>
+                <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Today's Classes</p>
+                <p className={`text-3xl font-bold mt-2 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>{routineLoading ? '...' : todaysSchedule.length}</p>
               </div>
               <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
                 <FaCalendarAlt className="text-orange-600 text-xl" />
@@ -702,15 +719,15 @@ export default function TeacherDashboard() {
         </div>
 
         {/* ROUTINE & COURSES SECTION */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className={`rounded-2xl shadow-sm border overflow-hidden ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'}`}>
           {/* Toggle Buttons */}
-          <div className="flex border-b border-gray-200">
+          <div className={`flex border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
             <button
               onClick={() => setRoutineFilter('today')}
               className={`flex-1 px-6 py-4 font-semibold text-sm transition-all ${
                 routineFilter === 'today'
-                  ? 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
-                  : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                  ? isDarkMode ? 'bg-gray-700 text-blue-400 border-b-2 border-blue-400' : 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
+                  : isDarkMode ? 'text-gray-400 hover:text-gray-300 hover:bg-gray-700/50' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
               }`}
             >
               <FaCalendarAlt className="inline mr-2" /> Today's Schedule
@@ -719,8 +736,8 @@ export default function TeacherDashboard() {
               onClick={() => setRoutineFilter('weekly')}
               className={`flex-1 px-6 py-4 font-semibold text-sm transition-all ${
                 routineFilter === 'weekly'
-                  ? 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
-                  : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                  ? isDarkMode ? 'bg-gray-700 text-blue-400 border-b-2 border-blue-400' : 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
+                  : isDarkMode ? 'text-gray-400 hover:text-gray-300 hover:bg-gray-700/50' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
               }`}
             >
               <FaCalendarAlt className="inline mr-2" /> Weekly Schedule
@@ -729,8 +746,8 @@ export default function TeacherDashboard() {
               onClick={() => setRoutineFilter('courses')}
               className={`flex-1 px-6 py-4 font-semibold text-sm transition-all ${
                 routineFilter === 'courses'
-                  ? 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
-                  : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                  ? isDarkMode ? 'bg-gray-700 text-blue-400 border-b-2 border-blue-400' : 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
+                  : isDarkMode ? 'text-gray-400 hover:text-gray-300 hover:bg-gray-700/50' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
               }`}
             >
               <FaBook className="inline mr-2" /> My Courses
@@ -742,47 +759,51 @@ export default function TeacherDashboard() {
             {routineFilter === 'today' && (
               <>
                 <div className="mb-4">
-                  <h3 className="text-lg font-semibold text-gray-800">
+                  <h3 className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
                     📅 {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                   </h3>
-                  <p className="text-sm text-gray-500 mt-1">Click on any class to view details</p>
+                  <p className={`text-sm mt-1 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Click on any class to view details</p>
                 </div>
                 
                 {routineLoading ? (
-                  <div className="text-center py-8">Loading schedule...</div>
+                  <div className={`text-center py-8 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Loading schedule...</div>
                 ) : todaysSchedule.length > 0 ? (
                   <div className="space-y-3">
                     {todaysSchedule.map((cls, idx) => (
                       <div 
                         key={idx} 
                         onClick={() => handleClassClick(cls)}
-                        className="bg-gradient-to-r from-gray-50 to-white rounded-xl border border-gray-200 p-4 hover:shadow-md hover:border-blue-300 transition cursor-pointer"
+                        className={`rounded-xl border p-4 hover:shadow-md transition cursor-pointer ${
+                          isDarkMode 
+                            ? 'bg-gray-700/50 border-gray-600 hover:border-blue-500 hover:bg-gray-700' 
+                            : 'bg-gradient-to-r from-gray-50 to-white border-gray-200 hover:border-blue-300'
+                        }`}
                       >
                         <div className="flex items-start gap-4">
                           <div className="flex-shrink-0">
-                            <div className="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center">
-                              <FaCode className="text-blue-600 text-2xl" />
+                            <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
+                              <FaCode className="text-blue-600 dark:text-blue-400 text-2xl" />
                             </div>
                           </div>
                           <div className="flex-1">
-                            <h4 className="font-bold text-gray-800 text-lg">{cls.courseName}</h4>
-                            <p className="text-sm text-gray-500 font-mono">{cls.courseCode}</p>
-                            <div className="flex flex-wrap items-center gap-4 mt-2 text-sm text-gray-600">
+                            <h4 className={`font-bold text-lg ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>{cls.courseName}</h4>
+                            <p className={`text-sm font-mono ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>{cls.courseCode}</p>
+                            <div className={`flex flex-wrap items-center gap-4 mt-2 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                               <span className="flex items-center gap-1">⏰ {formatTime(cls.time)}</span>
                               <span className="flex items-center gap-1">🏠 {cls.room || "N/A"}</span>
                               <span className="flex items-center gap-1">👥 {cls.section || "N/A"}</span>
                             </div>
                           </div>
-                          <FaInfoCircle className="text-gray-400 group-hover:text-blue-500" />
+                          <FaInfoCircle className={`${isDarkMode ? 'text-gray-500' : 'text-gray-400'} group-hover:text-blue-500`} />
                         </div>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-12 bg-gray-50 rounded-xl">
+                  <div className={`text-center py-12 rounded-xl ${isDarkMode ? 'bg-gray-700/50' : 'bg-gray-50'}`}>
                     <div className="text-5xl mb-3">🎉</div>
-                    <p className="text-gray-600 font-medium">No classes scheduled for today</p>
-                    <p className="text-sm text-gray-400 mt-1">Enjoy your day off!</p>
+                    <p className={`font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>No classes scheduled for today</p>
+                    <p className={`text-sm mt-1 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>Enjoy your day off!</p>
                   </div>
                 )}
               </>
@@ -792,16 +813,16 @@ export default function TeacherDashboard() {
             {routineFilter === 'weekly' && (
               <>
                 <div className="mb-4">
-                  <h3 className="text-lg font-semibold text-gray-800">📅 Weekly Class Schedule</h3>
-                  <p className="text-sm text-gray-500 mt-1">Click on any class to view details</p>
+                  <h3 className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>📅 Weekly Class Schedule</h3>
+                  <p className={`text-sm mt-1 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Click on any class to view details</p>
                 </div>
                 
                 {routineLoading ? (
-                  <div className="text-center py-8">Loading schedule...</div>
+                  <div className={`text-center py-8 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Loading schedule...</div>
                 ) : Object.keys(weeklySchedule).length > 0 ? (
                   <div className="space-y-6">
                     {availableDays.map(day => (
-                      <div key={day} className="border border-gray-200 rounded-xl overflow-hidden">
+                      <div key={day} className={`border rounded-xl overflow-hidden ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
                         <div className={`px-4 py-2 font-semibold text-white ${
                           day === new Date().toLocaleDateString('en-US', { weekday: 'long' }) 
                             ? 'bg-green-600' 
@@ -810,19 +831,19 @@ export default function TeacherDashboard() {
                           {day} {day === new Date().toLocaleDateString('en-US', { weekday: 'long' }) && '(Today)'}
                           <span className="text-xs ml-2 opacity-80">({weeklySchedule[day]?.length || 0} classes)</span>
                         </div>
-                        <div className="divide-y divide-gray-100">
+                        <div className={`divide-y ${isDarkMode ? 'divide-gray-700' : 'divide-gray-100'}`}>
                           {weeklySchedule[day]?.map((cls, idx) => (
                             <div 
                               key={idx} 
                               onClick={() => handleClassClick(cls)}
-                              className="p-3 hover:bg-gray-50 transition cursor-pointer"
+                              className={`p-3 transition cursor-pointer ${isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-50'}`}
                             >
                               <div className="flex flex-wrap items-center justify-between gap-2">
                                 <div className="flex-1">
-                                  <span className="font-medium text-gray-800">{cls.courseName}</span>
-                                  <span className="text-xs text-gray-500 ml-2">({cls.courseCode})</span>
+                                  <span className={`font-medium ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>{cls.courseName}</span>
+                                  <span className={`text-xs ml-2 ${isDarkMode ? 'text-gray-500' : 'text-gray-500'}`}>({cls.courseCode})</span>
                                 </div>
-                                <div className="flex items-center gap-3 text-sm text-gray-600">
+                                <div className={`flex items-center gap-3 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                                   <span>⏰ {formatTime(cls.time)}</span>
                                   <span>🏠 {cls.room || "N/A"}</span>
                                   <span>👥 {cls.section || "N/A"}</span>
@@ -831,15 +852,15 @@ export default function TeacherDashboard() {
                             </div>
                           ))}
                           {(!weeklySchedule[day] || weeklySchedule[day].length === 0) && (
-                            <div className="p-4 text-center text-gray-400 text-sm">No classes</div>
+                            <div className={`p-4 text-center text-sm ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>No classes</div>
                           )}
                         </div>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-12 bg-gray-50 rounded-xl">
-                    <p className="text-gray-500">No schedule found for you</p>
+                  <div className={`text-center py-12 rounded-xl ${isDarkMode ? 'bg-gray-700/50' : 'bg-gray-50'}`}>
+                    <p className={isDarkMode ? 'text-gray-400' : 'text-gray-500'}>No schedule found for you</p>
                   </div>
                 )}
               </>
@@ -849,20 +870,20 @@ export default function TeacherDashboard() {
             {routineFilter === 'courses' && (
               <>
                 <div className="mb-4">
-                  <h3 className="text-lg font-semibold text-gray-800">📚 My Courses</h3>
-                  <p className="text-sm text-gray-500 mt-1">Courses assigned to you this semester</p>
+                  <h3 className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>📚 My Courses</h3>
+                  <p className={`text-sm mt-1 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Courses assigned to you this semester</p>
                 </div>
                 
                 {routineLoading ? (
-                  <div className="text-center py-8">Loading courses...</div>
+                  <div className={`text-center py-8 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Loading courses...</div>
                 ) : myCourses.length > 0 ? (
                   <div className="grid md:grid-cols-2 gap-4">
                     {myCourses.map((course, idx) => (
-                      <div key={idx} className="border border-gray-200 rounded-xl p-4 hover:shadow-md transition">
+                      <div key={idx} className={`border rounded-xl p-4 hover:shadow-md transition ${isDarkMode ? 'border-gray-700 bg-gray-700/30' : 'border-gray-200 bg-white'}`}>
                         <div className="flex items-start justify-between mb-3">
                           <div className="flex-1">
-                            <h4 className="font-semibold text-gray-800 text-lg">{course.name}</h4>
-                            <p className="text-sm text-gray-500 font-mono">Code: {course.code}</p>
+                            <h4 className={`font-semibold text-lg ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>{course.name}</h4>
+                            <p className={`text-sm font-mono ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Code: {course.code}</p>
                           </div>
                           {course.section && (
                             <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full">
@@ -870,10 +891,10 @@ export default function TeacherDashboard() {
                             </span>
                           )}
                         </div>
-                        <div className="space-y-2 mt-3 pt-3 border-t border-gray-100">
-                          <p className="text-xs font-semibold text-gray-500 uppercase">Schedule:</p>
+                        <div className={`space-y-2 mt-3 pt-3 border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-100'}`}>
+                          <p className={`text-xs font-semibold uppercase ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Schedule:</p>
                           {course.schedule.map((sch, i) => (
-                            <div key={i} className="flex items-center gap-3 text-sm text-gray-600">
+                            <div key={i} className={`flex items-center gap-3 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                               <FaCalendarAlt className="text-gray-400 text-xs" />
                               <span className="font-medium w-24">{sch.day}</span>
                               <FaClock className="text-gray-400 text-xs" />
@@ -886,8 +907,8 @@ export default function TeacherDashboard() {
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-12 bg-gray-50 rounded-xl">
-                    <p className="text-gray-500">No courses assigned yet</p>
+                  <div className={`text-center py-12 rounded-xl ${isDarkMode ? 'bg-gray-700/50' : 'bg-gray-50'}`}>
+                    <p className={isDarkMode ? 'text-gray-400' : 'text-gray-500'}>No courses assigned yet</p>
                   </div>
                 )}
               </>
@@ -897,17 +918,17 @@ export default function TeacherDashboard() {
 
         {/* ACTION CARDS */}
         <div className="grid md:grid-cols-3 gap-6">
-          <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition border border-gray-100">
-            <h3 className="text-lg font-semibold mb-2">📝 Upload Notice</h3>
-            <p className="text-sm text-gray-500">Publish notices for students and staff instantly.</p>
+          <div className={`rounded-2xl p-6 shadow-sm hover:shadow-md transition border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'}`}>
+            <h3 className={`text-lg font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>📝 Upload Notice</h3>
+            <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Publish notices for students and staff instantly.</p>
             <div className="mt-4">
               <AlertDialog onNoticeUpload={fetchDashboardData} />
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition border border-gray-100">
-            <h3 className="text-lg font-semibold mb-2">📅 View Full Routine</h3>
-            <p className="text-sm text-gray-500">View complete class schedule and timetable.</p>
+          <div className={`rounded-2xl p-6 shadow-sm hover:shadow-md transition border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'}`}>
+            <h3 className={`text-lg font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>📅 View Full Routine</h3>
+            <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>View complete class schedule and timetable.</p>
             <button 
               onClick={() => navigate('/dashboard/routine')}
               className="mt-4 w-full px-4 py-2 font-semibold text-white rounded-xl text-sm bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition"
@@ -916,12 +937,16 @@ export default function TeacherDashboard() {
             </button>
           </div>
 
-          <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition border border-gray-100">
-            <h3 className="text-lg font-semibold mb-2">👨‍🎓 Students</h3>
-            <p className="text-sm text-gray-500">View and manage enrolled students.</p>
+          <div className={`rounded-2xl p-6 shadow-sm hover:shadow-md transition border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'}`}>
+            <h3 className={`text-lg font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>👨‍🎓 Students</h3>
+            <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>View and manage enrolled students.</p>
             <button 
               onClick={() => navigate('/dashboard/allstudent')}
-              className="mt-4 w-full px-4 py-2 font-semibold text-gray-700 rounded-xl text-sm bg-gray-100 hover:bg-gray-200 transition"
+              className={`mt-4 w-full px-4 py-2 font-semibold rounded-xl text-sm transition ${
+                isDarkMode 
+                  ? 'text-gray-300 bg-gray-700 hover:bg-gray-600' 
+                  : 'text-gray-700 bg-gray-100 hover:bg-gray-200'
+              }`}
             >
               View Students
             </button>
@@ -929,11 +954,11 @@ export default function TeacherDashboard() {
         </div>
 
         {/* RECENT NOTICES SECTION */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+        <div className={`rounded-2xl shadow-sm border overflow-hidden ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'}`}>
+          <div className={`px-6 py-4 border-b flex items-center justify-between ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
             <div className="flex items-center gap-2">
               <MdNotificationsActive className="text-blue-600" />
-              <h2 className="text-lg font-semibold text-gray-800">📌 My Recent Notices</h2>
+              <h2 className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>📌 My Recent Notices</h2>
             </div>
             <button 
               onClick={() => navigate('/dashboard/allnotices')}
@@ -943,23 +968,23 @@ export default function TeacherDashboard() {
             </button>
           </div>
 
-          <div className="divide-y divide-gray-100">
+          <div className={`divide-y ${isDarkMode ? 'divide-gray-700' : 'divide-gray-100'}`}>
             {loading ? (
               <div className="p-6 space-y-3">
                 {[1, 2, 3].map((i) => (
                   <div key={i} className="animate-pulse">
-                    <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                    <div className="h-3 bg-gray-200 rounded w-1/4"></div>
+                    <div className={`h-4 rounded w-3/4 mb-2 ${isDarkMode ? 'bg-gray-700' : 'bg-gray-200'}`}></div>
+                    <div className={`h-3 rounded w-1/4 ${isDarkMode ? 'bg-gray-700' : 'bg-gray-200'}`}></div>
                   </div>
                 ))}
               </div>
             ) : recentNotices.length > 0 ? (
               recentNotices.map((notice) => (
-                <div key={notice._id} className="p-6 hover:bg-gray-50 transition cursor-pointer">
+                <div key={notice._id} className={`p-6 transition cursor-pointer ${isDarkMode ? 'hover:bg-gray-700/50' : 'hover:bg-gray-50'}`}>
                   <div className="flex items-start justify-between">
                     <div className="flex-1" onClick={() => handleViewNotice(notice)}>
                       <div className="flex items-center gap-3 flex-wrap mb-2">
-                        <h3 className="font-semibold text-gray-900 text-base hover:text-blue-600 transition-colors">
+                        <h3 className={`font-semibold text-base transition-colors ${isDarkMode ? 'text-white hover:text-blue-400' : 'text-gray-900 hover:text-blue-600'}`}>
                           {notice.title}
                         </h3>
                         {notice.isPinned && (
@@ -976,7 +1001,7 @@ export default function TeacherDashboard() {
                           {notice.priority}
                         </span>
                       </div>
-                      <div className="flex flex-wrap items-center gap-4 text-xs text-gray-500 mb-2">
+                      <div className={`flex flex-wrap items-center gap-4 text-xs mb-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                         <span>📅 {formatDate(notice.createdAt)}</span>
                         <span>🏷️ {notice.category}</span>
                         {notice.audience && notice.audience.length > 0 && (
@@ -984,7 +1009,7 @@ export default function TeacherDashboard() {
                         )}
                       </div>
                       {notice.description && (
-                        <p className="text-sm text-gray-600 line-clamp-2">
+                        <p className={`text-sm line-clamp-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                           {notice.description.replace(/<[^>]*>/g, '').substring(0, 100)}
                           {notice.description.replace(/<[^>]*>/g, '').length > 100 ? '...' : ''}
                         </p>
@@ -993,14 +1018,14 @@ export default function TeacherDashboard() {
                     <div className="flex gap-2 ml-4">
                       <button
                         onClick={(e) => { e.stopPropagation(); handleEditNotice(notice); }}
-                        className="p-2 text-gray-500 hover:text-blue-600 transition"
+                        className={`p-2 transition ${isDarkMode ? 'text-gray-400 hover:text-blue-400' : 'text-gray-500 hover:text-blue-600'}`}
                         title="Edit Notice"
                       >
                         <FaEdit size={18} />
                       </button>
                       <button
                         onClick={(e) => { e.stopPropagation(); handleDeleteNotice(notice._id); }}
-                        className="p-2 text-gray-500 hover:text-red-600 transition"
+                        className={`p-2 transition ${isDarkMode ? 'text-gray-400 hover:text-red-400' : 'text-gray-500 hover:text-red-600'}`}
                         title="Delete Notice"
                       >
                         <FaTrash size={18} />
@@ -1011,8 +1036,8 @@ export default function TeacherDashboard() {
               ))
             ) : (
               <div className="text-center py-12">
-                <p className="text-gray-400">You haven't published any notices yet</p>
-                <p className="text-sm text-gray-500 mt-1">Click "Upload Notice" to create your first notice</p>
+                <p className={isDarkMode ? 'text-gray-500' : 'text-gray-400'}>You haven't published any notices yet</p>
+                <p className={`text-sm mt-1 ${isDarkMode ? 'text-gray-600' : 'text-gray-500'}`}>Click "Upload Notice" to create your first notice</p>
               </div>
             )}
           </div>

@@ -1,3 +1,4 @@
+// App.jsx
 import Profile from "./Pages/Profile";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -25,11 +26,15 @@ import AdminDashboard from "./Components/dashboards/AdminDashboard";
 import NoticeManagement from "./Components/NoticeManagement";
 import DepartmentManagement from "./Components/DepartmentManagement";
 import AdminOverView from "./Components/AdminOverView";
+import ThemeToggle from "./Components/ThemeToggle";
+import { useTheme } from "./context/ThemeContext";
+import StaffDashboard from "./Components/dashboards/StaffDashboard";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { isDarkMode } = useTheme();
 
   useEffect(() => {
     // Check if user is logged in
@@ -70,9 +75,11 @@ const App = () => {
       case "teacher":
         return "/dashboard/dashboardindex";
       case "staff":
-        return "/dashboard/staffnotice";
+        return "/dashboard/view";
       case "student":
         return "/dashboard/overview";
+      case "admin":
+        return "/dashboard/adminoverview";
       default:
         return "/dashboard/allnotices";
     }
@@ -88,17 +95,18 @@ const App = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 dark:border-blue-400 mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-300">Loading...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div>
+    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+      <ThemeToggle />
       <SocketProvider />
       <Routes>
         {/* Public Routes - Redirect if already logged in */}
@@ -117,43 +125,38 @@ const App = () => {
         {/* Protected Routes with DashboardLayout */}
         <Route path="dashboard" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
           {/* admin */}
-
-        <Route 
+          <Route 
             path="adminoverview" 
             element={
               <RoleBasedRoute allowedRoles={["admin"]}>
                 <AdminOverView />
-                
               </RoleBasedRoute>
             } 
-            />
-         <Route 
+          />
+          <Route 
             path="usermanagement" 
             element={
               <RoleBasedRoute allowedRoles={["admin"]}>
                 <AdminDashboard />
-                
               </RoleBasedRoute>
             } 
-            />
-         <Route 
+          />
+          <Route 
             path="noticemanagement" 
             element={
               <RoleBasedRoute allowedRoles={["admin"]}>
                 <NoticeManagement />
-                
               </RoleBasedRoute>
             } 
-            />
-         <Route 
+          />
+          <Route 
             path="departmentmanagement" 
             element={
               <RoleBasedRoute allowedRoles={["admin"]}>
                 <DepartmentManagement />
-                
               </RoleBasedRoute>
             } 
-            />
+          />
 
           {/* Teacher only */}
           <Route 
@@ -161,7 +164,6 @@ const App = () => {
             element={
               <RoleBasedRoute allowedRoles={["teacher"]}>
                 <TeacherDashboard />
-                
               </RoleBasedRoute>
             } 
           />
@@ -172,6 +174,14 @@ const App = () => {
             element={
               <RoleBasedRoute allowedRoles={["staff"]}>
                 <StaffNoticeForm />
+              </RoleBasedRoute>
+            } 
+          />
+          <Route 
+            path="view" 
+            element={
+              <RoleBasedRoute allowedRoles={["staff"]}>
+                <StaffDashboard />
               </RoleBasedRoute>
             } 
           />
@@ -283,12 +293,12 @@ const App = () => {
         newestOnTop
         closeOnClick
         pauseOnHover
-        theme="dark"
+        theme={isDarkMode ? "dark" : "light"}
         toastStyle={{
-          background: "rgba(255,255,255,0.1)",
+          background: isDarkMode ? "rgba(31, 41, 55, 0.95)" : "rgba(255,255,255,0.95)",
           backdropFilter: "blur(10px)",
-          border: "1px solid rgba(255,255,255,0.2)",
-          color: "#fff",
+          border: isDarkMode ? "1px solid rgba(255,255,255,0.2)" : "1px solid rgba(0,0,0,0.1)",
+          color: isDarkMode ? "#fff" : "#000",
         }}
       />
     </div>
@@ -296,40 +306,3 @@ const App = () => {
 };
 
 export default App;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

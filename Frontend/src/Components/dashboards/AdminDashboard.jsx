@@ -4,18 +4,24 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { AiOutlineStop } from "react-icons/ai";
 import { FaUsersBetweenLines } from "react-icons/fa6";
 import { MdDisabledByDefault, MdEdit } from "react-icons/md";
-import { FaChalkboardTeacher, FaKey } from 'react-icons/fa';
+import { FaChalkboardTeacher, FaKey, FaSearch, FaFilter, FaTimes, FaCheck } from 'react-icons/fa';
 import { PiStudentFill } from "react-icons/pi";
 import { PiCheckFill } from "react-icons/pi";
-const API_BASE_URL = 'http://localhost:5000/api';
+import Swal from 'sweetalert2';
+import { useTheme } from '../../context/ThemeContext';
+
+const API_BASE_URL = 'https://pciunotifybackend.onrender.com/api';
+const API_BASE_URL2 = 'http://localhost:5000/api';
 
 const AdminDashboard = () => {
+  const { isDarkMode } = useTheme();
+  
   // State Management
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [modalType, setModalType] = useState(''); // 'add', 'edit', 'deactivate', 'resetPassword'
+  const [modalType, setModalType] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [roleFilter, setRoleFilter] = useState('all');
   const [departmentFilter, setDepartmentFilter] = useState('all');
@@ -23,8 +29,7 @@ const AdminDashboard = () => {
   const [sortField, setSortField] = useState('firstName');
   const [sortDirection, setSortDirection] = useState('asc');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [showFilters, setShowFilters] = useState(false);
   const [stats, setStats] = useState({
     totalUsers: 0,
     activeUsers: 0,
@@ -51,7 +56,6 @@ const AdminDashboard = () => {
     password: ''
   });
 
-  // Departments list (you can fetch this from backend if needed)
   const departments = [
     'Computer Science & Engineering',
     'Electrical & Electronic Engineering',
@@ -65,13 +69,11 @@ const AdminDashboard = () => {
     'Mathematics'
   ];
 
-  // Fetch all users on component mount
   useEffect(() => {
     fetchUsers();
     fetchDashboardStats();
   }, []);
 
-  // Fetch users from backend
   const fetchUsers = async () => {
     try {
       setLoading(true);
@@ -83,13 +85,18 @@ const AdminDashboard = () => {
       }
     } catch (err) {
       console.error('Error fetching users:', err);
-      setError('Failed to fetch users');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Failed to fetch users',
+        background: isDarkMode ? '#1f2937' : '#fff',
+        color: isDarkMode ? '#fff' : '#000',
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  // Fetch dashboard stats
   const fetchDashboardStats = async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/dashboard-stats`);
@@ -106,7 +113,6 @@ const AdminDashboard = () => {
     }
   };
 
-  // Update local stats
   const updateStats = (userData) => {
     setStats({
       totalUsers: userData.length,
@@ -117,11 +123,9 @@ const AdminDashboard = () => {
     });
   };
 
-  // Filter and Sort Logic
   useEffect(() => {
     let result = [...users];
 
-    // Apply search
     if (searchTerm) {
       result = result.filter(user => 
         user.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -133,17 +137,14 @@ const AdminDashboard = () => {
       );
     }
 
-    // Apply role filter
     if (roleFilter !== 'all') {
       result = result.filter(user => user.role === roleFilter);
     }
 
-    // Apply department filter
     if (departmentFilter !== 'all') {
       result = result.filter(user => user.department === departmentFilter);
     }
 
-    // Apply status filter
     if (statusFilter !== 'all') {
       if (statusFilter === 'active') {
         result = result.filter(user => user.isActive !== false);
@@ -156,7 +157,6 @@ const AdminDashboard = () => {
       }
     }
 
-    // Apply sorting
     result.sort((a, b) => {
       let aValue = a[sortField] || '';
       let bValue = b[sortField] || '';
@@ -176,7 +176,6 @@ const AdminDashboard = () => {
     setFilteredUsers(result);
   }, [users, searchTerm, roleFilter, departmentFilter, statusFilter, sortField, sortDirection]);
 
-  // Handle Sort
   const handleSort = (field) => {
     if (sortField === field) {
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
@@ -186,17 +185,13 @@ const AdminDashboard = () => {
     }
   };
 
-  // Handle Form Input
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Open Modal
   const openModal = (type, user = null) => {
     setModalType(type);
-    setError('');
-    setSuccessMessage('');
     
     if (user) {
       setSelectedUser(user);
@@ -238,20 +233,25 @@ const AdminDashboard = () => {
     setShowModal(true);
   };
 
-  // Close Modal
   const closeModal = () => {
     setShowModal(false);
     setSelectedUser(null);
-    setError('');
-    setSuccessMessage('');
   };
 
-  // Add User (Register)
   const handleAddUser = async () => {
+    if (!formData.firstName || !formData.lastName || !formData.email) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Missing Information',
+        text: 'Please fill all required fields',
+        background: isDarkMode ? '#1f2937' : '#fff',
+        color: isDarkMode ? '#fff' : '#000',
+      });
+      return;
+    }
+
+    setLoading(true);
     try {
-      setLoading(true);
-      setError('');
-      
       const userData = {
         firstName: formData.firstName,
         lastName: formData.lastName,
@@ -264,7 +264,6 @@ const AdminDashboard = () => {
         password: formData.password || 'default123'
       };
 
-      // Add role-specific IDs
       if (formData.role === 'student') {
         userData.studentId = formData.studentId;
       } else if (formData.role === 'teacher') {
@@ -277,454 +276,539 @@ const AdminDashboard = () => {
       const response = await axios.post(`${API_BASE_URL}/register`, userData);
       
       if (response.data.success) {
-        setSuccessMessage('User created successfully!');
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'User created successfully!',
+          timer: 2000,
+          showConfirmButton: false,
+          background: isDarkMode ? '#1f2937' : '#fff',
+          color: isDarkMode ? '#fff' : '#000',
+        });
         fetchUsers();
-        setTimeout(() => {
-          closeModal();
-        }, 1500);
+        closeModal();
       }
     } catch (err) {
-      console.error('Error adding user:', err);
-      setError(err.response?.data?.message || 'Failed to create user');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: err.response?.data?.message || 'Failed to create user',
+        background: isDarkMode ? '#1f2937' : '#fff',
+        color: isDarkMode ? '#fff' : '#000',
+      });
     } finally {
       setLoading(false);
     }
   };
 
- // Edit User - Fix the code inside handleEditUser
-const handleEditUser = async () => {
-  try {
+  const handleEditUser = async () => {
     setLoading(true);
-    setError('');
-    
-    // Remove fields that shouldn't be updated
-    const updateData = { ...formData };
-    delete updateData.email; // Email shouldn't be changed
-    delete updateData.password; // Password shouldn't be changed this way
-    
-    const response = await axios.put(`${API_BASE_URL}/users/${selectedUser._id}`, updateData);
-    
-    if (response.data.success) {
-      setSuccessMessage('User updated successfully!');
-      await fetchUsers();
-      setTimeout(() => {
+    try {
+      const updateData = { ...formData };
+      delete updateData.email;
+      delete updateData.password;
+      
+      const response = await axios.put(`${API_BASE_URL2}/users/${selectedUser._id}`, updateData);
+      
+      if (response.data.success) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'User updated successfully!',
+          timer: 2000,
+          showConfirmButton: false,
+          background: isDarkMode ? '#1f2937' : '#fff',
+          color: isDarkMode ? '#fff' : '#000',
+        });
+        fetchUsers();
         closeModal();
-      }, 1500);
+      }
+    } catch (err) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: err.response?.data?.message || 'Failed to update user',
+        background: isDarkMode ? '#1f2937' : '#fff',
+        color: isDarkMode ? '#fff' : '#000',
+      });
+    } finally {
+      setLoading(false);
     }
-  } catch (err) {
-    console.error('Error updating user:', err);
-    setError(err.response?.data?.message || 'Failed to update user');
-  } finally {
-    setLoading(false);
-  }
-};
-
-// Delete User
-const handleDeleteUser = async (user) => {
-  try {
-    if (!window.confirm(`Are you sure you want to permanently delete ${user.firstName} ${user.lastName}? This action cannot be undone.`)) {
-      return;
-    }
-
-    setLoading(true);
-    setError('');
-    
-    const response = await axios.delete(`${API_BASE_URL}/users/${user._id}`);
-    
-    if (response.data.success) {
-      setSuccessMessage(`${user.firstName} ${user.lastName} deleted successfully`);
-      await fetchUsers();
-      setTimeout(() => {
-        setSuccessMessage('');
-      }, 3000);
-    }
-  } catch (err) {
-    console.error('Error deleting user:', err);
-    setError(err.response?.data?.message || 'Failed to delete user');
-  } finally {
-    setLoading(false);
-  }
-};
-
-// Toggle User Active Status (Deactivate/Activate) - Fixed logic
-const handleToggleStatus = async (user) => {
-  try {
-    const willBeActive = user.isActive === false; // Fix: If currently inactive, we want to activate
-    const action = willBeActive ? 'activate' : 'deactivate';
-    const confirmMessage = `Are you sure you want to ${action} ${user.firstName} ${user.lastName}?`;
-    
-    if (!window.confirm(confirmMessage)) return;
-
-    setLoading(true);
-    setError('');
-    
-    const response = await axios.patch(`${API_BASE_URL}/users/${user._id}/toggle-status`, {
-      isActive: willBeActive
-    });
-    
-    if (response.data.success) {
-      setSuccessMessage(`User ${action}d successfully!`);
-      await fetchUsers();
-      setTimeout(() => {
-        setSuccessMessage('');
-      }, 3000);
-    }
-  } catch (err) {
-    console.error(`Error toggling user status:`, err);
-    setError(err.response?.data?.message || 'Failed to update user status');
-  } finally {
-    setLoading(false);
-  }
-};
-
-// Reset Password
-const handleResetPassword = async () => {
-  try {
-    setLoading(true);
-    setError('');
-    
-    const response = await axios.post(`${API_BASE_URL}/users/${selectedUser._id}/reset-password`, {
-      email: selectedUser.email
-    });
-    
-    if (response.data.success) {
-      setSuccessMessage('Password reset email sent successfully!');
-      setTimeout(() => {
-        closeModal();
-        setSuccessMessage('');
-      }, 2000);
-    }
-  } catch (err) {
-    console.error('Error resetting password:', err);
-    setError(err.response?.data?.message || 'Failed to reset password');
-  } finally {
-    setLoading(false);
-  }
-};
-  // Get Status Badge
-  const getStatusBadge = (user) => {
-    if (user.isActive === false) {
-      return <span className="px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">Inactive</span>;
-    }
-    if (!user.verified) {
-      return <span className="px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Unverified</span>;
-    }
-    return <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">Active</span>;
   };
 
-  // Get Role Badge
+  const handleDeleteUser = async (user) => {
+    Swal.fire({
+      title: 'Delete User',
+      text: `Are you sure you want to delete ${user.firstName} ${user.lastName}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete!',
+      background: isDarkMode ? '#1f2937' : '#fff',
+      color: isDarkMode ? '#fff' : '#000',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        try {
+          const response = await axios.delete(`${API_BASE_URL2}/users/${user._id}`);
+          
+          if (response.data.success) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Deleted!',
+              text: 'User has been deleted.',
+              timer: 2000,
+              showConfirmButton: false,
+              background: isDarkMode ? '#1f2937' : '#fff',
+              color: isDarkMode ? '#fff' : '#000',
+            });
+            fetchUsers();
+          }
+        } catch (err) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: err.response?.data?.message || 'Failed to delete user',
+            background: isDarkMode ? '#1f2937' : '#fff',
+            color: isDarkMode ? '#fff' : '#000',
+          });
+        } finally {
+          setLoading(false);
+        }
+      }
+    });
+  };
+
+  const handleToggleStatus = async (user) => {
+    const willBeActive = user.isActive === false;
+    const action = willBeActive ? 'activate' : 'deactivate';
+    
+    Swal.fire({
+      title: `${action.charAt(0).toUpperCase() + action.slice(1)} User`,
+      text: `Are you sure you want to ${action} ${user.firstName} ${user.lastName}?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: willBeActive ? '#10b981' : '#f59e0b',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: `Yes, ${action}`,
+      background: isDarkMode ? '#1f2937' : '#fff',
+      color: isDarkMode ? '#fff' : '#000',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        try {
+          const response = await axios.patch(`${API_BASE_URL2}/users/${user._id}/toggle-status`, {
+            isActive: willBeActive
+          });
+          
+          if (response.data.success) {
+            Swal.fire({
+              icon: 'success',
+              title: `${action}d!`,
+              text: `User has been ${action}d.`,
+              timer: 1500,
+              showConfirmButton: false,
+              background: isDarkMode ? '#1f2937' : '#fff',
+              color: isDarkMode ? '#fff' : '#000',
+            });
+            fetchUsers();
+          }
+        } catch (err) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: err.response?.data?.message || `Failed to ${action} user`,
+            background: isDarkMode ? '#1f2937' : '#fff',
+            color: isDarkMode ? '#fff' : '#000',
+          });
+        } finally {
+          setLoading(false);
+        }
+      }
+    });
+  };
+
+  const handleResetPassword = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.post(`${API_BASE_URL2}/users/${selectedUser._id}/reset-password`, {
+        email: selectedUser.email
+      });
+      
+      if (response.data.success) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Password Reset',
+          text: 'Password reset email sent successfully!',
+          timer: 2000,
+          showConfirmButton: false,
+          background: isDarkMode ? '#1f2937' : '#fff',
+          color: isDarkMode ? '#fff' : '#000',
+        });
+        closeModal();
+      }
+    } catch (err) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: err.response?.data?.message || 'Failed to reset password',
+        background: isDarkMode ? '#1f2937' : '#fff',
+        color: isDarkMode ? '#fff' : '#000',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getStatusBadge = (user) => {
+    if (user.isActive === false) {
+      return <span className={`px-3 py-1 rounded-full text-xs font-medium ${isDarkMode ? 'bg-red-900/30 text-red-400' : 'bg-red-100 text-red-800'}`}>Inactive</span>;
+    }
+    if (!user.verified) {
+      return <span className={`px-3 py-1 rounded-full text-xs font-medium ${isDarkMode ? 'bg-yellow-900/30 text-yellow-400' : 'bg-yellow-100 text-yellow-800'}`}>Unverified</span>;
+    }
+    return <span className={`px-3 py-1 rounded-full text-xs font-medium ${isDarkMode ? 'bg-green-900/30 text-green-400' : 'bg-green-100 text-green-800'}`}>Active</span>;
+  };
+
   const getRoleBadge = (role) => {
     const badges = {
-      student: 'bg-blue-100 text-blue-800',
-      teacher: 'bg-purple-100 text-purple-800',
-      staff: 'bg-orange-100 text-orange-800'
+      student: isDarkMode ? 'bg-blue-900/30 text-blue-400' : 'bg-blue-100 text-blue-800',
+      teacher: isDarkMode ? 'bg-purple-900/30 text-purple-400' : 'bg-purple-100 text-purple-800',
+      staff: isDarkMode ? 'bg-orange-900/30 text-orange-400' : 'bg-orange-100 text-orange-800'
     };
     
     return (
-      <span className={`px-3 py-1 rounded-full text-xs font-medium ${badges[role] || 'bg-gray-100 text-gray-800'}`}>
+      <span className={`px-3 py-1 rounded-full text-xs font-medium ${badges[role] || (isDarkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-800')}`}>
         {role?.charAt(0).toUpperCase() + role?.slice(1)}
       </span>
     );
   };
 
-  return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      {/* Success/Error Messages */}
-      {error && (
-        <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
-          {error}
-        </div>
-      )}
-      {successMessage && (
-        <div className="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
-          {successMessage}
-        </div>
-      )}
-
-      {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 bg-white p-6 rounded-xl shadow-sm">
+  const StatCard = ({ title, value, icon, color }) => (
+    <div className={`rounded-xl p-6 transition-all duration-300 hover:scale-105 cursor-pointer ${
+      isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+    } border shadow-sm hover:shadow-md`}>
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">User Management</h1>
-          <p className="text-gray-600 mt-1">Manage all students, teachers, and staff accounts</p>
+          <p className={`text-sm font-medium ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>{title}</p>
+          <h3 className={`text-3xl font-bold mt-1 ${color}`}>{value}</h3>
         </div>
-        <button 
-          className="mt-4 md:mt-0 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200 flex items-center gap-2 font-medium"
-          onClick={() => openModal('add')}
-        >
-          <span>+</span> Add New User
-        </button>
-      </div>
-
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-500 text-sm">Total Users</p>
-              <h3 className="text-3xl font-bold text-gray-800 mt-1">{stats.totalUsers}</h3>
-            </div>
-            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-2xl">
-              <FaUsersBetweenLines />
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-500 text-sm">Active Users</p>
-              <h3 className="text-3xl font-bold text-green-600 mt-1">{stats.activeUsers}</h3>
-            </div>
-            <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-2xl">
-              <PiCheckFill />
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-500 text-sm">Students</p>
-              <h3 className="text-3xl font-bold text-blue-600 mt-1">{stats.totalStudents}</h3>
-            </div>
-            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-2xl">
-              <PiStudentFill />
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-500 text-sm">Teachers & Staff</p>
-              <h3 className="text-3xl font-bold text-purple-600 mt-1">{stats.totalTeachers + stats.totalStaff}</h3>
-            </div>
-            <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-2xl">
-              <FaChalkboardTeacher />
-            </div>
-          </div>
+        <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl ${
+          isDarkMode ? 'bg-gray-700' : 'bg-gray-100'
+        }`}>
+          {icon}
         </div>
       </div>
+    </div>
+  );
 
-      {/* Filters Section */}
-      <div className="bg-white p-4 rounded-xl shadow-sm mb-6">
-        <div className="flex flex-col lg:flex-row gap-4">
-          <div className="flex-1 relative">
-            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">🔍</span>
-            <input
-              type="text"
-              placeholder="Search by name, email, or ID..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-            />
-          </div>
-          <div className="flex flex-wrap gap-3">
-            <select 
-              value={roleFilter} 
-              onChange={(e) => setRoleFilter(e.target.value)}
-              className="px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white"
-            >
-              <option value="all">All Roles</option>
-              <option value="student">Students</option>
-              <option value="teacher">Teachers</option>
-              <option value="staff">Staff</option>
-            </select>
-            
-            <select 
-              value={departmentFilter} 
-              onChange={(e) => setDepartmentFilter(e.target.value)}
-              className="px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white"
-            >
-              <option value="all">All Departments</option>
-              {departments.map(dept => (
-                <option key={dept} value={dept}>{dept}</option>
-              ))}
-            </select>
-            
-            <select 
-              value={statusFilter} 
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white"
-            >
-              <option value="all">All Status</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-              <option value="verified">Verified</option>
-              <option value="unverified">Unverified</option>
-            </select>
+  return (
+    <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-slate-50 via-white to-blue-50'} transition-colors duration-200`}>
+      <div className="p-4 sm:p-6 lg:p-8">
+        
+        {/* Header */}
+        <div className="mb-8">
+          <div className="bg-gradient-to-r from-blue-600 to-cyan-600 rounded-2xl shadow-lg p-6 text-white">
+            <h1 className="text-2xl sm:text-3xl font-bold mb-2">User Management</h1>
+            <p className="text-blue-100 text-sm sm:text-base">Manage all students, teachers, and staff accounts</p>
           </div>
         </div>
-      </div>
 
-      {/* Users Table */}
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50 border-b-2 border-gray-200">
-              <tr>
-                <th 
-                  className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-                  onClick={() => handleSort('firstName')}
+        {/* Add User Button - Mobile */}
+        <div className="mb-4 lg:hidden">
+          <button 
+            className="w-full px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-xl hover:from-blue-600 hover:to-cyan-600 transition-all duration-200 flex items-center justify-center gap-2 font-medium shadow-sm"
+            onClick={() => openModal('add')}
+          >
+            <span className="text-lg">+</span> Add New User
+          </button>
+        </div>
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <StatCard title="Total Users" value={stats.totalUsers} icon={<FaUsersBetweenLines className="text-blue-500 dark:text-blue-400" />} color="text-blue-600 dark:text-blue-400" />
+          <StatCard title="Active Users" value={stats.activeUsers} icon={<PiCheckFill className="text-emerald-500 dark:text-emerald-400" />} color="text-emerald-600 dark:text-emerald-400" />
+          <StatCard title="Students" value={stats.totalStudents} icon={<PiStudentFill className="text-blue-500 dark:text-blue-400" />} color="text-blue-600 dark:text-blue-400" />
+          <StatCard title="Teachers & Staff" value={stats.totalTeachers + stats.totalStaff} icon={<FaChalkboardTeacher className="text-violet-500 dark:text-violet-400" />} color="text-violet-600 dark:text-violet-400" />
+        </div>
+
+        {/* Filters Section */}
+        <div className={`rounded-xl shadow-sm mb-6 overflow-hidden ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
+          <div className="p-4">
+            <div className="flex flex-col lg:flex-row gap-4">
+              <div className="flex-1 relative">
+                <FaSearch className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`} />
+                <input
+                  type="text"
+                  placeholder="Search by name, email, or ID..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl outline-none transition-all ${
+                    isDarkMode 
+                      ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:ring-blue-500' 
+                      : 'bg-white border-gray-300 text-gray-900 focus:ring-blue-500'
+                  } border focus:ring-2 focus:border-transparent`}
+                />
+              </div>
+              
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                className={`px-4 py-2.5 rounded-xl transition flex items-center gap-2 font-medium ${
+                  isDarkMode 
+                    ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' 
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                <FaFilter /> Filters
+                {(roleFilter !== 'all' || departmentFilter !== 'all' || statusFilter !== 'all') && (
+                  <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                )}
+              </button>
+            </div>
+          </div>
+          
+          {showFilters && (
+            <div className={`p-4 border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div>
+                  <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Role</label>
+                  <select 
+                    value={roleFilter} 
+                    onChange={(e) => setRoleFilter(e.target.value)}
+                    className={`w-full px-3 py-2 rounded-xl outline-none transition-all ${
+                      isDarkMode 
+                        ? 'bg-gray-700 border-gray-600 text-white' 
+                        : 'bg-white border-gray-300 text-gray-900'
+                    } border focus:ring-2 focus:ring-blue-500`}
+                  >
+                    <option value="all">All Roles</option>
+                    <option value="student">Students</option>
+                    <option value="teacher">Teachers</option>
+                    <option value="staff">Staff</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Department</label>
+                  <select 
+                    value={departmentFilter} 
+                    onChange={(e) => setDepartmentFilter(e.target.value)}
+                    className={`w-full px-3 py-2 rounded-xl outline-none transition-all ${
+                      isDarkMode 
+                        ? 'bg-gray-700 border-gray-600 text-white' 
+                        : 'bg-white border-gray-300 text-gray-900'
+                    } border focus:ring-2 focus:ring-blue-500`}
+                  >
+                    <option value="all">All Departments</option>
+                    {departments.map(dept => <option key={dept} value={dept}>{dept}</option>)}
+                  </select>
+                </div>
+                
+                <div>
+                  <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Status</label>
+                  <select 
+                    value={statusFilter} 
+                    onChange={(e) => setStatusFilter(e.target.value)}
+                    className={`w-full px-3 py-2 rounded-xl outline-none transition-all ${
+                      isDarkMode 
+                        ? 'bg-gray-700 border-gray-600 text-white' 
+                        : 'bg-white border-gray-300 text-gray-900'
+                    } border focus:ring-2 focus:ring-blue-500`}
+                  >
+                    <option value="all">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                    <option value="verified">Verified</option>
+                    <option value="unverified">Unverified</option>
+                  </select>
+                </div>
+              </div>
+              <div className="flex justify-end mt-4">
+                <button
+                  onClick={() => {
+                    setRoleFilter('all');
+                    setDepartmentFilter('all');
+                    setStatusFilter('all');
+                    setSearchTerm('');
+                  }}
+                  className={`text-sm px-3 py-1 rounded-lg transition ${
+                    isDarkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-500 hover:text-gray-700'
+                  }`}
                 >
-                  Name {sortField === 'firstName' && (sortDirection === 'asc' ? '↑' : '↓')}
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  ID
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Email
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Role
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Department
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {loading && filteredUsers.length === 0 ? (
-                <tr>
-                  <td colSpan="7" className="px-6 py-8 text-center text-gray-500">
-                    <div className="flex items-center justify-center gap-2">
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
-                      Loading users...
+                  Clear All Filters
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Users Table */}
+        <div className={`rounded-2xl shadow-sm border overflow-hidden ${
+          isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+        }`}>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className={isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'}>
+                <tr className={`border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+                  <th className="px-4 sm:px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                      onClick={() => handleSort('firstName')}>
+                    <div className="flex items-center gap-1">
+                      Name {sortField === 'firstName' && (sortDirection === 'asc' ? '↑' : '↓')}
                     </div>
-                  </td>
+                  </th>
+                  <th className="px-4 sm:px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">ID</th>
+                  <th className="px-4 sm:px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">Email</th>
+                  <th className="px-4 sm:px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">Role</th>
+                  <th className="px-4 sm:px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">Department</th>
+                  <th className="px-4 sm:px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">Status</th>
+                  <th className="px-4 sm:px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">Actions</th>
                 </tr>
-              ) : filteredUsers.length === 0 ? (
-                <tr>
-                  <td colSpan="7" className="px-6 py-8 text-center text-gray-500">
-                    No users found
-                  </td>
-                </tr>
-              ) : (
-                filteredUsers.map(user => (
-                  <tr key={user._id} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-medium text-sm">
-                          {user.firstName?.charAt(0)}{user.lastName?.charAt(0)}
-                        </div>
-                        <div>
-                          <div className="font-medium text-gray-900">
-                            {user.firstName} {user.lastName}
-                          </div>
-                          <div className="text-sm text-gray-500">
-                            {user.phone || 'No phone'}
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-600">
-                      {user.studentId || user.teacherId || user.staffId || 'N/A'}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-600">
-                      {user.email}
-                    </td>
-                    <td className="px-6 py-4">
-                      {getRoleBadge(user.role)}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-600">
-                      {user.department || 'N/A'}
-                    </td>
-                    <td className="px-6 py-4">
-                      {getStatusBadge(user)}
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => openModal('edit', user)}
-                          className="p-2 text-2xl hover:bg-blue-50 rounded-lg transition-colors"
-                          title="Edit User"
-                        >
-                          <MdEdit/>
-                        </button>
-                        <button
-                          onClick={() => openModal('resetPassword', user)}
-                          className="p-2 text-xl  hover:bg-yellow-50 rounded-lg transition-colors"
-                          title="Reset Password"
-                        >
-                          <FaKey />
-                        </button>
-                        <button
-                          onClick={() => handleToggleStatus(user)}
-                          className={`p-2 text-3xl rounded-lg transition-colors ${
-                            user.isActive !== false 
-                              ? 'text-red-600 hover:bg-red-50' 
-                              : 'text-green-600 hover:bg-green-50'
-                          }`}
-                          title={user.isActive !== false ? 'Deactivate' : 'Activate'}
-                        >
-                          {user.isActive !== false ? <AiOutlineStop/> : <PiCheckFill  />}
-                        </button>
-                        <button
-                          onClick={() => handleDeleteUser(user)}
-                          className="p-2 text-2xl text-red-600 hover:bg-gray-100 rounded-lg transition-colors"
-                          title="Delete User"
-                        >
-                          <RiDeleteBin6Line/>
-                        </button>
+              </thead>
+              <tbody className={`divide-y ${isDarkMode ? 'divide-gray-700' : 'divide-gray-200'}`}>
+                {loading && filteredUsers.length === 0 ? (
+                  <tr>
+                    <td colSpan="7" className="px-6 py-8 text-center">
+                      <div className="flex items-center justify-center gap-2">
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500"></div>
+                        <span className={isDarkMode ? 'text-gray-400' : 'text-gray-500'}>Loading users...</span>
                       </div>
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : filteredUsers.length === 0 ? (
+                  <tr>
+                    <td colSpan="7" className="px-6 py-8 text-center">
+                      <div className="text-5xl mb-3">📭</div>
+                      <p className={isDarkMode ? 'text-gray-400' : 'text-gray-500'}>No users found</p>
+                    </td>
+                  </tr>
+                ) : (
+                  filteredUsers.map(user => (
+                    <tr key={user._id} className={`transition-colors ${
+                      isDarkMode ? 'hover:bg-gray-700/50' : 'hover:bg-blue-50/50'
+                    }`}>
+                      <td className="px-4 sm:px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center text-white font-medium text-sm shadow-sm">
+                            {user.firstName?.charAt(0)}{user.lastName?.charAt(0)}
+                          </div>
+                          <div>
+                            <div className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                              {user.firstName} {user.lastName}
+                            </div>
+                            <div className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                              {user.phone || 'No phone'}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className={`px-4 sm:px-6 py-4 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                        {user.studentId || user.teacherId || user.staffId || 'N/A'}
+                      </td>
+                      <td className={`px-4 sm:px-6 py-4 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                        {user.email}
+                      </td>
+                      <td className="px-4 sm:px-6 py-4">
+                        {getRoleBadge(user.role)}
+                      </td>
+                      <td className={`px-4 sm:px-6 py-4 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                        {user.department || 'N/A'}
+                      </td>
+                      <td className="px-4 sm:px-6 py-4">
+                        {getStatusBadge(user)}
+                      </td>
+                      <td className="px-4 sm:px-6 py-4">
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => openModal('edit', user)}
+                            className={`p-2 rounded-xl transition-colors ${
+                              isDarkMode 
+                                ? 'text-blue-400 hover:bg-blue-900/30' 
+                                : 'text-blue-500 hover:bg-blue-50'
+                            }`}
+                            title="Edit User"
+                          >
+                            <MdEdit className="text-xl" />
+                          </button>
+                          <button
+                            onClick={() => openModal('resetPassword', user)}
+                            className={`p-2 rounded-xl transition-colors ${
+                              isDarkMode 
+                                ? 'text-amber-400 hover:bg-amber-900/30' 
+                                : 'text-amber-500 hover:bg-amber-50'
+                            }`}
+                            title="Reset Password"
+                          >
+                            <FaKey className="text-lg" />
+                          </button>
+                          <button
+                            onClick={() => handleToggleStatus(user)}
+                            className={`p-2 rounded-xl transition-colors ${
+                              user.isActive !== false 
+                                ? isDarkMode ? 'text-red-400 hover:bg-red-900/30' : 'text-red-500 hover:bg-red-50'
+                                : isDarkMode ? 'text-emerald-400 hover:bg-emerald-900/30' : 'text-emerald-500 hover:bg-emerald-50'
+                            }`}
+                            title={user.isActive !== false ? 'Deactivate' : 'Activate'}
+                          >
+                            {user.isActive !== false ? <AiOutlineStop className="text-xl" /> : <PiCheckFill className="text-xl" />}
+                          </button>
+                          <button
+                            onClick={() => handleDeleteUser(user)}
+                            className={`p-2 rounded-xl transition-colors ${
+                              isDarkMode 
+                                ? 'text-red-400 hover:bg-red-900/30' 
+                                : 'text-red-500 hover:bg-red-50'
+                            }`}
+                            title="Delete User"
+                          >
+                            <RiDeleteBin6Line className="text-xl" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
       {/* Modal */}
       {showModal && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
           onClick={closeModal}
         >
           <div 
-            className="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto"
+            className={`rounded-2xl shadow-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto ${
+              isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+            } border`}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Modal Header */}
-            <div className="flex justify-between items-center p-6 border-b">
-              <h2 className="text-2xl font-bold text-gray-800">
+            <div className={`flex justify-between items-center p-6 border-b sticky top-0 ${
+              isDarkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'
+            }`}>
+              <h2 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                 {modalType === 'add' && 'Add New User'}
                 {modalType === 'edit' && 'Edit User'}
                 {modalType === 'resetPassword' && 'Reset Password'}
               </h2>
               <button 
                 onClick={closeModal}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-500"
+                className={`p-2 rounded-xl transition-colors ${
+                  isDarkMode ? 'hover:bg-gray-700 text-gray-400' : 'hover:bg-gray-100 text-gray-500'
+                }`}
               >
-                ✕
+                <FaTimes />
               </button>
             </div>
 
-            {/* Modal Body */}
             <div className="p-6">
-              {error && (
-                <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm">
-                  {error}
-                </div>
-              )}
-              {successMessage && (
-                <div className="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded-lg text-sm">
-                  {successMessage}
-                </div>
-              )}
-
-              {/* Add/Edit Form */}
               {(modalType === 'add' || modalType === 'edit') && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                       First Name *
                     </label>
                     <input
@@ -732,13 +816,16 @@ const handleResetPassword = async () => {
                       name="firstName"
                       value={formData.firstName}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                      required
+                      className={`w-full px-3 py-2 rounded-xl outline-none transition-all ${
+                        isDarkMode 
+                          ? 'bg-gray-700 border-gray-600 text-white focus:ring-blue-500' 
+                          : 'bg-white border-gray-300 text-gray-900 focus:ring-blue-500'
+                      } border focus:ring-2 focus:border-transparent`}
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                       Last Name *
                     </label>
                     <input
@@ -746,13 +833,16 @@ const handleResetPassword = async () => {
                       name="lastName"
                       value={formData.lastName}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                      required
+                      className={`w-full px-3 py-2 rounded-xl outline-none transition-all ${
+                        isDarkMode 
+                          ? 'bg-gray-700 border-gray-600 text-white focus:ring-blue-500' 
+                          : 'bg-white border-gray-300 text-gray-900 focus:ring-blue-500'
+                      } border focus:ring-2 focus:border-transparent`}
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                       Email *
                     </label>
                     <input
@@ -760,14 +850,17 @@ const handleResetPassword = async () => {
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                      required
                       disabled={modalType === 'edit'}
+                      className={`w-full px-3 py-2 rounded-xl outline-none transition-all ${
+                        isDarkMode 
+                          ? 'bg-gray-700 border-gray-600 text-white focus:ring-blue-500 disabled:opacity-50' 
+                          : 'bg-white border-gray-300 text-gray-900 focus:ring-blue-500 disabled:bg-gray-100'
+                      } border focus:ring-2 focus:border-transparent`}
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                       Phone
                     </label>
                     <input
@@ -775,19 +868,27 @@ const handleResetPassword = async () => {
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                      className={`w-full px-3 py-2 rounded-xl outline-none transition-all ${
+                        isDarkMode 
+                          ? 'bg-gray-700 border-gray-600 text-white focus:ring-blue-500' 
+                          : 'bg-white border-gray-300 text-gray-900 focus:ring-blue-500'
+                      } border focus:ring-2 focus:border-transparent`}
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                       Role *
                     </label>
                     <select
                       name="role"
                       value={formData.role}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                      className={`w-full px-3 py-2 rounded-xl outline-none transition-all ${
+                        isDarkMode 
+                          ? 'bg-gray-700 border-gray-600 text-white' 
+                          : 'bg-white border-gray-300 text-gray-900'
+                      } border focus:ring-2 focus:ring-blue-500`}
                     >
                       <option value="student">Student</option>
                       <option value="teacher">Teacher</option>
@@ -796,26 +897,28 @@ const handleResetPassword = async () => {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                       Department
                     </label>
                     <select
                       name="department"
                       value={formData.department}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                      className={`w-full px-3 py-2 rounded-xl outline-none transition-all ${
+                        isDarkMode 
+                          ? 'bg-gray-700 border-gray-600 text-white' 
+                          : 'bg-white border-gray-300 text-gray-900'
+                      } border focus:ring-2 focus:ring-blue-500`}
                     >
                       <option value="">Select Department</option>
-                      {departments.map(dept => (
-                        <option key={dept} value={dept}>{dept}</option>
-                      ))}
+                      {departments.map(dept => <option key={dept} value={dept}>{dept}</option>)}
                     </select>
                   </div>
                   
                   {formData.role === 'student' && (
                     <>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                           Student ID
                         </label>
                         <input
@@ -823,11 +926,15 @@ const handleResetPassword = async () => {
                           name="studentId"
                           value={formData.studentId}
                           onChange={handleInputChange}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                          className={`w-full px-3 py-2 rounded-xl outline-none transition-all ${
+                            isDarkMode 
+                              ? 'bg-gray-700 border-gray-600 text-white focus:ring-blue-500' 
+                              : 'bg-white border-gray-300 text-gray-900 focus:ring-blue-500'
+                          } border focus:ring-2 focus:border-transparent`}
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                           Section
                         </label>
                         <input
@@ -835,7 +942,11 @@ const handleResetPassword = async () => {
                           name="section"
                           value={formData.section}
                           onChange={handleInputChange}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                          className={`w-full px-3 py-2 rounded-xl outline-none transition-all ${
+                            isDarkMode 
+                              ? 'bg-gray-700 border-gray-600 text-white focus:ring-blue-500' 
+                              : 'bg-white border-gray-300 text-gray-900 focus:ring-blue-500'
+                          } border focus:ring-2 focus:border-transparent`}
                         />
                       </div>
                     </>
@@ -844,7 +955,7 @@ const handleResetPassword = async () => {
                   {formData.role === 'teacher' && (
                     <>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                           Teacher ID
                         </label>
                         <input
@@ -852,11 +963,15 @@ const handleResetPassword = async () => {
                           name="teacherId"
                           value={formData.teacherId}
                           onChange={handleInputChange}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                          className={`w-full px-3 py-2 rounded-xl outline-none transition-all ${
+                            isDarkMode 
+                              ? 'bg-gray-700 border-gray-600 text-white focus:ring-blue-500' 
+                              : 'bg-white border-gray-300 text-gray-900 focus:ring-blue-500'
+                          } border focus:ring-2 focus:border-transparent`}
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                           Short Name
                         </label>
                         <input
@@ -864,7 +979,11 @@ const handleResetPassword = async () => {
                           name="shortName"
                           value={formData.shortName}
                           onChange={handleInputChange}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                          className={`w-full px-3 py-2 rounded-xl outline-none transition-all ${
+                            isDarkMode 
+                              ? 'bg-gray-700 border-gray-600 text-white focus:ring-blue-500' 
+                              : 'bg-white border-gray-300 text-gray-900 focus:ring-blue-500'
+                          } border focus:ring-2 focus:border-transparent`}
                           placeholder="e.g., Dr. Smith"
                         />
                       </div>
@@ -873,7 +992,7 @@ const handleResetPassword = async () => {
                   
                   {formData.role === 'staff' && (
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                         Staff ID
                       </label>
                       <input
@@ -881,13 +1000,17 @@ const handleResetPassword = async () => {
                         name="staffId"
                         value={formData.staffId}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                        className={`w-full px-3 py-2 rounded-xl outline-none transition-all ${
+                          isDarkMode 
+                            ? 'bg-gray-700 border-gray-600 text-white focus:ring-blue-500' 
+                            : 'bg-white border-gray-300 text-gray-900 focus:ring-blue-500'
+                        } border focus:ring-2 focus:border-transparent`}
                       />
                     </div>
                   )}
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                       Date of Birth
                     </label>
                     <input
@@ -895,13 +1018,17 @@ const handleResetPassword = async () => {
                       name="dob"
                       value={formData.dob}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                      className={`w-full px-3 py-2 rounded-xl outline-none transition-all ${
+                        isDarkMode 
+                          ? 'bg-gray-700 border-gray-600 text-white focus:ring-blue-500' 
+                          : 'bg-white border-gray-300 text-gray-900 focus:ring-blue-500'
+                      } border focus:ring-2 focus:border-transparent`}
                     />
                   </div>
                   
                   {modalType === 'add' && (
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                         Password *
                       </label>
                       <input
@@ -909,7 +1036,11 @@ const handleResetPassword = async () => {
                         name="password"
                         value={formData.password}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                        className={`w-full px-3 py-2 rounded-xl outline-none transition-all ${
+                          isDarkMode 
+                            ? 'bg-gray-700 border-gray-600 text-white focus:ring-blue-500' 
+                            : 'bg-white border-gray-300 text-gray-900 focus:ring-blue-500'
+                        } border focus:ring-2 focus:border-transparent`}
                         placeholder="Min 8 characters"
                       />
                     </div>
@@ -917,72 +1048,89 @@ const handleResetPassword = async () => {
                 </div>
               )}
 
-              {/* Reset Password */}
               {modalType === 'resetPassword' && selectedUser && (
                 <div className="text-center py-4">
                   <div className="text-4xl mb-4">🔑</div>
-                  <h3 className="text-xl font-semibold mb-2">Reset Password</h3>
-                  <p className="text-gray-600 mb-2">
+                  <h3 className={`text-xl font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                    Reset Password
+                  </h3>
+                  <p className={`mb-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                     Reset password for:
                   </p>
-                  <p className="text-lg font-medium text-gray-800 mb-1">
+                  <p className={`text-lg font-medium mb-1 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
                     {selectedUser.firstName} {selectedUser.lastName}
                   </p>
-                  <p className="text-gray-500 mb-6">{selectedUser.email}</p>
+                  <p className={`mb-6 ${isDarkMode ? 'text-gray-500' : 'text-gray-500'}`}>
+                    {selectedUser.email}
+                  </p>
                   <div className="space-y-3 text-left max-w-md mx-auto">
-                    <label className="flex items-center gap-2">
-                      <input type="radio" name="resetMethod" defaultChecked className="form-radio" />
-                      <span className="text-sm">Send password reset link via email</span>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input type="radio" name="resetMethod" defaultChecked className="form-radio text-blue-500 focus:ring-blue-500" />
+                      <span className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        Send password reset link via email
+                      </span>
                     </label>
-                    <label className="flex items-center gap-2">
-                      <input type="radio" name="resetMethod" className="form-radio" />
-                      <span className="text-sm">Generate temporary password</span>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input type="radio" name="resetMethod" className="form-radio text-blue-500 focus:ring-blue-500" />
+                      <span className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        Generate temporary password
+                      </span>
                     </label>
-                    <label className="flex items-center gap-2">
-                      <input type="checkbox" defaultChecked className="form-checkbox" />
-                      <span className="text-sm">Force password change on next login</span>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input type="checkbox" defaultChecked className="form-checkbox rounded text-blue-500 focus:ring-blue-500" />
+                      <span className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        Force password change on next login
+                      </span>
                     </label>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Modal Footer */}
-            <div className="flex justify-end gap-3 p-6 border-t bg-gray-50">
+            <div className={`flex justify-end gap-3 p-6 border-t rounded-b-2xl ${
+              isDarkMode ? 'border-gray-700 bg-gray-800/50' : 'border-gray-200 bg-gray-50'
+            }`}>
               <button 
-                className="px-6 py-2.5 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition duration-200"
+                className={`px-6 py-2.5 rounded-xl transition-all duration-200 font-medium ${
+                  isDarkMode 
+                    ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' 
+                    : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-100'
+                }`}
                 onClick={closeModal}
               >
                 Cancel
               </button>
+              
               {modalType === 'add' && (
                 <button 
-                  className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200 flex items-center gap-2"
+                  className="px-6 py-2.5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-xl hover:from-blue-600 hover:to-cyan-600 transition-all duration-200 flex items-center gap-2 font-medium shadow-sm"
                   onClick={handleAddUser}
                   disabled={loading}
                 >
                   {loading && <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>}
-                  Add User
+                  <FaCheck /> Add User
                 </button>
               )}
+              
               {modalType === 'edit' && (
                 <button 
-                  className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200 flex items-center gap-2"
+                  className="px-6 py-2.5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-xl hover:from-blue-600 hover:to-cyan-600 transition-all duration-200 flex items-center gap-2 font-medium shadow-sm"
                   onClick={handleEditUser}
                   disabled={loading}
                 >
                   {loading && <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>}
-                  Save Changes
+                  <FaCheck /> Save Changes
                 </button>
               )}
+              
               {modalType === 'resetPassword' && (
                 <button 
-                  className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200 flex items-center gap-2"
+                  className="px-6 py-2.5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-xl hover:from-blue-600 hover:to-cyan-600 transition-all duration-200 flex items-center gap-2 font-medium shadow-sm"
                   onClick={handleResetPassword}
                   disabled={loading}
                 >
                   {loading && <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>}
-                  Reset Password
+                  <FaKey /> Reset Password
                 </button>
               )}
             </div>

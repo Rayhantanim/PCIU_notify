@@ -9,7 +9,10 @@ import { FaSearch, FaFilter, FaCalendarAlt } from "react-icons/fa";
 import Swal from 'sweetalert2';
 import NoticeModal from "../Components/NoticeModal";
 import { noticeService } from "../services/noticeService";
+import { useTheme } from "../context/ThemeContext";
+
 const AllNotices = () => {
+  const { isDarkMode } = useTheme();
   const [notices, setNotices] = useState([]);
   const [filteredNotices, setFilteredNotices] = useState([]);
   const [myNotices, setMyNotices] = useState([]);
@@ -31,6 +34,7 @@ const AllNotices = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [showFilters, setShowFilters] = useState(false);
+  
   // Edit form state
   const [editForm, setEditForm] = useState({
     title: "",
@@ -50,18 +54,6 @@ const AllNotices = () => {
   const lastName = localStorage.getItem("lastName") || "";
   const fullName = localStorage.getItem("fullName") || `${firstName} ${lastName}`;
   
-  // Current user object for modal
-  const currentUser = {
-    name: fullName,
-    userId: localStorage.getItem("userId") || localStorage.getItem("_id") || "user_" + Date.now(),
-    email: localStorage.getItem("email") || "",
-    firstName: firstName,
-    lastName: lastName
-  };
-
-  // Categories for filtering
-  const categories = ["All", "general", "academic", "exam", "event", "urgent"];
-
   // Current user object for modal
   const currentUser = {
     name: fullName,
@@ -308,7 +300,7 @@ const AllNotices = () => {
     };
     try {
       await noticeService.addComment(noticeId, commentData);
-      fetchNotices(); // Refresh to get updated comments
+      fetchNotices();
       toast.success("Comment added successfully");
     } catch (error) {
       console.error("Failed to add comment:", error);
@@ -365,15 +357,15 @@ const AllNotices = () => {
   const getCategoryColor = (category) => {
     switch (category?.toLowerCase()) {
       case "exam":
-        return "bg-red-100 text-red-700";
+        return "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400";
       case "event":
-        return "bg-purple-100 text-purple-700";
+        return "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400";
       case "academic":
-        return "bg-blue-100 text-blue-700";
+        return "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400";
       case "urgent":
-        return "bg-orange-100 text-orange-700";
+        return "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400";
       default:
-        return "bg-gray-100 text-gray-700";
+        return "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300";
     }
   };
 
@@ -393,7 +385,11 @@ const AllNotices = () => {
 
   const NoticeCard = ({ notice, showActions = false, onClick }) => (
     <div 
-      className="w-full border-2 border-gray-200 rounded-xl p-5 my-3 hover:shadow-xl transition-all duration-300 bg-white cursor-pointer hover:border-blue-300"
+      className={`w-full border-2 rounded-xl p-5 my-3 hover:shadow-xl transition-all duration-300 cursor-pointer ${
+        isDarkMode 
+          ? 'border-gray-700 bg-gray-800 hover:border-blue-500' 
+          : 'border-gray-200 bg-white hover:border-blue-300'
+      }`}
       onClick={() => onClick(notice)}
     >
       <div className="flex justify-between items-start">
@@ -408,22 +404,24 @@ const AllNotices = () => {
               <span className="text-yellow-500"><RiPushpinLine /></span>
             )}
             {notice.audience && notice.audience.length > 0 && (
-              <span className="text-xs flex items-center gap-1 text-gray-500">
+              <span className={`text-xs flex items-center gap-1 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                 <IoPeopleSharp /> {notice.audience.join(", ")}
               </span>
             )}
           </div>
 
-          <h3 className="text-xl font-bold text-gray-800 mb-2 hover:text-blue-600 transition-colors">
+          <h3 className={`text-xl font-bold mb-2 transition-colors ${
+            isDarkMode ? 'text-white hover:text-blue-400' : 'text-gray-800 hover:text-blue-600'
+          }`}>
             {notice.title}
           </h3>
 
-          <p className="text-gray-600 text-sm line-clamp-2 mb-3">
+          <p className={`text-sm line-clamp-2 mb-3 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
             {notice.description?.replace(/<[^>]*>/g, "").substring(0, 120)}
             {notice.description?.replace(/<[^>]*>/g, "").length > 120 ? "..." : ""}
           </p>
           
-          <div className="flex items-center gap-4 text-sm text-gray-500">
+          <div className={`flex items-center gap-4 text-sm ${isDarkMode ? 'text-gray-500' : 'text-gray-500'}`}>
             <span>📅 {formatDate(notice.createdAt)}</span>
             <span>❤️ {notice.likes || 0} likes</span>
             <span>💬 {notice.comments?.length || 0} comments</span>
@@ -435,8 +433,12 @@ const AllNotices = () => {
             <div className="flex items-center gap-2">
               <img className="w-10 h-10 rounded-full object-cover" src={noticeImg} alt="" />
               <div>
-                <p className="text-sm font-medium text-gray-800">{notice.createdBy || "Unknown"}</p>
-                <p className="text-xs text-gray-400">{formatDate(notice.createdAt)}</p>
+                <p className={`text-sm font-medium ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>
+                  {notice.createdBy || "Unknown"}
+                </p>
+                <p className={`text-xs ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                  {formatDate(notice.createdAt)}
+                </p>
               </div>
             </div>
           </div>
@@ -445,13 +447,17 @@ const AllNotices = () => {
 
       {/* Action Buttons */}
       {showActions && (
-        <div className="flex justify-end gap-2 mt-4 pt-3 border-t border-gray-100">
+        <div className={`flex justify-end gap-2 mt-4 pt-3 border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-100'}`}>
           <button
             onClick={(e) => {
               e.stopPropagation();
               handleEditClick(notice);
             }}
-            className="px-4 py-2 text-sm bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition flex items-center gap-2"
+            className={`px-4 py-2 text-sm rounded-lg transition flex items-center gap-2 ${
+              isDarkMode 
+                ? 'bg-blue-900/30 text-blue-400 hover:bg-blue-900/50' 
+                : 'bg-blue-50 text-blue-600 hover:bg-blue-100'
+            }`}
           >
             <MdEdit /> Edit
           </button>
@@ -460,7 +466,11 @@ const AllNotices = () => {
               e.stopPropagation();
               handleDelete(notice._id);
             }}
-            className="px-4 py-2 text-sm bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition flex items-center gap-2"
+            className={`px-4 py-2 text-sm rounded-lg transition flex items-center gap-2 ${
+              isDarkMode 
+                ? 'bg-red-900/30 text-red-400 hover:bg-red-900/50' 
+                : 'bg-red-50 text-red-600 hover:bg-red-100'
+            }`}
           >
             <RiDeleteBin6Line /> Delete
           </button>
@@ -470,12 +480,12 @@ const AllNotices = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+    <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-slate-50 via-white to-blue-50'}`}>
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl shadow-xl p-6 mb-8 text-white">
+        <div className="bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl shadow-lg shadow-blue-200 dark:shadow-blue-900/30 p-6 mb-8 text-white">
           <h1 className="text-3xl font-bold mb-2">Notice Board</h1>
-          <p className="text-blue-100">Manage and view all announcements</p>
+          <p className="text-blue-50">Manage and view all announcements</p>
         </div>
 
         {/* Tabs */}
@@ -486,10 +496,12 @@ const AllNotices = () => {
               setSelectedCategory("All");
               setSearchQuery("");
             }}
-            className={`px-6 py-3 rounded-xl font-semibold text-lg transition-all duration-300 ${
+            className={`px-6 py-3 rounded-xl font-semibold text-lg transition-all duration-200 ${
               activeTab === "my"
-                ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg"
-                : "bg-white text-gray-600 border-2 border-gray-200 hover:border-blue-300"
+                ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-md shadow-blue-200 dark:shadow-blue-900/30"
+                : isDarkMode 
+                  ? "bg-gray-800 text-gray-300 border border-gray-700 hover:border-blue-500 hover:shadow-sm"
+                  : "bg-white text-slate-700 border border-slate-200 hover:border-blue-300 hover:shadow-sm"
             }`}
           >
             My Notices ({myNotices.length})
@@ -500,10 +512,12 @@ const AllNotices = () => {
               setSelectedCategory("All");
               setSearchQuery("");
             }}
-            className={`px-6 py-3 rounded-xl font-semibold text-lg transition-all duration-300 ${
+            className={`px-6 py-3 rounded-xl font-semibold text-lg transition-all duration-200 ${
               activeTab === "all"
-                ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg"
-                : "bg-white text-gray-600 border-2 border-gray-200 hover:border-blue-300"
+                ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-md shadow-blue-200 dark:shadow-blue-900/30"
+                : isDarkMode 
+                  ? "bg-gray-800 text-gray-300 border border-gray-700 hover:border-blue-500 hover:shadow-sm"
+                  : "bg-white text-slate-700 border border-slate-200 hover:border-blue-300 hover:shadow-sm"
             }`}
           >
             All Notices ({notices.length})
@@ -511,24 +525,36 @@ const AllNotices = () => {
         </div>
 
         {/* Search and Filter Bar */}
-        <div className="bg-white rounded-xl shadow-md p-4 mb-6">
+        <div className={`rounded-xl shadow-sm border p-4 mb-6 ${
+          isDarkMode 
+            ? 'bg-gray-800 border-gray-700' 
+            : 'bg-white border-slate-200'
+        }`}>
           <div className="flex flex-wrap gap-3 items-center">
             <div className="flex-1 min-w-[200px]">
               <div className="relative">
-                <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <FaSearch className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${isDarkMode ? 'text-gray-500' : 'text-slate-400'}`} />
                 <input
                   type="text"
                   placeholder="Search by title, description, or author..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className={`w-full pl-10 pr-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-slate-400 transition-all duration-200 ${
+                    isDarkMode 
+                      ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
+                      : 'bg-white border-slate-300 text-slate-900'
+                  }`}
                 />
               </div>
             </div>
             
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition flex items-center gap-2"
+              className={`px-4 py-2 rounded-xl transition-all duration-200 flex items-center gap-2 font-medium ${
+                isDarkMode 
+                  ? 'bg-gray-700 text-gray-300 border border-gray-600 hover:bg-gray-600' 
+                  : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50'
+              }`}
             >
               <FaFilter /> Filters
             </button>
@@ -536,7 +562,7 @@ const AllNotices = () => {
             {(selectedCategory !== "All" || startDate || endDate) && (
               <button
                 onClick={clearFilters}
-                className="px-4 py-2 text-red-600 hover:text-red-700 transition"
+                className="px-4 py-2 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-xl transition-all duration-200 font-medium"
               >
                 Clear Filters
               </button>
@@ -545,14 +571,18 @@ const AllNotices = () => {
           
           {/* Filter Panel */}
           {showFilters && (
-            <div className="mt-4 pt-4 border-t border-gray-200">
+            <div className={`mt-4 pt-4 border-t ${isDarkMode ? 'border-gray-700' : 'border-slate-200'}`}>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                  <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>Category</label>
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
+                      isDarkMode 
+                        ? 'bg-gray-700 border-gray-600 text-white' 
+                        : 'bg-white border-slate-300 text-slate-700'
+                    }`}
                   >
                     {categories.map(cat => (
                       <option key={cat} value={cat}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</option>
@@ -561,27 +591,35 @@ const AllNotices = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                  <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>Start Date</label>
                   <div className="relative">
-                    <FaCalendarAlt className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                    <FaCalendarAlt className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${isDarkMode ? 'text-gray-500' : 'text-slate-400'}`} />
                     <input
                       type="date"
                       value={startDate}
                       onChange={(e) => setStartDate(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className={`w-full pl-10 pr-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
+                        isDarkMode 
+                          ? 'bg-gray-700 border-gray-600 text-white' 
+                          : 'bg-white border-slate-300 text-slate-700'
+                      }`}
                     />
                   </div>
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                  <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>End Date</label>
                   <div className="relative">
-                    <FaCalendarAlt className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                    <FaCalendarAlt className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${isDarkMode ? 'text-gray-500' : 'text-slate-400'}`} />
                     <input
                       type="date"
                       value={endDate}
                       onChange={(e) => setEndDate(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className={`w-full pl-10 pr-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
+                        isDarkMode 
+                          ? 'bg-gray-700 border-gray-600 text-white' 
+                          : 'bg-white border-slate-300 text-slate-700'
+                      }`}
                     />
                   </div>
                 </div>
@@ -598,8 +636,10 @@ const AllNotices = () => {
               onClick={() => setSelectedCategory(cat)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                 selectedCategory === cat
-                  ? "bg-blue-600 text-white shadow-md"
-                  : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50"
+                  ? "bg-blue-500 text-white shadow-sm shadow-blue-200 dark:shadow-blue-900/30"
+                  : isDarkMode 
+                    ? "bg-gray-800 text-gray-400 border border-gray-700 hover:bg-gray-700 hover:border-blue-500"
+                    : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:border-blue-300"
               }`}
             >
               {cat === "All" ? "All Categories" : cat.charAt(0).toUpperCase() + cat.slice(1)}
@@ -608,13 +648,15 @@ const AllNotices = () => {
         </div>
 
         {/* Notices List */}
-        <div className="bg-white rounded-xl shadow-xl overflow-hidden">
+        <div className={`rounded-2xl shadow-sm border overflow-hidden ${
+          isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-slate-200'
+        }`}>
           <div className="p-6">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-800">
+              <h2 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
                 {activeTab === "my" ? "My Notices" : "All Notices"}
               </h2>
-              <p className="text-gray-500">
+              <p className={isDarkMode ? 'text-gray-400' : 'text-slate-500'}>
                 Showing {filteredNotices.length} of {activeTab === "my" ? myNotices.length : notices.length} notices
               </p>
             </div>
@@ -622,11 +664,11 @@ const AllNotices = () => {
             {filteredNotices.length === 0 ? (
               <div className="text-center py-16">
                 <div className="text-6xl mb-4">📭</div>
-                <p className="text-gray-500 text-lg">No notices found</p>
+                <p className={`text-lg ${isDarkMode ? 'text-gray-400' : 'text-slate-500'}`}>No notices found</p>
                 {(searchQuery || selectedCategory !== "All" || startDate || endDate) && (
                   <button
                     onClick={clearFilters}
-                    className="mt-4 text-blue-600 hover:text-blue-700 underline"
+                    className="mt-4 text-blue-600 hover:text-blue-700 underline font-medium"
                   >
                     Clear all filters
                   </button>
@@ -638,37 +680,49 @@ const AllNotices = () => {
                   <div key={notice._id}>
                     {editingNotice === notice._id ? (
                       // EDIT MODE
-                      <div className="border-2 border-blue-500 rounded-xl p-6 my-4 bg-blue-50">
-                        <h3 className="text-lg font-semibold mb-4">Edit Notice</h3>
+                      <div className={`border-2 border-blue-400 rounded-xl p-6 my-4 ${isDarkMode ? 'bg-gray-700/50' : 'bg-blue-50/50'}`}>
+                        <h3 className={`text-lg font-semibold mb-4 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>Edit Notice</h3>
                         <div className="space-y-4">
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                            <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>Title</label>
                             <input
                               type="text"
                               name="title"
                               value={editForm.title}
                               onChange={handleEditChange}
-                              className="w-full border border-gray-300 rounded-lg p-2 focus:border-blue-500 focus:outline-none"
+                              className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
+                                isDarkMode 
+                                  ? 'bg-gray-800 border-gray-600 text-white' 
+                                  : 'bg-white border-slate-300 text-slate-700'
+                              }`}
                             />
                           </div>
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                            <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>Description</label>
                             <textarea
                               name="description"
                               value={editForm.description?.replace(/<[^>]*>/g, "")}
                               onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
                               rows="4"
-                              className="w-full border border-gray-300 rounded-lg p-2 focus:border-blue-500 focus:outline-none"
+                              className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 resize-none ${
+                                isDarkMode 
+                                  ? 'bg-gray-800 border-gray-600 text-white' 
+                                  : 'bg-white border-slate-300 text-slate-700'
+                              }`}
                             />
                           </div>
                           <div className="grid grid-cols-2 gap-4">
                             <div>
-                              <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                              <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>Category</label>
                               <select
                                 name="category"
                                 value={editForm.category}
                                 onChange={handleEditChange}
-                                className="w-full border border-gray-300 rounded-lg p-2 focus:border-blue-500 focus:outline-none"
+                                className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
+                                  isDarkMode 
+                                    ? 'bg-gray-800 border-gray-600 text-white' 
+                                    : 'bg-white border-slate-300 text-slate-700'
+                                }`}
                               >
                                 <option value="">Select Category</option>
                                 <option value="general">General</option>
@@ -679,12 +733,16 @@ const AllNotices = () => {
                               </select>
                             </div>
                             <div>
-                              <label className="block text-sm font-medium text-gray-700 mb-1">Priority</label>
+                              <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>Priority</label>
                               <select
                                 name="priority"
                                 value={editForm.priority}
                                 onChange={handleEditChange}
-                                className="w-full border border-gray-300 rounded-lg p-2 focus:border-blue-500 focus:outline-none"
+                                className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
+                                  isDarkMode 
+                                    ? 'bg-gray-800 border-gray-600 text-white' 
+                                    : 'bg-white border-slate-300 text-slate-700'
+                                }`}
                               >
                                 <option value="low">Low</option>
                                 <option value="medium">Medium</option>
@@ -694,43 +752,51 @@ const AllNotices = () => {
                             </div>
                           </div>
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Audience</label>
+                            <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>Audience</label>
                             <div className="flex gap-4">
                               {["students", "teachers", "staff", "all"].map((a) => (
-                                <label key={a} className="flex items-center gap-1">
+                                <label key={a} className="flex items-center gap-1 cursor-pointer">
                                   <input
                                     type="checkbox"
                                     name="audience"
                                     value={a}
                                     checked={editForm.audience.includes(a)}
                                     onChange={handleEditChange}
-                                    className="rounded"
+                                    className="rounded border-slate-300 text-blue-500 focus:ring-blue-500"
                                   />
-                                  <span className="capitalize">{a}</span>
+                                  <span className={`capitalize ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>{a}</span>
                                 </label>
                               ))}
                             </div>
                           </div>
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Expiry Date</label>
+                            <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>Expiry Date</label>
                             <input
                               type="date"
                               name="expiryDate"
                               value={editForm.expiryDate}
                               onChange={handleEditChange}
-                              className="w-full border border-gray-300 rounded-lg p-2 focus:border-blue-500 focus:outline-none"
+                              className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
+                                isDarkMode 
+                                  ? 'bg-gray-800 border-gray-600 text-white' 
+                                  : 'bg-white border-slate-300 text-slate-700'
+                              }`}
                             />
                           </div>
                           <div className="flex gap-3 pt-2">
                             <button
                               onClick={() => handleSaveEdit(notice._id)}
-                              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium"
+                              className="px-6 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-all duration-200 font-medium shadow-sm hover:shadow-md"
                             >
                               💾 Save Changes
                             </button>
                             <button
                               onClick={handleCancelEdit}
-                              className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition font-medium"
+                              className={`px-6 py-2 rounded-xl transition-all duration-200 font-medium ${
+                                isDarkMode 
+                                  ? 'bg-gray-700 text-gray-300 border border-gray-600 hover:bg-gray-600' 
+                                  : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50'
+                              }`}
                             >
                               Cancel
                             </button>
@@ -751,14 +817,18 @@ const AllNotices = () => {
 
             {/* Pagination */}
             {filteredNotices.length > 0 && totalPages > 1 && (
-              <div className="flex justify-center items-center gap-2 mt-6 pt-4 border-t border-gray-200">
+              <div className={`flex justify-center items-center gap-2 mt-6 pt-4 border-t ${isDarkMode ? 'border-gray-700' : 'border-slate-200'}`}>
                 <button
                   onClick={goToPreviousPage}
                   disabled={currentPage === 1}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                     currentPage === 1
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
+                      ? isDarkMode 
+                        ? 'bg-gray-800 text-gray-600 border border-gray-700 cursor-not-allowed'
+                        : 'bg-slate-50 text-slate-400 border border-slate-200 cursor-not-allowed'
+                      : isDarkMode 
+                        ? 'bg-gray-700 text-gray-300 border border-gray-600 hover:bg-gray-600'
+                        : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50'
                   }`}
                 >
                   Previous
@@ -781,10 +851,12 @@ const AllNotices = () => {
                       <button
                         key={pageNum}
                         onClick={() => paginate(pageNum)}
-                        className={`w-10 h-10 rounded-lg text-sm font-medium transition-all ${
+                        className={`w-10 h-10 rounded-xl text-sm font-medium transition-all duration-200 ${
                           currentPage === pageNum
-                            ? 'bg-blue-600 text-white shadow-md'
-                            : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
+                            ? 'bg-blue-500 text-white shadow-sm'
+                            : isDarkMode 
+                              ? 'bg-gray-700 text-gray-300 border border-gray-600 hover:bg-gray-600'
+                              : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50'
                         }`}
                       >
                         {pageNum}
@@ -796,10 +868,14 @@ const AllNotices = () => {
                 <button
                   onClick={goToNextPage}
                   disabled={currentPage === totalPages}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                     currentPage === totalPages
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
+                      ? isDarkMode 
+                        ? 'bg-gray-800 text-gray-600 border border-gray-700 cursor-not-allowed'
+                        : 'bg-slate-50 text-slate-400 border border-slate-200 cursor-not-allowed'
+                      : isDarkMode 
+                        ? 'bg-gray-700 text-gray-300 border border-gray-600 hover:bg-gray-600'
+                        : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50'
                   }`}
                 >
                   Next
@@ -824,4 +900,5 @@ const AllNotices = () => {
     </div>
   );
 };
+
 export default AllNotices;
