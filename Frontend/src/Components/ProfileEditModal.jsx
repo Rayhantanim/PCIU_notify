@@ -87,6 +87,14 @@ const ProfileEditModal = ({ isOpen, user, onClose, onUpdate }) => {
         localStorage.setItem("department", formData.department);
         if (formData.section) localStorage.setItem("section", formData.section);
         if (formData.phone) localStorage.setItem("phone", formData.phone);
+          localStorage.setItem("userId", user._id);
+//   localStorage.setItem("email", user.email);
+//   localStorage.setItem("firstName", user.firstName);
+//   localStorage.setItem("lastName", user.lastName);
+//   localStorage.setItem("fullName", `${user.firstName} ${user.lastName}`);
+//   localStorage.setItem("role", user.role);
+//   localStorage.setItem("firebaseUid", userCredential.user.uid);
+//   localStorage.setItem("token", userCredential.user.accessToken || "firebase-token");
         
         toast.success("Profile updated successfully!");
         
