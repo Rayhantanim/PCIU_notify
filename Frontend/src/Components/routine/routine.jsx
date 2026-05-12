@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import * as XLSX from 'xlsx';
+import { useTheme } from '../../context/ThemeContext';
 
 const RoutineViewer = () => {
+  const { isDarkMode } = useTheme();
   const [routines, setRoutines] = useState([]);
   const [filteredRoutines, setFilteredRoutines] = useState([]);
   const [departments, setDepartments] = useState([]);
@@ -366,10 +368,12 @@ const RoutineViewer = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className={`min-h-screen flex items-center justify-center transition-colors duration-200 ${
+        isDarkMode ? 'bg-gray-900' : 'bg-gray-100'
+      }`}>
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-900 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading routine from pciu.xlsx...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className={`mt-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Loading routine from pciu.xlsx...</p>
         </div>
       </div>
     );
@@ -377,18 +381,26 @@ const RoutineViewer = () => {
 
   if (errorMsg) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg shadow-lg p-8 max-w-2xl text-center">
+      <div className={`min-h-screen flex items-center justify-center p-4 transition-colors duration-200 ${
+        isDarkMode ? 'bg-gray-900' : 'bg-gray-100'
+      }`}>
+        <div className={`rounded-lg shadow-lg p-8 max-w-2xl text-center transition-colors duration-200 ${
+          isDarkMode ? 'bg-gray-800' : 'bg-white'
+        }`}>
           <i className="fas fa-exclamation-triangle text-red-500 text-5xl mb-4"></i>
-          <h2 className="text-xl font-bold text-gray-800 mb-2">Error Loading Routine</h2>
-          <p className="text-gray-600 mb-4">{errorMsg}</p>
+          <h2 className={`text-xl font-bold mb-2 ${isDarkMode ? 'text-gray-100' : 'text-gray-800'}`}>Error Loading Routine</h2>
+          <p className={`mb-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{errorMsg}</p>
           {debugInfo && (
-            <div className="mt-4 p-3 bg-gray-100 rounded text-left">
-              <p className="font-semibold text-sm">Debug Info:</p>
-              <p className="text-xs text-gray-600 font-mono break-all">{debugInfo}</p>
+            <div className={`mt-4 p-3 rounded text-left transition-colors duration-200 ${
+              isDarkMode ? 'bg-gray-700' : 'bg-gray-100'
+            }`}>
+              <p className={`font-semibold text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Debug Info:</p>
+              <p className={`text-xs font-mono break-all ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{debugInfo}</p>
             </div>
           )}
-          <p className="text-sm text-gray-500 bg-gray-100 p-3 rounded mt-4">
+          <p className={`text-sm p-3 rounded mt-4 transition-colors duration-200 ${
+            isDarkMode ? 'text-gray-400 bg-gray-700' : 'text-gray-500 bg-gray-100'
+          }`}>
             Your Excel file should have columns like:<br/>
             <strong>day, department, section, courseCode, courseName, teacher, time, room</strong><br/>
             or any similar variation (e.g., "course code", "subject code", etc.)
@@ -399,9 +411,13 @@ const RoutineViewer = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className={`min-h-screen transition-colors duration-200 ${
+      isDarkMode ? 'bg-gray-900' : 'bg-gray-100'
+    }`}>
       {/* Navbar */}
-      <nav className="bg-gradient-to-r from-blue-900 to-blue-800 shadow-lg">
+      <nav className={`shadow-lg transition-colors duration-200 ${
+        isDarkMode ? 'bg-gradient-to-r from-gray-800 to-gray-900' : 'bg-gradient-to-r from-blue-900 to-blue-800'
+      }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-3">
@@ -428,14 +444,18 @@ const RoutineViewer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Filter Mode Indicator */}
         {selectedTeacher !== 'all' && (
-          <div className="mb-4 bg-purple-100 border-l-4 border-purple-500 text-purple-700 p-3 rounded flex items-center justify-between">
+          <div className={`mb-4 border-l-4 border-purple-500 p-3 rounded flex items-center justify-between transition-colors duration-200 ${
+            isDarkMode ? 'bg-purple-900/30 text-purple-300' : 'bg-purple-100 text-purple-700'
+          }`}>
             <div className="flex items-center space-x-2">
-              <i className="fas fa-chalkboard-teacher text-purple-600"></i>
+              <i className="fas fa-chalkboard-teacher"></i>
               <span>Viewing classes for: <strong>{selectedTeacher}</strong></span>
             </div>
             <button
               onClick={() => handleTeacherSelect('all')}
-              className="text-purple-600 hover:text-purple-800 text-sm font-medium"
+              className={`text-sm font-medium transition-colors ${
+                isDarkMode ? 'text-purple-400 hover:text-purple-300' : 'text-purple-600 hover:text-purple-800'
+              }`}
             >
               Clear Teacher Filter
             </button>
@@ -443,11 +463,15 @@ const RoutineViewer = () => {
         )}
 
         {/* Filters Section */}
-        <div className="bg-white rounded-lg shadow-md p-5 mb-6">
+        <div className={`rounded-lg shadow-md p-5 mb-6 transition-colors duration-200 ${
+          isDarkMode ? 'bg-gray-800' : 'bg-white'
+        }`}>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {/* Teacher Searchable Dropdown */}
             <div ref={teacherRef} className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className={`block text-sm font-medium mb-2 transition-colors duration-200 ${
+                isDarkMode ? 'text-gray-300' : 'text-gray-700'
+              }`}>
                 <i className="fas fa-chalkboard-teacher mr-2 text-purple-600"></i>Teacher
               </label>
               <div className="relative">
@@ -460,20 +484,30 @@ const RoutineViewer = () => {
                   }}
                   onFocus={() => setIsTeacherDropdownOpen(true)}
                   placeholder="Search teacher..."
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className={`w-full border rounded-lg px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-colors duration-200 ${
+                    isDarkMode 
+                      ? 'bg-gray-700 border-gray-600 text-gray-100 placeholder-gray-400' 
+                      : 'bg-white border-gray-300 text-gray-900'
+                  }`}
                 />
                 <button
                   onClick={() => setIsTeacherDropdownOpen(!isTeacherDropdownOpen)}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  className={`absolute right-2 top-1/2 transform -translate-y-1/2 transition-colors ${
+                    isDarkMode ? 'text-gray-400' : 'text-gray-400'
+                  }`}
                 >
                   <i className={`fas fa-chevron-${isTeacherDropdownOpen ? 'up' : 'down'}`}></i>
                 </button>
               </div>
               
               {isTeacherDropdownOpen && (
-                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                <div className={`absolute z-10 w-full mt-1 border rounded-lg shadow-lg max-h-60 overflow-y-auto transition-colors duration-200 ${
+                  isDarkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'
+                }`}>
                   <div
-                    className="px-3 py-2 hover:bg-purple-50 cursor-pointer sticky top-0 bg-white border-b"
+                    className={`px-3 py-2 cursor-pointer sticky top-0 border-b transition-colors ${
+                      isDarkMode ? 'hover:bg-gray-600 bg-gray-700 border-gray-600' : 'hover:bg-purple-50 bg-white border-gray-200'
+                    }`}
                     onClick={() => handleTeacherSelect('all')}
                   >
                     <div className="flex items-center">
@@ -482,12 +516,16 @@ const RoutineViewer = () => {
                     </div>
                   </div>
                   {filteredTeachers.length === 0 ? (
-                    <div className="px-3 py-2 text-gray-500 text-sm">No teachers found</div>
+                    <div className={`px-3 py-2 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>No teachers found</div>
                   ) : (
                     filteredTeachers.map(teacher => (
                       <div
                         key={teacher}
-                        className={`px-3 py-2 hover:bg-purple-50 cursor-pointer ${selectedTeacher === teacher ? 'bg-purple-100' : ''}`}
+                        className={`px-3 py-2 cursor-pointer transition-colors ${
+                          isDarkMode 
+                            ? `hover:bg-gray-600 ${selectedTeacher === teacher ? 'bg-gray-600' : ''}`
+                            : `hover:bg-purple-50 ${selectedTeacher === teacher ? 'bg-purple-100' : ''}`
+                        }`}
                         onClick={() => handleTeacherSelect(teacher)}
                       >
                         <i className="fas fa-user mr-2 text-gray-500"></i>
@@ -507,7 +545,9 @@ const RoutineViewer = () => {
 
             {/* Department Searchable Dropdown */}
             <div ref={deptRef} className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className={`block text-sm font-medium mb-2 transition-colors duration-200 ${
+                isDarkMode ? 'text-gray-300' : 'text-gray-700'
+              }`}>
                 <i className="fas fa-building mr-2 text-blue-600"></i>Department
               </label>
               <div className="relative">
@@ -520,20 +560,28 @@ const RoutineViewer = () => {
                   }}
                   onFocus={() => setIsDeptDropdownOpen(true)}
                   placeholder="Search department..."
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className={`w-full border rounded-lg px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 ${
+                    isDarkMode 
+                      ? 'bg-gray-700 border-gray-600 text-gray-100 placeholder-gray-400' 
+                      : 'bg-white border-gray-300 text-gray-900'
+                  } ${selectedTeacher !== 'all' ? 'cursor-not-allowed opacity-60' : ''}`}
                   disabled={selectedTeacher !== 'all'}
                 />
                 {selectedTeacher !== 'all' && (
-                  <div className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400">
+                  <div className={`absolute right-2 top-1/2 transform -translate-y-1/2 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
                     <i className="fas fa-lock"></i>
                   </div>
                 )}
               </div>
               
               {isDeptDropdownOpen && selectedTeacher === 'all' && (
-                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                <div className={`absolute z-10 w-full mt-1 border rounded-lg shadow-lg max-h-60 overflow-y-auto transition-colors duration-200 ${
+                  isDarkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'
+                }`}>
                   <div
-                    className="px-3 py-2 hover:bg-blue-50 cursor-pointer sticky top-0 bg-white border-b"
+                    className={`px-3 py-2 cursor-pointer sticky top-0 border-b transition-colors ${
+                      isDarkMode ? 'hover:bg-gray-600 bg-gray-700 border-gray-600' : 'hover:bg-blue-50 bg-white border-gray-200'
+                    }`}
                     onClick={() => handleDeptSelect('all')}
                   >
                     <div className="flex items-center">
@@ -542,12 +590,16 @@ const RoutineViewer = () => {
                     </div>
                   </div>
                   {filteredDepartments.length === 0 ? (
-                    <div className="px-3 py-2 text-gray-500 text-sm">No departments found</div>
+                    <div className={`px-3 py-2 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>No departments found</div>
                   ) : (
                     filteredDepartments.map(dept => (
                       <div
                         key={dept}
-                        className={`px-3 py-2 hover:bg-blue-50 cursor-pointer ${selectedDept === dept ? 'bg-blue-100' : ''}`}
+                        className={`px-3 py-2 cursor-pointer transition-colors ${
+                          isDarkMode 
+                            ? `hover:bg-gray-600 ${selectedDept === dept ? 'bg-gray-600' : ''}`
+                            : `hover:bg-blue-50 ${selectedDept === dept ? 'bg-blue-100' : ''}`
+                        }`}
                         onClick={() => handleDeptSelect(dept)}
                       >
                         {dept}
@@ -566,7 +618,9 @@ const RoutineViewer = () => {
 
             {/* Section Searchable Dropdown */}
             <div ref={sectionRef} className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className={`block text-sm font-medium mb-2 transition-colors duration-200 ${
+                isDarkMode ? 'text-gray-300' : 'text-gray-700'
+              }`}>
                 <i className="fas fa-users mr-2 text-blue-600"></i>Section
               </label>
               <div className="relative">
@@ -579,20 +633,28 @@ const RoutineViewer = () => {
                   }}
                   onFocus={() => setIsSectionDropdownOpen(true)}
                   placeholder="Search section..."
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className={`w-full border rounded-lg px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 ${
+                    isDarkMode 
+                      ? 'bg-gray-700 border-gray-600 text-gray-100 placeholder-gray-400' 
+                      : 'bg-white border-gray-300 text-gray-900'
+                  } ${selectedTeacher !== 'all' ? 'cursor-not-allowed opacity-60' : ''}`}
                   disabled={selectedTeacher !== 'all'}
                 />
                 {selectedTeacher !== 'all' && (
-                  <div className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400">
+                  <div className={`absolute right-2 top-1/2 transform -translate-y-1/2 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
                     <i className="fas fa-lock"></i>
                   </div>
                 )}
               </div>
               
               {isSectionDropdownOpen && selectedTeacher === 'all' && (
-                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                <div className={`absolute z-10 w-full mt-1 border rounded-lg shadow-lg max-h-60 overflow-y-auto transition-colors duration-200 ${
+                  isDarkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'
+                }`}>
                   <div
-                    className="px-3 py-2 hover:bg-blue-50 cursor-pointer sticky top-0 bg-white border-b"
+                    className={`px-3 py-2 cursor-pointer sticky top-0 border-b transition-colors ${
+                      isDarkMode ? 'hover:bg-gray-600 bg-gray-700 border-gray-600' : 'hover:bg-blue-50 bg-white border-gray-200'
+                    }`}
                     onClick={() => handleSectionSelect('all')}
                   >
                     <div className="flex items-center">
@@ -601,12 +663,16 @@ const RoutineViewer = () => {
                     </div>
                   </div>
                   {filteredSections.length === 0 ? (
-                    <div className="px-3 py-2 text-gray-500 text-sm">No sections found</div>
+                    <div className={`px-3 py-2 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>No sections found</div>
                   ) : (
                     filteredSections.map(section => (
                       <div
                         key={section}
-                        className={`px-3 py-2 hover:bg-blue-50 cursor-pointer ${selectedSection === section ? 'bg-blue-100' : ''}`}
+                        className={`px-3 py-2 cursor-pointer transition-colors ${
+                          isDarkMode 
+                            ? `hover:bg-gray-600 ${selectedSection === section ? 'bg-gray-600' : ''}`
+                            : `hover:bg-blue-50 ${selectedSection === section ? 'bg-blue-100' : ''}`
+                        }`}
                         onClick={() => handleSectionSelect(section)}
                       >
                         {section}
@@ -625,7 +691,9 @@ const RoutineViewer = () => {
 
             {/* View Type */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className={`block text-sm font-medium mb-2 transition-colors duration-200 ${
+                isDarkMode ? 'text-gray-300' : 'text-gray-700'
+              }`}>
                 <i className="fas fa-eye mr-2 text-blue-600"></i>View Type
               </label>
               <div className="flex space-x-2">
@@ -633,8 +701,10 @@ const RoutineViewer = () => {
                   onClick={() => setViewType('weekly')}
                   className={`flex-1 py-2 px-3 rounded-lg font-medium transition ${
                     viewType === 'weekly' 
-                      ? 'bg-blue-900 text-white' 
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      ? 'bg-blue-600 text-white' 
+                      : isDarkMode
+                        ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                   }`}
                 >
                   <i className="fas fa-calendar-week mr-1"></i> Weekly
@@ -643,8 +713,10 @@ const RoutineViewer = () => {
                   onClick={() => setViewType('day')}
                   className={`flex-1 py-2 px-3 rounded-lg font-medium transition ${
                     viewType === 'day' 
-                      ? 'bg-blue-900 text-white' 
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      ? 'bg-blue-600 text-white' 
+                      : isDarkMode
+                        ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                   }`}
                 >
                   <i className="fas fa-calendar-day mr-1"></i> Day
@@ -655,7 +727,9 @@ const RoutineViewer = () => {
         </div>
 
         {/* Sorting Indicator */}
-        <div className="mb-3 text-right text-xs text-gray-500">
+        <div className={`mb-3 text-right text-xs transition-colors duration-200 ${
+          isDarkMode ? 'text-gray-500' : 'text-gray-500'
+        }`}>
           <i className="fas fa-sort-amount-up mr-1"></i> Classes sorted by time
         </div>
 
@@ -663,8 +737,12 @@ const RoutineViewer = () => {
         {viewType === 'weekly' && filteredRoutines.length > 0 && (
           <div className="space-y-6">
             {sortedDays.map(day => (
-              <div key={day} className="bg-white rounded-lg shadow-md overflow-hidden">
-                <div className="bg-gradient-to-r from-blue-800 to-blue-700 px-5 py-3">
+              <div key={day} className={`rounded-lg shadow-md overflow-hidden transition-colors duration-200 ${
+                isDarkMode ? 'bg-gray-800' : 'bg-white'
+              }`}>
+                <div className={`px-5 py-3 transition-colors duration-200 ${
+                  isDarkMode ? 'bg-gradient-to-r from-gray-700 to-gray-800' : 'bg-gradient-to-r from-blue-800 to-blue-700'
+                }`}>
                   <h2 className="text-white font-bold text-lg">
                     <i className="fas fa-sun mr-2"></i>{day}
                   </h2>
@@ -674,47 +752,79 @@ const RoutineViewer = () => {
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="bg-gray-50">
+                    <thead className={isDarkMode ? 'bg-gray-700' : 'bg-gray-50'}>
                       <tr>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                        <th className={`px-4 py-3 text-left text-xs font-medium uppercase ${
+                          isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                        }`}>
                           <i className="fas fa-clock mr-1"></i>Time
                         </th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Course Code</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Course Name</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Teacher</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Room</th>
+                        <th className={`px-4 py-3 text-left text-xs font-medium uppercase ${
+                          isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                        }`}>Course Code</th>
+                        <th className={`px-4 py-3 text-left text-xs font-medium uppercase ${
+                          isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                        }`}>Course Name</th>
+                        <th className={`px-4 py-3 text-left text-xs font-medium uppercase ${
+                          isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                        }`}>Teacher</th>
+                        <th className={`px-4 py-3 text-left text-xs font-medium uppercase ${
+                          isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                        }`}>Room</th>
                         {(selectedDept === 'all' || selectedSection === 'all' || selectedTeacher !== 'all') && (
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Department</th>
+                          <th className={`px-4 py-3 text-left text-xs font-medium uppercase ${
+                            isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                          }`}>Department</th>
                         )}
                         {(selectedDept === 'all' || selectedSection === 'all' || selectedTeacher !== 'all') && (
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Section</th>
+                          <th className={`px-4 py-3 text-left text-xs font-medium uppercase ${
+                            isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                          }`}>Section</th>
                         )}
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200">
+                    <tbody className={`divide-y transition-colors duration-200 ${
+                      isDarkMode ? 'divide-gray-700' : 'divide-gray-200'
+                    }`}>
                       {groups[day]?.map((routine, idx) => (
-                        <tr key={idx} className="hover:bg-gray-50 transition">
-                          <td className="px-4 py-3 text-sm text-gray-900 font-medium">
-                            <i className="fas fa-hourglass-start text-gray-400 mr-1"></i>
+                        <tr key={idx} className={`transition-colors ${
+                          isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-50'
+                        }`}>
+                          <td className={`px-4 py-3 text-sm font-medium ${
+                            isDarkMode ? 'text-gray-200' : 'text-gray-900'
+                          }`}>
+                            <i className={`fas fa-hourglass-start mr-1 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}></i>
                             {routine.time}
-                          </td>
-                          <td className="px-4 py-3 text-sm text-gray-700">
+                           </td>
+                          <td className={`px-4 py-3 text-sm ${
+                            isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                          }`}>
                             <span className="font-mono">{routine.courseCode}</span>
-                          </td>
-                          <td className="px-4 py-3 text-sm text-gray-700">{routine.courseName}</td>
-                          <td className="px-4 py-3 text-sm text-gray-700">
-                            <i className="fas fa-user text-gray-400 mr-1"></i>
+                           </td>
+                          <td className={`px-4 py-3 text-sm ${
+                            isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                          }`}>{routine.courseName}</td>
+                          <td className={`px-4 py-3 text-sm ${
+                            isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                          }`}>
+                            <i className={`fas fa-user mr-1 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}></i>
                             {routine.teacher}
-                          </td>
-                          <td className="px-4 py-3 text-sm text-gray-700">
-                            <i className="fas fa-door-open text-gray-400 mr-1"></i>
+                           </td>
+                          <td className={`px-4 py-3 text-sm ${
+                            isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                          }`}>
+                            <i className={`fas fa-door-open mr-1 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}></i>
                             {routine.room}
-                          </td>
+                           </td>
                           {(selectedDept === 'all' || selectedSection === 'all' || selectedTeacher !== 'all') && (
-                            <td className="px-4 py-3 text-sm text-gray-700">{routine.department}</td>
+                            <td className={`px-4 py-3 text-sm ${
+                              isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                            }`}>{routine.department}</td>
                           )}
                           {(selectedDept === 'all' || selectedSection === 'all' || selectedTeacher !== 'all') && (
-                            <td className="px-4 py-3 text-sm text-gray-700">{routine.section}</td>
+                            <td className={`px-4 py-3 text-sm ${
+                              isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                            }`}>{routine.section}</td>
                           )}
                         </tr>
                       ))}
@@ -722,7 +832,9 @@ const RoutineViewer = () => {
                   </table>
                 </div>
                 {(!groups[day] || groups[day].length === 0) && (
-                  <div className="text-center py-8 text-gray-500">
+                  <div className={`text-center py-8 transition-colors duration-200 ${
+                    isDarkMode ? 'text-gray-500' : 'text-gray-500'
+                  }`}>
                     <i className="fas fa-hourglass-half mr-2"></i>No classes scheduled
                   </div>
                 )}
@@ -733,8 +845,12 @@ const RoutineViewer = () => {
 
         {/* Day View */}
         {viewType === 'day' && filteredRoutines.length > 0 && (
-          <div className="bg-white rounded-lg shadow-md">
-            <div className="bg-gradient-to-r from-blue-800 to-blue-700 px-5 py-3 flex flex-wrap items-center justify-between">
+          <div className={`rounded-lg shadow-md transition-colors duration-200 ${
+            isDarkMode ? 'bg-gray-800' : 'bg-white'
+          }`}>
+            <div className={`px-5 py-3 flex flex-wrap items-center justify-between transition-colors duration-200 ${
+              isDarkMode ? 'bg-gradient-to-r from-gray-700 to-gray-800' : 'bg-gradient-to-r from-blue-800 to-blue-700'
+            }`}>
               <div>
                 <h2 className="text-white font-bold text-lg">
                   <i className="fas fa-calendar-day mr-2"></i>Class Schedule
@@ -746,7 +862,9 @@ const RoutineViewer = () => {
               <select
                 value={selectedDay}
                 onChange={(e) => setSelectedDay(e.target.value)}
-                className="bg-white text-gray-800 rounded-lg px-3 py-1 text-sm font-medium focus:outline-none"
+                className={`rounded-lg px-3 py-1 text-sm font-medium focus:outline-none transition-colors duration-200 ${
+                  isDarkMode ? 'bg-gray-700 text-gray-200' : 'bg-white text-gray-800'
+                }`}
               >
                 {availableDays.map(day => (
                   <option key={day} value={day}>{day}</option>
@@ -755,47 +873,79 @@ const RoutineViewer = () => {
             </div>
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50">
+                <thead className={isDarkMode ? 'bg-gray-700' : 'bg-gray-50'}>
                   <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    <th className={`px-4 py-3 text-left text-xs font-medium uppercase ${
+                      isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                    }`}>
                       <i className="fas fa-clock mr-1"></i>Time
                     </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Course Code</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Course Name</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Teacher</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Room</th>
+                    <th className={`px-4 py-3 text-left text-xs font-medium uppercase ${
+                      isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                    }`}>Course Code</th>
+                    <th className={`px-4 py-3 text-left text-xs font-medium uppercase ${
+                      isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                    }`}>Course Name</th>
+                    <th className={`px-4 py-3 text-left text-xs font-medium uppercase ${
+                      isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                    }`}>Teacher</th>
+                    <th className={`px-4 py-3 text-left text-xs font-medium uppercase ${
+                      isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                    }`}>Room</th>
                     {(selectedDept === 'all' || selectedSection === 'all' || selectedTeacher !== 'all') && (
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Department</th>
+                      <th className={`px-4 py-3 text-left text-xs font-medium uppercase ${
+                        isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                      }`}>Department</th>
                     )}
                     {(selectedDept === 'all' || selectedSection === 'all' || selectedTeacher !== 'all') && (
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Section</th>
+                      <th className={`px-4 py-3 text-left text-xs font-medium uppercase ${
+                        isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                      }`}>Section</th>
                     )}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
+                <tbody className={`divide-y transition-colors duration-200 ${
+                  isDarkMode ? 'divide-gray-700' : 'divide-gray-200'
+                }`}>
                   {dayRoutines.map((routine, idx) => (
-                    <tr key={idx} className="hover:bg-gray-50 transition">
-                      <td className="px-4 py-3 text-sm text-gray-900 font-medium">
-                        <i className="fas fa-hourglass-start text-gray-400 mr-1"></i>
+                    <tr key={idx} className={`transition-colors ${
+                      isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-50'
+                    }`}>
+                      <td className={`px-4 py-3 text-sm font-medium ${
+                        isDarkMode ? 'text-gray-200' : 'text-gray-900'
+                      }`}>
+                        <i className={`fas fa-hourglass-start mr-1 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}></i>
                         {routine.time}
-                      </td>
-                      <td className="px-4 py-3 text-sm text-gray-700">
+                       </td>
+                      <td className={`px-4 py-3 text-sm ${
+                        isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                      }`}>
                         <span className="font-mono">{routine.courseCode}</span>
-                      </td>
-                      <td className="px-4 py-3 text-sm text-gray-700">{routine.courseName}</td>
-                      <td className="px-4 py-3 text-sm text-gray-700">
-                        <i className="fas fa-user text-gray-400 mr-1"></i>
+                       </td>
+                      <td className={`px-4 py-3 text-sm ${
+                        isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                      }`}>{routine.courseName}</td>
+                      <td className={`px-4 py-3 text-sm ${
+                        isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                      }`}>
+                        <i className={`fas fa-user mr-1 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}></i>
                         {routine.teacher}
-                      </td>
-                      <td className="px-4 py-3 text-sm text-gray-700">
-                        <i className="fas fa-door-open text-gray-400 mr-1"></i>
+                       </td>
+                      <td className={`px-4 py-3 text-sm ${
+                        isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                      }`}>
+                        <i className={`fas fa-door-open mr-1 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}></i>
                         {routine.room}
-                      </td>
+                       </td>
                       {(selectedDept === 'all' || selectedSection === 'all' || selectedTeacher !== 'all') && (
-                        <td className="px-4 py-3 text-sm text-gray-700">{routine.department}</td>
+                        <td className={`px-4 py-3 text-sm ${
+                          isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                        }`}>{routine.department}</td>
                       )}
                       {(selectedDept === 'all' || selectedSection === 'all' || selectedTeacher !== 'all') && (
-                        <td className="px-4 py-3 text-sm text-gray-700">{routine.section}</td>
+                        <td className={`px-4 py-3 text-sm ${
+                          isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                        }`}>{routine.section}</td>
                       )}
                     </tr>
                   ))}
@@ -803,7 +953,9 @@ const RoutineViewer = () => {
               </table>
             </div>
             {dayRoutines.length === 0 && (
-              <div className="text-center py-12 text-gray-500">
+              <div className={`text-center py-12 transition-colors duration-200 ${
+                isDarkMode ? 'text-gray-500' : 'text-gray-500'
+              }`}>
                 <i className="fas fa-clock text-3xl mb-2 block"></i>
                 <p>No classes scheduled for {selectedDay}</p>
               </div>
@@ -813,17 +965,23 @@ const RoutineViewer = () => {
 
         {/* Stats */}
         {filteredRoutines.length > 0 && (
-          <div className="mt-6 bg-white rounded-lg shadow-md p-4">
+          <div className={`mt-6 rounded-lg shadow-md p-4 transition-colors duration-200 ${
+            isDarkMode ? 'bg-gray-800' : 'bg-white'
+          }`}>
             <div className="flex justify-between items-center text-sm flex-wrap gap-2">
-              <div className="text-gray-600">
+              <div className={`transition-colors duration-200 ${
+                isDarkMode ? 'text-gray-400' : 'text-gray-600'
+              }`}>
                 <i className="fas fa-chalkboard-teacher mr-1 text-blue-600"></i>
-                Total Classes: <span className="font-bold text-blue-900">{filteredRoutines.length}</span>
+                Total Classes: <span className={`font-bold ${isDarkMode ? 'text-blue-400' : 'text-blue-900'}`}>{filteredRoutines.length}</span>
               </div>
-              <div className="text-gray-600">
+              <div className={`transition-colors duration-200 ${
+                isDarkMode ? 'text-gray-400' : 'text-gray-600'
+              }`}>
                 {selectedTeacher !== 'all' ? (
                   <>
                     <i className="fas fa-user-graduate mr-1 text-purple-600"></i>
-                    Teacher: <span className="font-bold text-purple-900">{selectedTeacher}</span>
+                    Teacher: <span className={`font-bold ${isDarkMode ? 'text-purple-400' : 'text-purple-900'}`}>{selectedTeacher}</span>
                   </>
                 ) : (
                   <>
@@ -833,11 +991,15 @@ const RoutineViewer = () => {
                   </>
                 )}
               </div>
-              <div className="text-gray-600">
+              <div className={`transition-colors duration-200 ${
+                isDarkMode ? 'text-gray-400' : 'text-gray-600'
+              }`}>
                 <i className="fas fa-calendar-week mr-1 text-purple-600"></i>
                 {Object.keys(groups).length} Active Days
               </div>
-              <div className="text-gray-600">
+              <div className={`transition-colors duration-200 ${
+                isDarkMode ? 'text-gray-400' : 'text-gray-600'
+              }`}>
                 <i className="fas fa-sort-amount-up mr-1 text-green-600"></i>
                 Sorted by time
               </div>
@@ -847,17 +1009,21 @@ const RoutineViewer = () => {
 
         {/* Empty State Message */}
         {filteredRoutines.length === 0 && (
-          <div className="bg-white rounded-lg shadow-md p-12 text-center">
-            <i className="fas fa-search text-gray-400 text-5xl mb-4"></i>
-            <h3 className="text-xl font-semibold text-gray-700 mb-2">No Classes Found</h3>
-            <p className="text-gray-500">
+          <div className={`rounded-lg shadow-md p-12 text-center transition-colors duration-200 ${
+            isDarkMode ? 'bg-gray-800' : 'bg-white'
+          }`}>
+            <i className={`fas fa-search text-5xl mb-4 ${isDarkMode ? 'text-gray-600' : 'text-gray-400'}`}></i>
+            <h3 className={`text-xl font-semibold mb-2 ${isDarkMode ? 'text-gray-200' : 'text-gray-700'}`}>No Classes Found</h3>
+            <p className={`transition-colors duration-200 ${
+              isDarkMode ? 'text-gray-400' : 'text-gray-500'
+            }`}>
               {selectedTeacher !== 'all' 
                 ? `No classes found for teacher: ${selectedTeacher}`
                 : 'No classes match your selected filters. Try adjusting your search criteria.'}
             </p>
             <button
               onClick={resetFilters}
-              className="mt-4 bg-blue-900 hover:bg-blue-800 text-white font-semibold py-2 px-6 rounded-lg transition"
+              className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition"
             >
               <i className="fas fa-sync-alt mr-2"></i>Reset Filters
             </button>

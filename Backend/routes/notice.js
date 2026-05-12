@@ -190,103 +190,50 @@ router.post("/add-notice", async (req, res) => {
 });
 
 
-// POST add notice for staff
-router.post("/add-noticestaff",  async (req, res) => {
+// Backend route - make sure it returns whether user liked or unliked
+router.post("/notice/:id/like", async (req, res) => {
   try {
-    console.log("📝 Adding staff notice:", req.body.title);
-    console.log("🎯 Received audience:", req.body.audience);
+    const { userId } = req.body;
+    const noticeId = req.params.id;
     
-    // Handle audience - ensure it's an array
-    let audienceArray = req.body.audience;
-    if (typeof audienceArray === 'string') {
-      audienceArray = [audienceArray];
-    }
-    if (!audienceArray || audienceArray.length === 0) {
-      audienceArray = ["all"];
+    const notice = await Notice.findById(noticeId);
+    if (!notice) {
+      return res.status(404).json({ message: "Notice not found" });
     }
     
-    const noticeData = {
-      title: req.body.title,
-      description: req.body.description,
-      category: req.body.category,
-      audience: audienceArray,
-      department: req.body.department,
-      section: req.body.section,
-      priority: req.body.priority,
-      isPinned: req.body.isPinned || false,
-      expiryDate: req.body.expiryDate,
-      createdBy: req.body.createdBy,
-      role: req.body.role,
-    };
-    // if (req.file) {
-    //   noticeData.attachment = {
-    //     filename: req.file.filename,
-    //     originalName: req.file.originalname,
-    //     path: `/uploads/${req.file.filename}`,
-    //     size: req.file.size,
-    //     mimetype: req.file.mimetype,
-    //   };
-    // }
-    const newNotice = new Notice(noticeData);
-    await newNotice.save();
-    console.log("✅ Staff notice saved, ID:", newNotice._id);
-
-    // Get recipients based on multiple audiences
-    const recipients = await getRecipientsByAudience(audienceArray);
-    
-    // Send email notifications
-    let emailCount = 0;
-    if (recipients.length > 0) {
-      const emailResult = await sendEmailNotifications(recipients, newNotice, "Staff");
-      emailCount = emailResult.count;
+    if (!notice.likes) {
+      notice.likes = [];
     }
-
-    // Save notification for EACH audience type
-    for (const singleAudience of audienceArray) {
-      const notification = new Notification({
-        noticeId: newNotice._id,
-        title: newNotice.title,
-        message: `Staff notice: ${newNotice.title}`,
-        type: "staff-notice",
-        audience: singleAudience,
-        createdBy: newNotice.createdBy,
-        role: newNotice.role,
-        read: false,
-        createdAt: new Date()
+    
+    const userIdStr = userId.toString();
+    const alreadyLiked = notice.likes.some(id => id.toString() === userIdStr);
+    
+    if (alreadyLiked) {
+      // Unlike
+      notice.likes = notice.likes.filter(id => id.toString() !== userIdStr);
+      await notice.save();
+      return res.json({ 
+        success: true, 
+        message: "Unliked successfully",
+        liked: false,
+        likesCount: notice.likes.length 
       });
-      
-      await notification.save();
-      console.log(`✅ Staff notification saved for audience: ${singleAudience}`);
-    }
-    
-    // Emit socket event
-    const io = req.app.get("io");
-    if (io) {
-      io.emit("newNotice", {
-        id: newNotice._id,
-        noticeId: newNotice._id,
-        title: newNotice.title,
-        message: `Staff notice: ${newNotice.title}`,
-        time: new Date(),
-        type: "staff-notice",
-        audiences: audienceArray,
-        createdBy: newNotice.createdBy,
-        role: newNotice.role
+    } else {
+      // Like
+      notice.likes.push(userId);
+      await notice.save();
+      return res.json({ 
+        success: true, 
+        message: "Liked successfully",
+        liked: true,
+        likesCount: notice.likes.length 
       });
-      console.log(`📡 Socket event emitted for staff notice to audiences: ${audienceArray.join(", ")}`);
     }
-
-    res.status(201).json({ 
-      success: true, 
-      notice: newNotice,
-      emailsSent: emailCount
-    });
   } catch (err) {
-    console.error("❌ Error in /add-noticestaff:", err);
-    res.status(500).json({ message: "Server error" });
+    console.error("Error in like notice:", err);
+    res.status(500).json({ message: err.message });
   }
 });
-
 // GET dashboard stats
 router.get("/dashboard-stats", async (req, res) => {
   try {
@@ -300,8 +247,212 @@ router.get("/dashboard-stats", async (req, res) => {
   }
 });
 
-// POST endpoint to get recipients by audience
-// POST endpoint to get recipients by audience
+// In your backend routes file
+
+// LIKE a notice (toggle like) - Modified to handle string IDs
+router.post("/notice/:id/like", async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const noticeId = req.params.id;
+    
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+    
+    // Try to find by ObjectId first, if invalid format, try to find by custom ID
+    let notice;
+    if (mongoose.Types.ObjectId.isValid(noticeId)) {
+      notice = await Notice.findById(noticeId);
+    }
+    
+    // If not found by ObjectId, try to find by a custom field (if you have one)
+    if (!notice) {
+      // If you're using custom IDs, try to find by a different field
+      notice = await Notice.findOne({ _id: noticeId });
+      
+      // If still not found, return error
+      if (!notice) {
+        return res.status(404).json({ message: `Notice not found with ID: ${noticeId}` });
+      }
+    }
+    
+    // Convert IDs to strings for comparison
+    const userIdStr = userId.toString();
+    
+    // Check if user already liked
+    const alreadyLiked = notice.likes && notice.likes.some(likeId => 
+      likeId.toString() === userIdStr
+    );
+    
+    if (alreadyLiked) {
+      // Unlike: remove user from likes array
+      notice.likes = notice.likes.filter(likeId => likeId.toString() !== userIdStr);
+      await notice.save();
+      return res.json({ 
+        success: true, 
+        message: "Notice unliked",
+        likesCount: notice.likes.length 
+      });
+    } else {
+      // Like: add user to likes array
+      if (!notice.likes) notice.likes = [];
+      notice.likes.push(userId);
+      await notice.save();
+      return res.json({ 
+        success: true, 
+        message: "Notice liked",
+        likesCount: notice.likes.length 
+      });
+    }
+  } catch (err) {
+    console.error("Error in like notice:", err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// ADD COMMENT - Modified to handle string IDs
+router.post("/notice/:id/comment", async (req, res) => {
+  try {
+    const noticeId = req.params.id;
+    const { text, userId, userName, userEmail } = req.body;
+    
+    if (!text || !userId) {
+      return res.status(400).json({ message: "Text and userId are required" });
+    }
+    
+    // Find by ObjectId or custom ID
+    let notice;
+    if (mongoose.Types.ObjectId.isValid(noticeId)) {
+      notice = await Notice.findById(noticeId);
+    }
+    
+    if (!notice) {
+      notice = await Notice.findOne({ _id: noticeId });
+      if (!notice) {
+        return res.status(404).json({ message: `Notice not found with ID: ${noticeId}` });
+      }
+    }
+    
+    const newComment = {
+      _id: new mongoose.Types.ObjectId(),
+      text,
+      userId: userId.toString(), // Store as string
+      userName: userName || "Anonymous",
+      userEmail: userEmail || "",
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    
+    if (!notice.comments) notice.comments = [];
+    notice.comments.push(newComment);
+    await notice.save();
+    
+    res.json({ 
+      success: true, 
+      message: "Comment added successfully",
+      comment: newComment,
+      commentsCount: notice.comments.length
+    });
+  } catch (err) {
+    console.error("Error adding comment:", err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// EDIT COMMENT - Modified
+router.put("/notice/:noticeId/comment/:commentId", async (req, res) => {
+  try {
+    const { noticeId, commentId } = req.params;
+    const { text, userId } = req.body;
+    
+    if (!text || !userId) {
+      return res.status(400).json({ message: "Text and userId are required" });
+    }
+    
+    let notice;
+    if (mongoose.Types.ObjectId.isValid(noticeId)) {
+      notice = await Notice.findById(noticeId);
+    }
+    
+    if (!notice) {
+      notice = await Notice.findOne({ _id: noticeId });
+      if (!notice) {
+        return res.status(404).json({ message: "Notice not found" });
+      }
+    }
+    
+    const comment = notice.comments.id(commentId);
+    if (!comment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+    
+    // Check if user owns the comment
+    if (comment.userId.toString() !== userId.toString()) {
+      return res.status(403).json({ message: "You can only edit your own comments" });
+    }
+    
+    comment.text = text;
+    comment.updatedAt = new Date();
+    await notice.save();
+    
+    res.json({ 
+      success: true, 
+      message: "Comment updated successfully",
+      comment
+    });
+  } catch (err) {
+    console.error("Error editing comment:", err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// DELETE COMMENT - Modified
+router.delete("/notice/:noticeId/comment/:commentId", async (req, res) => {
+  try {
+    const { noticeId, commentId } = req.params;
+    const { userId } = req.body;
+    
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+    
+    let notice;
+    if (mongoose.Types.ObjectId.isValid(noticeId)) {
+      notice = await Notice.findById(noticeId);
+    }
+    
+    if (!notice) {
+      notice = await Notice.findOne({ _id: noticeId });
+      if (!notice) {
+        return res.status(404).json({ message: "Notice not found" });
+      }
+    }
+    
+    const comment = notice.comments.id(commentId);
+    if (!comment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+    
+    // Check if user owns the comment OR is admin
+    const user = await User.findById(userId);
+    const isAdmin = user && user.role === "admin";
+    
+    if (comment.userId.toString() !== userId.toString() && !isAdmin) {
+      return res.status(403).json({ message: "You can only delete your own comments" });
+    }
+    
+    notice.comments.pull(commentId);
+    await notice.save();
+    
+    res.json({ 
+      success: true, 
+      message: "Comment deleted successfully"
+    });
+  } catch (err) {
+    console.error("Error deleting comment:", err);
+    res.status(500).json({ message: err.message });
+  }
+});
 router.post("/recipients", async (req, res) => {
   try {
     const { audiences } = req.body;

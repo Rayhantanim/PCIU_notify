@@ -117,7 +117,7 @@ const StudentOverview = () => {
     try {
       setLoadingNotices(true);
       setNoticeError(null);
-      const data = await noticeService.getNotices();
+      const data = await noticeService?.getNotices();
       if (!Array.isArray(data)) { setNoticeError('Invalid data format'); setLoadingNotices(false); return; }
 
       let transformedNotices = data.map(notice => {

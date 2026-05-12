@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import logo from '../../assets/pciulogo.png'
+import { useTheme } from '../../Context/ThemeContext'
 
 const DashboardMenu = () => {
   const [role, setRole] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
+  const { isDarkMode } = useTheme();
 
   useEffect(() => {
     const userRole = localStorage.getItem("role");
@@ -40,11 +42,13 @@ const DashboardMenu = () => {
   };
 
   // Common class for menu items
-  const menuItemClass = "flex justify-start items-center gap-4 py-3 px-6 rounded-xl m-3 cursor-pointer transition-all duration-200 hover:bg-blue-50 hover:shadow-md";
+  const menuItemClass = "flex justify-start items-center gap-4 py-3 px-6 rounded-xl m-3 cursor-pointer transition-all duration-200";
   
   // Active class for NavLink
-const activeClass = "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-md";
-const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors";
+  const activeClass = "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-md";
+  const inactiveClass = (isDarkMode) => 
+    `text-gray-600 hover:text-blue-400 hover:bg-gray-800/50 transition-colors`;
+  
   // Render menu items based on role
   const renderMenuItems = () => {
     // Admin Menu
@@ -54,7 +58,7 @@ const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transi
           <NavLink 
             to='/dashboard/adminoverview' 
             className={({ isActive }) => 
-              `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+              `${menuItemClass} ${isActive ? activeClass : inactiveClass(isDarkMode)}`
             }
           >
             <div className='flex justify-start items-center gap-4 w-full'>     
@@ -66,7 +70,7 @@ const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transi
           <NavLink 
             to="/dashboard/usermanagement"
             className={({ isActive }) => 
-              `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+              `${menuItemClass} ${isActive ? activeClass : inactiveClass(isDarkMode)}`
             }
           >
             <div className='flex justify-start items-center gap-4 w-full'>     
@@ -78,7 +82,7 @@ const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transi
           <NavLink 
             to="/dashboard/noticemanagement"
             className={({ isActive }) => 
-              `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+              `${menuItemClass} ${isActive ? activeClass : inactiveClass(isDarkMode)}`
             }
           >
             <div className='flex justify-start items-center gap-4 w-full'>     
@@ -90,7 +94,7 @@ const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transi
           <NavLink 
             to="/dashboard/departmentmanagement"
             className={({ isActive }) => 
-              `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+              `${menuItemClass} ${isActive ? activeClass : inactiveClass(isDarkMode)}`
             }
           >
             <div className='flex justify-start items-center gap-4 w-full'>     
@@ -102,7 +106,7 @@ const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transi
           <NavLink 
             to="/dashboard/allteacher"
             className={({ isActive }) => 
-              `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+              `${menuItemClass} ${isActive ? activeClass : inactiveClass(isDarkMode)}`
             }
           >
             <div className='flex justify-start items-center gap-4 w-full'>     
@@ -110,28 +114,17 @@ const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transi
               <h1 className='text-base font-medium'>Teacher</h1>
             </div>
           </NavLink>
-{/* 
-          <NavLink 
-            to=""
-            className={({ isActive }) => 
-              `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
-            }
-          >
-            <div className='flex justify-start items-center gap-4 w-full'>     
-              <img className='w-6 h-6' src="https://cdn-icons-png.flaticon.com/512/3524/3524659.png" alt="" />
-              <h1 className='text-base font-medium'>Settings</h1>
-            </div>
-          </NavLink> */}
         </div>
       );
     }
+    
     if (role === "student") {
       return (
         <div className="space-y-1">
           <NavLink 
             to='/dashboard/overview' 
             className={({ isActive }) => 
-              `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+              `${menuItemClass} ${isActive ? activeClass : inactiveClass(isDarkMode)}`
             }
           >
             <div className='flex justify-start items-center gap-4 w-full'>     
@@ -143,7 +136,7 @@ const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transi
           <NavLink 
             to="/dashboard/allnotices"
             className={({ isActive }) => 
-              `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+              `${menuItemClass} ${isActive ? activeClass : inactiveClass(isDarkMode)}`
             }
           >
             <div className='flex justify-start items-center gap-4 w-full'>     
@@ -155,7 +148,7 @@ const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transi
           <NavLink 
             to="/dashboard/impnotices"
             className={({ isActive }) => 
-              `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+              `${menuItemClass} ${isActive ? activeClass : inactiveClass(isDarkMode)}`
             }
           >
             <div className='flex justify-start items-center gap-4 w-full'>     
@@ -167,7 +160,7 @@ const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transi
           <NavLink 
             to="/dashboard/allstudent"
             className={({ isActive }) => 
-              `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+              `${menuItemClass} ${isActive ? activeClass : inactiveClass(isDarkMode)}`
             }
           >
             <div className='flex justify-start items-center gap-4 w-full'>     
@@ -179,7 +172,7 @@ const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transi
           <NavLink 
             to="/dashboard/allteacher"
             className={({ isActive }) => 
-              `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+              `${menuItemClass} ${isActive ? activeClass : inactiveClass(isDarkMode)}`
             }
           >
             <div className='flex justify-start items-center gap-4 w-full'>     
@@ -191,7 +184,7 @@ const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transi
           <NavLink 
             to="/dashboard/settings"
             className={({ isActive }) => 
-              `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+              `${menuItemClass} ${isActive ? activeClass : inactiveClass(isDarkMode)}`
             }
           >
             <div className='flex justify-start items-center gap-4 w-full'>     
@@ -210,7 +203,7 @@ const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transi
           <NavLink 
             to='/dashboard/dashboardindex' 
             className={({ isActive }) => 
-              `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+              `${menuItemClass} ${isActive ? activeClass : inactiveClass(isDarkMode)}`
             }
           >
             <div className='flex justify-start items-center gap-4 w-full'>     
@@ -222,7 +215,7 @@ const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transi
           <NavLink 
             to="/dashboard/allnotices"
             className={({ isActive }) => 
-              `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+              `${menuItemClass} ${isActive ? activeClass : inactiveClass(isDarkMode)}`
             }
           >
             <div className='flex justify-start items-center gap-4 w-full'>     
@@ -234,7 +227,7 @@ const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transi
           <NavLink 
             to="/dashboard/impnotices"
             className={({ isActive }) => 
-              `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+              `${menuItemClass} ${isActive ? activeClass : inactiveClass(isDarkMode)}`
             }
           >
             <div className='flex justify-start items-center gap-4 w-full'>     
@@ -246,7 +239,7 @@ const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transi
           <NavLink 
             to="/dashboard/department"
             className={({ isActive }) => 
-              `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+              `${menuItemClass} ${isActive ? activeClass : inactiveClass(isDarkMode)}`
             }
           >
             <div className='flex justify-start items-center gap-4 w-full'>     
@@ -258,7 +251,7 @@ const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transi
           <NavLink 
             to="/dashboard/routine"
             className={({ isActive }) => 
-              `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+              `${menuItemClass} ${isActive ? activeClass : inactiveClass(isDarkMode)}`
             }
           >
             <div className='flex justify-start items-center gap-4 w-full'>     
@@ -270,7 +263,7 @@ const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transi
           <NavLink 
             to="/profile"
             className={({ isActive }) => 
-              `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+              `${menuItemClass} ${isActive ? activeClass : inactiveClass(isDarkMode)}`
             }
           >
             <div className='flex justify-start items-center gap-4 w-full'>     
@@ -289,7 +282,7 @@ const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transi
           <NavLink 
             to='/dashboard/view' 
             className={({ isActive }) => 
-              `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+              `${menuItemClass} ${isActive ? activeClass : inactiveClass(isDarkMode)}`
             }
           >
             <div className='flex justify-start items-center gap-4 w-full'>     
@@ -301,7 +294,7 @@ const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transi
           <NavLink 
             to="/dashboard/staffnotice"
             className={({ isActive }) => 
-              `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+              `${menuItemClass} ${isActive ? activeClass : inactiveClass(isDarkMode)}`
             }
           >
             <div className='flex justify-start items-center gap-4 w-full'>     
@@ -313,7 +306,7 @@ const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transi
           <NavLink 
             to="/dashboard/allstudent"
             className={({ isActive }) => 
-              `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+              `${menuItemClass} ${isActive ? activeClass : inactiveClass(isDarkMode)}`
             }
           >
             <div className='flex justify-start items-center gap-4 w-full'>     
@@ -325,7 +318,7 @@ const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transi
           <NavLink 
             to="/dashboard/allteacher"
             className={({ isActive }) => 
-              `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+              `${menuItemClass} ${isActive ? activeClass : inactiveClass(isDarkMode)}`
             }
           >
             <div className='flex justify-start items-center gap-4 w-full'>     
@@ -337,7 +330,7 @@ const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transi
           <NavLink 
             to="/dashboard/allstaff"
             className={({ isActive }) => 
-              `${menuItemClass} ${isActive ? activeClass : inactiveClass}`
+              `${menuItemClass} ${isActive ? activeClass : inactiveClass(isDarkMode)}`
             }
           >
             <div className='flex justify-start items-center gap-4 w-full'>     
@@ -351,7 +344,7 @@ const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transi
 
     // Default loading state or no role
     return (
-      <div className='text-center text-gray-500 mt-10'>
+      <div className={`text-center mt-10 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
         Loading menu...
       </div>
     );
@@ -362,17 +355,21 @@ const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transi
       {/* Toggle button */}
       <button 
         onClick={toggleSidebar}
-        className={`fixed top-5 z-50 p-2.5 rounded-xl bg-white shadow-lg hover:bg-gray-100 transition-all duration-300 hover:shadow-xl ${
+        className={`fixed top-5 z-50 p-2.5 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl ${
           isSidebarOpen ? 'left-[320px]' : 'left-4'
+        } ${
+          isDarkMode 
+            ? 'bg-gray-800 hover:bg-gray-700 text-gray-200' 
+            : 'bg-white hover:bg-gray-100 text-gray-700'
         }`}
         aria-label={isSidebarOpen ? 'Close menu' : 'Open menu'}
       >
         {isSidebarOpen ? (
-          <svg className="w-5 h-5 text-gray-700" fill="currentColor" viewBox="0 0 20 20">
+          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
           </svg>
         ) : (
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 50 50" className="text-gray-700">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 50 50" fill="currentColor">
             <path d="M 5 8 A 2.0002 2.0002 0 1 0 5 12 L 45 12 A 2.0002 2.0002 0 1 0 45 8 L 5 8 z M 5 23 A 2.0002 2.0002 0 1 0 5 27 L 45 27 A 2.0002 2.0002 0 1 0 45 23 L 5 23 z M 5 38 A 2.0002 2.0002 0 1 0 5 42 L 45 42 A 2.0002 2.0002 0 1 0 45 38 L 5 38 z"></path>
           </svg>
         )}
@@ -385,43 +382,55 @@ const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transi
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div className='h-full text-black'>
-          <div className='w-[280px] md:w-[300px] h-full bg-white border-r border-slate-200 shadow-sm flex flex-col relative z-10'>
-  {/* Header */}
-  <div className='flex justify-start gap-3 items-center p-6 border-b border-slate-200'>
-    <img 
-      className='w-10 h-10 object-contain rounded-lg' 
-      src={logo} 
-      alt="PCIU Logo" 
-      onError={(e) => {
-        e.target.onerror = null;
-        e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHJ4PSI4IiBmaWxsPSIjM0I4MkY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjAiIGZvbnQtd2VpZ2h0PSJib2xkIj5QPC90ZXh0Pjwvc3ZnPg==';
-      }}
-    />
-    <h1 className='text-lg font-bold bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent'>
-      PCIU NOTIFY
-    </h1>
-  </div>
+        <div className='h-full'>
+          <div className={`w-[280px] md:w-[300px] h-full flex flex-col relative z-10 transition-colors duration-200 ${
+            isDarkMode 
+              ? 'bg-gray-900 border-r border-gray-800' 
+              : 'bg-white border-r border-slate-200'
+          }`}>
+            {/* Header */}
+            <div className={`flex justify-start gap-3 items-center p-6 border-b transition-colors duration-200 ${
+              isDarkMode ? 'border-gray-800' : 'border-slate-200'
+            }`}>
+              <img 
+                className='w-10 h-10 object-contain rounded-lg' 
+                src={logo} 
+                alt="PCIU Logo" 
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHJ4PSI4IiBmaWxsPSIjM0I4MkY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjAiIGZvbnQtd2VpZ2h0PSJib2xkIj5QPC90ZXh0Pjwvc3ZnPg==';
+                }}
+              />
+              <h1 className='text-lg font-bold bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent'>
+                PCIU NOTIFY
+              </h1>
+            </div>
 
-  {/* Menu Items - Scrollable */}
-  <div className='flex-1 overflow-y-auto custom-scrollbar py-4'>
-    {renderMenuItems()}
-  </div>
+            {/* Menu Items - Scrollable */}
+            <div className='flex-1 overflow-y-auto custom-scrollbar py-4'>
+              {renderMenuItems()}
+            </div>
 
-  {/* Footer */}
-  <div className='p-4 border-t border-slate-200'>
-    <div className='text-xs text-slate-400 text-center'>
-      © 2026 PCIU NOTIFY
-    </div>
-  </div>
-</div>
+            {/* Footer */}
+            <div className={`p-4 border-t transition-colors duration-200 ${
+              isDarkMode ? 'border-gray-800' : 'border-slate-200'
+            }`}>
+              <div className={`text-xs text-center transition-colors duration-200 ${
+                isDarkMode ? 'text-gray-500' : 'text-slate-400'
+              }`}>
+                © 2026 PCIU NOTIFY
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Overlay for mobile */}
       {isSidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden backdrop-blur-sm transition-all duration-300"
+          className={`fixed inset-0 z-30 md:hidden backdrop-blur-sm transition-all duration-300 ${
+            isDarkMode ? 'bg-black bg-opacity-70' : 'bg-black bg-opacity-50'
+          }`}
           onClick={toggleSidebar}
         />
       )}
@@ -429,7 +438,7 @@ const inactiveClass = "text-gray-700 hover:text-blue-600 hover:bg-blue-50 transi
   )
 }
 
-// Add custom scrollbar styles
+// Add custom scrollbar styles with dark mode support
 const styles = `
   .custom-scrollbar::-webkit-scrollbar {
     width: 6px;
@@ -447,6 +456,19 @@ const styles = `
   
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #555;
+  }
+  
+  /* Dark mode scrollbar */
+  .dark .custom-scrollbar::-webkit-scrollbar-track {
+    background: #1f2937;
+  }
+  
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #4b5563;
+  }
+  
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
   }
 `;
 

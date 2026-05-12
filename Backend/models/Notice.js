@@ -17,11 +17,28 @@ const NoticeSchema = new mongoose.Schema({
     size: Number,
     mimetype: String,
   },
+
+  likes: [{
+     type: String,
+    ref: 'User'
+  }],
+  
+   comments: [{
+    _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
+    text: { type: String, required: true },
+    userId: { type: String, required: true }, // Change to String
+    userName: { type: String },
+    userEmail: { type: String },
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date }
+  }],
+  
   createdBy: { type: String, required: true },
   createdByRole: { type: String },
   role: { type: String },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
-});
+  
+}, { timestamps: true });
 
 module.exports = mongoose.model("Notice", NoticeSchema);
