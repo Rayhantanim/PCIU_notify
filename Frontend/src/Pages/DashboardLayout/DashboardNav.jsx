@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import SimpleBadge from "../../Components/Notification";
 import RealTimeNotification from "../../Components/RealTimeNotification";
@@ -174,9 +174,11 @@ const DashboardNav = () => {
 
         {/* Center - Logo */}
         <div className="absolute left-1/2 transform -translate-x-1/2">
+          <Link to="/">
           <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             PCIU Notify
           </h1>
+          </Link>
         </div>
 
         {/* Right Section */}

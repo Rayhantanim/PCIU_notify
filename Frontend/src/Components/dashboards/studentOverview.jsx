@@ -88,13 +88,14 @@ const StudentOverview = () => {
   // ================== LOAD CURRENT STUDENT INFO ==================
   useEffect(() => {
     const userData = localStorage.getItem('user');
+   
     if (userData) {
       const user = JSON.parse(userData);
       let section = user.section || 'CSE-31C';
       if (!section.includes('-') && user.department) {
         section = `${user.department}-${section}`;
       }
-      
+        
       setCurrentStudent({
         name: `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email?.split('@')[0] || 'Student',
         rollNo: user.studentId || user.email,
@@ -103,6 +104,7 @@ const StudentOverview = () => {
         email: user.email,
         userId: user.userId || user._id || user.id
       });
+       
     } else {
       setCurrentStudent({
         name: "Test Student",
@@ -114,6 +116,9 @@ const StudentOverview = () => {
       });
     }
   }, []);
+
+  console.log('Current student info:', currentStudent);
+ 
 
   // ================== FETCH NOTICES FROM API ==================
   const fetchNotices = async () => {

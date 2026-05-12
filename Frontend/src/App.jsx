@@ -216,7 +216,7 @@ const App = () => {
           <Route 
             path="allnotices" 
             element={
-              <RoleBasedRoute allowedRoles={["teacher", "staff", "student"]}>
+              <RoleBasedRoute allowedRoles={["teacher", "staff", "student", "admin"]}>
                 <AllNotices />
               </RoleBasedRoute>
             } 
