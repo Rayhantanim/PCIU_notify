@@ -9,7 +9,7 @@ import app from "../Firebase/Firebase.init";
 import useAuth from "../Hooks/useAuth";
 
 export default function RoleSignupForm({ role = "student", goBack }) {
-  const API = "http://localhost:5000";
+  const API = "https://pciunotifybackend.onrender.com";
   const { userRegister, updateUserProfile } = useAuth();
   const navigate = useNavigate();
   const auth = getAuth(app);

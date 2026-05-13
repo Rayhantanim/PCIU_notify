@@ -1,18 +1,73 @@
+// AddNoticeForm.jsx (Button-Only Theme Control)
 import React, { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
-import Swal from 'sweetalert2';
-import emailjs from '@emailjs/browser';
-// Add at the top with other imports
+import Swal from "sweetalert2";
+import emailjs from "@emailjs/browser";
 import TemplateSelector from "../components/TemplateSelector";
 import TemplateFormModal from "../components/TemplateFormModal";
-import { FaFileAlt, FaRegFileAlt } from "react-icons/fa";
+import {
+  FaFileAlt,
+  FaRobot,
+  FaBold,
+  FaItalic,
+  FaUnderline,
+  FaAlignLeft,
+  FaAlignCenter,
+  FaAlignRight,
+  FaAlignJustify,
+  FaListUl,
+  FaListOl,
+  FaLink,
+  FaImage,
+  FaTable,
+  FaEye,
+  FaEdit,
+  FaPaperPlane,
+  FaTimes,
+  FaSun,
+  FaMoon,
+  FaPalette,
+  FaUsers,
+} from "react-icons/fa";
+import { MdCategory, MdPriorityHigh } from "react-icons/md";
 
-// Initialize EmailJS with your Public Key
 emailjs.init("KeX8QThOfya4pR79L");
 
 export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
-  const API = "http://localhost:5000";
+  const MAIN_API = "https://pciunotifybackend.onrender.com";
+  const ML_API = "http://localhost:5000";
+
   const editorRef = useRef(null);
+
+  // Theme state - default to light, only changes when button is clicked
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // Apply theme to document - only when button is clicked
+  const toggleTheme = () => {
+    const newTheme = !isDarkMode;
+    setIsDarkMode(newTheme);
+
+    if (newTheme) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  };
+
+  // Load saved theme preference on mount (but don't auto-apply system preference)
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      setIsDarkMode(true);
+      document.documentElement.classList.add("dark");
+    } else {
+      // Default to light
+      setIsDarkMode(false);
+      document.documentElement.classList.remove("dark");
+    }
+  }, []);
 
   const initialState = {
     title: "",
@@ -34,86 +89,36 @@ export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
   const [previewMode, setPreviewMode] = useState(false);
   const [sendingEmails, setSendingEmails] = useState(false);
   const [charCount, setCharCount] = useState(0);
+  const [wordCount, setWordCount] = useState(0);
   const [currentUser, setCurrentUser] = useState(null);
-  
-  // Template states
+  const [isPredicting, setIsPredicting] = useState(false);
+  const [mlPrediction, setMlPrediction] = useState(null);
+  const [mlApiStatus, setMlApiStatus] = useState("checking");
+  const [autoPredictEnabled, setAutoPredictEnabled] = useState(true);
+  const [predictTimeout, setPredictTimeout] = useState(null);
   const [showTemplateSelector, setShowTemplateSelector] = useState(false);
   const [showTemplateForm, setShowTemplateForm] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
+  const [autoSave, setAutoSave] = useState(false);
+  const [lastSaved, setLastSaved] = useState(null);
 
-  // Get current logged-in user info
+  // Check ML API health
   useEffect(() => {
-    const firstName = localStorage.getItem("firstName") || "";
-    const lastName = localStorage.getItem("lastName") || "";
-    const fullName = localStorage.getItem("fullName") || `${firstName} ${lastName}`.trim();
-    const role = localStorage.getItem("role") || userRole;
-    const userId = localStorage.getItem("userId");
-    
-    setCurrentUser({
-      name: fullName || "Admin",
-      role: role,
-      userId: userId
-    });
-    
-    // Auto-set createdBy for teacher/staff
-    if (role === "teacher" || role === "staff") {
-      setFormData(prev => ({
-        ...prev,
-        createdBy: fullName || `${firstName} ${lastName}`.trim()
-      }));
-    }
-  }, [userRole]);
+    checkMLApiHealth();
+    loadDraft();
+  }, []);
 
-  // Fetch teachers (for admin/staff who need to select publisher)
-  useEffect(() => {
-    const fetchTeachers = async () => {
-      try {
-        const res = await fetch(`${API}/api/teachers`);
-        const data = await res.json();
-        if (data.teachers && Array.isArray(data.teachers)) {
-          setTeachers(data.teachers);
-        } else if (Array.isArray(data)) {
-          setTeachers(data);
-        } else {
-          console.warn("Unexpected API response format:", data);
-          setTeachers([]);
-        }
-      } catch (err) {
-        console.log("Teacher fetch error:", err);
-        setTeachers([]);
+  const checkMLApiHealth = async () => {
+    try {
+      const response = await fetch(`${ML_API}/health`, { method: "GET" });
+      if (response.ok) {
+        setMlApiStatus("online");
+      } else {
+        setMlApiStatus("offline");
       }
-    };
-    
-    // Only fetch teachers if user is not teacher (admin/staff needs to select)
-    const role = localStorage.getItem("role");
-    if (role !== "teacher" && role !== "staff") {
-      fetchTeachers();
+    } catch (error) {
+      setMlApiStatus("offline");
     }
-  }, [API]);
-
-  // Template handlers
-  const handleSelectTemplate = (template) => {
-    setSelectedTemplate(template);
-    setShowTemplateSelector(false);
-    setShowTemplateForm(true);
-  };
-
-  const handleGenerateFromTemplate = (generatedData) => {
-    setFormData(prev => ({
-      ...prev,
-      title: generatedData.title,
-      description: generatedData.content,
-      category: generatedData.category,
-      priority: generatedData.priority
-    }));
-    
-    // Update editor content
-    if (editorRef.current) {
-      editorRef.current.innerHTML = generatedData.content;
-      updateDescription();
-    }
-    
-    toast.success(`Template "${generatedData.title}" loaded successfully!`);
   };
 
   // Rich Text Editor Functions
@@ -121,45 +126,14 @@ export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
     document.execCommand(command, false, value);
     editorRef.current?.focus();
     updateDescription();
-  };
-
-  const updateDescription = () => {
-    if (editorRef.current) {
-      const html = editorRef.current.innerHTML;
-      setFormData(prev => ({
-        ...prev,
-        description: html
-      }));
-      // Count characters (excluding HTML tags)
-      const text = html.replace(/<[^>]*>/g, '');
-      setCharCount(text.length);
-    }
-  };
-
-  const insertTable = () => {
-    const rows = prompt("Number of rows:", "3");
-    const cols = prompt("Number of columns:", "3");
-    if (!rows || !cols) return;
-
-    let tableHTML = '<table class="w-full border-collapse border border-gray-300 my-2"><tbody>';
-    for (let i = 0; i < parseInt(rows); i++) {
-      tableHTML += '<tr>';
-      for (let j = 0; j < parseInt(cols); j++) {
-        tableHTML += '<td class="border border-gray-300 px-3 py-2" style="min-width: 80px;">&nbsp;</td>';
-      }
-      tableHTML += '</tr>';
-    }
-    tableHTML += '</tbody></table>';
-    
-    document.execCommand('insertHTML', false, tableHTML);
-    updateDescription();
-    editorRef.current?.focus();
+    debouncedPrediction();
+    saveDraft();
   };
 
   const insertLink = () => {
     const url = prompt("Enter URL:", "https://");
     if (url) {
-      document.execCommand('createLink', false, url);
+      document.execCommand("createLink", false, url);
       updateDescription();
       editorRef.current?.focus();
     }
@@ -168,643 +142,896 @@ export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
   const insertImage = () => {
     const url = prompt("Enter image URL:", "https://");
     if (url) {
-      document.execCommand('insertImage', false, url);
+      document.execCommand("insertImage", false, url);
       updateDescription();
       editorRef.current?.focus();
     }
   };
 
+  const insertTable = () => {
+    const rows = prompt("Number of rows:", "3");
+    const cols = prompt("Number of columns:", "3");
+    if (!rows || !cols) return;
+
+    let tableHTML =
+      '<table class="w-full border-collapse border border-gray-300 my-2"><tbody>';
+    for (let i = 0; i < parseInt(rows); i++) {
+      tableHTML += "<tr>";
+      for (let j = 0; j < parseInt(cols); j++) {
+        tableHTML += '<td class="border border-gray-300 px-3 py-2">&nbsp;</td>';
+      }
+      tableHTML += "</tr>";
+    }
+    tableHTML += "</tbody></table>";
+
+    document.execCommand("insertHTML", false, tableHTML);
+    updateDescription();
+    editorRef.current?.focus();
+  };
+
   const insertBulletList = () => {
-    document.execCommand('insertUnorderedList', false, null);
+    document.execCommand("insertUnorderedList", false, null);
     updateDescription();
     editorRef.current?.focus();
   };
 
   const insertNumberedList = () => {
-    document.execCommand('insertOrderedList', false, null);
+    document.execCommand("insertOrderedList", false, null);
     updateDescription();
     editorRef.current?.focus();
   };
 
-  const handleAudienceChange = (value) => {
-    let updated = [...formData.audience];
-    if (updated.includes(value)) {
-      updated = updated.filter(item => item !== value);
-    } else {
-      updated.push(value);
+  const updateDescription = () => {
+    if (editorRef.current) {
+      const html = editorRef.current.innerHTML;
+      setFormData((prev) => ({ ...prev, description: html }));
+      updateStats();
+      debouncedPrediction();
+      saveDraft();
     }
-    setFormData({ ...formData, audience: updated });
   };
+
+  const updateStats = () => {
+    if (editorRef.current) {
+      const html = editorRef.current.innerHTML;
+      const text = html.replace(/<[^>]*>/g, "");
+      setCharCount(text.length);
+      setWordCount(
+        text
+          .trim()
+          .split(/\s+/)
+          .filter((w) => w.length > 0).length,
+      );
+    }
+  };
+
+  const extractTextFromHTML = (html) => {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = html;
+    return tempDiv.textContent || tempDiv.innerText || "";
+  };
+
+  // Auto ML Prediction
+  const autoMLPrediction = async () => {
+    if (!autoPredictEnabled || mlApiStatus !== "online") return;
+
+    const title = formData.title.trim();
+    const description = extractTextFromHTML(formData.description).trim();
+
+    if (
+      (!title && !description) ||
+      (title.length < 3 && description.length < 10)
+    )
+      return;
+
+    setIsPredicting(true);
+
+    try {
+      const response = await fetch(`${ML_API}/predict`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: title,
+          description: description,
+          department: formData.department || "CSE",
+        }),
+      });
+
+      const data = await response.json();
+
+      // if (data.success) {
+      //   setMlPrediction(data.prediction);
+
+      //   let updates = {};
+
+      //   if (data.prediction.category && !formData.category) {
+      //     const categoryMap = { 'general': 'general', 'academic': 'academic', 'exam': 'exam', 'event': 'event', 'urgent': 'urgent' };
+      //     const mappedCategory = categoryMap[data.prediction.category.toLowerCase()];
+      //     if (mappedCategory) updates.category = mappedCategory;
+      //   }
+
+      //   if (data.prediction.priority && !formData.priority) {
+      //     const priorityMap = { 'high': 'high', 'medium': 'medium', 'low': 'low', 'urgent': 'urgent' };
+      //     const mappedPriority = priorityMap[data.prediction.priority.toLowerCase()];
+      //     if (mappedPriority) updates.priority = mappedPriority;
+      //   }
+
+      //   if (data.prediction.audience && formData.audience.length === 0) {
+      //     const audienceMap = {
+      //       "students": ["students"], "teachers": ["teachers"], "faculty": ["teachers"],
+      //       "staff": ["staff"], "all": ["students", "teachers", "staff"]
+      //     };
+      //     const mappedAudience = audienceMap[data.prediction.audience.toLowerCase()];
+      //     if (mappedAudience) updates.audience = mappedAudience;
+      //   }
+
+      //   if (Object.keys(updates).length > 0) {
+      //     setFormData(prev => ({ ...prev, ...updates }));
+      //   }
+      // }
+      if (data.success) {
+        setMlPrediction(data.prediction);
+
+        const updates = {};
+
+        // Always set category
+        if (data.prediction.category) {
+          updates.category = data.prediction.category.toLowerCase();
+        }
+
+        // Always set priority
+        if (data.prediction.priority) {
+          updates.priority = data.prediction.priority.toLowerCase();
+        }
+
+        // Always set audience
+        if (data.prediction.audience) {
+          const audienceMap = {
+            students: ["students"],
+            teachers: ["teachers"],
+            faculty: ["teachers"],
+            staff: ["staff"],
+            all: ["students", "teachers", "staff"],
+          };
+
+          const mappedAudience =
+            audienceMap[data.prediction.audience.toLowerCase()];
+
+          if (mappedAudience) {
+            updates.audience = mappedAudience;
+          }
+        }
+
+        // Apply everything
+        setFormData((prev) => ({
+          ...prev,
+          ...updates,
+        }));
+      }
+    } catch (error) {
+      console.error("Auto Prediction Error:", error);
+    } finally {
+      setIsPredicting(false);
+    }
+  };
+
+  const debouncedPrediction = () => {
+    if (predictTimeout) clearTimeout(predictTimeout);
+    const timeout = setTimeout(() => autoMLPrediction(), 1000);
+    setPredictTimeout(timeout);
+  };
+
+  // Save/Load Draft
+  const saveDraft = () => {
+    const draft = { formData, timestamp: new Date().toISOString() };
+    localStorage.setItem("notice_draft", JSON.stringify(draft));
+    setAutoSave(true);
+    setLastSaved(new Date());
+    setTimeout(() => setAutoSave(false), 2000);
+  };
+
+  const loadDraft = () => {
+    const saved = localStorage.getItem("notice_draft");
+    if (saved) {
+      const draft = JSON.parse(saved);
+      if (draft.formData && window.confirm("Load saved draft?")) {
+        setFormData(draft.formData);
+        if (editorRef.current && draft.formData.description) {
+          editorRef.current.innerHTML = draft.formData.description;
+          updateStats();
+        }
+      }
+    }
+  };
+
+  const clearDraft = () => {
+    localStorage.removeItem("notice_draft");
+    toast.info("Draft cleared");
+  };
+
+  // Get user info
+  useEffect(() => {
+    const firstName = localStorage.getItem("firstName") || "";
+    const lastName = localStorage.getItem("lastName") || "";
+    const fullName =
+      localStorage.getItem("fullName") || `${firstName} ${lastName}`.trim();
+    const role = localStorage.getItem("role") || userRole;
+
+    setCurrentUser({ name: fullName || "Admin", role: role });
+
+    if (role === "teacher" || role === "staff") {
+      setFormData((prev) => ({ ...prev, createdBy: fullName }));
+    }
+  }, [userRole]);
+
+  // Fetch teachers
+  useEffect(() => {
+    const fetchTeachers = async () => {
+      try {
+        const res = await fetch(`${MAIN_API}/api/teachers`);
+        const data = await res.json();
+        setTeachers(data.teachers || []);
+      } catch (err) {
+        console.log("Teacher fetch error:", err);
+      }
+    };
+
+    const role = localStorage.getItem("role");
+    if (role !== "teacher" && role !== "staff") {
+      fetchTeachers();
+    }
+  }, [MAIN_API]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
     if (type === "checkbox") {
-      setFormData({ ...formData, [name]: checked });
+      setFormData((prev) => ({ ...prev, [name]: checked }));
     } else if (type === "file") {
-      setFormData({ ...formData, attachment: e.target.files[0] });
+      setFormData((prev) => ({ ...prev, attachment: e.target.files[0] }));
     } else {
-      setFormData({ ...formData, [name]: value });
+      setFormData((prev) => ({ ...prev, [name]: value }));
     }
+
+    saveDraft();
+    if (name === "title") debouncedPrediction();
+  };
+
+  const handleAudienceChange = (value) => {
+    let updated = [...formData.audience];
+    if (updated.includes(value)) {
+      updated = updated.filter((item) => item !== value);
+    } else {
+      updated.push(value);
+    }
+    setFormData((prev) => ({ ...prev, audience: updated }));
+    saveDraft();
   };
 
   const getAudienceLabel = () => {
     const audienceMap = {
       students: "Students",
       teachers: "Teachers",
-      staff: "Staff"
+      staff: "Staff",
     };
-    
     if (formData.audience.length === 0) return "No one selected";
     if (formData.audience.length === 3) return "Everyone";
-    
-    return formData.audience.map(a => audienceMap[a]).join(" & ");
-  };
-
-  // Function to fetch recipients from backend
-  const fetchRecipientsByAudience = async (audiences) => {
-    try {
-      const response = await fetch(`${API}/api/recipients`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ audiences })
-      });
-      const data = await response.json();
-      return data.recipients || [];
-    } catch (error) {
-      console.error("Error fetching recipients:", error);
-      return [];
-    }
-  };
-
-  // Function to send a single email via EmailJS
-  const sendSingleEmail = async (recipient, noticeData, audienceLabel) => {
-    const frontendUrl = process.env.REACT_APP_FRONTEND_URL || 'http://localhost:5173';
-    
-    const emailHtml = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>New Notice: ${noticeData.title}</title>
-        <style>
-          body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; }
-          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-          .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px 10px 0 0; color: white; text-align: center; }
-          .content { background: white; padding: 30px; border: 1px solid #e0e0e0; border-top: none; border-radius: 0 0 10px 10px; }
-          .notice-title { color: #333; margin-top: 0; font-size: 24px; }
-          .notice-description { color: #666; line-height: 1.8; }
-          .info-box { background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 20px 0; }
-          .info-item { margin: 8px 0; }
-          .btn { display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; margin-top: 20px; }
-          .footer { text-align: center; margin-top: 20px; font-size: 12px; color: #999; }
-        </style>
-      </head>
-      <body>
-        <div class="container">
-          <div class="header">
-            <h2 style="margin: 0;">📢 PCIU Notice Board</h2>
-            <p style="margin: 5px 0 0;">New Notice Published for ${audienceLabel}</p>
-          </div>
-          <div class="content">
-            <h3 class="notice-title">${noticeData.title}</h3>
-            <div class="notice-description">${noticeData.description}</div>
-            <div class="info-box">
-              <div class="info-item"><strong>📂 Category:</strong> ${noticeData.category}</div>
-              <div class="info-item"><strong>⚡ Priority:</strong> ${noticeData.priority || 'Normal'}</div>
-              <div class="info-item"><strong>👤 Posted by:</strong> ${noticeData.createdBy}</div>
-              <div class="info-item"><strong>📅 Date:</strong> ${new Date().toLocaleString()}</div>
-            </div>
-            <div style="text-align: center;">
-              <a href="${frontendUrl}/dashboard/notices" class="btn">View Notice</a>
-            </div>
-          </div>
-          <div class="footer">
-            <p>This is an automated notification from PCIU Notice Board.</p>
-            <p>Please do not reply to this email.</p>
-          </div>
-        </div>
-      </body>
-      </html>
-    `;
-
-    const templateParams = {
-      to_email: recipient.email,
-      to_name: recipient.name,
-      subject: `📢 New ${noticeData.category} Notice: ${noticeData.title}`,
-      html_content: emailHtml,
-      from_name: "PCIU Notice Board",
-      reply_to: noticeData.createdBy
-    };
-
-    const response = await emailjs.send(
-      "service_i4wkqeq",
-      "template_juhzegm",
-      templateParams
-    );
-    
-    return response;
-  };
-
-  // Function to send emails to all recipients
-  const sendEmailNotifications = async (recipients, noticeData, audienceLabel, onProgress) => {
-    const results = {
-      success: [],
-      failed: [],
-      total: recipients.length
-    };
-
-    for (let i = 0; i < recipients.length; i++) {
-      const recipient = recipients[i];
-      
-      try {
-        await sendSingleEmail(recipient, noticeData, audienceLabel);
-        
-        results.success.push({
-          email: recipient.email,
-          name: recipient.name
-        });
-        
-        console.log(`✅ Email sent to ${recipient.email} (${i + 1}/${recipients.length})`);
-        
-      } catch (error) {
-        console.error(`❌ Failed to send email to ${recipient.email}:`, error);
-        results.failed.push({
-          email: recipient.email,
-          name: recipient.name,
-          error: error.text || error.message
-        });
-      }
-      
-      if (onProgress) {
-        onProgress(i + 1, recipients.length, results);
-      }
-      
-      if (i < recipients.length - 1) {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-      }
-    }
-
-    return results;
+    return formData.audience.map((a) => audienceMap[a]).join(" & ");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation
-    if (!formData.createdBy) {
-      toast.error("Please select who is publishing this notice");
-      return;
-    }
-
-    if (formData.audience.length === 0) {
-      toast.error("Please select at least one audience");
-      return;
-    }
-
-    if (!formData.description || formData.description === '<br>' || formData.description === '<div><br></div>') {
-      toast.error("Please add content to the notice");
-      return;
-    }
-
-    if (!formData.title.trim()) {
-      toast.error("Please enter a notice title");
-      return;
-    }
+    if (!formData.createdBy) return toast.error("Select publisher");
+    if (formData.audience.length === 0) return toast.error("Select audience");
+    if (!formData.description || formData.description === "<br>")
+      return toast.error("Add content");
+    if (!formData.title.trim()) return toast.error("Enter title");
 
     setSendingEmails(true);
-
     Swal.fire({
-      title: "Publishing Notice...",
-      text: "Saving notice to database",
+      title: "Publishing...",
       allowOutsideClick: false,
-      didOpen: () => Swal.showLoading()
+      didOpen: () => Swal.showLoading(),
     });
 
     try {
-      // 1. Save notice to database
-      const res = await fetch(`${API}/api/add-notice`, {
+      const res = await fetch(`${MAIN_API}/api/add-notice`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-
       const data = await res.json();
+      if (!res.ok) throw new Error(data.message);
 
-      if (!res.ok) {
-        throw new Error(data.message || "Failed to save notice");
-      }
-
-      // 2. Fetch recipients
-      const recipients = await fetchRecipientsByAudience(formData.audience);
-      
-      let emailResults = null;
-      let emailSentCount = 0;
-
-      // 3. Send emails
-      if (recipients && recipients.length > 0) {
-        Swal.update({
-          title: "Sending Email Notifications...",
-          html: `
-            <div>Sending to ${recipients.length} recipients...</div>
-            <div class="mt-2">Audience: ${getAudienceLabel()}</div>
-            <div class="mt-2 text-blue-600" id="emailProgress">Preparing...</div>
-          `,
-          allowOutsideClick: false
-        });
-
-        const updateProgress = (current, total, results) => {
-          const progressDiv = document.getElementById('emailProgress');
-          if (progressDiv) {
-            progressDiv.innerHTML = `
-              Progress: ${current} / ${total}<br>
-              ✅ Success: ${results.success.length}<br>
-              ❌ Failed: ${results.failed.length}
-            `;
-          }
-        };
-
-        emailResults = await sendEmailNotifications(recipients, formData, getAudienceLabel(), updateProgress);
-        emailSentCount = emailResults.success.length;
-        
-        if (emailResults.failed.length > 0) {
-          toast.warning(`${emailResults.failed.length} emails failed to send`);
-        }
-      } else {
-        toast.info(`No email recipients found for ${getAudienceLabel()}`);
-      }
-
-      // 4. Show success message
-      const resultHtml = `
-        <div class="text-left">
-          <div class="mb-2">✅ Notice sent to: <strong>${getAudienceLabel()}</strong></div>
-          ${recipients && recipients.length > 0 ? `
-            <div class="mb-2">📧 Emails sent: <strong>${emailSentCount} / ${recipients.length}</strong></div>
-            ${emailResults?.failed.length > 0 ? `
-              <div class="text-red-600 mt-2">❌ Failed: ${emailResults.failed.length} recipients</div>
-              <div class="text-sm text-gray-500 mt-1">Check console for details</div>
-            ` : '<div class="text-green-600 mt-2">✓ All emails sent successfully!</div>'}
-          ` : `
-            <div class="text-yellow-600">⚠️ No email recipients found in database</div>
-            <div class="text-sm text-gray-500 mt-2">Notice saved but emails not sent.</div>
-          `}
-        </div>
-      `;
-      
       Swal.fire({
-        title: recipients?.length > 0 ? "Notice Published!" : "Notice Saved",
-        html: resultHtml,
-        icon: recipients?.length > 0 ? (emailResults?.failed.length > 0 ? "warning" : "success") : "info",
-        confirmButtonColor: "#3085d6"
+        title: "Published!",
+        icon: "success",
+        confirmButtonColor: "#3085d6",
       });
-      
-      // Reset form
-      setFormData({
-        ...initialState,
-        createdBy: currentUser?.role === "teacher" || currentUser?.role === "staff" ? currentUser?.name : ""
-      });
-      if (editorRef.current) {
-        editorRef.current.innerHTML = "";
-      }
-      setCharCount(0);
-      
-      // Refresh notices list
-      if (onNoticeUpload) {
-        onNoticeUpload();
-      }
-      
+      setFormData(initialState);
+      if (editorRef.current) editorRef.current.innerHTML = "";
+      clearDraft();
+      if (onNoticeUpload) onNoticeUpload();
       handleClose();
-      
     } catch (err) {
-      console.error("Error:", err);
-      Swal.fire({
-        title: "Error!",
-        text: err.message || "Failed to create notice",
-        icon: "error",
-        confirmButtonColor: "#3085d6"
-      });
-      toast.error(err.message || "Server error");
+      Swal.fire({ title: "Error!", text: err.message, icon: "error" });
     } finally {
       setSendingEmails(false);
     }
   };
 
-  const showDeptSection = formData.audience.includes("students") && !formData.audience.includes("all");
-  const userRoleFromStorage = localStorage.getItem("role");
-  const isTeacherOrStaff = userRoleFromStorage === "teacher" || userRoleFromStorage === "staff";
+  const showDeptSection =
+    formData.audience.includes("students") &&
+    !formData.audience.includes("all");
+  const isTeacherOrStaff =
+    localStorage.getItem("role") === "teacher" ||
+    localStorage.getItem("role") === "staff";
+
+  const toolbarButtons = [
+    { cmd: "bold", icon: <FaBold />, title: "Bold" },
+    { cmd: "italic", icon: <FaItalic />, title: "Italic" },
+    { cmd: "underline", icon: <FaUnderline />, title: "Underline" },
+    { divider: true },
+    { cmd: "justifyLeft", icon: <FaAlignLeft />, title: "Align Left" },
+    { cmd: "justifyCenter", icon: <FaAlignCenter />, title: "Align Center" },
+    { cmd: "justifyRight", icon: <FaAlignRight />, title: "Align Right" },
+    { cmd: "justifyFull", icon: <FaAlignJustify />, title: "Justify" },
+    { divider: true },
+    { handler: insertBulletList, icon: <FaListUl />, title: "Bullet List" },
+    { handler: insertNumberedList, icon: <FaListOl />, title: "Numbered List" },
+    { divider: true },
+    { handler: insertLink, icon: <FaLink />, title: "Insert Link" },
+    { handler: insertImage, icon: <FaImage />, title: "Insert Image" },
+    { handler: insertTable, icon: <FaTable />, title: "Insert Table" },
+  ];
 
   return (
-    <>
-      <form
-        onSubmit={handleSubmit}
-        className="max-w-7xl mx-auto p-8 bg-white shadow-2xl rounded-2xl space-y-8"
-      >
-        {/* Header with Template Button */}
-        <div className="flex items-center justify-between border-b-2 border-gray-200 pb-6">
-          <div className="flex items-center gap-4">
-            <h2 className="text-3xl font-bold text-gray-800">📢 Create Notice</h2>
-            <button
-              type="button"
-              onClick={() => setShowTemplateSelector(true)}
-              className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl text-sm font-semibold hover:from-purple-600 hover:to-pink-600 transition-all duration-200 flex items-center gap-2 shadow-md"
-            >
-              <FaFileAlt className="text-sm" />
-              Use Template
-            </button>
+    <div className="fixed inset-0 z-50">
+      <div className="flex h-screen bg-gray-50 dark:bg-gray-950">
+        {/* Sidebar */}
+        <div className="w-80 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 flex flex-col">
+          <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+            <h3 className="text-lg font-semibold text-gray-800 dark:text-white flex items-center gap-2">
+              <FaPalette className="text-gray-600 dark:text-gray-400" />
+              <span>Tools</span>
+            </h3>
           </div>
-          <button
-            type="button"
-            onClick={handleClose}
-            className="text-gray-500 hover:text-gray-700 text-2xl"
-          >
-            ✕
-          </button>
-        </div>
 
-        {/* Published By - Auto-select for teachers/staff */}
-        <div>
-          <label className="block text-base font-semibold text-gray-700 mb-3">
-            Published By *
-          </label>
-          {isTeacherOrStaff ? (
-            <div className="w-full border-2 border-gray-200 p-4 rounded-xl bg-gray-100 text-gray-700 font-medium text-lg">
-              {formData.createdBy || currentUser?.name}
-              <input type="hidden" name="createdBy" value={formData.createdBy || currentUser?.name} />
+          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+            {/* Stats */}
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-4">
+              <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                Statistics
+              </h4>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                  <span>Characters:</span>
+                  <span className="font-semibold text-gray-800 dark:text-white">
+                    {charCount}
+                  </span>
+                </div>
+                <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                  <span>Words:</span>
+                  <span className="font-semibold text-gray-800 dark:text-white">
+                    {wordCount}
+                  </span>
+                </div>
+                <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                  <span>Reading time:</span>
+                  <span className="font-semibold text-gray-800 dark:text-white">
+                    {Math.ceil(wordCount / 200)} min
+                  </span>
+                </div>
+                {lastSaved && (
+                  <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                    <span>Auto-saved:</span>
+                    <span className="text-xs text-gray-500 dark:text-gray-500">
+                      {lastSaved.toLocaleTimeString()}
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
-          ) : (
-            <select
-              name="createdBy"
-              value={formData.createdBy}
-              onChange={handleChange}
-              required
-              className="w-full border-2 border-gray-200 p-4 rounded-xl focus:border-blue-500 focus:outline-none text-lg"
-            >
-              <option value="">Select Publisher</option>
-              {teachers?.map((teacher) => (
-                <option key={teacher._id} value={`${teacher.firstName} ${teacher.lastName}`}>
-                  {teacher.firstName} {teacher.lastName} {teacher.department ? `(${teacher.department})` : ''}
-                </option>
-              ))}
-            </select>
-          )}
-        </div>
 
-        {/* Title */}
-        <div>
-          <label className="block text-base font-semibold text-gray-700 mb-3">
-            Notice Title *
-          </label>
-          <input
-            type="text"
-            name="title"
-            placeholder="Enter notice title..."
-            value={formData.title}
-            onChange={handleChange}
-            required
-            className="w-full border-2 border-gray-200 p-4 rounded-xl focus:border-blue-500 focus:outline-none text-xl"
-          />
-        </div>
-
-        {/* Rich Text Editor */}
-        <div>
-          <label className="block text-base font-semibold text-gray-700 mb-3">
-            Notice Content *
-            <span className="text-sm text-gray-500 ml-3">({charCount} characters)</span>
-          </label>
-          
-          {/* Enhanced Toolbar - Larger buttons */}
-          <div className="flex flex-wrap gap-2 p-4 bg-gray-50 border-2 border-gray-200 rounded-t-xl border-b-0">
-            <button type="button" onClick={() => execCommand('bold')} className="p-2.5 hover:bg-gray-200 rounded-lg font-bold text-lg" title="Bold"><strong>B</strong></button>
-            <button type="button" onClick={() => execCommand('italic')} className="p-2.5 hover:bg-gray-200 rounded-lg italic text-lg" title="Italic"><em>I</em></button>
-            <button type="button" onClick={() => execCommand('underline')} className="p-2.5 hover:bg-gray-200 rounded-lg underline text-lg" title="Underline"><u>U</u></button>
-            
-            <div className="w-px h-8 bg-gray-300 mx-2 self-center"></div>
-            
-            <button type="button" onClick={() => execCommand('justifyLeft')} className="p-2.5 hover:bg-gray-200 rounded-lg text-lg" title="Align Left">⬅️</button>
-            <button type="button" onClick={() => execCommand('justifyCenter')} className="p-2.5 hover:bg-gray-200 rounded-lg text-lg" title="Align Center">↔️</button>
-            <button type="button" onClick={() => execCommand('justifyRight')} className="p-2.5 hover:bg-gray-200 rounded-lg text-lg" title="Align Right">➡️</button>
-            <button type="button" onClick={() => execCommand('justifyFull')} className="p-2.5 hover:bg-gray-200 rounded-lg text-lg" title="Justify">📏</button>
-            
-            <div className="w-px h-8 bg-gray-300 mx-2 self-center"></div>
-            
-            <button type="button" onClick={insertBulletList} className="p-2.5 hover:bg-gray-200 rounded-lg text-lg" title="Bullet List">• List</button>
-            <button type="button" onClick={insertNumberedList} className="p-2.5 hover:bg-gray-200 rounded-lg text-lg" title="Numbered List">1. List</button>
-            
-            <div className="w-px h-8 bg-gray-300 mx-2 self-center"></div>
-            
-            <button type="button" onClick={insertLink} className="p-2.5 hover:bg-gray-200 rounded-lg text-blue-600 text-lg" title="Insert Link">🔗</button>
-            <button type="button" onClick={insertImage} className="p-2.5 hover:bg-gray-200 rounded-lg text-green-600 text-lg" title="Insert Image">🖼️</button>
-            <button type="button" onClick={insertTable} className="p-2.5 hover:bg-gray-200 rounded-lg text-lg" title="Insert Table">📊</button>
-            
-            <div className="flex-1"></div>
-            
-            <button 
-              type="button" 
-              onClick={() => setPreviewMode(!previewMode)} 
-              className={`px-6 py-2.5 rounded-xl text-base font-semibold transition-all ${
-                previewMode ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              }`}
-            >
-              {previewMode ? '✏️ Edit Mode' : '👁️ Preview Mode'}
-            </button>
-          </div>
-
-          {/* Editor/Preview Area - Larger height */}
-          {previewMode ? (
-            <div className="w-full min-h-[450px] p-6 border-2 border-gray-200 rounded-b-xl bg-gray-50 prose max-w-none overflow-auto text-base">
-              <div dangerouslySetInnerHTML={{ __html: formData.description || 'No content yet...' }} />
-            </div>
-          ) : (
-            <div
-              ref={editorRef}
-              contentEditable={!previewMode}
-              suppressContentEditableWarning={true}
-              onInput={updateDescription}
-              className="w-full min-h-[450px] p-6 border-2 border-gray-200 rounded-b-xl focus:border-blue-500 focus:outline-none prose max-w-none bg-white overflow-auto text-base"
-              style={{ whiteSpace: 'pre-wrap', overflowY: 'auto' }}
-            />
-          )}
-          
-          <div className="text-sm text-gray-400 mt-3">
-            💡 Tip: You can format text using the toolbar above. Supports bold, italic, lists, links, images, and tables.
-          </div>
-        </div>
-
-        {/* Category & Priority - Larger grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="block text-base font-semibold text-gray-700 mb-3">Category *</label>
-            <select name="category" value={formData.category} onChange={handleChange} required className="w-full border-2 border-gray-200 p-4 rounded-xl focus:border-blue-500 focus:outline-none text-lg">
-              <option value="">Select Category</option>
-              <option value="general">📋 General</option>
-              <option value="academic">📚 Academic</option>
-              <option value="exam">📝 Exam</option>
-              <option value="event">🎉 Event</option>
-              <option value="urgent">🚨 Urgent</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-base font-semibold text-gray-700 mb-3">Priority</label>
-            <select name="priority" value={formData.priority} onChange={handleChange} className="w-full border-2 border-gray-200 p-4 rounded-xl focus:border-blue-500 focus:outline-none text-lg">
-              <option value="low">🟢 Low</option>
-              <option value="medium">🟡 Medium</option>
-              <option value="high">🟠 High</option>
-              <option value="urgent">🔴 Urgent</option>
-            </select>
-          </div>
-        </div>
-
-        {/* Audience Section - Larger */}
-        <div className="bg-gray-50 p-6 rounded-xl">
-          <label className="block text-base font-semibold text-gray-700 mb-4">
-            Target Audience (Select multiple) *
-          </label>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {[
-              { value: "students", label: "🎓 Students", color: "blue" },
-              { value: "teachers", label: "👨‍🏫 Teachers", color: "green" },
-              { value: "staff", label: "👔 Staff", color: "purple" },
-            ].map((option) => (
-              <label
-                key={option.value}
-                className={`flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all ${
-                  formData.audience.includes(option.value)
-                    ? `border-${option.color}-500 bg-${option.color}-50`
-                    : 'border-gray-200 bg-white hover:border-gray-300'
-                }`}
-              >
+            {/* AI Status */}
+            <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-4">
+              <div className="flex justify-between items-center mb-3">
+                <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                  <FaRobot className="text-blue-500" /> AI Assistant
+                </h4>
+                <span
+                  className={`text-xs px-2 py-1 rounded-full ${
+                    mlApiStatus === "online"
+                      ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
+                      : "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400"
+                  }`}
+                >
+                  {mlApiStatus === "online" ? "● Online" : "○ Offline"}
+                </span>
+              </div>
+              <label className="flex items-center justify-between cursor-pointer">
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  Auto-predict fields
+                </span>
                 <input
                   type="checkbox"
-                  value={option.value}
-                  checked={formData.audience.includes(option.value)}
-                  onChange={() => handleAudienceChange(option.value)}
-                  className="w-6 h-6 text-blue-600 rounded"
+                  checked={autoPredictEnabled}
+                  onChange={(e) => setAutoPredictEnabled(e.target.checked)}
+                  className="toggle"
                 />
-                <div className="font-semibold text-gray-800 text-lg">{option.label}</div>
               </label>
-            ))}
-          </div>
-          
-          {formData.audience.length > 0 && (
-            <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-              <span className="text-base text-blue-800">
-                ✅ Will be sent to: <strong className="text-lg">{getAudienceLabel()}</strong>
-              </span>
+              {isPredicting && (
+                <div className="mt-2 text-xs text-blue-600 dark:text-blue-400 animate-pulse">
+                  AI analyzing...
+                </div>
+              )}
+              {mlPrediction && mlApiStatus === "online" && !isPredicting && (
+                <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 text-xs space-y-1">
+                  <p className="text-gray-600 dark:text-gray-400">
+                    Detected:{" "}
+                    <span className="font-semibold text-gray-800 dark:text-white">
+                      {mlPrediction.category}
+                    </span>{" "}
+                    •
+                    <span className="font-semibold text-gray-800 dark:text-white">
+                      {" "}
+                      {mlPrediction.priority}
+                    </span>
+                  </p>
+                  <p className="text-gray-500 dark:text-gray-500">
+                    Audience: {mlPrediction.audience}
+                  </p>
+                </div>
+              )}
             </div>
-          )}
+
+            {/* Quick Category */}
+            <div>
+              <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
+                <MdCategory /> Category
+              </h4>
+              <div className="grid grid-cols-2 gap-2">
+                {["general", "academic", "exam", "event", "urgent"].map(
+                  (cat) => (
+                    <button
+                      key={cat}
+                      type="button"
+                      onClick={() =>
+                        handleChange({
+                          target: { name: "category", value: cat },
+                        })
+                      }
+                      className={`px-3 py-2 rounded-lg text-sm capitalize transition-all ${
+                        formData.category === cat
+                          ? "bg-blue-600 text-white"
+                          : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ),
+                )}
+              </div>
+            </div>
+
+            {/* Quick Priority */}
+            <div>
+              <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
+                <MdPriorityHigh /> Priority
+              </h4>
+              <div className="space-y-2">
+                {[
+                  { value: "low", label: "Low", color: "green" },
+                  { value: "medium", label: "Medium", color: "yellow" },
+                  { value: "high", label: "High", color: "orange" },
+                  { value: "urgent", label: "Urgent", color: "red" },
+                ].map((prio) => (
+                  <button
+                    key={prio.value}
+                    type="button"
+                    onClick={() =>
+                      handleChange({
+                        target: { name: "priority", value: prio.value },
+                      })
+                    }
+                    className={`w-full px-3 py-2 rounded-lg text-sm capitalize transition-all ${
+                      formData.priority === prio.value
+                        ? `bg-${prio.color}-600 text-white`
+                        : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                    }`}
+                  >
+                    {prio.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Quick Audience */}
+            <div>
+              <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
+                <FaUsers /> Audience
+              </h4>
+              <div className="space-y-2">
+                {[
+                  { value: "students", label: "Students" },
+                  { value: "teachers", label: "Teachers" },
+                  { value: "staff", label: "Staff" },
+                ].map((aud) => (
+                  <button
+                    key={aud.value}
+                    type="button"
+                    onClick={() => handleAudienceChange(aud.value)}
+                    className={`w-full px-3 py-2 rounded-lg text-sm transition-all ${
+                      formData.audience.includes(aud.value)
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                    }`}
+                  >
+                    {aud.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={clearDraft}
+              className="w-full px-4 py-2 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-lg text-sm hover:bg-red-100 dark:hover:bg-red-900/30 transition-all"
+            >
+              Clear Draft
+            </button>
+          </div>
         </div>
 
-        {/* Department & Section - Only show if students are selected */}
-        {showDeptSection && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-base font-semibold text-gray-700 mb-3">Department (Optional)</label>
-              <select name="department" value={formData.department} onChange={handleChange} className="w-full border-2 border-gray-200 p-4 rounded-xl focus:border-blue-500 focus:outline-none text-lg">
-                <option value="">All Departments</option>
-                <option value="CSE">CSE</option>
-                <option value="EEE">EEE</option>
-                <option value="BBA">BBA</option>
-                <option value="ENG">ENG</option>
-                <option value="LLB">LLB</option>
-                <option value="JRN">JRN</option>
-              </select>
+        {/* Main Content */}
+        <div className="flex-1 flex flex-col overflow-hidden bg-gray-50 dark:bg-gray-950">
+          {/* Header */}
+          <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 px-6 py-4 flex justify-between items-center shadow-sm">
+            <div className="flex items-center gap-4">
+              <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+                Create New Notice
+              </h2>
+              <button
+                type="button"
+                onClick={() => setShowTemplateSelector(true)}
+                className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg text-sm font-semibold hover:from-purple-600 hover:to-pink-600 transition-all flex items-center gap-2"
+              >
+                <FaFileAlt /> Use Template
+              </button>
+              {autoSave && (
+                <span className="text-xs text-green-600 dark:text-green-400 animate-pulse">
+                  Saving...
+                </span>
+              )}
             </div>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={toggleTheme}
+                className="p-2.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
+                aria-label="Toggle theme"
+              >
+                {isDarkMode ? <FaSun size={18} /> : <FaMoon size={18} />}
+              </button>
+              <button
+                type="button"
+                onClick={handleClose}
+                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
+              >
+                <FaTimes className="text-gray-500 dark:text-gray-400" />
+              </button>
+            </div>
+          </div>
 
-            <div>
-              <label className="block text-base font-semibold text-gray-700 mb-3">Section (Optional)</label>
+          {/* Form Content */}
+          <div className="flex-1 overflow-y-auto p-6">
+            <form
+              onSubmit={handleSubmit}
+              className="max-w-5xl mx-auto space-y-6"
+            >
+              {/* Published By */}
+              <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-4">
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  Published By *
+                </label>
+                {isTeacherOrStaff ? (
+                  <div className="text-gray-800 dark:text-gray-200 font-medium">
+                    {formData.createdBy || currentUser?.name}
+                  </div>
+                ) : (
+                  <select
+                    name="createdBy"
+                    value={formData.createdBy}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200"
+                  >
+                    <option value="">Select Publisher</option>
+                    {teachers.map((teacher) => (
+                      <option
+                        key={teacher._id}
+                        value={`${teacher.firstName} ${teacher.lastName}`}
+                      >
+                        {teacher.firstName} {teacher.lastName}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
+
+              {/* Title */}
               <input
                 type="text"
-                name="section"
-                value={formData.section}
+                name="title"
+                placeholder="Notice Title *"
+                value={formData.title}
                 onChange={handleChange}
-                placeholder="e.g., 31C, 32A"
-                className="w-full border-2 border-gray-200 p-4 rounded-xl focus:border-blue-500 focus:outline-none text-lg"
+                required
+                className="w-full px-4 py-3 text-lg rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               />
-              <div className="text-sm text-gray-400 mt-2">Leave empty for all sections</div>
-            </div>
-          </div>
-        )}
 
-        {/* Expiry Date & Pin Notice */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="block text-base font-semibold text-gray-700 mb-3">Expiry Date (Optional)</label>
-            <input 
-              type="date" 
-              name="expiryDate" 
-              value={formData.expiryDate} 
-              onChange={handleChange} 
-              className="w-full border-2 border-gray-200 p-4 rounded-xl focus:border-blue-500 focus:outline-none text-lg" 
-            />
-          </div>
+              {/* Editor */}
+              <div className="border border-gray-300 dark:border-gray-600 rounded-xl overflow-hidden bg-white dark:bg-gray-800">
+                <div className="flex flex-wrap gap-1 p-2 bg-gray-50 dark:bg-gray-900/50 border-b border-gray-300 dark:border-gray-700">
+                  {toolbarButtons.map((item, idx) =>
+                    item.divider ? (
+                      <div
+                        key={idx}
+                        className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1"
+                      />
+                    ) : (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() =>
+                          item.handler ? item.handler() : execCommand(item.cmd)
+                        }
+                        title={item.title}
+                        className="p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded transition-all text-gray-700 dark:text-gray-300"
+                      >
+                        {item.icon}
+                      </button>
+                    ),
+                  )}
+                  <div className="flex-1" />
+                  <button
+                    type="button"
+                    onClick={() => setPreviewMode(!previewMode)}
+                    className={`px-3 py-1 rounded text-sm transition-all flex items-center gap-1 ${
+                      previewMode
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+                    }`}
+                  >
+                    {previewMode ? <FaEdit /> : <FaEye />}{" "}
+                    {previewMode ? "Edit" : "Preview"}
+                  </button>
+                </div>
 
-          <div className="flex items-end pb-4">
-            <label className="flex items-center gap-3 cursor-pointer">
-              <input 
-                type="checkbox" 
-                name="isPinned" 
-                checked={formData.isPinned} 
-                onChange={handleChange} 
-                className="w-6 h-6 text-blue-600 rounded" 
+                {previewMode ? (
+                  <div
+                    className="min-h-[400px] p-4 prose dark:prose-invert max-w-none overflow-auto bg-white dark:bg-gray-800"
+                    dangerouslySetInnerHTML={{
+                      __html: formData.description || "No content yet...",
+                    }}
+                  />
+                ) : (
+                  <div
+                    ref={editorRef}
+                    contentEditable
+                    onInput={updateDescription}
+                    className="min-h-[400px] p-4 focus:outline-none prose dark:prose-invert max-w-none overflow-auto bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200"
+                    style={{ whiteSpace: "pre-wrap" }}
+                  />
+                )}
+              </div>
+
+              {/* Category & Priority */}
+              {/* <div className="grid grid-cols-2 gap-4">
+                <select
+                  name="category"
+                  value={formData.category}
+                  onChange={handleChange}
+                  required
+                  className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200"
+                >
+                  <option value="">Select Category</option>
+                  <option value="general">General</option>
+                  <option value="academic">Academic</option>
+                  <option value="exam">Exam</option>
+                  <option value="event">Event</option>
+                  <option value="urgent">Urgent</option>
+                </select>
+                <select
+                  name="priority"
+                  value={formData.priority}
+                  onChange={handleChange}
+                  className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200"
+                >
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                  <option value="urgent">Urgent</option>
+                </select>
+              </div> */}
+
+              {/* Audience */}
+              {/* <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-4">
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                  Target Audience *
+                </label>
+                <div className="flex gap-4">
+                  {["students", "teachers", "staff"].map((aud) => (
+                    <label
+                      key={aud}
+                      className="flex items-center gap-2 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={formData.audience.includes(aud)}
+                        onChange={() => handleAudienceChange(aud)}
+                        className="w-4 h-4 text-blue-600 rounded"
+                      />
+                      <span className="text-gray-700 dark:text-gray-300 capitalize">
+                        {aud}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+                {formData.audience.length > 0 && (
+                  <div className="mt-3 p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-sm text-blue-700 dark:text-blue-300">
+                    Will be sent to: <strong>{getAudienceLabel()}</strong>
+                  </div>
+                )}
+              </div> */}
+
+              {/* Department & Section */}
+              {showDeptSection && (
+                <div className="grid grid-cols-2 gap-4">
+                  <select
+                    name="department"
+                    value={formData.department}
+                    onChange={handleChange}
+                    className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200"
+                  >
+                    <option value="">All Departments</option>
+                    <option value="CSE">CSE</option>
+                    <option value="EEE">EEE</option>
+                    <option value="BBA">BBA</option>
+                    <option value="ENG">ENG</option>
+                  </select>
+                  <input
+                    type="text"
+                    name="section"
+                    placeholder="Section (optional)"
+                    value={formData.section}
+                    onChange={handleChange}
+                    className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200"
+                  />
+                </div>
+              )}
+
+              {/* Extras */}
+              <div className="grid grid-cols-2 gap-4">
+                <input
+                  type="date"
+                  name="expiryDate"
+                  value={formData.expiryDate}
+                  onChange={handleChange}
+                  className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200"
+                />
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="isPinned"
+                    checked={formData.isPinned}
+                    onChange={handleChange}
+                    className="w-4 h-4 text-blue-600 rounded"
+                  />
+                  <span className="text-gray-700 dark:text-gray-300">
+                    Pin this notice (appears at top)
+                  </span>
+                </label>
+              </div>
+
+              {/* Attachment */}
+              <input
+                type="file"
+                name="attachment"
+                onChange={handleChange}
+                accept=".pdf,.doc,.docx,.jpg,.png"
+                className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-blue-900/30 dark:file:text-blue-400"
               />
-              <span className="text-base font-semibold text-gray-700">📌 Pin this notice (appears at top)</span>
-            </label>
+
+              {/* Submit Buttons */}
+              <div className="flex gap-4 pt-4">
+                <button
+                  type="button"
+                  onClick={handleClose}
+                  className="flex-1 px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-all font-semibold"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={sendingEmails}
+                  className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all font-semibold flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <FaPaperPlane />{" "}
+                  {sendingEmails ? "Sending..." : "Publish Notice"}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
-
-        {/* Attachment Upload */}
-        <div>
-          <label className="block text-base font-semibold text-gray-700 mb-3">Attachment (Optional)</label>
-          <input
-            type="file"
-            name="attachment"
-            onChange={handleChange}
-            accept=".pdf,.doc,.docx,.jpg,.png"
-            className="w-full border-2 border-gray-200 p-4 rounded-xl focus:border-blue-500 focus:outline-none text-lg"
-          />
-          <div className="text-sm text-gray-400 mt-2">Supported: PDF, DOC, DOCX, JPG, PNG (Max 5MB)</div>
-        </div>
-
-        {/* Action Buttons - Larger */}
-        <div className="flex gap-5 pt-6 border-t-2 border-gray-200">
-          <button 
-            type="button" 
-            onClick={handleClose} 
-            className="flex-1 px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 font-semibold text-lg transition-all"
-          >
-            Cancel
-          </button>
-          <button 
-            type="submit" 
-            disabled={sendingEmails}
-            className="flex-1 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 font-semibold text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {sendingEmails ? "📧 Sending Emails..." : "📢 Publish Notice"}
-          </button>
-        </div>
-      </form>
+      </div>
 
       {/* Template Modals */}
       {showTemplateSelector && (
         <TemplateSelector
           isOpen={showTemplateSelector}
           onClose={() => setShowTemplateSelector(false)}
-          onSelectTemplate={handleSelectTemplate}
+          onSelectTemplate={setSelectedTemplate}
         />
       )}
-
-      {showTemplateForm && (
+      {showTemplateForm && selectedTemplate && (
         <TemplateFormModal
           isOpen={showTemplateForm}
           template={selectedTemplate}
           onClose={() => setShowTemplateForm(false)}
-          onGenerate={handleGenerateFromTemplate}
+          onGenerate={(data) => {
+            setFormData((prev) => ({
+              ...prev,
+              title: data.title,
+              description: data.content,
+              category: data.category,
+              priority: data.priority,
+            }));
+            if (editorRef.current) {
+              editorRef.current.innerHTML = data.content;
+              updateStats();
+            }
+            setShowTemplateForm(false);
+            toast.success("Template applied successfully!");
+          }}
         />
       )}
-    </>
+
+      {/* Toggle Switch CSS */}
+      <style>{`
+        .toggle {
+          position: relative;
+          display: inline-block;
+          width: 44px;
+          height: 24px;
+          background-color: #cbd5e1;
+          border-radius: 12px;
+          transition: all 0.3s;
+          cursor: pointer;
+          appearance: none;
+        }
+        .dark .toggle {
+          background-color: #475569;
+        }
+        .toggle:checked {
+          background-color: #3b82f6;
+        }
+        .toggle::before {
+          content: '';
+          position: absolute;
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          top: 2px;
+          left: 2px;
+          background-color: white;
+          transition: transform 0.3s;
+        }
+        .toggle:checked::before {
+          transform: translateX(20px);
+        }
+      `}</style>
+    </div>
   );
 }

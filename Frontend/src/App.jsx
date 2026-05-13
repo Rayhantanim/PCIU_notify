@@ -29,6 +29,7 @@ import AdminOverView from "./Components/AdminOverView";
 import ThemeToggle from "./Components/ThemeToggle";
 import { useTheme } from "./context/ThemeContext";
 import StaffDashboard from "./Components/dashboards/StaffDashboard";
+import NoticeClassifier from "./Components/NoticeClassifier";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -228,6 +229,14 @@ const App = () => {
             element={
               <RoleBasedRoute allowedRoles={["teacher", "staff", "student", "admin"]}>
                 <AllNotices />
+              </RoleBasedRoute>
+            } 
+          />
+          <Route 
+            path="test" 
+            element={
+              <RoleBasedRoute allowedRoles={["teacher", "staff", "student", "admin"]}>
+                <NoticeClassifier />
               </RoleBasedRoute>
             } 
           />

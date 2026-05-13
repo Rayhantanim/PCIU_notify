@@ -1,8 +1,8 @@
 /* index.css */
 @import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
+/* @tailwind base; */
+/* @tailwind components; */
 @tailwind utilities;
 
 @layer base {
@@ -150,5 +150,45 @@
 @media (min-width: 1280px) {
   html {
     font-size: 16px;
+  }
+}
+
+/* Add to your global CSS file */
+.toggle {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  background-color: #ccc;
+  border-radius: 12px;
+  transition: all 0.3s;
+  cursor: pointer;
+  appearance: none;
+}
+
+.toggle:checked {
+  background-color: #3b82f6;
+}
+
+.toggle::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  background-color: white;
+  transition: transform 0.3s;
+}
+
+.toggle:checked::before {
+  transform: translateX(20px);
+}
+
+/* Dark mode styles */
+@layer base {
+  body {
+    @apply bg-gray-50 dark:bg-gray-950;
   }
 }
