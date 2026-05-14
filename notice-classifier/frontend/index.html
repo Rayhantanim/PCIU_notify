@@ -1,0 +1,408 @@
+<!-- frontend/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notice Classification System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .result-card {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            display: none;
+        }
+        
+        .result-card.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .prediction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+        
+        .prediction-label {
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .prediction-value {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        .category { border-left-color: #3498db; }
+        .audience { border-left-color: #2ecc71; }
+        .priority { border-left-color: #e74c3c; }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .badge-high { background: #fee; color: #c00; }
+        .badge-medium { background: #fef3c7; color: #d97706; }
+        .badge-low { background: #d1fae5; color: #059669; }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+        
+        .loading.show {
+            display: block;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error {
+            background: #fee;
+            color: #c00;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .error.show {
+            display: block;
+        }
+        
+        .info-text {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📢 Notice Classification System</h1>
+        <div class="subtitle">AI-powered classification for university notices</div>
+        
+        <form id="predictionForm">
+            <div class="form-group">
+                <label>Notice Title *</label>
+                <input type="text" id="title" placeholder="e.g., CSE 327 Final Examination" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Description *</label>
+                <textarea id="description" placeholder="Describe the notice details..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Department (Optional)</label>
+                <select id="department">
+                    <option value="">Select Department</option>
+                    <option value="CSE">Computer Science & Engineering</option>
+                    <option value="EEE">Electrical & Electronic Engineering</option>
+                    <option value="ME">Mechanical Engineering</option>
+                    <option value="CE">Civil Engineering</option>
+                    <option value="BBA">Business Administration</option>
+                    <option value="ENG">English</option>
+                </select>
+            </div>
+            
+            <button type="submit">🚀 Classify Notice</button>
+        </form>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Analyzing notice...</p>
+        </div>
+        
+        <div class="error" id="error"></div>
+        
+        <div class="result-card" id="result">
+            <h3>📊 Classification Results</h3>
+            
+            <div class="prediction-item category">
+                <span class="prediction-label">📌 Category</span>
+                <span class="prediction-value" id="category">-</span>
+            </div>
+            
+            <div class="prediction-item audience">
+                <span class="prediction-label">👥 Target Audience</span>
+                <span class="prediction-value" id="audience">-</span>
+            </div>
+            
+            <div class="prediction-item priority">
+                <span class="prediction-label">⚡ Priority Level</span>
+                <span class="prediction-value" id="priority">-</span>
+            </div>
+            
+            <div style="margin-top: 20px; padding: 15px; background: #e8f4f8; border-radius: 8px;">
+                <strong>💡 Suggestions:</strong>
+                <p id="suggestions" style="margin-top: 8px; color: #555;"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000'; // Change to your API URL
+        
+        const form = document.getElementById('predictionForm');
+        const loading = document.getElementById('loading');
+        const resultDiv = document.getElementById('result');
+        const errorDiv = document.getElementById('error');
+        
+        // Priority badge mapping
+        const priorityBadges = {
+            'high': '<span class="badge badge-high">🔴 High Priority</span>',
+            'medium': '<span class="badge badge-medium">🟡 Medium Priority</span>',
+            'low': '<span class="badge badge-low">🟢 Low Priority</span>'
+        };
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Get form data
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const department = document.getElementById('department').value;
+            
+            // Validate
+            if (!title && !description) {
+                showError('Please provide either a title or description');
+                return;
+            }
+            
+            // Show loading
+            loading.classList.add('show');
+            resultDiv.classList.remove('show');
+            errorDiv.classList.remove('show');
+            
+            try {
+                // Make API call
+                const response = await fetch(`${API_URL}/predict`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        title: title,
+                        description: description,
+                        department: department
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Prediction failed');
+                }
+                
+                if (data.success) {
+                    // Display results
+                    displayResults(data);
+                } else {
+                    throw new Error(data.error || 'Unknown error occurred');
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showError(error.message || 'Failed to connect to the API. Make sure the backend is running.');
+            } finally {
+                loading.classList.remove('show');
+            }
+        });
+        
+        function displayResults(data) {
+            const prediction = data.prediction;
+            
+            // Update values
+            document.getElementById('category').textContent = prediction.category;
+            document.getElementById('audience').textContent = prediction.audience;
+            
+            // Update priority with badge
+            const priorityValue = prediction.priority.toLowerCase();
+            const priorityElement = document.getElementById('priority');
+            if (priorityBadges[priorityValue]) {
+                priorityElement.innerHTML = priorityBadges[priorityValue];
+            } else {
+                priorityElement.textContent = prediction.priority;
+            }
+            
+            // Update suggestions
+            const suggestionsText = data.suggestions?.priority_meaning || 
+                                   `This is a ${prediction.priority} priority notice. ` +
+                                   (prediction.priority === 'High' ? 'Requires immediate attention.' :
+                                    prediction.priority === 'Medium' ? 'Should be addressed soon.' :
+                                    'Can be addressed when convenient.');
+            
+            document.getElementById('suggestions').innerHTML = suggestionsText;
+            
+            // Show result
+            resultDiv.classList.add('show');
+            
+            // Smooth scroll to results
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        function showError(message) {
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                errorDiv.classList.remove('show');
+            }, 5000);
+        }
+        
+        // Check API health on page load
+        async function checkHealth() {
+            try {
+                const response = await fetch(`${API_URL}/health`);
+                const data = await response.json();
+                
+                if (data.status === 'healthy') {
+                    console.log('✅ API is healthy');
+                } else {
+                    console.warn('⚠️ API health check failed');
+                }
+            } catch (error) {
+                console.error('❌ Cannot connect to API. Make sure backend is running on', API_URL);
+                showError('Cannot connect to the classification service. Please contact administrator.');
+            }
+        }
+        
+        // Load model info
+        async function loadModelInfo() {
+            try {
+                const response = await fetch(`${API_URL}/info`);
+                const data = await response.json();
+                console.log('Model Info:', data);
+            } catch (error) {
+                console.error('Failed to load model info:', error);
+            }
+        }
+        
+        // Initialize
+        checkHealth();
+        loadModelInfo();
+    </script>
+</body>
+</html>

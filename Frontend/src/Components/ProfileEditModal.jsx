@@ -17,7 +17,7 @@ const ProfileEditModal = ({ isOpen, user, onClose, onUpdate }) => {
   const [activeTab, setActiveTab] = useState("basic");
 
   // Use your actual backend URL
-  const API = "http://localhost:5000"; // Change this to your production URL when deploying
+  const API = "https://pciunotifybackend.onrender.com"; // Change this to your production URL when deploying
 
   useEffect(() => {
     if (user) {

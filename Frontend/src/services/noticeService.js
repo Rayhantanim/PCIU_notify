@@ -1,7 +1,7 @@
 // services/noticeService.js
 // Use production URL consistently
 const API = "https://pciunotifybackend.onrender.com";
-// const API = "http://localhost:5000"; // Comment this out for production
+// const API = "http://localhost:5000"; 
 
 export const noticeService = {
   async getNotices() {

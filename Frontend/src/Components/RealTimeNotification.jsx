@@ -7,7 +7,7 @@ import DoneAllIcon from "@mui/icons-material/DoneAll";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../Context/ThemeContext";
 
 export default function RealTimeNotification() {
   const { isDarkMode } = useTheme();

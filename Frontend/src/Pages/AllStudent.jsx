@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaUsers, FaSearch, FaUserGraduate, FaEnvelope, FaPhone, FaIdCard, FaBuilding, FaBookOpen } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../Context/ThemeContext";
 
 const AllStudent = () => {
   const { isDarkMode } = useTheme();

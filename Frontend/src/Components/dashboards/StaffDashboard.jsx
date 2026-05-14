@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { CartesianGrid, Legend, Line, LineChart, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
 import { FaFileAlt, FaUsers, FaChalkboardTeacher, FaUserTie, FaCalendarAlt, FaArrowUp, FaArrowDown, FaChartLine } from "react-icons/fa";
 import { MdNotificationsActive, MdTrendingUp, MdTrendingDown } from "react-icons/md";
-import { useTheme } from "../../context/ThemeContext";
+import { useTheme } from "../../Context/ThemeContext";
 
 export default function StaffDashboard() {
   const { isDarkMode } = useTheme();

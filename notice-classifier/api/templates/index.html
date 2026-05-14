@@ -1,0 +1,189 @@
+<!-- api/templates/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notice Classification API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #e8f5e9;
+            border-radius: 5px;
+            display: none;
+        }
+        .result h3 {
+            margin-top: 0;
+            color: #2e7d32;
+        }
+        .prediction-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+        }
+        .prediction-label {
+            font-weight: bold;
+            color: #666;
+        }
+        .prediction-value {
+            color: #2e7d32;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .error {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .loading {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 Notice Classification API</h1>
+        <p>Predict category, audience, and priority for university notices</p>
+        
+        <form id="predictionForm">
+            <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" required placeholder="Enter notice title">
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" placeholder="Enter notice description"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="department">Department (optional):</label>
+                <input type="text" id="department" name="department" placeholder="e.g., CSE, BBA, EEE">
+            </div>
+            
+            <button type="submit">Predict</button>
+        </form>
+        
+        <div class="loading" id="loading">
+            🤖 Analyzing your notice...
+        </div>
+        
+        <div class="result" id="result">
+            <h3>📊 Prediction Results</h3>
+            <div class="prediction-item">
+                <span class="prediction-label">Category:</span>
+                <span class="prediction-value" id="category"></span>
+            </div>
+            <div class="prediction-item">
+                <span class="prediction-label">Audience:</span>
+                <span class="prediction-value" id="audience"></span>
+            </div>
+            <div class="prediction-item">
+                <span class="prediction-label">Priority:</span>
+                <span class="prediction-value" id="priority"></span>
+            </div>
+            <div class="prediction-item">
+                <span class="prediction-label">Strategy:</span>
+                <span class="prediction-value" id="strategy"></span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const department = document.getElementById('department').value;
+            
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+            
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ title, description, department })
+                });
+                
+                const data = await response.json();
+                
+                // Hide loading
+                document.getElementById('loading').style.display = 'none';
+                
+                if (data.success) {
+                    document.getElementById('category').textContent = data.prediction.category;
+                    document.getElementById('audience').textContent = data.prediction.audience;
+                    document.getElementById('priority').textContent = data.prediction.priority;
+                    document.getElementById('strategy').textContent = data.suggestions.notification_channel || 'Standard notification';
+                    document.getElementById('result').style.display = 'block';
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (error) {
+                document.getElementById('loading').style.display = 'none';
+                alert('Error connecting to API. Make sure the server is running.');
+            }
+        });
+    </script>
+</body>
+</html>

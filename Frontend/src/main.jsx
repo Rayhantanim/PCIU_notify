@@ -7,7 +7,7 @@ import "./index.css";
 import App from "./App";
 import Home from "./Pages/Home";
 import AuthProvider from "./Provider/AuthProvider";
-import { ThemeProvider } from "./context/ThemeContext";
+import { ThemeProvider } from "./Context/ThemeContext";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
