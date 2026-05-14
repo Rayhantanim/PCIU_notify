@@ -6,7 +6,7 @@ import { FaChalkboardTeacher, FaEdit, FaTrash, FaUserGraduate, FaCalendarAlt, Fa
 import { MdClose, MdNotificationsActive } from "react-icons/md";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-import { useTheme } from "../../context/ThemeContext";
+import { useTheme } from "../../Context/ThemeContext";
 
 // ============== NOTICE MODAL COMPONENT ==============
 const NoticeModal = ({ notice, onClose }) => {

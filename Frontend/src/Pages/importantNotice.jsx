@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { MdNotificationImportant } from "react-icons/md";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../Context/ThemeContext";
 
 const ImportantNotice = () => {
   const { isDarkMode } = useTheme();

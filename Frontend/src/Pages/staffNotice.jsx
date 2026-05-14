@@ -6,7 +6,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { MdEdit } from "react-icons/md";
 import { IoPeopleSharp } from "react-icons/io5";
 import Swal from 'sweetalert2';
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../Context/ThemeContext";
 
 
 export default function StaffNotice() {

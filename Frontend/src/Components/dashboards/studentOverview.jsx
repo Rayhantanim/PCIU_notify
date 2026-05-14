@@ -3,7 +3,7 @@ import * as XLSX from 'xlsx';
 import NoticeModal from '../noticeModal';
 import { noticeService } from '../../services/noticeService.js';
 import { MdClass } from "react-icons/md";
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../Context/ThemeContext';
 
 const StudentOverview = () => {
   const { isDarkMode } = useTheme();

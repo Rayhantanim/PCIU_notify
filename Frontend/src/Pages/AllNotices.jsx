@@ -9,7 +9,7 @@ import { FaSearch, FaFilter, FaCalendarAlt, FaHeart, FaRegHeart } from "react-ic
 import Swal from 'sweetalert2';
 import NoticeModal from "../Components/NoticeModal";
 import { noticeService } from "../services/noticeService";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../Context/ThemeContext";
 
 const AllNotices = () => {
   const { isDarkMode } = useTheme();
