@@ -3,8 +3,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import emailjs from "@emailjs/browser";
-import TemplateSelector from "../components/TemplateSelector";
-import TemplateFormModal from "../components/TemplateFormModal";
+import TemplateSelector from "../Components/TemplateSelector";
+import TemplateFormModal from "../Components/TemplateFormModal";
 import {
   FaFileAlt,
   FaRobot,
