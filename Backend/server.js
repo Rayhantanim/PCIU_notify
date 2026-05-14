@@ -24,11 +24,21 @@ const io = new Server(server, {
   transports: ['websocket', 'polling'],
 });
 
+// Create email transporter
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: process.env.EMAIL_USER || 'your_email@gmail.com',
-    pass: process.env.EMAIL_PASS || 'your_app_password'
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
+});
+
+// Verify email configuration
+transporter.verify((error, success) => {
+  if (error) {
+    console.error("❌ Email configuration error:", error);
+  } else {
+    console.log("✅ Email service is ready to send notifications");
   }
 });
 
@@ -45,7 +55,9 @@ io.on("connection", (socket) => {
   });
 });
 
+// Make transporter and io available to routes
 app.set("io", io);
+app.set("transporter", transporter);
 
 // Middleware
 app.use(cors({
@@ -64,7 +76,7 @@ app.use("/api", require("./routes/auth"));
 app.use("/api", require("./routes/notifications"));
 app.use("/api", require("./routes/Department"));
 
-// MongoDB Connection - WITHOUT deprecated options
+// MongoDB Connection
 const connectDB = async () => {
   try {
     const mongoURI = process.env.MONGO_URI || process.env.MONGODB_URI;
@@ -76,10 +88,7 @@ const connectDB = async () => {
     }
     
     console.log("📡 Connecting to MongoDB...");
-    
-    // Connect WITHOUT the deprecated options
     await mongoose.connect(mongoURI);
-    
     console.log("✅ MongoDB Connected Successfully");
     console.log("📊 Database:", mongoose.connection.db.databaseName);
     
@@ -141,3 +150,5 @@ server.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📡 Socket.io ready for connections`);
 });
+
+module.exports = { app, transporter, io };

@@ -16,6 +16,7 @@ const StudentOverview = () => {
   const [showOnlyRecent, setShowOnlyRecent] = useState(false);
   const [loadingNotices, setLoadingNotices] = useState(true);
   const [noticeError, setNoticeError] = useState(null);
+  const [likingInProgress, setLikingInProgress] = useState(new Set());
 
   // Modal state
   const [selectedNotice, setSelectedNotice] = useState(null);
@@ -44,6 +45,12 @@ const StudentOverview = () => {
 
   const DAYS_ORDER = ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'];
 
+  // Helper function to check if user liked a notice
+  const hasUserLiked = (notice) => {
+    if (!currentStudent.userId || !notice || !notice.likesArray) return false;
+    return notice.likesArray.some(likeId => likeId?.toString() === currentStudent.userId?.toString());
+  };
+
   // ================== SORTING ==================
   const sortNoticesByDate = (noticesArray) => {
     if (!noticesArray || noticesArray.length === 0) return [];
@@ -57,6 +64,18 @@ const StudentOverview = () => {
       return dateB - dateA;
     });
   };
+
+  // Sync modal with latest notice data when notices change
+  useEffect(() => {
+    if (selectedNotice && isModalOpen) {
+      const latestNotice = allNotices.find(n => n._id === selectedNotice._id) ||
+                          notices.find(n => n._id === selectedNotice._id);
+      
+      if (latestNotice && JSON.stringify(latestNotice) !== JSON.stringify(selectedNotice)) {
+        setSelectedNotice(latestNotice);
+      }
+    }
+  }, [allNotices, notices, selectedNotice?._id, isModalOpen]);
 
   const formatTimeAgo = (dateString) => {
     if (!dateString) return '';
@@ -109,9 +128,6 @@ const StudentOverview = () => {
     }
   }, []);
 
-  console.log('Current student info:', currentStudent);
- 
-
   // ================== FETCH NOTICES FROM API ==================
   const fetchNotices = async () => {
     try {
@@ -124,6 +140,17 @@ const StudentOverview = () => {
         let noticeSection = notice.section;
         if (noticeSection && !noticeSection.includes('-') && notice.department)
           noticeSection = `${notice.department}-${noticeSection}`;
+        
+        // Handle likes array
+        let likesArray = [];
+        let likesCount = 0;
+        if (Array.isArray(notice.likes)) {
+          likesArray = notice.likes;
+          likesCount = notice.likes.length;
+        } else if (typeof notice.likes === 'number') {
+          likesCount = notice.likes;
+        }
+        
         return {
           _id: notice._id, id: notice._id, title: notice.title,
           description: notice.description || notice.content,
@@ -134,10 +161,12 @@ const StudentOverview = () => {
           isNew: notice.createdAt ? (new Date() - new Date(notice.createdAt)) < 7 * 24 * 60 * 60 * 1000 : false,
           priority: notice.priority, audience: notice.audience || [],
           department: notice.department, section: noticeSection,
-          likes: notice.likes || 0,
+          likes: likesCount,
+          likesArray: likesArray,
           comments: (notice.comments || []).map(c => ({ ...c, _id: c._id || c.id })),
           attachment: notice.attachment, isPinned: notice.isPinned,
-          expiryDate: notice.expiryDate, author: notice.author || notice.createdBy || 'Admin'
+          expiryDate: notice.expiryDate, author: notice.author || notice.createdBy || 'Admin',
+          createdBy: notice.createdBy
         };
       });
 
@@ -186,63 +215,198 @@ const StudentOverview = () => {
 
   // ================== LIKE ==================
   const handleLike = async (noticeId) => {
+    if (!currentStudent.userId) {
+      console.error("No user ID found");
+      return;
+    }
+    
+    if (likingInProgress.has(noticeId)) return;
+    
+    // Find current notice to check like status BEFORE API call
+    const currentNotice = allNotices.find(n => n._id === noticeId) || notices.find(n => n._id === noticeId);
+    if (!currentNotice) return;
+    
+    const wasLiked = hasUserLiked(currentNotice);
+    
+    setLikingInProgress(prev => new Set(prev).add(noticeId));
+    
     try {
-      const updateLikes = (prev) =>
-        prev.map(n => n._id === noticeId ? { ...n, likes: (n.likes || 0) + 1 } : n);
-      setNotices(updateLikes);
-      setAllNotices(a => sortNoticesByDate(updateLikes(a)));
-      if (selectedNotice?._id === noticeId)
-        setSelectedNotice(p => ({ ...p, likes: (p.likes || 0) + 1 }));
-      await noticeService.likeNotice(noticeId, currentStudent.userId);
-    } catch { await fetchNotices(); }
+      const result = await noticeService.likeNotice(noticeId, currentStudent.userId);
+      
+      if (result.success) {
+        const updateNoticeLikes = (notice) => {
+          if (notice._id === noticeId) {
+            const newLikesCount = wasLiked ? notice.likes - 1 : notice.likes + 1;
+            const newLikesArray = wasLiked 
+              ? (notice.likesArray || []).filter(id => id?.toString() !== currentStudent.userId?.toString())
+              : [...(notice.likesArray || []), currentStudent.userId];
+            
+            return {
+              ...notice,
+              likes: newLikesCount,
+              likesArray: newLikesArray
+            };
+          }
+          return notice;
+        };
+        
+        // Update all state arrays
+        setAllNotices(prev => sortNoticesByDate(prev.map(updateNoticeLikes)));
+        setNotices(prev => sortNoticesByDate(prev.map(updateNoticeLikes)));
+        
+        // Update selectedNotice if this notice is currently open in modal
+        if (selectedNotice && selectedNotice._id === noticeId) {
+          setSelectedNotice(prev => {
+            const newLikesCount = wasLiked ? prev.likes - 1 : prev.likes + 1;
+            const newLikesArray = wasLiked 
+              ? (prev.likesArray || []).filter(id => id?.toString() !== currentStudent.userId?.toString())
+              : [...(prev.likesArray || []), currentStudent.userId];
+            
+            return {
+              ...prev,
+              likes: newLikesCount,
+              likesArray: newLikesArray
+            };
+          });
+        }
+        
+        toast.success(wasLiked ? "💔 Unliked" : "❤️ Liked");
+      }
+    } catch (error) {
+      console.error("Failed to like notice:", error);
+    } finally {
+      setLikingInProgress(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(noticeId);
+        return newSet;
+      });
+    }
   };
 
   // ================== COMMENTS ==================
   const handleCommentSubmit = async (noticeId, text) => {
-    if (!text.trim()) return;
+    if (!text.trim()) return false;
+    
     const commentData = {
-      text: text.trim(), userId: currentStudent.userId, userName: currentStudent.name,
-      userEmail: currentStudent.email, createdAt: new Date().toISOString()
+      text: text.trim(),
+      userId: currentStudent.userId,
+      userName: currentStudent.name,
+      userEmail: currentStudent.email,
+      createdAt: new Date().toISOString()
     };
+    
     try {
-      const newComment = { ...commentData, _id: `temp_${Date.now()}` };
-      const updateComments = (prev) =>
-        prev.map(n => n._id === noticeId ? { ...n, comments: [...(n.comments || []), newComment] } : n);
-      setNotices(updateComments);
-      setAllNotices(a => sortNoticesByDate(updateComments(a)));
-      if (selectedNotice?._id === noticeId)
-        setSelectedNotice(p => ({ ...p, comments: [...(p.comments || []), newComment] }));
-      await noticeService.addComment(noticeId, commentData);
-      await fetchNotices();
-    } catch { await fetchNotices(); }
+      const result = await noticeService.addComment(noticeId, commentData);
+      
+      if (result.success) {
+        const newComment = {
+          _id: result.comment?._id || Date.now().toString(),
+          text: text.trim(),
+          userId: currentStudent.userId,
+          userName: currentStudent.name,
+          userEmail: currentStudent.email,
+          createdAt: new Date().toISOString()
+        };
+        
+        const updateComments = (notice) => {
+          if (notice._id === noticeId) {
+            return {
+              ...notice,
+              comments: [...(notice.comments || []), newComment]
+            };
+          }
+          return notice;
+        };
+        
+        // Update all state arrays
+        setAllNotices(prev => sortNoticesByDate(prev.map(updateComments)));
+        setNotices(prev => sortNoticesByDate(prev.map(updateComments)));
+        
+        // Update selectedNotice if this notice is currently open in modal
+        if (selectedNotice && selectedNotice._id === noticeId) {
+          setSelectedNotice(prev => ({
+            ...prev,
+            comments: [...(prev.comments || []), newComment]
+          }));
+        }
+        
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error("Failed to add comment:", error);
+      return false;
+    }
   };
 
   const handleCommentEdit = async (noticeId, commentId, text) => {
+    if (!text.trim()) return;
+    
     try {
-      const updateComments = (prev) =>
-        prev.map(n => n._id === noticeId
-          ? { ...n, comments: (n.comments || []).map(c => c._id === commentId ? { ...c, text, editedAt: new Date().toISOString() } : c) }
-          : n);
-      setNotices(updateComments);
-      setAllNotices(a => sortNoticesByDate(updateComments(a)));
-      if (selectedNotice?._id === noticeId)
-        setSelectedNotice(p => ({ ...p, comments: (p.comments || []).map(c => c._id === commentId ? { ...c, text, editedAt: new Date().toISOString() } : c) }));
-      await noticeService.editComment(noticeId, commentId, text, currentStudent.userId);
-    } catch { await fetchNotices(); }
+      const result = await noticeService.editComment(noticeId, commentId, text, currentStudent.userId);
+      
+      if (result.success) {
+        const updateComments = (notice) => {
+          if (notice._id === noticeId) {
+            return {
+              ...notice,
+              comments: (notice.comments || []).map(c => 
+                c._id === commentId ? { ...c, text: text.trim(), updatedAt: new Date().toISOString() } : c
+              )
+            };
+          }
+          return notice;
+        };
+        
+        // Update all state arrays
+        setAllNotices(prev => sortNoticesByDate(prev.map(updateComments)));
+        setNotices(prev => sortNoticesByDate(prev.map(updateComments)));
+        
+        // Update selectedNotice if this notice is currently open in modal
+        if (selectedNotice && selectedNotice._id === noticeId) {
+          setSelectedNotice(prev => ({
+            ...prev,
+            comments: (prev.comments || []).map(c => 
+              c._id === commentId ? { ...c, text: text.trim(), updatedAt: new Date().toISOString() } : c
+            )
+          }));
+        }
+      }
+    } catch (error) {
+      console.error("Failed to edit comment:", error);
+    }
   };
 
   const handleCommentDelete = async (noticeId, commentId) => {
     try {
-      const updateComments = (prev) =>
-        prev.map(n => n._id === noticeId
-          ? { ...n, comments: (n.comments || []).filter(c => c._id !== commentId) }
-          : n);
-      setNotices(updateComments);
-      setAllNotices(a => sortNoticesByDate(updateComments(a)));
-      if (selectedNotice?._id === noticeId)
-        setSelectedNotice(p => ({ ...p, comments: (p.comments || []).filter(c => c._id !== commentId) }));
-      await noticeService.deleteComment(noticeId, commentId, currentStudent.userId);
-    } catch { await fetchNotices(); }
+      const result = await noticeService.deleteComment(noticeId, commentId, currentStudent.userId);
+      
+      if (result.success) {
+        const updateComments = (notice) => {
+          if (notice._id === noticeId) {
+            return {
+              ...notice,
+              comments: (notice.comments || []).filter(c => c._id !== commentId)
+            };
+          }
+          return notice;
+        };
+        
+        // Update all state arrays
+        setAllNotices(prev => sortNoticesByDate(prev.map(updateComments)));
+        setNotices(prev => sortNoticesByDate(prev.map(updateComments)));
+        
+        // Update selectedNotice if this notice is currently open in modal
+        if (selectedNotice && selectedNotice._id === noticeId) {
+          setSelectedNotice(prev => ({
+            ...prev,
+            comments: (prev.comments || []).filter(c => c._id !== commentId)
+          }));
+        }
+      }
+    } catch (error) {
+      console.error("Failed to delete comment:", error);
+    }
   };
 
   // ================== MODAL ==================
@@ -381,7 +545,7 @@ const StudentOverview = () => {
             </div>
           </div>
 
-          {/* Stats row - Responsive grid */}
+          {/* Stats row */}
           <div className="grid grid-cols-3 gap-2 sm:gap-3 mt-6">
             {[
               { label: 'Classes / week', value: classes.length, icon: '📖', color: 'text-blue-600', darkColor: 'text-blue-400', bg: 'bg-blue-50', darkBg: 'bg-blue-900/20', border: 'border-blue-100', darkBorder: 'border-blue-800' },
@@ -794,6 +958,7 @@ const StudentOverview = () => {
         onCommentEdit={handleCommentEdit}
         onCommentDelete={handleCommentDelete}
         currentUser={currentStudent}
+        likingInProgress={likingInProgress}
       />
     </div>
   );

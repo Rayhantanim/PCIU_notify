@@ -1,6 +1,7 @@
 // services/noticeService.js
-// const API = "https://pciunotifybackend.onrender.com";
-const API = "http://localhost:5000";
+// Use production URL consistently
+const API = "https://pciunotifybackend.onrender.com";
+// const API = "http://localhost:5000"; // Comment this out for production
 
 export const noticeService = {
   async getNotices() {
@@ -15,26 +16,26 @@ export const noticeService = {
       });
       
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Server response:", errorText);
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
       
-      const data = await response.json();
-      return data;
+      return await response.json();
     } catch (error) {
       console.error("Error fetching notices:", error);
       throw error;
     }
   },
 
-  async getNoticeById(noticeId) {
+  async likeNotice(noticeId, userId) {
     try {
-      const response = await fetch(`${API}/api/notice/${noticeId}/details`, {
-        method: "GET",
+      console.log(`📤 Sending like request to: ${API}/api/notice/${noticeId}/like`);
+      
+      const response = await fetch(`${API}/api/notice/${noticeId}/like`, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
-        }
+        },
+        body: JSON.stringify({ userId }),
       });
       
       if (!response.ok) {
@@ -44,42 +45,12 @@ export const noticeService = {
       }
       
       const data = await response.json();
-      return data;
+      return { success: true, ...data };
     } catch (error) {
-      console.error("Error fetching notice:", error);
-      throw error;
+      console.error("Error liking notice:", error);
+      return { success: false, message: error.message };
     }
   },
-
- // services/noticeService.js
-async likeNotice(noticeId, userId) {
-  try {
-    const response = await fetch(`${API}/api/notice/${noticeId}/like`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userId }),
-    });
-    
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Server response:", errorText);
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-    }
-    
-    const data = await response.json();
-    return { 
-      success: true, 
-      message: data.message,
-      liked: data.liked, // true for liked, false for unliked
-      likesCount: data.likesCount 
-    };
-  } catch (error) {
-    console.error("Error liking notice:", error);
-    return { success: false, message: error.message };
-  }
-},
 
   async addComment(noticeId, commentData) {
     try {
@@ -98,7 +69,7 @@ async likeNotice(noticeId, userId) {
       }
       
       const data = await response.json();
-      return { success: response.ok, ...data };
+      return { success: true, ...data };
     } catch (error) {
       console.error("Error adding comment:", error);
       return { success: false, message: error.message };
@@ -122,7 +93,7 @@ async likeNotice(noticeId, userId) {
       }
       
       const data = await response.json();
-      return { success: response.ok, ...data };
+      return { success: true, ...data };
     } catch (error) {
       console.error("Error editing comment:", error);
       return { success: false, message: error.message };
@@ -146,13 +117,10 @@ async likeNotice(noticeId, userId) {
       }
       
       const data = await response.json();
-      return { success: response.ok, ...data };
+      return { success: true, ...data };
     } catch (error) {
       console.error("Error deleting comment:", error);
       return { success: false, message: error.message };
     }
   },
 };
-
-// Default export for compatibility
-export default noticeService;

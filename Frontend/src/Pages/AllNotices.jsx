@@ -49,6 +49,8 @@ const AllNotices = () => {
   });
   
   const API = "https://pciunotifybackend.onrender.com";
+  const API2 = "http://localhost:5000";
+
 
   // Get logged-in user info
   const firstName = localStorage.getItem("firstName") || "";
