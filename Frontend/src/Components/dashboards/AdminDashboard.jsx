@@ -8,7 +8,7 @@ import { FaChalkboardTeacher, FaKey, FaSearch, FaFilter, FaTimes, FaCheck } from
 import { PiStudentFill } from "react-icons/pi";
 import { PiCheckFill } from "react-icons/pi";
 import Swal from 'sweetalert2';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../Context/ThemeContext';
 
 const API_BASE_URL = 'https://pciunotifybackend.onrender.com/api';
 const API_BASE_URL2 = 'http://localhost:5000/api';

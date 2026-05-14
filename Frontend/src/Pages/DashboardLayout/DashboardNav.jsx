@@ -5,7 +5,7 @@ import SimpleBadge from "../../Components/Notification";
 import RealTimeNotification from "../../Components/RealTimeNotification";
 import Swal from "sweetalert2";
 import ProfileEditModal from "../../Components/ProfileEditModal";
-import { useTheme } from "../../context/ThemeContext";
+import { useTheme } from "../../Context/ThemeContext";
 // import ChangePasswordModal from "../../Components/ChangePasswordModal";
 
 const DashboardNav = () => {
