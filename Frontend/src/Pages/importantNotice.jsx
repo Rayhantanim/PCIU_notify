@@ -1,11 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { MdNotificationImportant } from "react-icons/md";
 import { useTheme } from "../Context/ThemeContext";
+import NoticeModal from "../Components/NoticeModal"; // Import your existing NoticeModal
+import { noticeService } from "../services/noticeService"; // Import noticeService for like/comment functionality
 
 const ImportantNotice = () => {
   const { isDarkMode } = useTheme();
   const [notices, setNotices] = useState([]);
+  const [selectedNotice, setSelectedNotice] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [likingInProgress, setLikingInProgress] = useState(new Set());
   const API = "https://pciunotifybackend.onrender.com";
+
+  // Get logged-in user info
+  const userId = localStorage.getItem("userId") || localStorage.getItem("_id");
+  const firstName = localStorage.getItem("firstName") || "";
+  const lastName = localStorage.getItem("lastName") || "";
+  const fullName = localStorage.getItem("fullName") || `${firstName} ${lastName}`;
+  const userEmail = localStorage.getItem("email") || "";
+  const userRole = localStorage.getItem("role") || "";
+
+  const currentUser = {
+    name: fullName,
+    userId: userId,
+    email: userEmail,
+    firstName: firstName,
+    lastName: lastName,
+    role: userRole
+  };
 
   useEffect(() => {
     const fetchNotices = async () => {
@@ -18,7 +40,14 @@ const ImportantNotice = () => {
           (notice) => notice.priority === "urgent"
         );
 
-        setNotices(urgentNotices);
+        // Transform notices to include likesArray
+        const transformedNotices = urgentNotices.map(notice => ({
+          ...notice,
+          likesArray: Array.isArray(notice.likes) ? notice.likes : [],
+          likes: Array.isArray(notice.likes) ? notice.likes.length : (notice.likes || 0)
+        }));
+
+        setNotices(transformedNotices);
       } catch (err) {
         console.log(err);
       }
@@ -34,6 +63,164 @@ const ImportantNotice = () => {
       month: "short",
       day: "numeric",
     });
+  };
+
+  const openModal = (notice) => {
+    setSelectedNotice(notice);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedNotice(null);
+  };
+
+  // Like handler
+  const handleLike = async (noticeId) => {
+    if (!userId) {
+      toast.error("Please login to like notices");
+      return;
+    }
+    
+    if (likingInProgress.has(noticeId)) return;
+    
+    const currentNotice = notices.find(n => n._id === noticeId);
+    if (!currentNotice) return;
+    
+    const wasLiked = currentNotice.likesArray?.some(like => like?.toString() === userId?.toString());
+    
+    setLikingInProgress(prev => new Set(prev).add(noticeId));
+    
+    try {
+      const result = await noticeService.likeNotice(noticeId, userId);
+      
+      if (result.success) {
+        const updateNoticeLikes = (notice) => {
+          if (notice._id === noticeId) {
+            const newLikesCount = wasLiked ? notice.likes - 1 : notice.likes + 1;
+            const newLikesArray = wasLiked 
+              ? (notice.likesArray || []).filter(id => id?.toString() !== userId?.toString())
+              : [...(notice.likesArray || []), userId];
+            
+            return {
+              ...notice,
+              likes: newLikesCount,
+              likesArray: newLikesArray
+            };
+          }
+          return notice;
+        };
+        
+        setNotices(prev => prev.map(updateNoticeLikes));
+        
+        if (wasLiked) {
+          toast.success("💔 Unliked successfully");
+        } else {
+          toast.success("❤️ Liked successfully");
+        }
+      }
+    } catch (error) {
+      console.error("Failed to like notice:", error);
+    } finally {
+      setLikingInProgress(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(noticeId);
+        return newSet;
+      });
+    }
+  };
+
+  // Comment handlers
+  const handleCommentSubmit = async (noticeId, text) => {
+    if (!text.trim()) return false;
+    
+    const commentData = {
+      text: text.trim(),
+      userId: userId,
+      userName: currentUser.name,
+      userEmail: currentUser.email,
+      createdAt: new Date().toISOString()
+    };
+    
+    try {
+      const result = await noticeService.addComment(noticeId, commentData);
+      if (result.success) {
+        const newComment = {
+          _id: result.comment?._id || Date.now().toString(),
+          text: text.trim(),
+          userId: userId,
+          userName: currentUser.name,
+          userEmail: currentUser.email,
+          createdAt: new Date().toISOString()
+        };
+        
+        const updateComments = (notice) => {
+          if (notice._id === noticeId) {
+            return {
+              ...notice,
+              comments: [...(notice.comments || []), newComment]
+            };
+          }
+          return notice;
+        };
+        
+        setNotices(prev => prev.map(updateComments));
+        toast.success("💬 Comment added successfully");
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error("Failed to add comment:", error);
+      return false;
+    }
+  };
+
+  const handleCommentEdit = async (noticeId, commentId, text) => {
+    try {
+      const result = await noticeService.editComment(noticeId, commentId, text, userId);
+      if (result.success) {
+        const updateComments = (notice) => {
+          if (notice._id === noticeId) {
+            return {
+              ...notice,
+              comments: notice.comments.map(comment => 
+                comment._id === commentId 
+                  ? { ...comment, text: text.trim(), updatedAt: new Date().toISOString() }
+                  : comment
+              )
+            };
+          }
+          return notice;
+        };
+        
+        setNotices(prev => prev.map(updateComments));
+        toast.success("✏️ Comment updated successfully");
+      }
+    } catch (error) {
+      console.error("Failed to edit comment:", error);
+    }
+  };
+
+  const handleCommentDelete = async (noticeId, commentId) => {
+    try {
+      const result = await noticeService.deleteComment(noticeId, commentId, userId);
+      if (result.success) {
+        const updateComments = (notice) => {
+          if (notice._id === noticeId) {
+            return {
+              ...notice,
+              comments: notice.comments.filter(comment => comment._id !== commentId)
+            };
+          }
+          return notice;
+        };
+        
+        setNotices(prev => prev.map(updateComments));
+        toast.success("🗑️ Comment deleted successfully");
+      }
+    } catch (error) {
+      console.error("Failed to delete comment:", error);
+    }
   };
 
   return (
@@ -66,7 +253,7 @@ const ImportantNotice = () => {
             </div>
             {notices.length > 0 && (
               <div className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                ⚠️ Please check these notices carefully
+                ⚠️ Click on any notice to view details
               </div>
             )}
           </div>
@@ -82,10 +269,11 @@ const ImportantNotice = () => {
           </div>
         ) : (
           <div className="space-y-4">
-            {notices.map((notice, index) => (
+            {notices.map((notice) => (
               <div
                 key={notice._id}
-                className={`group relative overflow-hidden rounded-2xl transition-all duration-300 ${
+                onClick={() => openModal(notice)}
+                className={`group relative overflow-hidden rounded-2xl transition-all duration-300 cursor-pointer ${
                   isDarkMode 
                     ? 'bg-gray-800 border-l-4 border-red-500 hover:border-orange-500' 
                     : 'bg-white border-l-4 border-red-500 hover:border-blue-600'
@@ -109,11 +297,10 @@ const ImportantNotice = () => {
                     {notice.title}
                   </h3>
 
-                  {/* Description */}
-                  <div className={`mb-4 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                    <div dangerouslySetInnerHTML={{ 
-                      __html: notice.description || 'No description provided' 
-                    }} />
+                  {/* Description Preview */}
+                  <div className={`mb-4 line-clamp-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                    {notice.description?.replace(/<[^>]*>/g, "").substring(0, 150)}
+                    {notice.description?.replace(/<[^>]*>/g, "").length > 150 ? "..." : ""}
                   </div>
 
                   {/* Meta Information */}
@@ -145,23 +332,15 @@ const ImportantNotice = () => {
                       )}
                     </div>
 
-                    {/* Audience Badges */}
-                    {notice.audience && notice.audience.length > 0 && (
-                      <div className="flex flex-wrap gap-2">
-                        {notice.audience.map((aud) => (
-                          <span
-                            key={aud}
-                            className={`text-xs px-2 py-1 rounded-full ${
-                              isDarkMode 
-                                ? 'bg-purple-900/30 text-purple-400 border border-purple-800'
-                                : 'bg-purple-100 text-purple-700'
-                            }`}
-                          >
-                            👥 {aud}
-                          </span>
-                        ))}
-                      </div>
-                    )}
+                    {/* Like & Comment Count */}
+                    <div className="flex items-center gap-3 text-sm">
+                      <span className={`flex items-center gap-1 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                        ❤️ {notice.likes || 0}
+                      </span>
+                      <span className={`flex items-center gap-1 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                        💬 {notice.comments?.length || 0}
+                      </span>
+                    </div>
                   </div>
 
                   {/* Expiry Warning */}
@@ -186,10 +365,23 @@ const ImportantNotice = () => {
           <div className={`mt-8 p-4 rounded-xl text-center text-sm ${
             isDarkMode ? 'bg-gray-800 text-gray-400' : 'bg-white text-gray-500'
           } shadow-sm border ${isDarkMode ? 'border-gray-700' : 'border-slate-200'}`}>
-            <p>❗ Urgent notices require immediate attention. Please review them carefully and take necessary action.</p>
+            <p>❗ Urgent notices require immediate attention. Click on any notice to view full details, like, and comment.</p>
           </div>
         )}
       </div>
+
+      {/* Notice Modal */}
+      <NoticeModal
+        notice={selectedNotice}
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onLike={handleLike}
+        onCommentSubmit={handleCommentSubmit}
+        onCommentEdit={handleCommentEdit}
+        onCommentDelete={handleCommentDelete}
+        currentUser={currentUser}
+        likingInProgress={likingInProgress}
+      />
     </div>
   );
 };

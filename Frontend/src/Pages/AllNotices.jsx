@@ -18,7 +18,7 @@ const AllNotices = () => {
   const [myNotices, setMyNotices] = useState([]);
   const [otherNotices, setOtherNotices] = useState([]);
   const [editingNotice, setEditingNotice] = useState(null);
-  const [activeTab, setActiveTab] = useState("my");
+  const [activeTab, setActiveTab] = useState("all"); // Changed default to "all"
   const [likingInProgress, setLikingInProgress] = useState(new Set());
 
   // Modal state
@@ -49,22 +49,36 @@ const AllNotices = () => {
   });
   
   const API = "https://pciunotifybackend.onrender.com";
-  const API2 = "http://localhost:5000";
-
 
   // Get logged-in user info
   const firstName = localStorage.getItem("firstName") || "";
   const lastName = localStorage.getItem("lastName") || "";
   const fullName = localStorage.getItem("fullName") || `${firstName} ${lastName}`;
   const userId = localStorage.getItem("userId") || localStorage.getItem("_id");
+  const userEmail = localStorage.getItem("email") || "";
+  const userRole = localStorage.getItem("role") || "";
+  
+  // Determine which tabs to show based on role
+  const showMyNoticesTab = userRole !== "student"; // Show for admin, teacher, staff
+  const showAllNoticesTab = true; // Always show All Notices tab
+  
+  // Set default tab based on role
+  useEffect(() => {
+    if (userRole === "student") {
+      setActiveTab("all");
+    } else {
+      setActiveTab("my");
+    }
+  }, [userRole]);
   
   // Current user object for modal
   const currentUser = {
     name: fullName,
     userId: userId,
-    email: localStorage.getItem("email") || "",
+    email: userEmail,
     firstName: firstName,
-    lastName: lastName
+    lastName: lastName,
+    role: userRole
   };
 
   // Categories for filtering
@@ -115,20 +129,36 @@ const AllNotices = () => {
       
       setNotices(transformedNotices);
 
-      // Separate my notices and others
+      // Separate my notices based on email OR userId OR createdBy name
       const myNoticesList = transformedNotices.filter((notice) => {
-        if (!notice.createdBy || !fullName) return false;
+        // Check by userId (most reliable)
+        if (notice.createdById && notice.createdById === userId) return true;
+        
+        // Check by email
+        if (notice.createdByEmail && notice.createdByEmail === userEmail) return true;
+        
+        // Check by createdBy name (fallback - compare names)
+        if (!notice.createdBy) return false;
+        
         const createdByLower = notice.createdBy.toLowerCase().trim();
         const fullNameLower = fullName.toLowerCase().trim();
-
+        
+        // Direct match
         if (createdByLower === fullNameLower) return true;
-
+        
+        // Check by first name + last name combination
         const nameParts = fullNameLower.split(" ");
         if (nameParts.length === 2) {
           const reversedName = `${nameParts[1]} ${nameParts[0]}`;
           if (createdByLower === reversedName) return true;
         }
-
+        
+        // Check if the createdBy contains the user's email username
+        if (userEmail) {
+          const emailUsername = userEmail.split('@')[0].toLowerCase();
+          if (createdByLower.includes(emailUsername)) return true;
+        }
+        
         return false;
       });
 
@@ -141,6 +171,11 @@ const AllNotices = () => {
       
       // Reset to first page when data changes
       setCurrentPage(1);
+      
+      console.log("📊 My Notices Count:", myNoticesList.length);
+      console.log("📊 Other Notices Count:", otherNoticesList.length);
+      console.log("👤 Current User Role:", userRole);
+      
     } catch (err) {
       console.error("Error fetching notices:", err);
     }
@@ -754,24 +789,31 @@ const AllNotices = () => {
           <p className="text-blue-50">Manage and view all announcements</p>
         </div>
 
-        {/* Tabs */}
+     
+
+        {/* Tabs - Role based visibility */}
         <div className="flex gap-4 mb-6">
-          <button
-            onClick={() => {
-              setActiveTab("my");
-              setSelectedCategory("All");
-              setSearchQuery("");
-            }}
-            className={`px-6 py-3 rounded-xl font-semibold text-lg transition-all duration-200 ${
-              activeTab === "my"
-                ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-md shadow-blue-200 dark:shadow-blue-900/30"
-                : isDarkMode 
-                  ? "bg-gray-800 text-gray-300 border border-gray-700 hover:border-blue-500 hover:shadow-sm"
-                  : "bg-white text-slate-700 border border-slate-200 hover:border-blue-300 hover:shadow-sm"
-            }`}
-          >
-            My Notices ({myNotices.length})
-          </button>
+          {/* My Notices Tab - Only visible for non-student roles */}
+          {showMyNoticesTab && (
+            <button
+              onClick={() => {
+                setActiveTab("my");
+                setSelectedCategory("All");
+                setSearchQuery("");
+              }}
+              className={`px-6 py-3 rounded-xl font-semibold text-lg transition-all duration-200 ${
+                activeTab === "my"
+                  ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-md shadow-blue-200 dark:shadow-blue-900/30"
+                  : isDarkMode 
+                    ? "bg-gray-800 text-gray-300 border border-gray-700 hover:border-blue-500 hover:shadow-sm"
+                    : "bg-white text-slate-700 border border-slate-200 hover:border-blue-300 hover:shadow-sm"
+              }`}
+            >
+              📝 My Notices ({myNotices.length})
+            </button>
+          )}
+          
+          {/* All Notices Tab - Visible to everyone */}
           <button
             onClick={() => {
               setActiveTab("all");
@@ -786,7 +828,7 @@ const AllNotices = () => {
                   : "bg-white text-slate-700 border border-slate-200 hover:border-blue-300 hover:shadow-sm"
             }`}
           >
-            All Notices ({notices.length})
+            📋 All Notices ({notices.length})
           </button>
         </div>
 
@@ -805,7 +847,7 @@ const AllNotices = () => {
                   placeholder="Search by title, description, or author..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className={`w-full pl-10 pr-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-slate-400 transition-all duration-200 ${
+                  className={`w-full pl-10 pr-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                     isDarkMode 
                       ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
                       : 'bg-white border-slate-300 text-slate-900'
@@ -843,7 +885,7 @@ const AllNotices = () => {
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                    className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
+                    className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                       isDarkMode 
                         ? 'bg-gray-700 border-gray-600 text-white' 
                         : 'bg-white border-slate-300 text-slate-700'
@@ -862,7 +904,7 @@ const AllNotices = () => {
                       type="date"
                       value={startDate}
                       onChange={(e) => setStartDate(e.target.value)}
-                      className={`w-full pl-10 pr-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
+                      className={`w-full pl-10 pr-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                         isDarkMode 
                           ? 'bg-gray-700 border-gray-600 text-white' 
                           : 'bg-white border-slate-300 text-slate-700'
@@ -878,7 +920,7 @@ const AllNotices = () => {
                       type="date"
                       value={endDate}
                       onChange={(e) => setEndDate(e.target.value)}
-                      className={`w-full pl-10 pr-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
+                      className={`w-full pl-10 pr-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                         isDarkMode 
                           ? 'bg-gray-700 border-gray-600 text-white' 
                           : 'bg-white border-slate-300 text-slate-700'
@@ -917,7 +959,7 @@ const AllNotices = () => {
           <div className="p-6">
             <div className="flex justify-between items-center mb-6">
               <h2 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
-                {activeTab === "my" ? "My Notices" : "All Notices"}
+                {activeTab === "my" ? "📝 My Notices" : "📋 All Notices"}
               </h2>
               <p className={isDarkMode ? 'text-gray-400' : 'text-slate-500'}>
                 Showing {filteredNotices.length} of {activeTab === "my" ? myNotices.length : notices.length} notices
@@ -927,7 +969,9 @@ const AllNotices = () => {
             {filteredNotices.length === 0 ? (
               <div className="text-center py-16">
                 <div className="text-6xl mb-4">📭</div>
-                <p className={`text-lg ${isDarkMode ? 'text-gray-400' : 'text-slate-500'}`}>No notices found</p>
+                <p className={`text-lg ${isDarkMode ? 'text-gray-400' : 'text-slate-500'}`}>
+                  {activeTab === "my" ? "You haven't created any notices yet." : "No notices found"}
+                </p>
                 {(searchQuery || selectedCategory !== "All" || startDate || endDate) && (
                   <button
                     onClick={clearFilters}
@@ -953,7 +997,7 @@ const AllNotices = () => {
                               name="title"
                               value={editForm.title}
                               onChange={handleEditChange}
-                              className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
+                              className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                                 isDarkMode 
                                   ? 'bg-gray-800 border-gray-600 text-white' 
                                   : 'bg-white border-slate-300 text-slate-700'
@@ -967,7 +1011,7 @@ const AllNotices = () => {
                               value={editForm.description?.replace(/<[^>]*>/g, "")}
                               onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
                               rows="4"
-                              className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 resize-none ${
+                              className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none ${
                                 isDarkMode 
                                   ? 'bg-gray-800 border-gray-600 text-white' 
                                   : 'bg-white border-slate-300 text-slate-700'
@@ -981,7 +1025,7 @@ const AllNotices = () => {
                                 name="category"
                                 value={editForm.category}
                                 onChange={handleEditChange}
-                                className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
+                                className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                                   isDarkMode 
                                     ? 'bg-gray-800 border-gray-600 text-white' 
                                     : 'bg-white border-slate-300 text-slate-700'
@@ -1001,7 +1045,7 @@ const AllNotices = () => {
                                 name="priority"
                                 value={editForm.priority}
                                 onChange={handleEditChange}
-                                className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
+                                className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                                   isDarkMode 
                                     ? 'bg-gray-800 border-gray-600 text-white' 
                                     : 'bg-white border-slate-300 text-slate-700'
@@ -1025,7 +1069,7 @@ const AllNotices = () => {
                                     value={a}
                                     checked={editForm.audience.includes(a)}
                                     onChange={handleEditChange}
-                                    className="rounded border-slate-300 text-blue-500 focus:ring-blue-500"
+                                    className="rounded"
                                   />
                                   <span className={`capitalize ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>{a}</span>
                                 </label>
@@ -1039,7 +1083,7 @@ const AllNotices = () => {
                               name="expiryDate"
                               value={editForm.expiryDate}
                               onChange={handleEditChange}
-                              className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
+                              className={`w-full border rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                                 isDarkMode 
                                   ? 'bg-gray-800 border-gray-600 text-white' 
                                   : 'bg-white border-slate-300 text-slate-700'
@@ -1049,7 +1093,7 @@ const AllNotices = () => {
                           <div className="flex gap-3 pt-2">
                             <button
                               onClick={() => handleSaveEdit(notice._id)}
-                              className="px-6 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-all duration-200 font-medium shadow-sm hover:shadow-md"
+                              className="px-6 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-all duration-200 font-medium"
                             >
                               💾 Save Changes
                             </button>

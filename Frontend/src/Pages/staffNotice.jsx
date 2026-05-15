@@ -1,145 +1,393 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import * as XLSX from 'xlsx';
+import { FaChalkboardTeacher, FaEdit, FaTrash, FaUserGraduate, FaCalendarAlt, FaClock, FaBook, FaUsers, FaBuilding, FaUser, FaDoorOpen, FaCode, FaInfoCircle } from "react-icons/fa";
+import { MdClose, MdNotificationsActive } from "react-icons/md";
 import { toast } from "react-toastify";
-import { Dialog, DialogContent } from "@mui/material";
-import noticeImg from "../assets/notice.png";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { MdEdit } from "react-icons/md";
-import { IoPeopleSharp } from "react-icons/io5";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import { useTheme } from "../Context/ThemeContext";
+import AlertDialog from "../Components/Dialogue";
 
-
-export default function StaffNotice() {
+// ============== NOTICE MODAL COMPONENT ==============
+const NoticeModal = ({ notice, onClose }) => {
   const { isDarkMode } = useTheme();
-  const API = "https://pciunotifybackend.onrender.com";
-  const [open, setOpen] = useState(false);
-  const [notices, setNotices] = useState([]);
-  const [myNotices, setMyNotices] = useState([]);
-  const [otherNotices, setOtherNotices] = useState([]);
-  const [activeTab, setActiveTab] = useState("my");
-  const [editingNotice, setEditingNotice] = useState(null);
-  const [editForm, setEditForm] = useState({
-    title: "",
-    description: "",
-    category: "",
-    priority: "medium",
-    audience: [],
-    expiryDate: "",
-  });
+  if (!notice) return null;
+  
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    const options = { 
+      year: 'numeric', 
+      month: 'short', 
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    };
+    return new Date(dateString).toLocaleDateString('en-US', options);
+  };
+  
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onClick={onClose}>
+      <div className={`rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`} onClick={(e) => e.stopPropagation()}>
+        <div className={`sticky top-0 ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b px-6 py-4 flex justify-between items-center`}>
+          <div className="flex items-center gap-3">
+            <h2 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{notice.title}</h2>
+            {notice.isPinned && (
+              <span className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 bg-blue-50 text-blue-700 rounded-full">
+                📌 Pinned
+              </span>
+            )}
+          </div>
+          <button onClick={onClose} className={`${isDarkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'}`}>
+            <MdClose size={24} />
+          </button>
+        </div>
+        
+        <div className="p-6 space-y-4">
+          <div className={`flex flex-wrap gap-4 text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+            <span className="flex items-center gap-1">👤 {notice.createdBy}</span>
+            <span className="flex items-center gap-1">📅 {formatDate(notice.createdAt)}</span>
+            <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
+              notice.priority === 'urgent' ? 'bg-red-100 text-red-700' :
+              notice.priority === 'high' ? 'bg-orange-100 text-orange-700' :
+              notice.priority === 'medium' ? 'bg-yellow-100 text-yellow-700' :
+              'bg-green-100 text-green-700'
+            }`}>
+              {notice.priority}
+            </span>
+            <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs ${isDarkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-700'}`}>
+              {notice.category}
+            </span>
+          </div>
+          
+          {notice.audience && notice.audience.length > 0 && (
+            <div className={`flex items-center gap-2 text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+              <span className="font-semibold">Audience:</span>
+              <div className="flex gap-2">
+                {notice.audience.map(aud => (
+                  <span key={aud} className="px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs">
+                    {aud}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          <div className={`border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} pt-4`}>
+            <div dangerouslySetInnerHTML={{ __html: notice.description || 'No description provided' }} 
+              className={`prose max-w-none ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`} />
+          </div>
+          
+          {notice.attachment && (
+            <div className={`border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} pt-4`}>
+              <h4 className={`font-semibold mb-2 ${isDarkMode ? 'text-gray-200' : 'text-gray-900'}`}>Attachment:</h4>
+              <a href={notice.attachment} target="_blank" rel="noopener noreferrer" 
+                className="text-blue-600 hover:text-blue-800 flex items-center gap-2">
+                📎 View Attachment
+              </a>
+            </div>
+          )}
+          
+          {notice.expiryDate && (
+            <div className={`border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} pt-4 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+              ⏰ Expires: {formatDate(notice.expiryDate)}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ============== EDIT NOTICE MODAL COMPONENT ==============
+const EditNoticeModal = ({ isOpen, notice, onClose, onUpdate }) => {
+  const { isDarkMode } = useTheme();
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    category: "",
+    title: '',
+    description: '',
+    category: 'general',
+    priority: 'normal',
     audience: [],
-    priority: "medium",
-    isPinned: false,
-    expiryDate: "",
-    createdBy: "staff",
+    expiryDate: ''
   });
 
-  // Get logged-in staff info
-  const fullName = localStorage.getItem("fullName") || "staff";
-
-  // Fetch notices
   useEffect(() => {
-    fetchNotices();
-  }, []);
-
-  const fetchNotices = async () => {
-    try {
-      const res = await fetch(`${API}/api/notices`);
-      const data = await res.json();
-      setNotices(data);
-
-      // Separate my notices and others
-      const myNoticesList = data.filter((notice) => {
-        if (!notice.createdBy) return false;
-        const createdByLower = notice.createdBy.toLowerCase().trim();
-        const fullNameLower = fullName.toLowerCase().trim();
-        
-        if (createdByLower === fullNameLower) return true;
-        
-        const nameParts = fullNameLower.split(" ");
-        if (nameParts.length === 2) {
-          const reversedName = `${nameParts[1]} ${nameParts[0]}`;
-          if (createdByLower === reversedName) return true;
-        }
-        
-        // Staff notices have createdBy as "staff"
-        if (createdByLower === "staff") return true;
-        
-        return false;
+    if (notice) {
+      setFormData({
+        title: notice.title || '',
+        description: notice.description || '',
+        category: notice.category || 'general',
+        priority: notice.priority || 'normal',
+        audience: notice.audience || [],
+        expiryDate: notice.expiryDate?.split('T')[0] || ''
       });
-
-      const otherNoticesList = data.filter(
-        (notice) => !myNoticesList.find((my) => my._id === notice._id)
-      );
-
-      setMyNotices(myNoticesList);
-      setOtherNotices(otherNoticesList);
-    } catch (err) {
-      console.error("Error fetching notices:", err);
     }
+  }, [notice]);
+
+  if (!isOpen || !notice) return null;
+  
+  const audienceOptions = ['students', 'teachers', 'staff', 'all'];
+  const categoryOptions = ['academic', 'exam', 'event', 'holiday', 'general'];
+  const priorityOptions = ['low', 'medium', 'high', 'urgent'];
+  
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
-
-  const handleClickOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-
-    if (name === "audience") {
-      let updated = [...formData.audience];
-      if (checked) updated.push(value);
-      else updated = updated.filter((item) => item !== value);
-      setFormData({ ...formData, audience: updated });
-    } else if (type === "checkbox") {
-      setFormData({ ...formData, [name]: checked });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
+  
+  const toggleAudience = (option) => {
+    setFormData(prev => ({
+      ...prev,
+      audience: prev.audience.includes(option)
+        ? prev.audience.filter(a => a !== option)
+        : [...prev.audience, option]
+    }));
   };
-
-  const handleSubmit = async (e) => {
+  
+  const handleSubmit = (e) => {
     e.preventDefault();
+    onUpdate(formData);
+  };
+  
+  return (
+    <div 
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" 
+      onClick={onClose}
+    >
+      <div 
+        className={`rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`} 
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className={`sticky top-0 ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b px-6 py-4 flex justify-between items-center`}>
+          <h2 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Edit Notice</h2>
+          <button 
+            type="button"
+            onClick={onClose} 
+            className={`${isDarkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'}`}
+          >
+            <MdClose size={24} />
+          </button>
+        </div>
+        
+        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          <div>
+            <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Title *</label>
+            <input
+              type="text"
+              name="title"
+              required
+              value={formData.title}
+              onChange={handleInputChange}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'
+              }`}
+            />
+          </div>
+          
+          <div>
+            <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Description</label>
+            <textarea
+              name="description"
+              rows="4"
+              value={formData.description}
+              onChange={handleInputChange}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'
+              }`}
+            />
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Category</label>
+              <select
+                name="category"
+                value={formData.category}
+                onChange={handleInputChange}
+                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
+                  isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'
+                }`}
+              >
+                {categoryOptions.map(opt => (
+                  <option key={opt} value={opt} className="capitalize">{opt}</option>
+                ))}
+              </select>
+            </div>
+            
+            <div>
+              <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Priority</label>
+              <select
+                name="priority"
+                value={formData.priority}
+                onChange={handleInputChange}
+                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
+                  isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'
+                }`}
+              >
+                {priorityOptions.map(opt => (
+                  <option key={opt} value={opt} className="capitalize">{opt}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+          
+          <div>
+            <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Audience</label>
+            <div className="flex gap-3 flex-wrap">
+              {audienceOptions.map(opt => (
+                <label key={opt} className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={formData.audience.includes(opt)}
+                    onChange={() => toggleAudience(opt)}
+                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  />
+                  <span className={`text-sm capitalize ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>{opt}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+          
+          <div>
+            <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Expiry Date</label>
+            <input
+              type="date"
+              name="expiryDate"
+              value={formData.expiryDate}
+              onChange={handleInputChange}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
+                isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'
+              }`}
+            />
+          </div>
+          
+          <div className="flex gap-3 pt-4">
+            <button
+              type="submit"
+              className="flex-1 bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
+            >
+              Update Notice
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className={`flex-1 py-2 rounded-lg font-semibold transition ${
+                isDarkMode ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+// ============== MAIN STAFF DASHBOARD COMPONENT ==============
+export default function StaffDashboard() {
+  const navigate = useNavigate();
+  const { isDarkMode } = useTheme();
+  const [recentNotices, setRecentNotices] = useState([]);
+  const [allNotices, setAllNotices] = useState([]);
+  const [stats, setStats] = useState({
+    totalNotices: 0,
+    totalStudents: 0,
+    totalTeachers: 0,
+  });
+  const [loading, setLoading] = useState(true);
+  const [selectedNotice, setSelectedNotice] = useState(null);
+  const [showNoticeModal, setShowNoticeModal] = useState(false);
+  const [editingNotice, setEditingNotice] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+
+  const API = "https://pciunotifybackend.onrender.com";
+
+  // Get user info from localStorage
+  const firstName = localStorage.getItem("firstName") || "";
+  const lastName = localStorage.getItem("lastName") || "";
+  const fullName = localStorage.getItem("fullName") || `${firstName} ${lastName}`;
+  const department = localStorage.getItem("department") || "";
+
+  // Fetch dashboard data
+  const fetchDashboardData = useCallback(async () => {
     try {
-      const res = await fetch(`${API}/api/add-noticestaff`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const noticesRes = await fetch(`${API}/api/notices`);
+      const noticesData = await noticesRes.json();
+      
+      const myNotices = noticesData.filter(notice => {
+        if (!notice.createdBy || !fullName) return false;
+        return notice.createdBy.toLowerCase().trim() === fullName.toLowerCase().trim();
+      });
+      
+      setAllNotices(myNotices);
+      setRecentNotices(myNotices.slice(0, 5));
+      
+      setStats(prev => ({
+        ...prev,
+        totalNotices: noticesData.length
+      }));
+      
+      const studentsRes = await fetch(`${API}/api/students`);
+      const studentsData = await studentsRes.json();
+      setStats(prev => ({
+        ...prev,
+        totalStudents: (studentsData.students || studentsData).length
+      }));
+      
+      const teachersRes = await fetch(`${API}/api/teachers`);
+      const teachersData = await teachersRes.json();
+      setStats(prev => ({
+        ...prev,
+        totalTeachers: (teachersData.teachers || teachersData).length
+      }));
+      
+    } catch (err) {
+      console.error("Error fetching dashboard data:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, [fullName]);
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, [fetchDashboardData]);
+
+  const handleViewNotice = (notice) => {
+    setSelectedNotice(notice);
+    setShowNoticeModal(true);
+  };
+
+  const handleEditNotice = (notice) => {
+    setEditingNotice(notice);
+    setShowEditModal(true);
+  };
+
+  const handleUpdateNotice = async (formData) => {
+    try {
+      const response = await fetch(`${API}/api/notice/${editingNotice._id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        toast.error(data.message || "Failed to create notice");
-        return;
+      
+      if (response.ok) {
+        fetchDashboardData();
+        setShowEditModal(false);
+        setEditingNotice(null);
+        Swal.fire({ title: "Success!", text: "Notice updated successfully", icon: "success", timer: 2000, showConfirmButton: false });
+      } else {
+        toast.error("Failed to update notice");
       }
-
-      toast.success("Notice created successfully!");
-
-      // Refresh notices
-      fetchNotices();
-
-      setFormData({
-        title: "",
-        description: "",
-        category: "",
-        audience: [],
-        priority: "medium",
-        isPinned: false,
-        expiryDate: "",
-        createdBy: "staff",
-      });
-      handleClose();
     } catch (err) {
-      console.error(err);
-      toast.error("Server error");
+      console.error("Error updating notice:", err);
+      toast.error("Error updating notice");
     }
   };
 
-  // Delete notice
-  const handleDelete = async (noticeId) => {
+  const handleDeleteNotice = async (noticeId) => {
     const result = await Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -152,587 +400,237 @@ export default function StaffNotice() {
 
     if (result.isConfirmed) {
       try {
-        const res = await fetch(`${API}/api/notice/${noticeId}`, {
-          method: "DELETE",
-        });
-
-        if (res.ok) {
-          Swal.fire("Deleted!", "Your notice has been deleted.", "success");
-          setMyNotices(myNotices.filter((notice) => notice._id !== noticeId));
-          setNotices(notices.filter((notice) => notice._id !== noticeId));
+        const response = await fetch(`${API}/api/notice/${noticeId}`, { method: 'DELETE' });
+        if (response.ok) {
+          fetchDashboardData();
+          Swal.fire({ title: "Deleted!", text: "Your notice has been deleted.", icon: "success" });
         } else {
           toast.error("Failed to delete notice");
         }
       } catch (err) {
+        console.error("Error deleting notice:", err);
         toast.error("Error deleting notice");
       }
     }
   };
 
-  // Edit notice
-  const handleEditClick = (notice) => {
-    setEditingNotice(notice._id);
-    setEditForm({
-      title: notice.title || "",
-      description: notice.description || "",
-      category: notice.category || "",
-      priority: notice.priority || "medium",
-      audience: notice.audience || [],
-      expiryDate: notice.expiryDate ? notice.expiryDate.split("T")[0] : "",
-    });
-  };
-
-  const handleEditChange = (e) => {
-    const { name, value, type, checked } = e.target;
-
-    if (name === "audience") {
-      let updated = [...editForm.audience];
-      if (checked) updated.push(value);
-      else updated = updated.filter((item) => item !== value);
-      setEditForm({ ...editForm, audience: updated });
-    } else {
-      setEditForm({ ...editForm, [name]: value });
-    }
-  };
-
-  const handleSaveEdit = async (noticeId) => {
-    try {
-      const res = await fetch(`${API}/api/notice/${noticeId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(editForm),
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        Swal.fire("Updated!", "Notice updated successfully!", "success");
-        
-        const updatedNotice = data.notice || data;
-        setMyNotices(myNotices.map(n => n._id === noticeId ? updatedNotice : n));
-        setNotices(notices.map(n => n._id === noticeId ? updatedNotice : n));
-        setEditingNotice(null);
-      } else {
-        toast.error(data.message || "Failed to update notice");
-      }
-    } catch (err) {
-      toast.error("Error updating notice");
-    }
-  };
-
-  const handleCancelEdit = () => setEditingNotice(null);
-
-  // Format date
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
     });
   };
 
-  // Get priority color
-  const getPriorityColor = (priority) => {
-    switch (priority) {
-      case "urgent": return isDarkMode ? "bg-red-600" : "bg-red-500";
-      case "high": return isDarkMode ? "bg-orange-600" : "bg-orange-500";
-      case "medium": return isDarkMode ? "bg-yellow-600" : "bg-yellow-500";
-      case "low": return isDarkMode ? "bg-green-600" : "bg-green-500";
-      default: return isDarkMode ? "bg-gray-600" : "bg-gray-500";
-    }
-  };
-
-  // Notice Card Component
-  const NoticeCard = ({ notice, showActions = false }) => (
-    <div className={`w-full border-2 rounded-xl p-4 my-3 hover:shadow-lg transition ${
-      isDarkMode 
-        ? 'border-blue-700 bg-gray-800 hover:shadow-gray-900/50' 
-        : 'border-[#062359] bg-white hover:shadow-blue-200'
-    }`}>
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-        <div className="flex items-start sm:items-center gap-4 flex-1 w-full">
-          <span className={`w-3 h-3 rounded-full flex-shrink-0 mt-1 sm:mt-0 ${getPriorityColor(notice.priority)}`}></span>
-          <div className="flex-1 w-full">
-            <div className="flex flex-wrap items-center gap-2">
-              <p className={`font-semibold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
-                "{notice.title}"
-              </p>
-              {notice.isPinned && <span className="text-sm text-red-600">📌</span>}
-              {notice.priority && (
-                <span className={`text-xs px-2 py-0.5 rounded-full capitalize ${
-                  isDarkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'
-                }`}>
-                  {notice.priority}
-                </span>
-              )}
-            </div>
-            <div className={`flex flex-wrap items-center gap-4 mt-1 text-sm ${
-              isDarkMode ? 'text-gray-400' : 'text-gray-500'
-            }`}>
-              <span>📅 {formatDate(notice.createdAt)}</span>
-              <span>📂 {notice.category}</span>
-              {notice.audience && notice.audience.length > 0 && (
-                <span className="flex items-center gap-1"><IoPeopleSharp/> {notice.audience.join(", ")}</span>
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="flex items-center gap-3 ml-0 sm:ml-4">
-          <div className="flex items-center gap-2 text-sm">
-            <img className="w-8 h-8 rounded-full object-cover" src={noticeImg} alt="" />
-            <p className={isDarkMode ? 'text-gray-300' : 'text-gray-600'}>{notice.createdBy || "Unknown"}</p>
-          </div>
-        </div>
-      </div>
-
-      {notice.description && (
-        <p className={`text-sm mt-3 ml-0 sm:ml-11 line-clamp-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-          {notice.description.replace(/<[^>]*>/g, "").substring(0, 150)}
-          {notice.description.replace(/<[^>]*>/g, "").length > 150 ? "..." : ""}
-        </p>
-      )}
-
-      {showActions && (
-        <div className={`flex justify-end gap-2 mt-3 pt-3 border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
-          <button
-            onClick={() => handleEditClick(notice)}
-            className={`px-4 py-1.5 text-xl rounded-lg transition flex items-center gap-1 ${
-              isDarkMode 
-                ? 'bg-blue-900/30 text-blue-400 hover:bg-blue-900/50' 
-                : 'bg-blue-50 text-blue-600 hover:bg-blue-100'
-            }`}
-          >
-            <MdEdit />
-          </button>
-          <button
-            onClick={() => handleDelete(notice._id)}
-            className={`px-4 text-xl py-1.5 rounded-lg transition flex items-center gap-1 ${
-              isDarkMode 
-                ? 'bg-red-900/30 text-red-400 hover:bg-red-900/50' 
-                : 'bg-red-50 text-red-600 hover:bg-red-100'
-            }`}
-          >
-            <RiDeleteBin6Line />
-          </button>
-        </div>
-      )}
-    </div>
-  );
-
   return (
-    <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-slate-50 via-white to-blue-50'}`}>
-      <div className="container mx-auto px-4 py-6 sm:px-6 lg:px-8">
-        
-        {/* Header */}
-        <div className="mb-6">
-          <div className="bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl shadow-lg shadow-blue-200 dark:shadow-blue-900/30 p-6 mb-8 text-white">
-            <h1 className="text-2xl sm:text-3xl font-bold mb-2">Staff Notice Management</h1>
-            <p className="text-blue-100 text-sm sm:text-base">Create and manage important announcements for students and teachers</p>
-          </div>
+    <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 to-gray-100'}`}>
+      {/* HEADER */}
+      <div className="bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl shadow-lg shadow-blue-200 dark:shadow-blue-900/30 p-6 mb-8 text-white">
+        <div className="px-6 md:px-20 py-6">
+          <h1 className="text-2xl md:text-3xl font-bold flex items-center gap-3">
+            <FaChalkboardTeacher className="text-3xl" />
+            Staff Dashboard
+          </h1>
+          <p className="text-blue-100 mt-2">Welcome back, {fullName || "Staff"} 👋</p>
+          {department && <p className="text-blue-200 text-sm mt-1">Department: {department}</p>}
         </div>
-
-        {/* Add New Notice Button */}
-        <div className="flex justify-end mb-6">
-          <button
-            onClick={handleClickOpen}
-            className="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-xl font-semibold hover:bg-blue-700 transition shadow-lg flex items-center gap-2"
-          >
-            <span className="text-xl">+</span>
-            <span>ADD New Notice</span>
-          </button>
-        </div>
-
-        {/* Tabs */}
-        <div className="flex flex-wrap gap-3 mb-6">
-          <button
-            onClick={() => setActiveTab("my")}
-            className={`px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold text-sm sm:text-lg transition ${
-              activeTab === "my"
-                ? "bg-blue-600 text-white shadow-lg"
-                : isDarkMode
-                  ? "bg-gray-800 text-gray-300 border-2 border-gray-700 hover:border-blue-500"
-                  : "bg-white text-gray-600 border-2 border-gray-200 hover:border-blue-300"
-            }`}
-          >
-            My Notices ({myNotices.length})
-          </button>
-          <button
-            onClick={() => setActiveTab("all")}
-            className={`px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold text-sm sm:text-lg transition ${
-              activeTab === "all"
-                ? "bg-blue-600 text-white shadow-lg"
-                : isDarkMode
-                  ? "bg-gray-800 text-gray-300 border-2 border-gray-700 hover:border-blue-500"
-                  : "bg-white text-gray-600 border-2 border-gray-200 hover:border-blue-300"
-            }`}
-          >
-            All Notices ({notices.length})
-          </button>
-        </div>
-
-        {/* My Notices Tab */}
-        {activeTab === "my" && (
-          <div className={`rounded-xl shadow-lg p-4 sm:p-6 ${
-            isDarkMode ? 'bg-gray-800 border border-gray-700' : 'bg-white border'
-          }`}>
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
-              <div>
-                <h1 className={`text-2xl sm:text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
-                  My Notices
-                </h1>
-                <p className={`text-sm mt-1 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                  You can edit or delete only your own notices
-                </p>
-              </div>
-            </div>
-
-            {myNotices.length === 0 ? (
-              <div className="text-center py-12">
-                <div className="text-5xl mb-3">📝</div>
-                <p className={`text-lg ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                  You haven't created any notices yet
-                </p>
-                <p className={`text-sm mt-2 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-                  Click "ADD New Notice" to create one
-                </p>
-              </div>
-            ) : (
-              myNotices.map((notice) => (
-                <div key={notice._id}>
-                  {editingNotice === notice._id ? (
-                    <div className={`border-2 border-blue-500 rounded-xl p-4 sm:p-6 my-4 ${
-                      isDarkMode ? 'bg-gray-700' : 'bg-blue-50'
-                    }`}>
-                      <h3 className={`text-lg font-semibold mb-4 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
-                        Edit Notice
-                      </h3>
-                      <div className="space-y-4">
-                        <div>
-                          <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Title
-                          </label>
-                          <input
-                            type="text"
-                            name="title"
-                            value={editForm.title}
-                            onChange={handleEditChange}
-                            className={`w-full border rounded-lg p-2 focus:border-blue-500 focus:outline-none ${
-                              isDarkMode 
-                                ? 'bg-gray-800 border-gray-600 text-white' 
-                                : 'bg-white border-gray-300 text-gray-900'
-                            }`}
-                          />
-                        </div>
-                        <div>
-                          <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Description
-                          </label>
-                          <textarea
-                            name="description"
-                            value={editForm.description.replace(/<[^>]*>/g, "")}
-                            onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
-                            rows="4"
-                            className={`w-full border rounded-lg p-2 focus:border-blue-500 focus:outline-none ${
-                              isDarkMode 
-                                ? 'bg-gray-800 border-gray-600 text-white' 
-                                : 'bg-white border-gray-300 text-gray-900'
-                            }`}
-                          />
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <div>
-                            <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                              Category
-                            </label>
-                            <select
-                              name="category"
-                              value={editForm.category}
-                              onChange={handleEditChange}
-                              className={`w-full border rounded-lg p-2 focus:border-blue-500 focus:outline-none ${
-                                isDarkMode 
-                                  ? 'bg-gray-800 border-gray-600 text-white' 
-                                  : 'bg-white border-gray-300 text-gray-900'
-                              }`}
-                            >
-                              <option value="">Select Category</option>
-                              <option value="general">General</option>
-                              <option value="academic">Academic</option>
-                              <option value="exam">Exam</option>
-                              <option value="event">Event</option>
-                              <option value="urgent">Urgent</option>
-                            </select>
-                          </div>
-                          <div>
-                            <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                              Priority
-                            </label>
-                            <select
-                              name="priority"
-                              value={editForm.priority}
-                              onChange={handleEditChange}
-                              className={`w-full border rounded-lg p-2 focus:border-blue-500 focus:outline-none ${
-                                isDarkMode 
-                                  ? 'bg-gray-800 border-gray-600 text-white' 
-                                  : 'bg-white border-gray-300 text-gray-900'
-                              }`}
-                            >
-                              <option value="low">Low</option>
-                              <option value="medium">Medium</option>
-                              <option value="high">High</option>
-                              <option value="urgent">Urgent</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div>
-                          <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Audience
-                          </label>
-                          <div className="flex gap-4">
-                            {["students", "teachers"].map((a) => (
-                              <label key={a} className="flex items-center gap-1 cursor-pointer">
-                                <input
-                                  type="checkbox"
-                                  name="audience"
-                                  value={a}
-                                  checked={editForm.audience.includes(a)}
-                                  onChange={handleEditChange}
-                                  className="rounded border-gray-300"
-                                />
-                                <span className={`capitalize ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>{a}</span>
-                              </label>
-                            ))}
-                          </div>
-                        </div>
-                        <div>
-                          <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Expiry Date
-                          </label>
-                          <input
-                            type="date"
-                            name="expiryDate"
-                            value={editForm.expiryDate}
-                            onChange={handleEditChange}
-                            className={`w-full border rounded-lg p-2 focus:border-blue-500 focus:outline-none ${
-                              isDarkMode 
-                                ? 'bg-gray-800 border-gray-600 text-white' 
-                                : 'bg-white border-gray-300 text-gray-900'
-                            }`}
-                          />
-                        </div>
-                        <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                          <button
-                            onClick={() => handleSaveEdit(notice._id)}
-                            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium"
-                          >
-                            Save Changes
-                          </button>
-                          <button
-                            onClick={handleCancelEdit}
-                            className={`px-6 py-2 rounded-lg transition font-medium ${
-                              isDarkMode 
-                                ? 'bg-gray-600 text-gray-300 hover:bg-gray-500' 
-                                : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
-                            }`}
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <NoticeCard notice={notice} showActions={true} />
-                  )}
-                </div>
-              ))
-            )}
-          </div>
-        )}
-
-        {/* All Notices Tab */}
-        {activeTab === "all" && (
-          <div className={`rounded-xl shadow-lg p-4 sm:p-6 ${
-            isDarkMode ? 'bg-gray-800 border border-gray-700' : 'bg-white border'
-          }`}>
-            <h1 className={`text-2xl sm:text-3xl font-bold mb-6 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
-              All Notices
-            </h1>
-
-            {notices.length === 0 ? (
-              <div className="text-center py-12">
-                <div className="text-5xl mb-3">📭</div>
-                <p className={`text-lg ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                  No notices found
-                </p>
-              </div>
-            ) : (
-              notices.map((notice) => (
-                <NoticeCard
-                  key={notice._id}
-                  notice={notice}
-                  showActions={
-                    myNotices.some((my) => my._id === notice._id) &&
-                    editingNotice !== notice._id
-                  }
-                />
-              ))
-            )}
-          </div>
-        )}
       </div>
 
-      {/* Dialog Form - Custom styled for dark mode */}
-      <Dialog 
-        open={open} 
-        onClose={handleClose} 
-        maxWidth="md" 
-        fullWidth
-        PaperProps={{
-          style: {
-            backgroundColor: isDarkMode ? '#1f2937' : '#ffffff',
-            borderRadius: '1rem',
-          }
-        }}
-      >
-        <DialogContent>
-          <form onSubmit={handleSubmit} className="p-4 space-y-4">
-            <h2 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
-              Staff Create Notice
-            </h2>
+      {/* MAIN CONTENT */}
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 space-y-8">
+        
+        {/* STATS SECTION */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className={`rounded-2xl p-6 shadow-sm hover:shadow-md transition border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'}`}>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>My Notices</p>
+                <p className={`text-3xl font-bold mt-2 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>{loading ? '...' : allNotices.length}</p>
+              </div>
+              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                <MdNotificationsActive className="text-blue-600 text-xl" />
+              </div>
+            </div>
+          </div>
+          
+          <div className={`rounded-2xl p-6 shadow-sm hover:shadow-md transition border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'}`}>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Total Students</p>
+                <p className={`text-3xl font-bold mt-2 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>{loading ? '...' : stats.totalStudents}</p>
+              </div>
+              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                <FaUserGraduate className="text-green-600 text-xl" />
+              </div>
+            </div>
+          </div>
+          
+          <div className={`rounded-2xl p-6 shadow-sm hover:shadow-md transition border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'}`}>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Total Teachers</p>
+                <p className={`text-3xl font-bold mt-2 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>{loading ? '...' : stats.totalTeachers}</p>
+              </div>
+              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                <FaUser className="text-purple-600 text-xl" />
+              </div>
+            </div>
+          </div>
+          
+          <div className={`rounded-2xl p-6 shadow-sm hover:shadow-md transition border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'}`}>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Total Notices</p>
+                <p className={`text-3xl font-bold mt-2 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>{loading ? '...' : stats.totalNotices}</p>
+              </div>
+              <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                <MdNotificationsActive className="text-orange-600 text-xl" />
+              </div>
+            </div>
+          </div>
+        </div>
 
-            <input
-              type="text"
-              name="title"
-              placeholder="Title"
-              value={formData.title}
-              onChange={handleChange}
-              required
-              className={`w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                isDarkMode 
-                  ? 'bg-gray-800 border-gray-600 text-white placeholder-gray-400' 
-                  : 'bg-white border-gray-300 text-gray-900'
-              }`}
-            />
+        {/* ACTION CARDS */}
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className={`rounded-2xl p-6 shadow-sm hover:shadow-md transition border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'}`}>
+            <h3 className={`text-lg font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>📝 Create Notice</h3>
+            <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Publish notices for students, teachers, and staff instantly.</p>
+            <div className="mt-4">
+              <AlertDialog onNoticeUpload={fetchDashboardData} />
+            </div>
+          </div>
 
-            <textarea
-              name="description"
-              placeholder="Description"
-              value={formData.description}
-              onChange={handleChange}
-              required
-              rows="4"
-              className={`w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+          <div className={`rounded-2xl p-6 shadow-sm hover:shadow-md transition border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'}`}>
+            <h3 className={`text-lg font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>👨‍🎓 Students</h3>
+            <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>View and manage enrolled students.</p>
+            <button 
+              onClick={() => navigate('/dashboard/allstudent')}
+              className={`mt-4 w-full px-4 py-2 font-semibold rounded-xl text-sm transition ${
                 isDarkMode 
-                  ? 'bg-gray-800 border-gray-600 text-white placeholder-gray-400' 
-                  : 'bg-white border-gray-300 text-gray-900'
-              }`}
-            />
-
-            <select
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              required
-              className={`w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                isDarkMode 
-                  ? 'bg-gray-800 border-gray-600 text-white' 
-                  : 'bg-white border-gray-300 text-gray-900'
+                  ? 'text-gray-300 bg-gray-700 hover:bg-gray-600' 
+                  : 'text-gray-700 bg-gray-100 hover:bg-gray-200'
               }`}
             >
-              <option value="">Select Category</option>
-              <option value="general">General</option>
-              <option value="academic">Academic</option>
-              <option value="exam">Exam</option>
-              <option value="event">Event</option>
-              <option value="urgent">Urgent</option>
-            </select>
+              View Students
+            </button>
+          </div>
 
-            <div>
-              <p className={`font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                Audience
-              </p>
-              <div className="flex flex-wrap gap-4">
-                {["students", "teachers"].map((a) => (
-                  <label key={a} className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      name="audience"
-                      value={a}
-                      checked={formData.audience.includes(a)}
-                      onChange={handleChange}
-                      className="rounded border-gray-300"
-                    />
-                    <span className={`capitalize ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                      {a}
-                    </span>
-                  </label>
+          <div className={`rounded-2xl p-6 shadow-sm hover:shadow-md transition border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'}`}>
+            <h3 className={`text-lg font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>👨‍🏫 Teachers</h3>
+            <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>View and manage faculty members.</p>
+            <button 
+              onClick={() => navigate('/dashboard/allteacher')}
+              className={`mt-4 w-full px-4 py-2 font-semibold rounded-xl text-sm transition ${
+                isDarkMode 
+                  ? 'text-gray-300 bg-gray-700 hover:bg-gray-600' 
+                  : 'text-gray-700 bg-gray-100 hover:bg-gray-200'
+              }`}
+            >
+              View Teachers
+            </button>
+          </div>
+        </div>
+
+        {/* RECENT NOTICES SECTION */}
+        <div className={`rounded-2xl shadow-sm border overflow-hidden ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'}`}>
+          <div className={`px-6 py-4 border-b flex items-center justify-between ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+            <div className="flex items-center gap-2">
+              <MdNotificationsActive className="text-blue-600" />
+              <h2 className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>📌 My Recent Notices</h2>
+            </div>
+            <button 
+              onClick={() => navigate('/dashboard/staffnotice')}
+              className="text-sm font-semibold text-blue-600 hover:text-blue-700 transition"
+            >
+              View All →
+            </button>
+          </div>
+
+          <div className={`divide-y ${isDarkMode ? 'divide-gray-700' : 'divide-gray-100'}`}>
+            {loading ? (
+              <div className="p-6 space-y-3">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="animate-pulse">
+                    <div className={`h-4 rounded w-3/4 mb-2 ${isDarkMode ? 'bg-gray-700' : 'bg-gray-200'}`}></div>
+                    <div className={`h-3 rounded w-1/4 ${isDarkMode ? 'bg-gray-700' : 'bg-gray-200'}`}></div>
+                  </div>
                 ))}
               </div>
-            </div>
+            ) : recentNotices.length > 0 ? (
+              recentNotices.map((notice) => (
+                <div key={notice._id} className={`p-6 transition cursor-pointer ${isDarkMode ? 'hover:bg-gray-700/50' : 'hover:bg-gray-50'}`}>
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1" onClick={() => handleViewNotice(notice)}>
+                      <div className="flex items-center gap-3 flex-wrap mb-2">
+                        <h3 className={`font-semibold text-base transition-colors ${isDarkMode ? 'text-white hover:text-blue-400' : 'text-gray-900 hover:text-blue-600'}`}>
+                          {notice.title}
+                        </h3>
+                        {notice.isPinned && (
+                          <span className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 bg-blue-50 text-blue-700 rounded-full border border-blue-200">
+                            📌 Pinned
+                          </span>
+                        )}
+                        <span className={`inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full border ${
+                          notice.priority === 'urgent' ? 'bg-red-50 text-red-700 border-red-200' :
+                          notice.priority === 'high' ? 'bg-orange-50 text-orange-700 border-orange-200' :
+                          notice.priority === 'medium' ? 'bg-yellow-50 text-yellow-700 border-yellow-200' :
+                          'bg-green-50 text-green-700 border-green-200'
+                        }`}>
+                          {notice.priority}
+                        </span>
+                      </div>
+                      <div className={`flex flex-wrap items-center gap-4 text-xs mb-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                        <span>📅 {formatDate(notice.createdAt)}</span>
+                        <span>🏷️ {notice.category}</span>
+                        {notice.audience && notice.audience.length > 0 && (
+                          <span>👥 {notice.audience.join(', ')}</span>
+                        )}
+                      </div>
+                      {notice.description && (
+                        <p className={`text-sm line-clamp-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                          {notice.description.replace(/<[^>]*>/g, '').substring(0, 100)}
+                          {notice.description.replace(/<[^>]*>/g, '').length > 100 ? '...' : ''}
+                        </p>
+                      )}
+                    </div>
+                    <div className="flex gap-2 ml-4">
+                      <button
+                        onClick={(e) => { e.stopPropagation(); handleEditNotice(notice); }}
+                        className={`p-2 transition ${isDarkMode ? 'text-gray-400 hover:text-blue-400' : 'text-gray-500 hover:text-blue-600'}`}
+                        title="Edit Notice"
+                      >
+                        <FaEdit size={18} />
+                      </button>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); handleDeleteNotice(notice._id); }}
+                        className={`p-2 transition ${isDarkMode ? 'text-gray-400 hover:text-red-400' : 'text-gray-500 hover:text-red-600'}`}
+                        title="Delete Notice"
+                      >
+                        <FaTrash size={18} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="text-center py-12">
+                <p className={isDarkMode ? 'text-gray-500' : 'text-gray-400'}>You haven't published any notices yet</p>
+                <p className={`text-sm mt-1 ${isDarkMode ? 'text-gray-600' : 'text-gray-500'}`}>Click "Create Notice" to publish your first notice</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
 
-            <select
-              name="priority"
-              value={formData.priority}
-              onChange={handleChange}
-              className={`w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                isDarkMode 
-                  ? 'bg-gray-800 border-gray-600 text-white' 
-                  : 'bg-white border-gray-300 text-gray-900'
-              }`}
-            >
-              <option value="low">Low</option>
-              <option value="medium">Medium</option>
-              <option value="high">High</option>
-              <option value="urgent">Urgent</option>
-            </select>
-
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                name="isPinned"
-                checked={formData.isPinned}
-                onChange={handleChange}
-                className="rounded border-gray-300"
-              />
-              <span className={isDarkMode ? 'text-gray-300' : 'text-gray-700'}>
-                Pin Notice
-              </span>
-            </label>
-
-            <input
-              type="date"
-              name="expiryDate"
-              value={formData.expiryDate}
-              onChange={handleChange}
-              className={`w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                isDarkMode 
-                  ? 'bg-gray-800 border-gray-600 text-white' 
-                  : 'bg-white border-gray-300 text-gray-900'
-              }`}
-            />
-
-            <div className="flex flex-col sm:flex-row gap-3 pt-2">
-              <button
-                type="submit"
-                className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition font-medium"
-              >
-                Submit
-              </button>
-              <button
-                type="button"
-                onClick={handleClose}
-                className={`flex-1 py-2 rounded-lg transition font-medium ${
-                  isDarkMode 
-                    ? 'bg-gray-600 text-gray-300 hover:bg-gray-500' 
-                    : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
-                }`}
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        </DialogContent>
-      </Dialog>
+      {/* Modals */}
+      {showNoticeModal && <NoticeModal notice={selectedNotice} onClose={() => setShowNoticeModal(false)} />}
+      {showEditModal && (
+        <EditNoticeModal 
+          isOpen={showEditModal}
+          notice={editingNotice}
+          onClose={() => { setShowEditModal(false); setEditingNotice(null); }}
+          onUpdate={handleUpdateNotice}
+        />
+      )}
     </div>
   );
 }

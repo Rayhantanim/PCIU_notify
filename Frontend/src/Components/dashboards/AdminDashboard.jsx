@@ -10,8 +10,8 @@ import { PiCheckFill } from "react-icons/pi";
 import Swal from 'sweetalert2';
 import { useTheme } from '../../Context/ThemeContext';
 
-const API_BASE_URL = 'https://pciunotifybackend.onrender.com/api';
-const API_BASE_URL2 = 'http://localhost:5000/api';
+// const API_BASE_URL = 'https://pciunotifybackend.onrender.com/api';
+const API_BASE_URL = 'http://localhost:5000/api';
 
 const AdminDashboard = () => {
   const { isDarkMode } = useTheme();
@@ -308,7 +308,7 @@ const AdminDashboard = () => {
       delete updateData.email;
       delete updateData.password;
       
-      const response = await axios.put(`${API_BASE_URL2}/users/${selectedUser._id}`, updateData);
+      const response = await axios.put(`${API_BASE_URL}/users/${selectedUser._id}`, updateData);
       
       if (response.data.success) {
         Swal.fire({
@@ -351,7 +351,7 @@ const AdminDashboard = () => {
       if (result.isConfirmed) {
         setLoading(true);
         try {
-          const response = await axios.delete(`${API_BASE_URL2}/users/${user._id}`);
+          const response = await axios.delete(`${API_BASE_URL}/user/${user._id}`);
           
           if (response.data.success) {
             Swal.fire({
@@ -398,7 +398,7 @@ const AdminDashboard = () => {
       if (result.isConfirmed) {
         setLoading(true);
         try {
-          const response = await axios.patch(`${API_BASE_URL2}/users/${user._id}/toggle-status`, {
+          const response = await axios.patch(`${API_BASE_URL}/users/${user._id}/toggle-status`, {
             isActive: willBeActive
           });
           
@@ -432,7 +432,7 @@ const AdminDashboard = () => {
   const handleResetPassword = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(`${API_BASE_URL2}/users/${selectedUser._id}/reset-password`, {
+      const response = await axios.post(`${API_BASE_URL}/users/${selectedUser._id}/reset-password`, {
         email: selectedUser.email
       });
       

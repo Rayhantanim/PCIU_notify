@@ -34,7 +34,8 @@ import { MdCategory, MdPriorityHigh } from "react-icons/md";
 emailjs.init("KeX8QThOfya4pR79L");
 
 export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
-  const MAIN_API = "https://pciunotifybackend.onrender.com";
+  // const MAIN_API = "https://pciunotifybackend.onrender.com";
+  const MAIN_API = "http://localhost:5000";
   const ML_API = "http://localhost:5000";
 
   const editorRef = useRef(null);

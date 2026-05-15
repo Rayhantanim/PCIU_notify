@@ -189,7 +189,7 @@ const App = () => {
           <Route 
             path="allstaff" 
             element={
-              <RoleBasedRoute allowedRoles={["staff"]}>
+              <RoleBasedRoute allowedRoles={["staff","admin"]}>
                 <AllStaff />
               </RoleBasedRoute>
             } 
@@ -251,7 +251,7 @@ const App = () => {
           <Route 
             path="allstudent" 
             element={
-              <RoleBasedRoute allowedRoles={["teacher", "staff"]}>
+              <RoleBasedRoute allowedRoles={["teacher", "staff","admin"]}>
                 <AllStudent />
               </RoleBasedRoute>
             } 
