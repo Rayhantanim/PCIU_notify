@@ -5,19 +5,22 @@ import sys
 import os
 import logging
 from datetime import datetime
+import pickle
+import numpy as np
+from scipy.sparse import hstack
 
 # Add parent directory to path to import from src
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.predict import NoticePredictor
 
-# Setup logging
-logging.basicConfig(level=logging.INFO)
+# Setup logging - reduced verbosity
+logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 # Initialize Flask app
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+CORS(app)
 
 # Global predictor instance
 predictor = None
@@ -27,86 +30,43 @@ def get_predictor():
     global predictor
     if predictor is None:
         try:
-            logger.info("Loading model and encoders...")
+            logger.info("Loading model...")
             predictor = NoticePredictor()
-            logger.info("✅ Model loaded successfully!")
+            # Pre-load all encoders for faster access
+            predictor.category_encoder.classes_
+            predictor.audience_encoder.classes_
+            predictor.priority_encoder.classes_
+            logger.info("Model loaded successfully!")
         except Exception as e:
-            logger.error(f"❌ Failed to load model: {str(e)}")
+            logger.error(f"Failed to load model: {str(e)}")
             raise
     return predictor
 
 @app.route('/', methods=['GET'])
 def home():
-    """API home page"""
     return jsonify({
         'name': 'Notice Classification API',
-        'version': '1.0.0',
-        'description': 'Predict category, audience, and priority for university notices',
+        'version': '2.0.0',
         'endpoints': {
-            'GET /': 'API information',
             'GET /health': 'Health check',
-            'GET /info': 'Model information',
-            'POST /predict': 'Predict single notice',
-            'POST /predict/batch': 'Predict multiple notices'
-        },
-        'examples': {
-            'POST /predict': {
-                'title': 'CSE 327 Final Exam',
-                'description': 'Final exam will be held on June 25',
-                'department': 'CSE'
-            }
+            'POST /predict': 'Predict single notice'
         }
     }), 200
 
 @app.route('/health', methods=['GET'])
 def health_check():
-    """Health check endpoint"""
     try:
-        predictor = get_predictor()
-        return jsonify({
-            'status': 'healthy',
-            'model_loaded': True,
-            'timestamp': datetime.now().isoformat(),
-            'message': 'Notice Prediction API is running'
-        }), 200
+        get_predictor()
+        return jsonify({'status': 'healthy'}), 200
     except Exception as e:
-        return jsonify({
-            'status': 'unhealthy',
-            'model_loaded': False,
-            'error': str(e),
-            'timestamp': datetime.now().isoformat()
-        }), 500
-
-@app.route('/info', methods=['GET'])
-def get_model_info():
-    """Get model information and available classes"""
-    try:
-        predictor = get_predictor()
-        
-        response = {
-            'model_loaded': True,
-            'available_categories': list(predictor.category_encoder.classes_),
-            'available_audiences': list(predictor.audience_encoder.classes_),
-            'available_priorities': list(predictor.priority_encoder.classes_),
-            'vectorizer_features': len(predictor.vectorizer.vocabulary_),
-            'model_type': type(predictor.model).__name__,
-            'timestamp': datetime.now().isoformat()
-        }
-        
-        return jsonify(response), 200
-        
-    except Exception as e:
-        logger.error(f"Error getting model info: {str(e)}")
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'status': 'unhealthy', 'error': str(e)}), 500
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    """Predict category, audience, priority for a single notice"""
+    """Fast prediction endpoint"""
     try:
-        # Get JSON data from request
         data = request.get_json()
         
-        # Validate input
         if not data:
             return jsonify({'error': 'No data provided'}), 400
         
@@ -115,151 +75,74 @@ def predict():
         department = data.get('department', '')
         
         if not title and not description:
-            return jsonify({'error': 'Either title or description is required'}), 400
+            return jsonify({'error': 'Title or description required'}), 400
         
-        # Get prediction
+        # Quick prediction
         predictor_instance = get_predictor()
-        result = predictor_instance.predict_single(title, description, department)
         
-        # Get suggestions
-        suggestions = predictor_instance.get_suggestions(title, description, department)
+        # Combine text and vectorize
+        combined_text = f"{title} {description} {department}".strip()
+        text_vector = predictor_instance.vectorizer.transform([combined_text])
         
-        # Prepare response
-        response = {
-            'success': True,
-            'prediction': {
-                'category': result['category'],
-                'audience': result['audience'],
-                'priority': result['priority'],
-                'codes': {
-                    'category_code': result.get('category_code', -1),
-                    'audience_code': result.get('audience_code', -1),
-                    'priority_code': result.get('priority_code', -1)
-                }
-            },
-            'suggestions': {
-                'priority_meaning': suggestions.get('priority_meaning', ''),
-                'notification_channel': suggestions.get('notification_channel', '')
-            },
-            'input': {
-                'title': title[:100] + '...' if len(title) > 100 else title,
-                'description': description[:200] + '...' if len(description) > 200 else description,
-                'department': department if department else 'Not specified'
-            },
-            'timestamp': datetime.now().isoformat()
+        # Add department feature if available
+        if department and hasattr(predictor_instance, 'dept_mapping'):
+            dept_feature = np.array([[predictor_instance.dept_mapping.get(department, 0)]])
+            final_features = hstack([text_vector, dept_feature])
+        else:
+            final_features = text_vector
+        
+        # Predict
+        pred_code = predictor_instance.model.predict(final_features)[0]
+        
+        # Decode using pre-loaded classes
+        category = predictor_instance.category_encoder.classes_[pred_code[0]] if len(pred_code) > 0 else "General"
+        audience = predictor_instance.audience_encoder.classes_[pred_code[1]] if len(pred_code) > 1 else "All"
+        
+        # Quick priority calculation
+        priority_map = {
+            'exam': 3, 'deadline': 3, 'urgent': 3, 'emergency': 3,
+            'important': 2, 'mandatory': 2, 'required': 2,
+            'reminder': 1, 'update': 1, 'information': 1
         }
         
-        logger.info(f"Prediction made - Category: {result['category']}, Audience: {result['audience']}, Priority: {result['priority']}")
+        text_lower = combined_text.lower()
+        priority_score = 0
+        for keyword, score in priority_map.items():
+            if keyword in text_lower:
+                priority_score = max(priority_score, score)
+        
+        priority = {3: 'High', 2: 'Medium', 1: 'Low', 0: 'Medium'}.get(priority_score, 'Medium')
+        
+        response = {
+            'category': category,
+            'audience': audience,
+            'priority': priority
+        }
+        
         return jsonify(response), 200
         
     except Exception as e:
         logger.error(f"Prediction error: {str(e)}")
-        return jsonify({
-            'success': False,
-            'error': str(e),
-            'timestamp': datetime.now().isoformat()
-        }), 500
+        return jsonify({'error': str(e)}), 500
 
-@app.route('/predict/batch', methods=['POST'])
-def predict_batch():
-    """Predict for multiple notices"""
-    try:
-        data = request.get_json()
-        
-        if not data or 'notices' not in data:
-            return jsonify({'error': 'Please provide a list of notices. Format: {"notices": [...]}'}), 400
-        
-        notices = data['notices']
-        if not isinstance(notices, list):
-            return jsonify({'error': 'notices must be an array'}), 400
-        
-        if len(notices) > 100:
-            return jsonify({'error': 'Maximum 100 notices per batch request'}), 400
-        
-        predictor_instance = get_predictor()
-        results = predictor_instance.predict_batch(notices)
-        
-        # Add suggestions to each result
-        for i, notice in enumerate(notices):
-            suggestions = predictor_instance.get_suggestions(
-                notice.get('title', ''),
-                notice.get('description', ''),
-                notice.get('department', '')
-            )
-            results[i]['suggestions'] = {
-                'priority_meaning': suggestions.get('priority_meaning', ''),
-                'notification_channel': suggestions.get('notification_channel', '')
-            }
-        
-        response = {
-            'success': True,
-            'total': len(results),
-            'predictions': results,
-            'timestamp': datetime.now().isoformat()
-        }
-        
-        logger.info(f"Batch prediction completed for {len(results)} notices")
-        return jsonify(response), 200
-        
-    except Exception as e:
-        logger.error(f"Batch prediction error: {str(e)}")
-        return jsonify({
-            'success': False,
-            'error': str(e),
-            'timestamp': datetime.now().isoformat()
-        }), 500
-
-@app.route('/predict/form', methods=['POST'])
-def predict_form():
-    """Handle form data submission (for web forms)"""
-    try:
-        title = request.form.get('title', '')
-        description = request.form.get('description', '')
-        department = request.form.get('department', '')
-        
-        if not title and not description:
-            return jsonify({'error': 'Either title or description is required'}), 400
-        
-        predictor_instance = get_predictor()
-        result = predictor_instance.predict_single(title, description, department)
-        
-        return jsonify({
-            'success': True,
-            'prediction': result,
-            'timestamp': datetime.now().isoformat()
-        }), 200
-        
-    except Exception as e:
-        logger.error(f"Form prediction error: {str(e)}")
-        return jsonify({'success': False, 'error': str(e)}), 500
-
-# Error handlers
+# Remove batch and form endpoints for speed
+# Keep only essential error handlers
 @app.errorhandler(404)
 def not_found(error):
     return jsonify({'error': 'Endpoint not found'}), 404
 
-@app.errorhandler(500)
-def internal_error(error):
-    return jsonify({'error': 'Internal server error'}), 500
-
 if __name__ == '__main__':
-    print("\n" + "="*60)
-    print("🚀 NOTICE CLASSIFICATION API")
-    print("="*60)
-    print("\n📡 Starting API server...")
-    print("\n📍 Available endpoints:")
-    print("   GET  http://localhost:5000/          - API information")
-    print("   GET  http://localhost:5000/health    - Health check")
-    print("   GET  http://localhost:5000/info      - Model information")
-    print("   POST http://localhost:5000/predict   - Single prediction")
-    print("   POST http://localhost:5000/predict/batch - Batch prediction")
-    print("\n📝 Example POST request:")
-    print('   curl -X POST http://localhost:5000/predict \\')
+    print("\n" + "="*50)
+    print("🚀 NOTICE API (Optimized)")
+    print("="*50)
+    print("\n📍 Endpoints:")
+    print("   POST http://localhost:5001/predict")
+    print("   GET  http://localhost:5001/health")
+    print("\n📝 Example:")
+    print('   curl -X POST http://localhost:5001/predict \\')
     print('     -H "Content-Type: application/json" \\')
-    print('     -d \'{"title":"Exam tomorrow","description":"Final exam at 9 AM","department":"CSE"}\'')
-    print("\n" + "="*60)
-    print("✅ API is ready! Press Ctrl+C to stop")
-    print("="*60 + "\n")
+    print('     -d \'{"title":"Exam tomorrow","department":"CSE"}\'')
+    print("\n" + "="*50 + "\n")
     
-    # Run the app
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    # Changed port to 5001
+    app.run(host='0.0.0.0', port=5001, debug=False, threaded=True)

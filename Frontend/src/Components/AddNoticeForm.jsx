@@ -1,4 +1,4 @@
-// AddNoticeForm.jsx (Button-Only Theme Control)
+// AddNoticeForm.jsx (Fixed ML Auto-fill)
 import React, { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
@@ -36,18 +36,16 @@ emailjs.init("KeX8QThOfya4pR79L");
 export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
   // const MAIN_API = "https://pciunotifybackend.onrender.com";
   const MAIN_API = "http://localhost:5000";
-  const ML_API = "http://localhost:5000";
+  const ML_API = "http://localhost:5001";
 
   const editorRef = useRef(null);
 
-  // Theme state - default to light, only changes when button is clicked
+  // Theme state
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  // Apply theme to document - only when button is clicked
   const toggleTheme = () => {
     const newTheme = !isDarkMode;
     setIsDarkMode(newTheme);
-
     if (newTheme) {
       document.documentElement.classList.add("dark");
       localStorage.setItem("theme", "dark");
@@ -57,14 +55,12 @@ export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
     }
   };
 
-  // Load saved theme preference on mount (but don't auto-apply system preference)
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "dark") {
       setIsDarkMode(true);
       document.documentElement.classList.add("dark");
     } else {
-      // Default to light
       setIsDarkMode(false);
       document.documentElement.classList.remove("dark");
     }
@@ -102,6 +98,7 @@ export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [autoSave, setAutoSave] = useState(false);
   const [lastSaved, setLastSaved] = useState(null);
+  const [mlFieldsApplied, setMlFieldsApplied] = useState(false);
 
   // Check ML API health
   useEffect(() => {
@@ -154,8 +151,7 @@ export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
     const cols = prompt("Number of columns:", "3");
     if (!rows || !cols) return;
 
-    let tableHTML =
-      '<table class="w-full border-collapse border border-gray-300 my-2"><tbody>';
+    let tableHTML = '<table class="w-full border-collapse border border-gray-300 my-2"><tbody>';
     for (let i = 0; i < parseInt(rows); i++) {
       tableHTML += "<tr>";
       for (let j = 0; j < parseInt(cols); j++) {
@@ -201,7 +197,7 @@ export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
         text
           .trim()
           .split(/\s+/)
-          .filter((w) => w.length > 0).length,
+          .filter((w) => w.length > 0).length
       );
     }
   };
@@ -212,18 +208,14 @@ export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
     return tempDiv.textContent || tempDiv.innerText || "";
   };
 
-  // Auto ML Prediction
+  // Auto ML Prediction - FIXED VERSION
   const autoMLPrediction = async () => {
     if (!autoPredictEnabled || mlApiStatus !== "online") return;
 
     const title = formData.title.trim();
     const description = extractTextFromHTML(formData.description).trim();
 
-    if (
-      (!title && !description) ||
-      (title.length < 3 && description.length < 10)
-    )
-      return;
+    if ((!title && !description) || (title.length < 3 && description.length < 10)) return;
 
     setIsPredicting(true);
 
@@ -240,74 +232,54 @@ export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
 
       const data = await response.json();
 
-      // if (data.success) {
-      //   setMlPrediction(data.prediction);
-
-      //   let updates = {};
-
-      //   if (data.prediction.category && !formData.category) {
-      //     const categoryMap = { 'general': 'general', 'academic': 'academic', 'exam': 'exam', 'event': 'event', 'urgent': 'urgent' };
-      //     const mappedCategory = categoryMap[data.prediction.category.toLowerCase()];
-      //     if (mappedCategory) updates.category = mappedCategory;
-      //   }
-
-      //   if (data.prediction.priority && !formData.priority) {
-      //     const priorityMap = { 'high': 'high', 'medium': 'medium', 'low': 'low', 'urgent': 'urgent' };
-      //     const mappedPriority = priorityMap[data.prediction.priority.toLowerCase()];
-      //     if (mappedPriority) updates.priority = mappedPriority;
-      //   }
-
-      //   if (data.prediction.audience && formData.audience.length === 0) {
-      //     const audienceMap = {
-      //       "students": ["students"], "teachers": ["teachers"], "faculty": ["teachers"],
-      //       "staff": ["staff"], "all": ["students", "teachers", "staff"]
-      //     };
-      //     const mappedAudience = audienceMap[data.prediction.audience.toLowerCase()];
-      //     if (mappedAudience) updates.audience = mappedAudience;
-      //   }
-
-      //   if (Object.keys(updates).length > 0) {
-      //     setFormData(prev => ({ ...prev, ...updates }));
-      //   }
-      // }
-      if (data.success) {
-        setMlPrediction(data.prediction);
-
-        const updates = {};
-
-        // Always set category
-        if (data.prediction.category) {
-          updates.category = data.prediction.category.toLowerCase();
-        }
-
-        // Always set priority
-        if (data.prediction.priority) {
-          updates.priority = data.prediction.priority.toLowerCase();
-        }
-
-        // Always set audience
-        if (data.prediction.audience) {
-          const audienceMap = {
-            students: ["students"],
-            teachers: ["teachers"],
-            faculty: ["teachers"],
-            staff: ["staff"],
-            all: ["students", "teachers", "staff"],
-          };
-
-          const mappedAudience =
-            audienceMap[data.prediction.audience.toLowerCase()];
-
-          if (mappedAudience) {
-            updates.audience = mappedAudience;
+      if (data && (data.category || data.prediction)) {
+        // Handle both response formats
+        let prediction = data.prediction || data;
+        
+        setMlPrediction(prediction);
+        
+        // Update form data with ML predictions
+        setFormData(prev => {
+          const updates = {};
+          
+          // Always update category if available and not already set by user
+          if (prediction.category && !prev.category) {
+            updates.category = prediction.category.toLowerCase();
           }
-        }
-
-        // Apply everything
-        setFormData((prev) => ({
-          ...prev,
-          ...updates,
-        }));
+          
+          // Always update priority if available and not already set by user
+          if (prediction.priority && !prev.priority) {
+            updates.priority = prediction.priority.toLowerCase();
+          }
+          
+          // Update audience if available and not already set by user
+          if (prediction.audience && prev.audience.length === 0) {
+            const audienceMap = {
+              students: ["students"],
+              teachers: ["teachers"],
+              faculty: ["teachers"],
+              staff: ["staff"],
+              all: ["students", "teachers", "staff"],
+            };
+            const mappedAudience = audienceMap[prediction.audience.toLowerCase()];
+            if (mappedAudience) {
+              updates.audience = mappedAudience;
+            }
+          }
+          
+          // Only update if there are changes
+          if (Object.keys(updates).length > 0) {
+            setMlFieldsApplied(true);
+            // Show toast notification for ML auto-fill
+            toast.info(`AI suggested: ${Object.keys(updates).join(', ')}`, {
+              position: "top-right",
+              autoClose: 2000,
+            });
+            return { ...prev, ...updates };
+          }
+          
+          return prev;
+        });
       }
     } catch (error) {
       console.error("Auto Prediction Error:", error);
@@ -318,8 +290,89 @@ export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
 
   const debouncedPrediction = () => {
     if (predictTimeout) clearTimeout(predictTimeout);
-    const timeout = setTimeout(() => autoMLPrediction(), 1000);
+    const timeout = setTimeout(() => autoMLPrediction(), 1500);
     setPredictTimeout(timeout);
+  };
+
+  // Manual ML Prediction (for Apply AI button)
+  const manualMLPrediction = async () => {
+    if (mlApiStatus !== "online") {
+      toast.error("AI service is offline");
+      return;
+    }
+
+    const title = formData.title.trim();
+    const description = extractTextFromHTML(formData.description).trim();
+
+    if (!title && !description) {
+      toast.error("Please enter title or description first");
+      return;
+    }
+
+    setIsPredicting(true);
+    toast.info("AI is analyzing your notice...");
+
+    try {
+      const response = await fetch(`${ML_API}/predict`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: title,
+          description: description,
+          department: formData.department || "CSE",
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data && (data.category || data.prediction)) {
+        let prediction = data.prediction || data;
+        
+        setMlPrediction(prediction);
+        
+        // Force apply all ML predictions
+        setFormData(prev => {
+          const updates = {};
+          
+          // Apply category
+          if (prediction.category) {
+            updates.category = prediction.category.toLowerCase();
+          }
+          
+          // Apply priority
+          if (prediction.priority) {
+            updates.priority = prediction.priority.toLowerCase();
+          }
+          
+          // Apply audience
+          if (prediction.audience) {
+            const audienceMap = {
+              students: ["students"],
+              teachers: ["teachers"],
+              faculty: ["teachers"],
+              staff: ["staff"],
+              all: ["students", "teachers", "staff"],
+            };
+            const mappedAudience = audienceMap[prediction.audience.toLowerCase()];
+            if (mappedAudience) {
+              updates.audience = mappedAudience;
+            }
+          }
+          
+          setMlFieldsApplied(true);
+          return { ...prev, ...updates };
+        });
+        
+        toast.success("AI suggestions applied!");
+      } else {
+        toast.error("Could not analyze notice");
+      }
+    } catch (error) {
+      console.error("Manual Prediction Error:", error);
+      toast.error("AI prediction failed");
+    } finally {
+      setIsPredicting(false);
+    }
   };
 
   // Save/Load Draft
@@ -348,14 +401,17 @@ export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
   const clearDraft = () => {
     localStorage.removeItem("notice_draft");
     toast.info("Draft cleared");
+    setFormData(initialState);
+    if (editorRef.current) editorRef.current.innerHTML = "";
+    setMlPrediction(null);
+    setMlFieldsApplied(false);
   };
 
   // Get user info
   useEffect(() => {
     const firstName = localStorage.getItem("firstName") || "";
     const lastName = localStorage.getItem("lastName") || "";
-    const fullName =
-      localStorage.getItem("fullName") || `${firstName} ${lastName}`.trim();
+    const fullName = localStorage.getItem("fullName") || `${firstName} ${lastName}`.trim();
     const role = localStorage.getItem("role") || userRole;
 
     setCurrentUser({ name: fullName || "Admin", role: role });
@@ -425,8 +481,7 @@ export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
 
     if (!formData.createdBy) return toast.error("Select publisher");
     if (formData.audience.length === 0) return toast.error("Select audience");
-    if (!formData.description || formData.description === "<br>")
-      return toast.error("Add content");
+    if (!formData.description || formData.description === "<br>") return toast.error("Add content");
     if (!formData.title.trim()) return toast.error("Enter title");
 
     setSendingEmails(true);
@@ -462,12 +517,8 @@ export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
     }
   };
 
-  const showDeptSection =
-    formData.audience.includes("students") &&
-    !formData.audience.includes("all");
-  const isTeacherOrStaff =
-    localStorage.getItem("role") === "teacher" ||
-    localStorage.getItem("role") === "staff";
+  const showDeptSection = formData.audience.includes("students") && !formData.audience.includes("all");
+  const isTeacherOrStaff = localStorage.getItem("role") === "teacher" || localStorage.getItem("role") === "staff";
 
   const toolbarButtons = [
     { cmd: "bold", icon: <FaBold />, title: "Bold" },
@@ -502,34 +553,24 @@ export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
           <div className="flex-1 overflow-y-auto p-6 space-y-6">
             {/* Stats */}
             <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-4">
-              <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                Statistics
-              </h4>
+              <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Statistics</h4>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between text-gray-600 dark:text-gray-400">
                   <span>Characters:</span>
-                  <span className="font-semibold text-gray-800 dark:text-white">
-                    {charCount}
-                  </span>
+                  <span className="font-semibold text-gray-800 dark:text-white">{charCount}</span>
                 </div>
                 <div className="flex justify-between text-gray-600 dark:text-gray-400">
                   <span>Words:</span>
-                  <span className="font-semibold text-gray-800 dark:text-white">
-                    {wordCount}
-                  </span>
+                  <span className="font-semibold text-gray-800 dark:text-white">{wordCount}</span>
                 </div>
                 <div className="flex justify-between text-gray-600 dark:text-gray-400">
                   <span>Reading time:</span>
-                  <span className="font-semibold text-gray-800 dark:text-white">
-                    {Math.ceil(wordCount / 200)} min
-                  </span>
+                  <span className="font-semibold text-gray-800 dark:text-white">{Math.ceil(wordCount / 200)} min</span>
                 </div>
                 {lastSaved && (
                   <div className="flex justify-between text-gray-600 dark:text-gray-400">
                     <span>Auto-saved:</span>
-                    <span className="text-xs text-gray-500 dark:text-gray-500">
-                      {lastSaved.toLocaleTimeString()}
-                    </span>
+                    <span className="text-xs text-gray-500 dark:text-gray-500">{lastSaved.toLocaleTimeString()}</span>
                   </div>
                 )}
               </div>
@@ -551,10 +592,9 @@ export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
                   {mlApiStatus === "online" ? "● Online" : "○ Offline"}
                 </span>
               </div>
-              <label className="flex items-center justify-between cursor-pointer">
-                <span className="text-sm text-gray-600 dark:text-gray-400">
-                  Auto-predict fields
-                </span>
+              
+              <label className="flex items-center justify-between cursor-pointer mb-3">
+                <span className="text-sm text-gray-600 dark:text-gray-400">Auto-predict fields</span>
                 <input
                   type="checkbox"
                   checked={autoPredictEnabled}
@@ -562,27 +602,43 @@ export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
                   className="toggle"
                 />
               </label>
+              
+              <button
+                type="button"
+                onClick={manualMLPrediction}
+                disabled={isPredicting}
+                className="w-full px-3 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2"
+              >
+                <FaRobot size={14} />
+                {isPredicting ? "Analyzing..." : "Apply AI Suggestions"}
+              </button>
+              
               {isPredicting && (
-                <div className="mt-2 text-xs text-blue-600 dark:text-blue-400 animate-pulse">
-                  AI analyzing...
+                <div className="mt-2 text-xs text-blue-600 dark:text-blue-400 animate-pulse text-center">
+                  AI analyzing content...
                 </div>
               )}
+              
               {mlPrediction && mlApiStatus === "online" && !isPredicting && (
                 <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 text-xs space-y-1">
                   <p className="text-gray-600 dark:text-gray-400">
                     Detected:{" "}
-                    <span className="font-semibold text-gray-800 dark:text-white">
+                    <span className="font-semibold text-gray-800 dark:text-white capitalize">
                       {mlPrediction.category}
                     </span>{" "}
                     •
-                    <span className="font-semibold text-gray-800 dark:text-white">
-                      {" "}
-                      {mlPrediction.priority}
+                    <span className="font-semibold text-gray-800 dark:text-white capitalize">
+                      {" "}{mlPrediction.priority}
                     </span>
                   </p>
                   <p className="text-gray-500 dark:text-gray-500">
-                    Audience: {mlPrediction.audience}
+                    Audience: <span className="capitalize">{mlPrediction.audience}</span>
                   </p>
+                  {mlFieldsApplied && (
+                    <p className="text-green-600 dark:text-green-400 text-xs mt-1">
+                      ✓ AI suggestions applied
+                    </p>
+                  )}
                 </div>
               )}
             </div>
@@ -593,26 +649,20 @@ export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
                 <MdCategory /> Category
               </h4>
               <div className="grid grid-cols-2 gap-2">
-                {["general", "academic", "exam", "event", "urgent"].map(
-                  (cat) => (
-                    <button
-                      key={cat}
-                      type="button"
-                      onClick={() =>
-                        handleChange({
-                          target: { name: "category", value: cat },
-                        })
-                      }
-                      className={`px-3 py-2 rounded-lg text-sm capitalize transition-all ${
-                        formData.category === cat
-                          ? "bg-blue-600 text-white"
-                          : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
-                      }`}
-                    >
-                      {cat}
-                    </button>
-                  ),
-                )}
+                {["general", "academic", "exam", "event", "urgent"].map((cat) => (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => handleChange({ target: { name: "category", value: cat } })}
+                    className={`px-3 py-2 rounded-lg text-sm capitalize transition-all ${
+                      formData.category === cat
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
               </div>
             </div>
 
@@ -631,11 +681,7 @@ export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
                   <button
                     key={prio.value}
                     type="button"
-                    onClick={() =>
-                      handleChange({
-                        target: { name: "priority", value: prio.value },
-                      })
-                    }
+                    onClick={() => handleChange({ target: { name: "priority", value: prio.value } })}
                     className={`w-full px-3 py-2 rounded-lg text-sm capitalize transition-all ${
                       formData.priority === prio.value
                         ? `bg-${prio.color}-600 text-white`
@@ -690,9 +736,7 @@ export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
           {/* Header */}
           <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 px-6 py-4 flex justify-between items-center shadow-sm">
             <div className="flex items-center gap-4">
-              <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-                Create New Notice
-              </h2>
+              <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Create New Notice</h2>
               <button
                 type="button"
                 onClick={() => setShowTemplateSelector(true)}
@@ -701,9 +745,7 @@ export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
                 <FaFileAlt /> Use Template
               </button>
               {autoSave && (
-                <span className="text-xs text-green-600 dark:text-green-400 animate-pulse">
-                  Saving...
-                </span>
+                <span className="text-xs text-green-600 dark:text-green-400 animate-pulse">Saving...</span>
               )}
             </div>
             <div className="flex items-center gap-3">
@@ -727,10 +769,7 @@ export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
 
           {/* Form Content */}
           <div className="flex-1 overflow-y-auto p-6">
-            <form
-              onSubmit={handleSubmit}
-              className="max-w-5xl mx-auto space-y-6"
-            >
+            <form onSubmit={handleSubmit} className="max-w-5xl mx-auto space-y-6">
               {/* Published By */}
               <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-4">
                 <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
@@ -750,10 +789,7 @@ export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
                   >
                     <option value="">Select Publisher</option>
                     {teachers.map((teacher) => (
-                      <option
-                        key={teacher._id}
-                        value={`${teacher.firstName} ${teacher.lastName}`}
-                      >
+                      <option key={teacher._id} value={`${teacher.firstName} ${teacher.lastName}`}>
                         {teacher.firstName} {teacher.lastName}
                       </option>
                     ))}
@@ -777,23 +813,18 @@ export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
                 <div className="flex flex-wrap gap-1 p-2 bg-gray-50 dark:bg-gray-900/50 border-b border-gray-300 dark:border-gray-700">
                   {toolbarButtons.map((item, idx) =>
                     item.divider ? (
-                      <div
-                        key={idx}
-                        className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1"
-                      />
+                      <div key={idx} className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1" />
                     ) : (
                       <button
                         key={idx}
                         type="button"
-                        onClick={() =>
-                          item.handler ? item.handler() : execCommand(item.cmd)
-                        }
+                        onClick={() => (item.handler ? item.handler() : execCommand(item.cmd))}
                         title={item.title}
                         className="p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded transition-all text-gray-700 dark:text-gray-300"
                       >
                         {item.icon}
                       </button>
-                    ),
+                    )
                   )}
                   <div className="flex-1" />
                   <button
@@ -805,17 +836,14 @@ export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
                         : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
                     }`}
                   >
-                    {previewMode ? <FaEdit /> : <FaEye />}{" "}
-                    {previewMode ? "Edit" : "Preview"}
+                    {previewMode ? <FaEdit /> : <FaEye />} {previewMode ? "Edit" : "Preview"}
                   </button>
                 </div>
 
                 {previewMode ? (
                   <div
                     className="min-h-[400px] p-4 prose dark:prose-invert max-w-none overflow-auto bg-white dark:bg-gray-800"
-                    dangerouslySetInnerHTML={{
-                      __html: formData.description || "No content yet...",
-                    }}
+                    dangerouslySetInnerHTML={{ __html: formData.description || "No content yet..." }}
                   />
                 ) : (
                   <div
@@ -827,65 +855,6 @@ export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
                   />
                 )}
               </div>
-
-              {/* Category & Priority */}
-              {/* <div className="grid grid-cols-2 gap-4">
-                <select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  required
-                  className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200"
-                >
-                  <option value="">Select Category</option>
-                  <option value="general">General</option>
-                  <option value="academic">Academic</option>
-                  <option value="exam">Exam</option>
-                  <option value="event">Event</option>
-                  <option value="urgent">Urgent</option>
-                </select>
-                <select
-                  name="priority"
-                  value={formData.priority}
-                  onChange={handleChange}
-                  className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200"
-                >
-                  <option value="low">Low</option>
-                  <option value="medium">Medium</option>
-                  <option value="high">High</option>
-                  <option value="urgent">Urgent</option>
-                </select>
-              </div> */}
-
-              {/* Audience */}
-              {/* <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-4">
-                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                  Target Audience *
-                </label>
-                <div className="flex gap-4">
-                  {["students", "teachers", "staff"].map((aud) => (
-                    <label
-                      key={aud}
-                      className="flex items-center gap-2 cursor-pointer"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={formData.audience.includes(aud)}
-                        onChange={() => handleAudienceChange(aud)}
-                        className="w-4 h-4 text-blue-600 rounded"
-                      />
-                      <span className="text-gray-700 dark:text-gray-300 capitalize">
-                        {aud}
-                      </span>
-                    </label>
-                  ))}
-                </div>
-                {formData.audience.length > 0 && (
-                  <div className="mt-3 p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-sm text-blue-700 dark:text-blue-300">
-                    Will be sent to: <strong>{getAudienceLabel()}</strong>
-                  </div>
-                )}
-              </div> */}
 
               {/* Department & Section */}
               {showDeptSection && (
@@ -930,9 +899,7 @@ export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
                     onChange={handleChange}
                     className="w-4 h-4 text-blue-600 rounded"
                   />
-                  <span className="text-gray-700 dark:text-gray-300">
-                    Pin this notice (appears at top)
-                  </span>
+                  <span className="text-gray-700 dark:text-gray-300">Pin this notice (appears at top)</span>
                 </label>
               </div>
 
@@ -959,8 +926,7 @@ export default function NoticeForm({ handleClose, userRole, onNoticeUpload }) {
                   disabled={sendingEmails}
                   className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all font-semibold flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <FaPaperPlane />{" "}
-                  {sendingEmails ? "Sending..." : "Publish Notice"}
+                  <FaPaperPlane /> {sendingEmails ? "Sending..." : "Publish Notice"}
                 </button>
               </div>
             </form>
