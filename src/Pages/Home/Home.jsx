@@ -109,13 +109,34 @@ const SwapIcon = () => (
 );
 
 /* ─────────────────────── Quick Action Tile ─────────────────────── */
-const QuickAction = ({ icon, label }) => (
-  <button className="flex flex-col items-center justify-center gap-2 bg-white border border-[#E5E7EB] rounded-xl py-5 px-3 hover:border-[#8EB800] hover:shadow-sm transition">
-    {icon}
-    <span className="text-[13px] font-medium text-[#1D1D1D]">{label}</span>
-  </button>
-);
 
+const QuickAction = ({ icon, label, to, onClick }) => {
+  const className =
+    'flex flex-col items-center justify-center gap-2 w-full h-full bg-white border border-[#E5E7EB] rounded-xl py-5 px-3 hover:border-[#8EB800] hover:shadow-sm transition';
+
+  const content = (
+    <>
+      {icon}
+      <span className="text-[13px] font-medium text-[#1D1D1D] text-center leading-tight">
+        {label}
+      </span>
+    </>
+  );
+
+  if (to) {
+    return (
+      <Link to={to} className={className}>
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <button type="button" onClick={onClick} className={className}>
+      {content}
+    </button>
+  );
+};
 /* ─────────────────────── Safety Tile ─────────────────────── */
 const SafetyTile = ({ icon, label }) => (
   <button className="flex flex-col items-center justify-center gap-2 bg-white border border-[#E5E7EB] rounded-xl py-5 px-3 hover:border-[#8EB800] hover:shadow-sm transition">
@@ -183,14 +204,12 @@ const Home = () => {
                 </div>
               </div>
             </div>
-
-            {/* Quick actions */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <QuickAction icon={<CarIcon />} label="Ride Now" />
-              <QuickAction icon={<CalendarIcon />} label="Schedule" />
-              <QuickAction icon={<HistoryIcon />} label="Ride history" />
-              <QuickAction icon={<StarIcon />} label="Save Place" />
-            </div>
+              <div className="grid w-full grid-cols-2 md:grid-cols-4 gap-4">
+  <QuickAction to="/ride-management" icon={<CarIcon />} label="Ride Now" />
+  <QuickAction to="/schedule" icon={<CalendarIcon />} label="Schedule" />
+  <QuickAction to="/ride-history" icon={<HistoryIcon />} label="Ride history" />
+  <QuickAction to="/saved-places" icon={<StarIcon />} label="Save Place" />
+</div>
 
             {/* Safety First */}
             <div>

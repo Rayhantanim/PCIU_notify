@@ -6,6 +6,9 @@ import Login from '../Pages/Login/Login';
 import CreateAccount from '../Pages/Signup/CreateAccount';
 import ForgetPass from '../Components/ForgetPass';
 import Home from '../Pages/Home/Home';
+import RideManagement from '../Pages/Ridemanagement/RideManagement';
+import Support from '../Pages/Support/Support';
+import VerifyOtp from '../Pages/VerifyOtp/VerifyOtp';
 
 const router = createBrowserRouter([
   {
@@ -15,6 +18,18 @@ const router = createBrowserRouter([
   {
      path:"/home",
     element:<Home></Home>
+  },
+  {
+     path:"/ride-management",
+     element:<RideManagement></RideManagement>
+  },
+  {
+    path:"/support",
+    element: <Support></Support>
+  },
+  {
+    path:"verify-otp",
+    element:<VerifyOtp/>
   },
   {
     path: "/phone-signup",
